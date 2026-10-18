@@ -717,23 +717,26 @@ INIT.loteria=root=>{
 };
 
 // ================= Aula 3: Agência de previsões =================
-// Ilustrações: ervilhas (A = amarela, dominante; a = verde, recessivo)
+// Ilustrações: família fictícia com albinismo (A = produz melanina; a = albinismo, recessivo)
+const pessoaSv=(x,y,r,alb)=>{const sk=alb?'#f6e1d3':'#9a6040',hr=alb?'#f7f1df':'#2a1b12',hs=alb?'#bfae8c':'#2a1b12';
+  return `<path d="M${x-r*.82},${y+r} Q${x-r*.82},${y+r*.22} ${x},${y+r*.22} Q${x+r*.82},${y+r*.22} ${x+r*.82},${y+r}Z" fill="#6b7f99"/>`+
+  `<circle cx="${x}" cy="${y-r*.32}" r="${r*.44}" fill="${sk}" stroke="rgba(0,0,0,.28)" stroke-width="${r*.06}"/>`+
+  `<path d="M${x-r*.47},${y-r*.26} Q${x-r*.52},${y-r*.86} ${x},${y-r*.84} Q${x+r*.52},${y-r*.86} ${x+r*.47},${y-r*.26} Q${x+r*.2},${y-r*.62} ${x-r*.47},${y-r*.26}Z" fill="${hr}" stroke="${hs}" stroke-width="${r*.05}"/>`;};
 const agGeno=(x,y)=>x==='a'&&y==='a'?'aa':x==='A'&&y==='A'?'AA':'Aa';
 const agOk=(g,ev)=>ev==='dom'?g!=='aa':ev==='rec'?g==='aa':g===ev;
-const agCol=g=>g==='aa'?PEA.G:PEA.Y;
-// quadro 2×2 com ervilhas; hl(g) diz quais casas acendem
+// quadro 2×2 com pessoas; hl(g) diz quais casas acendem
 function agPunnett(p1,p2,hl,{lab=true}={}){const c=46,o=30;let str='';
   const gam=(x,y,a)=>`<circle cx="${x}" cy="${y}" r="11" fill="var(--surface-2)" stroke="var(--line)"/><text x="${x}" y="${y+4.5}" text-anchor="middle" font-size="13" font-weight="800" font-family="var(--f-mono)" fill="var(--ink)">${a}</text>`;
   [0,1].forEach(i=>{str+=gam(o+c*i+c/2,14,p2[i]);str+=gam(14,o+c*i+c/2,p1[i]);});
   [0,1].forEach(r=>[0,1].forEach(k=>{const g=agGeno(p1[r],p2[k]);const on=hl(g);const x=o+c*k,y=o+c*r;
     str+=`<rect x="${x+1.5}" y="${y+1.5}" width="${c-3}" height="${c-3}" rx="7" fill="${on?'var(--her-soft)':'var(--surface)'}" stroke="${on?'var(--her)':'var(--line)'}" stroke-width="${on?3:1.2}"/>`;
-    str+=`<g opacity="${on?1:.35}">${seedSv(x+c/2,y+c/2-6,9,agCol(g))}</g>`;
+    str+=`<g opacity="${on?1:.35}">${pessoaSv(x+c/2,y+c/2-5,12,g==='aa')}</g>`;
     if(lab)str+=`<text x="${x+c/2}" y="${y+c-6}" text-anchor="middle" font-size="11" font-weight="700" font-family="var(--f-mono)" fill="var(--ink)" opacity="${on?1:.55}">${g}</text>`;}));
   return svgOf(str,'0 0 124 124','agp');}
 // área 4×4: linhas = 1º filho, colunas = 2º filho
 function agArea(p1,p2,ev1,ev2){const cells=[];[0,1].forEach(r=>[0,1].forEach(k=>cells.push(agGeno(p1[r],p2[k]))));
   const c=26,o=44;let str='',n=0;
-  cells.forEach((g,i)=>{str+=`<g>${seedSv(o+c*i+c/2,o-14,6.5,agCol(g))}</g>`;str+=`<g>${seedSv(o-14,o+c*i+c/2,6.5,agCol(g))}</g>`;});
+  cells.forEach((g,i)=>{str+=`<g>${pessoaSv(o+c*i+c/2,o-14,10,g==='aa')}</g>`;str+=`<g>${pessoaSv(o-14,o+c*i+c/2,10,g==='aa')}</g>`;});
   cells.forEach((g1,r)=>cells.forEach((g2,k)=>{const on=agOk(g1,ev1)&&agOk(g2,ev2);if(on)n++;
     str+=`<rect x="${o+c*k+1}" y="${o+c*r+1}" width="${c-2}" height="${c-2}" rx="4" fill="${on?'var(--her)':'var(--surface)'}" stroke="${on?'var(--her)':'var(--line)'}" opacity="${on?.9:1}"/>`;
     if(on)str+=`<text x="${o+c*k+c/2}" y="${o+c*r+c/2+4}" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">✓</text>`;}));
@@ -757,17 +760,18 @@ INIT.agencia=root=>{
 @media (max-width:560px){.ag-tl{grid-template-columns:1fr}}
 .ag-tl>div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;gap:10px;align-items:center}
 .ag-tl svg{flex:none}
-.ag-sieve{display:grid;grid-template-columns:repeat(auto-fill,minmax(44px,1fr));gap:6px}
+.ag-sieve{display:grid;grid-template-columns:repeat(auto-fill,minmax(48px,1fr));gap:6px}.ag-fam{width:40px;height:19px}
 .ag-sieve div{display:flex;gap:2px;justify-content:center;padding:4px 2px;border-radius:8px;border:1px solid transparent;opacity:.28}
 .ag-sieve div.on{opacity:1;border-color:var(--her);background:var(--her-soft)}
-.ag-sieve i{width:11px;height:11px;border-radius:50%;display:block;border:1px solid rgba(0,0,0,.25)}`;document.head.append(st);}
+`;document.head.append(st);}
   root.append(head('Aula 3 · Livro p. 331–334','Agência de previsões genéticas','Cada pedido vira uma previsão com cálculo e condição de validade. “E” entre eventos independentes: multiplique. “Ou” entre alternativas que não podem acontecer juntas: some.'));
   root.append(panel(h('h3',{},'Pedidos que chegaram à agência'),h('p',{class:'note'},'Modelo: gene autossômico com alelos A e a, dominância completa, gametas com a mesma probabilidade. Genitores Aa × Aa.'),
-    h('div',{class:'row',style:'gap:14px;align-items:center'},h('span',{class:'row',style:'gap:6px'},svgOf(seedSv(12,12,9,PEA.Y),'0 0 24 24','ag-ico'),h('span',{},h('b',{},'AA'),' ou ',h('b',{},'Aa'),': ervilha amarela')),h('span',{class:'row',style:'gap:6px'},svgOf(seedSv(12,12,9,PEA.G),'0 0 24 24','ag-ico'),h('span',{},h('b',{},'aa'),': ervilha verde'))),
+    h('div',{class:'row',style:'gap:14px;align-items:center'},h('span',{class:'row',style:'gap:6px'},svgOf(pessoaSv(14,15,13,false),'0 0 28 28','ag-ico'),h('span',{},h('b',{},'AA'),' ou ',h('b',{},'Aa'),': produz melanina')),h('span',{class:'row',style:'gap:6px'},svgOf(pessoaSv(14,15,13,true),'0 0 28 28','ag-ico'),h('span',{},h('b',{},'aa'),': albinismo'))),
+    h('p',{class:'note',style:'margin:0'},'Família fictícia. No albinismo oculocutâneo tipo 1, a herança é autossômica recessiva: a pessoa aa produz pouca ou nenhuma melanina, o pigmento da pele, dos cabelos e dos olhos. Quem é Aa produz melanina normalmente, mas pode passar o alelo a para os filhos.'),
     h('div',{class:'cols three'},...[
-      ['Pedido A','Em Aa × Aa, qual a probabilidade de fenótipo recessivo no próximo descendente?',()=>agPunnett('Aa','Aa',g=>g==='aa'),h('span',{},'O quadro tem 4 casas igualmente prováveis. Só ',h('b',{},'1'),' é verde (aa): ',h('b',{},'1/4'),'.')],
-      ['Pedido B','Em dois descendentes, qual a probabilidade de ambos serem aa? Considere eventos independentes.',()=>agArea('Aa','Aa','aa','aa'),h('span',{},'Cada filho tem 4 resultados; dois filhos juntos têm 4 × 4 = 16 combinações. Só ',h('b',{},'1'),' tem os dois verdes: ',h('b',{},'1/4 × 1/4 = 1/16'),'. ',h('b',{},'“E” multiplica.'))],
-      ['Pedido C','Qual a probabilidade de um descendente ser AA ou Aa? Identifique por que as alternativas são mutuamente exclusivas.',()=>agPunnett('Aa','Aa',g=>g!=='aa'),h('span',{},'AA ocupa 1 casa e Aa ocupa 2. Uma ervilha não cai em duas casas ao mesmo tempo, então dá para somar: ',h('b',{},'1/4 + 2/4 = 3/4'),'. ',h('b',{},'“Ou” soma.'))]
+      ['Pedido A','Em Aa × Aa, qual a probabilidade de fenótipo recessivo no próximo descendente?',()=>agPunnett('Aa','Aa',g=>g==='aa'),h('span',{},'O quadro tem 4 casas igualmente prováveis. Só ',h('b',{},'1'),' tem albinismo (aa): ',h('b',{},'1/4'),'.')],
+      ['Pedido B','Em dois descendentes, qual a probabilidade de ambos serem aa? Considere eventos independentes.',()=>agArea('Aa','Aa','aa','aa'),h('span',{},'Cada filho tem 4 resultados; dois filhos juntos têm 4 × 4 = 16 combinações. Só ',h('b',{},'1'),' tem os dois filhos aa: ',h('b',{},'1/4 × 1/4 = 1/16'),'. ',h('b',{},'“E” multiplica.'))],
+      ['Pedido C','Qual a probabilidade de um descendente ser AA ou Aa? Identifique por que as alternativas são mutuamente exclusivas.',()=>agPunnett('Aa','Aa',g=>g!=='aa'),h('span',{},'AA ocupa 1 casa e Aa ocupa 2. Uma pessoa não pode ser AA e Aa ao mesmo tempo, então dá para somar: ',h('b',{},'1/4 + 2/4 = 3/4'),'. ',h('b',{},'“Ou” soma.'))]
     ].map(([a,b,fig,cap])=>h('div',{class:'stat-box ag-card'},h('span',{class:'eyebrow'},a),h('p',{style:'margin:0'},b),
       (()=>{const d=h('details',{},h('summary',{class:'btn ghost sm',style:'list-style:none;display:inline-flex'},'👀 Ver a ilustração'),h('div',{class:'stack',style:'gap:6px;margin-top:8px'},h('div',{class:'ag-fig'},fig()),h('p',{class:'ag-cap',style:'margin:0'},cap)));return d;})()))),
     h('p',{class:'callout'},'Para cada pedido, registre o cálculo, a resposta e a condição de validade. E pense: dois aa já observados alterariam a previsão para o próximo?')));
@@ -807,15 +811,15 @@ INIT.agencia=root=>{
     }}
   draw();
   // Independência
-  const tlBox=(col,t1,t2,q)=>h('div',{},q?svgOf(`<circle cx="22" cy="22" r="19" fill="var(--surface-2)" stroke="var(--her)" stroke-width="2" stroke-dasharray="4 3"/><text x="22" y="29" text-anchor="middle" font-size="20" font-weight="800" fill="var(--her)">?</text>`,'0 0 44 44','ag-tli'):svgOf(seedSv(22,22,16,col),'0 0 44 44','ag-tli'),h('div',{class:'stack',style:'gap:2px'},h('b',{},t1),h('span',{class:'note'},t2)));
-  R.append(h('div',{class:'ag-tl'},tlBox(PEA.G,'1º filho: aa','verde'),tlBox(PEA.G,'2º filho: aa','verde de novo'),tlBox(null,'3º filho: ?','A chance de verde caiu, subiu ou continua 1/4?',true)),
+  const tlBox=(col,t1,t2,q)=>h('div',{},q?svgOf(`<circle cx="22" cy="22" r="19" fill="var(--surface-2)" stroke="var(--her)" stroke-width="2" stroke-dasharray="4 3"/><text x="22" y="29" text-anchor="middle" font-size="20" font-weight="800" fill="var(--her)">?</text>`,'0 0 44 44','ag-tli'):svgOf(pessoaSv(22,24,20,true),'0 0 44 44','ag-tli'),h('div',{class:'stack',style:'gap:2px'},h('b',{},t1),h('span',{class:'note'},t2)));
+  R.append(h('div',{class:'ag-tl'},tlBox(1,'1º filho: aa','albinismo'),tlBox(1,'2º filho: aa','albinismo de novo'),tlBox(null,'3º filho: ?','A chance de ser aa caiu, subiu ou continua 1/4?',true)),
     h('p',{class:'note',style:'margin:0'},'Pense numa moeda: depois de duas caras, a moeda não “sabe” o que saiu antes. Cada filho vem de um novo encontro de gametas.'),
     h('p',{},'Teste: simule muitas famílias Aa × Aa com três filhos. Separe só as famílias em que os dois primeiros foram aa. Com que frequência o terceiro também é aa?'));
   const out=h('div',{class:'stack'});const ch=s('svg',{class:'chart',role:'img','aria-label':'Frequência do terceiro filho aa'});
   R.append(h('button',{class:'btn primary',onclick:()=>{let fam=0,hit=0,tot=0;const N=20000;const amostra=[];for(let i=0;i<N;i++){const k=()=>Math.random()<.25;const a=k(),b=k(),c=k();tot++;if(i<64)amostra.push([a,b,c]);if(a&&b){fam++;if(c)hit++;}}
-    const sieve=h('div',{class:'ag-sieve'},...amostra.map(f=>h('div',{class:f[0]&&f[1]?'on':''},...f.map(v=>h('i',{style:'background:'+(v?PEA.G:PEA.Y)})))));
+    const sieve=h('div',{class:'ag-sieve'},...amostra.map(f=>h('div',{class:f[0]&&f[1]?'on':''},svgOf(f.map((v,j)=>pessoaSv(7+j*12,9,6.5,v)).join(''),'0 0 36 17','ag-fam'))));
     const nOn=amostra.filter(f=>f[0]&&f[1]).length;
-    out.innerHTML='';out.append(h('span',{class:'label'},'Peneira: 64 das famílias simuladas (cada uma = 3 ervilhas)'),sieve,h('p',{class:'note',style:'margin:0'},(nOn?`Destacadas: ${nOn===1?'a única família':'as '+nOn+' famílias'} em que os dois primeiros filhos foram verdes (aa). Olhe só a terceira ervilha delas. Abaixo, o mesmo para todas as ${fmt(tot)} famílias.`:`Nenhuma destas 64 teve os dois primeiros filhos verdes (é raro: 1 em 16). Abaixo, o resultado para todas as ${fmt(tot)} famílias.`)),h('div',{class:'stats'},h('div',{class:'stat stat-box'},h('span',{class:'note'},'Famílias simuladas'),h('span',{class:'big-num'},fmt(tot))),h('div',{class:'stat stat-box'},h('span',{class:'note'},'Com dois primeiros aa'),h('span',{class:'big-num'},fmt(fam))),h('div',{class:'stat stat-box'},h('span',{class:'note'},'Terceiro também aa'),h('span',{class:'big-num'},pct(hit/fam)))),
+    out.innerHTML='';out.append(h('span',{class:'label'},'Peneira: 64 das famílias simuladas (cada uma com 3 filhos)'),sieve,h('p',{class:'note',style:'margin:0'},(nOn?`Destacadas: ${nOn===1?'a única família':'as '+nOn+' famílias'} em que os dois primeiros filhos foram aa. Olhe só o terceiro filho delas. Abaixo, o mesmo para todas as ${fmt(tot)} famílias.`:`Nenhuma destas 64 teve os dois primeiros filhos aa (é raro: 1 em 16). Abaixo, o resultado para todas as ${fmt(tot)} famílias.`)),h('div',{class:'stats'},h('div',{class:'stat stat-box'},h('span',{class:'note'},'Famílias simuladas'),h('span',{class:'big-num'},fmt(tot))),h('div',{class:'stat stat-box'},h('span',{class:'note'},'Com dois primeiros aa'),h('span',{class:'big-num'},fmt(fam))),h('div',{class:'stat stat-box'},h('span',{class:'note'},'Terceiro também aa'),h('span',{class:'big-num'},pct(hit/fam)))),
       h('p',{class:'fb ok'},'Perto de 25%, como em qualquer nascimento. Os gametas não “lembram” os filhos anteriores: cada fecundação é um evento independente no modelo. A chance de uma família ter TRÊS filhos aa seguidos, vista antes de nascerem, é 1/4 × 1/4 × 1/4 = 1/64.'));
     barChart(ch,{cats:['Terceiro aa','Terceiro AA ou Aa'],series:[{name:'Simulação',color:'var(--tema)',values:[hit/fam,1-hit/fam],labels:v=>pct(v,0)},{name:'Modelo',color:'var(--muted)',dash:true,values:[.25,.75]}],yMax:1,fmtY:v=>pct(v,0),height:220});}},'Simular 20.000 famílias'),out,ch,model('Simulação computacional; os números mudam um pouco a cada rodada.'));
   const AUD=[{who:'Estagiário 1',t:'Pedido B: 1/4 + 1/4 = 1/2, porque são dois filhos.',ok:false,ex:'Erro. “Os dois filhos aa” é um pedido com “e”: os dois precisam acontecer. Multiplica-se: 1/4 × 1/4 = 1/16. Somar daria uma chance maior do que a de cada filho sozinho, o que não faz sentido.'},
@@ -1791,13 +1795,13 @@ extend('agencia',root=>{
   const run=h('button',{class:'btn primary'},'Gerar famílias');
   run.onclick=async()=>{run.disabled=true;fam.innerHTML='';const hist=Array(k+1).fill(0);let done=0;const show=Math.min(8,F);
     for(let f=0;f<F;f++){const kids=[...Array(k)].map(()=>Math.random()<.25);hist[kids.filter(Boolean).length]++;
-      if(f<show){const row=h('div',{class:'row pop',style:'gap:4px'},h('span',{class:'note mono',style:'min-width:5.5em'},'Família '+(f+1)));kids.forEach(a=>row.append(h('span',{title:a?'aa':'AA ou Aa',style:`width:22px;height:22px;border-radius:50%;display:inline-block;background:${a?'var(--her)':'var(--surface-2)'};border:2px solid var(--her)`})));fam.append(row);await sleep(reduced()?0:160);}
+      if(f<show){const row=h('div',{class:'row pop',style:'gap:4px'},h('span',{class:'note mono',style:'min-width:5.5em'},'Família '+(f+1)));kids.forEach(a=>{const e=svgOf(pessoaSv(13,14,12,a),'0 0 26 26');e.setAttribute('width','26');e.setAttribute('height','26');e.setAttribute('role','img');e.setAttribute('aria-label',a?'aa':'AA ou Aa');row.append(e);});fam.append(row);await sleep(reduced()?0:160);}
       done++;if(f%Math.max(1,Math.floor(F/25))===0||f===F-1){draw(hist,done);await sleep(reduced()?0:30);}}
     run.disabled=false;const mode=hist.indexOf(Math.max(...hist));
     fbx(out,'info',`Com ${k} filhos por família, o resultado mais comum foi ${mode} filho${mode===1?'':'s'} aa. Repare quantas famílias NÃO têm exatamente ${k/4===Math.floor(k/4)?k/4:'1/4 de'} aa: a proporção 1/4 descreve a probabilidade, não o que cada família terá.`);};
   function draw(hist,n){barChart(ch,{cats:hist.map((_,i)=>String(i)),series:[{name:'Famílias simuladas',color:'var(--her)',values:hist.map(v=>v/n)},{name:'Modelo binomial',color:'var(--muted)',dash:true,values:hist.map((_,i)=>binom(k,i)*Math.pow(.25,i)*Math.pow(.75,k-i))}],yMax:.8,fmtY:v=>pct(v,0),xLabel:'Número de filhos aa na família',height:250});}
   draw(Array(k+1).fill(0),1);
-  root.append(sim('Maternidade virtual','Gere famílias Aa × Aa e veja como os filhos aa se distribuem entre elas. Círculo preenchido: filho aa.',
+  root.append(sim('Maternidade virtual','Gere famílias fictícias Aa × Aa e veja como os filhos aa (com albinismo, cabelo e pele claros no desenho) se distribuem entre elas.',
     h('div',{class:'row'},h('span',{class:'label'},'Filhos por família'),seg([1,2,3,4,6].map(n=>[n,String(n)]),k,v=>{k=v;store.set('mat-k',v);draw(Array(k+1).fill(0),1);fam.innerHTML='';}),h('span',{class:'label'},'Famílias'),seg([[20,'20'],[100,'100'],[1000,'1.000']],F,v=>{F=v;store.set('mat-F',v);}),run),
     h('div',{class:'cols'},fam,ch),out,model('Cada filho é sorteado de forma independente, com 1/4 de chance de ser aa.')));
 });
