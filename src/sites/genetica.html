@@ -680,7 +680,7 @@ INIT.loteria=root=>{
       tubes.append(s('text',{x:x+w/2,y:22,'text-anchor':'middle','font-size':18,'font-weight':800,fill:'var(--ink)','font-family':'var(--f-mono)'},k));
       tubes.append(s('text',{x:x+w/2,y:bot+24,'text-anchor':'middle','font-size':15,'font-weight':700,fill:'var(--ink)'},c[k]+(n?' · '+pct(c[k]/n,0):'')));
       tubes.append(s('text',{x:x+w/2,y:bot+42,'text-anchor':'middle','font-size':12,fill:'var(--muted)'},'semente '+fen));});
-    if(!n)tubes.append(s('text',{x:300,y:170,'text-anchor':'middle','font-size':15,fill:'var(--muted)'},'Sorteie para encher os tubos'));}
+    }
   function drawRatio(n,c){ratio.innerHTML='';if(!n)return;const am=c.AA+c.Aa,vd=c.aa;
     const bar=h('div',{style:'display:flex;height:22px;border-radius:999px;overflow:hidden;border:1px solid var(--line)'},h('span',{style:`width:${am/n*100}%;background:#e3bd3a`}),h('span',{style:`width:${vd/n*100}%;background:#6fa33a`}));
     ratio.append(h('div',{class:'stack',style:'gap:6px'},h('div',{class:'row',style:'justify-content:space-between'},h('strong',{},'Fenótipos: '+am+' amarelas : '+vd+' verdes'),h('span',{class:'mono'},vd?'≈ '+fmt(am/vd,1)+' : 1':'— : 0')),bar,
@@ -702,7 +702,7 @@ INIT.loteria=root=>{
   function upd(){const c={AA:0,Aa:0,aa:0};draws.forEach(d=>c[d]++);const n=draws.length;const novo=n>prevN?{k:draws[n-1]}:null;prevN=n;
     last.innerHTML='';draws.slice(-24).forEach(d=>last.append(h('span',{class:'pill'+(d==='aa'?' ex':'')},d)));
     drawAposta(n,c);drawTubes(n,c,novo);drawRatio(n,c);drawMural(c,n);
-    msg.innerHTML='';if(n)msg.append(h('div',{class:'fb info'},`Sementes verdes (aa): ${c.aa} de ${n} (${pct(c.aa/n,0)}). Esperado: 1/4 = 25%. `+(n<24?'Continue até 24.':'Uma amostra que se afasta de 3 : 1 não refuta sozinha o modelo. Simule a turma e compare.')));}
+    msg.innerHTML='';if(!n)msg.append(h('p',{class:'note'},'Sorteie descendentes para encher os tubos.'));if(n)msg.append(h('div',{class:'fb info'},`Sementes verdes (aa): ${c.aa} de ${n} (${pct(c.aa/n,0)}). Esperado: 1/4 = 25%. `+(n<24?'Continue até 24.':'Uma amostra que se afasta de 3 : 1 não refuta sozinha o modelo. Simule a turma e compare.')));}
   upd();
   // Meiose
   const mz=s('svg',{viewBox:'0 0 600 170',class:'chart',role:'img','aria-label':'Na meiose, os cromossomos homólogos se separam e cada gameta recebe um alelo do locus'});
