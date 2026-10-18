@@ -1,6 +1,7 @@
 /* Biologia em Investigação · núcleo compartilhado do portal
    Guarda a turma (vinda do link ou do código do professor), a identificação do estudante
    e monta a faixa de navegação entre os sites. Carregado por todas as páginas. */
+window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.push((e.message||'erro')+' (linha '+e.lineno+')');});}catch(e){}
 (function(){
   'use strict';
   // Endereço público do portal (ex.: https://biologia-investigacao.pages.dev/). Usado para gerar o link das turmas

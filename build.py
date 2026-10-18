@@ -56,5 +56,6 @@ for f in ['ecologia.html', 'celulas.html', 'genetica.html', 'microcosmo.html', '
 shutil.copytree(OUT / 'icons', SITE / 'icons')
 (SITE / 'index.html').write_text(SKEL.replace('</head>', icons('portal', True) + '</head>') + page('index') + '\n</body></html>')
 (SITE / 'receptor.gs').write_text(gs)
+shutil.copy(SRC / 'teste.html', SITE / 'teste.html')
 (SITE / '_headers').write_text('/*.html\n  Cache-Control: no-cache\n/portal.js\n  Cache-Control: no-cache\n/specs.js\n  Cache-Control: no-cache\n')
 print('ok', sorted(p.name for p in SITE.iterdir()))

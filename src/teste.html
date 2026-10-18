@@ -1,0 +1,34 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teste do portal</title>
+<style>
+body{font:16px system-ui,sans-serif;margin:0;padding:20px 16px 60px;background:#edf0ec;color:#18221d}
+h1{font-size:1.4rem;margin:0 0 6px}p{margin:0 0 14px;color:#56635b}
+table{border-collapse:collapse;width:100%;background:#fff;border-radius:10px;overflow:hidden;font-size:.9rem}
+td,th{padding:8px;border-bottom:1px solid #d3dad2;text-align:left;vertical-align:top}
+.ok{color:#2b7a4b;font-weight:700}.no{color:#b03c35;font-weight:700}
+pre{white-space:pre-wrap;font-size:.75rem;background:#fff;padding:10px;border-radius:8px;overflow-wrap:anywhere}
+iframe{width:360px;height:300px;border:1px solid #ccc;position:absolute;left:-9999px}
+</style></head><body>
+<h1>Teste do portal</h1>
+<p>Esta página confere se cada site abre neste aparelho. Espere uns segundos e mande um print desta tela.</p>
+<table id="t"><tr><th>Site</th><th>Arquivo</th><th>Abre?</th><th>Detalhe</th></tr></table>
+<pre id="info"></pre>
+<script>
+const SITES=[['Células em Ação','celulas.html'],['Microcosmo','microcosmo.html'],['Ecologia em Investigação','ecologia.html'],['Genética em Investigação','genetica.html'],['Área do professor','professor.html'],['Painel','painel.html']];
+const t=document.getElementById('t');
+document.getElementById('info').textContent='Endereço: '+location.href+'\nNavegador: '+navigator.userAgent+'\nData: '+new Date().toLocaleString('pt-BR');
+SITES.forEach(([n,f])=>{
+  const tr=document.createElement('tr');tr.innerHTML='<td>'+n+'</td><td>'+f+'</td><td>…</td><td></td>';t.append(tr);
+  const set=(i,txt,cls)=>{const c=tr.children[i];c.textContent=txt;if(cls)c.className=cls;};
+  fetch(f,{cache:'no-store'}).then(async r=>{const tx=await r.text();const ti=(tx.match(/<title>([^<]*)<\/title>/)||[])[1]||'(sem título)';
+    set(3,'HTTP '+r.status+' · '+Math.round(tx.length/1024)+' KB · título: '+ti+' · '+r.url.replace(location.origin,''));
+    const fr=document.createElement('iframe');fr.src=f;document.body.append(fr);const errs=[];
+    fr.addEventListener('load',()=>{try{fr.contentWindow.addEventListener('error',e=>errs.push(e.message));}catch(e){}
+      setTimeout(()=>{let ok=false,det='';try{const d=fr.contentDocument;const be=(fr.contentWindow.__biErros||[]);be.forEach(x=>errs.push(x));ok=!!(d&&d.querySelector('main, .wrap'))&&!errs.length;det=(d&&d.title)||'';}catch(e){det='sem acesso: '+e.message;}
+        set(2,ok?'Sim':'Não',ok?'ok':'no');if(errs.length)tr.children[3].textContent+=' · ERRO: '+errs.join(' | ');},2500);});
+    try{fr.contentWindow&&fr.contentWindow.addEventListener('error',e=>errs.push(e.message));}catch(e){}
+  }).catch(e=>{set(2,'Não','no');set(3,'Falha ao baixar: '+e.message);});
+});
+window.addEventListener('error',e=>{document.getElementById('info').textContent+='\nErro nesta página: '+e.message;});
+</script>
+</body></html>
