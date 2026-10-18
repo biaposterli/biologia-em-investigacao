@@ -140,25 +140,25 @@ const SPEC=[
   {k:'mc',t:'Qual princípio é contrariado pela ideia de que células surgem espontaneamente?',ch:['Todo ser vivo é formado por células','A célula é a unidade de estrutura e função','Toda célula se origina de outra célula'],key:'Toda célula se origina de outra célula',pts:1},
   {k:'par',t:'Por que uma célula é uma unidade viva? Use um princípio da teoria celular',man:2},
   {k:'par',t:'Escreva uma observação e uma interpretação sobre células e diga qual é qual',man:2}]},
- {code:C1+'02',id:'tipos',titulo:'Aula 2 · Detetive do nucleoide',tipo:'Duplas + bilhete individual',desc:'Cada estudante envia com o quadro da dupla e o seu bilhete.',itens:[
+ {code:C1+'02',id:'tipos',titulo:'Aula 2 · Detetive do nucleoide',tipo:'Individual',desc:'Envie o seu quadro e o seu bilhete.',itens:[
   {k:'mc',t:'Onde fica o DNA de uma bactéria?',ch:['No núcleo','No citoplasma, numa região chamada nucleoide','A bactéria não tem DNA'],key:'No citoplasma, numa região chamada nucleoide',pts:1},
   {k:'mc',t:'Quais estruturas existem em todas as células?',ch:['Membrana, citoplasma, DNA e ribossomos','Núcleo, mitocôndria e membrana','Parede, cloroplasto e DNA'],key:'Membrana, citoplasma, DNA e ribossomos',pts:1},
   {k:'mc',t:'Bactérias possuem mitocôndrias?',ch:['Sim','Não: não possuem organelas membranosas'],key:'Não: não possuem organelas membranosas',pts:1},
   {k:'mc',t:'Células da folha possuem mitocôndrias?',ch:['Sim','Não, porque fazem fotossíntese'],key:'Sim',pts:1},
   {k:'par',t:'Bilhete: por que uma bactéria é uma célula mesmo sem núcleo?',man:2},
   {k:'par',t:'Cite uma semelhança e uma diferença entre a bactéria da coalhada e uma célula da folha',man:2}]},
- {code:C1+'03',id:'organelas',titulo:'Aula 3 · Fábrica de leite de cabra',tipo:'Grupo + registro individual',desc:'Percurso da proteína e comparação entre células animais e vegetais.',itens:[
+ {code:C1+'03',id:'organelas',titulo:'Aula 3 · Fábrica de leite de cabra',tipo:'Individual',desc:'Percurso da proteína e comparação entre células animais e vegetais.',itens:[
   {k:'mc',t:'Onde a caseína é produzida?',ch:['No núcleo','Nos ribossomos do retículo endoplasmático rugoso','No complexo golgiense','Nos lisossomos'],key:'Nos ribossomos do retículo endoplasmático rugoso',pts:1},
   {k:'mc',t:'Qual estrutura modifica e empacota a caseína antes da secreção?',ch:['Mitocôndria','Retículo endoplasmático liso','Complexo golgiense','Lisossomo'],key:'Complexo golgiense',pts:1},
   {k:'mc',t:'Como a caseína sai da célula?',ch:['Por difusão simples','Por exocitose: a vesícula se funde à membrana','Pelos poros do núcleo'],key:'Por exocitose: a vesícula se funde à membrana',pts:1},
   {k:'mc',t:'Qual estrutura existe na célula vegetal e não existe na célula animal?',ch:['Mitocôndria','Parede celular','Ribossomo','Complexo golgiense'],key:'Parede celular',pts:1},
   {k:'par',t:'Descreva o caminho da caseína, da produção até a secreção',man:2},
   {k:'par',t:'Registre duas estruturas da célula vegetal e suas funções',man:2}]},
- {code:C1+'04',id:'cebola',titulo:'Aula 4 · Microscópio da cebola',tipo:'Individual',desc:'Roteiro de observação celular (Apêndice 1). O desenho fica no caderno.',itens:[
+ {code:C1+'04',id:'cebola',titulo:'Aula 4 · Microscópio da cebola',tipo:'Individual',desc:'Roteiro de observação no microscópio virtual.',itens:[
   {k:'txt',t:'Ampliação total usada (ocular × objetiva)',help:'Exemplo: 100× (10× × 10×). Se usou micrografia, escreva "micrografia".'},
   {k:'num',t:'Quantas células cabem, em fila, no diâmetro do campo (objetiva de 10×)?',opt:true},
   {k:'num',t:'Comprimento estimado de uma célula (µm)',opt:true},
-  {k:'par',t:'Legenda do desenho: estruturas que você realmente distinguiu',man:2},
+  {k:'par',t:'Estruturas que você realmente distinguiu no microscópio virtual',man:2},
   {k:'par',t:'Uma estrutura observada, a evidência que permitiu identificá-la e uma estrutura do modelo que não foi distinguida',man:2},
   {k:'par',t:'Que diferenças entre a micrografia e o esquema resultam da ampliação ou das convenções de representação?',man:2},
   {k:'mc',t:'A ausência de núcleo visível permite afirmar que a célula é procariótica?',ch:['Sim','Não: não ver não prova que a estrutura não existe'],key:'Não: não ver não prova que a estrutura não existe',pts:1}]},
@@ -170,7 +170,7 @@ const SPEC=[
   {k:'mc',t:'A difusão facilitada gasta ATP?',ch:['Sim, porque usa proteína','Não: usa proteína, mas segue o gradiente'],key:'Não: usa proteína, mas segue o gradiente',pts:1},
   {k:'par',t:'Explique a bomba de sódio e potássio: sentido dos íons e fonte de energia',man:2},
   {k:'par',t:'Síntese: compare os três tipos de transporte',man:2}]},
- {code:C1+'06',id:'osmose',titulo:'Aula 6 · Batata no sal',tipo:'Grupo + conclusão individual',desc:'Investigação da osmose (Apêndice 2). A: água; B: 5 g de sal em 100 mL. Use vírgula ou ponto nos decimais.',itens:[
+ {code:C1+'06',id:'osmose',titulo:'Aula 6 · Batata no sal',tipo:'Individual',desc:'Investigação da osmose no experimento virtual. A: água; B: 5 g de sal em 100 mL. Use vírgula ou ponto nos decimais.',itens:[
   {k:'par',t:'Hipótese e previsão para cada condição',man:1},
   ...OSM_PAIRS.flatMap(([a,b])=>[{k:'num',t:a,opt:true,cmp:true},{k:'num',t:b,opt:true,cmp:true}]),
   {k:'num',t:'Variação média em A (%)',pts:1,calc:{type:'pctmean',pairs:OSM_PAIRS.slice(0,3),tol:.6}},
@@ -179,7 +179,7 @@ const SPEC=[
   {k:'par',t:'Por que padronizamos formato, volume e tempo?',man:2},
   {k:'par',t:'Sua conclusão concorda com a hipótese? Cite medidas e uma limitação',man:2},
   {k:'par',t:'Se a diferença foi pequena ou inexistente, que ajustes melhorariam o teste?',man:1}]},
- {code:C1+'07',id:'nucleo',titulo:'Aula 7 · Do novelo ao cromossomo',tipo:'Individual',desc:'Núcleo, cromatina e cromossomos (Apêndice 3).',itens:[
+ {code:C1+'07',id:'nucleo',titulo:'Aula 7 · Do novelo ao cromossomo',tipo:'Individual',desc:'Núcleo, cromatina e cromossomos.',itens:[
   {k:'mc',t:'O que é a cromatina?',ch:['Um cromossomo em forma de X','DNA associado a proteínas, pouco condensado','Uma organela do citoplasma'],key:'DNA associado a proteínas, pouco condensado',pts:1},
   {k:'num',t:'Quantas cromátides tem um cromossomo duplicado?',key:2,tol:0,pts:1},
   {k:'mc',t:'A e a (o par longo do modelo) são:',ch:['Cromátides-irmãs','Cromossomos homólogos','Cromossomos não homólogos'],key:'Cromossomos homólogos',pts:1},
@@ -187,7 +187,7 @@ const SPEC=[
   {k:'mc',t:'Onde se formam as subunidades dos ribossomos?',ch:['Nos poros nucleares','No nucléolo','No envoltório nuclear'],key:'No nucléolo',pts:1},
   {k:'par',t:'Todo cromossomo tem forma de X? Explique',man:2},
   {k:'par',t:'Legenda explicativa do seu modelo de cromossomos',man:2}]},
- {code:C1+'08',id:'mitose',titulo:'Aula 8 · Cicatrização em ação',tipo:'Grupo + registro individual',desc:'Simulação da mitose com 2n = 4 (Apêndice 3).',itens:[
+ {code:C1+'08',id:'mitose',titulo:'Aula 8 · Cicatrização em ação',tipo:'Individual',desc:'Simulação da mitose com 2n = 4.',itens:[
   {k:'num',t:'Cromossomos na célula 2n = 4 antes da fase S',key:4,tol:0,pts:1},
   {k:'num',t:'Cromátides na célula depois da fase S',key:8,tol:0,pts:1},
   {k:'num',t:'Cromossomos em cada célula-filha após mitose e citocinese',key:4,tol:0,pts:1},
@@ -195,7 +195,7 @@ const SPEC=[
   {k:'mc',t:'Mitose e citocinese são a mesma coisa?',ch:['Sim','Não: a mitose divide o núcleo; a citocinese divide o citoplasma'],key:'Não: a mitose divide o núcleo; a citocinese divide o citoplasma',pts:1},
   {k:'par',t:'Por que a duplicação do DNA não muda a ploidia?',man:2},
   {k:'par',t:'Explique a cicatrização de uma ferida usando o ciclo celular',man:2}]},
- {code:C1+'09',id:'meiose',titulo:'Aula 9 · Loteria dos gametas',tipo:'Grupo + resposta individual',desc:'Simulação da meiose com 2n = 4 (Apêndice 3).',itens:[
+ {code:C1+'09',id:'meiose',titulo:'Aula 9 · Loteria dos gametas',tipo:'Individual',desc:'Simulação da meiose com 2n = 4.',itens:[
   {k:'num',t:'Cromossomos por célula após a meiose I (modelo 2n = 4)',key:2,tol:0,pts:1},
   {k:'num',t:'Cromátides por célula após a meiose I',key:4,tol:0,pts:1},
   {k:'num',t:'Cromossomos por célula após a meiose II',key:2,tol:0,pts:1},
@@ -204,7 +204,7 @@ const SPEC=[
   {k:'mc',t:'Onde ocorre a recombinação no modelo?',ch:['Na prófase I, entre cromátides não irmãs de homólogos','Na anáfase II','Na fase S'],key:'Na prófase I, entre cromátides não irmãs de homólogos',pts:1},
   {k:'par',t:'Como a fecundação restaura 2n?',man:2},
   {k:'par',t:'Indique duas limitações do modelo físico',man:2}]},
- {code:C1+'10',id:'duelo',titulo:'Aula 10 · Duelo mitose × meiose',tipo:'Duplas + resolução individual',desc:'Quadro comparativo e situações.',itens:[
+ {code:C1+'10',id:'duelo',titulo:'Aula 10 · Duelo mitose × meiose',tipo:'Individual',desc:'Quadro comparativo e situações.',itens:[
   {k:'num',t:'Células produzidas na meiose de uma célula',key:4,tol:0,pts:1},
   {k:'mc',t:'Ploidia das células-filhas da mitose',ch:['Igual à da célula-mãe','Metade da célula-mãe'],key:'Igual à da célula-mãe',pts:1},
   {k:'mc',t:'Toda divisão celular produz células geneticamente diferentes?',ch:['Sim','Não: a mitose produz células geneticamente iguais (salvo mutações)'],key:'Não: a mitose produz células geneticamente iguais (salvo mutações)',pts:1},
@@ -219,7 +219,7 @@ const SPEC=[
   {k:'mc',t:'O ATP:',ch:['É a energia do alimento já pronta para uso','Transfere energia: forma-se no catabolismo e é usado no trabalho celular','É produzido do nada pela célula'],key:'Transfere energia: forma-se no catabolismo e é usado no trabalho celular',pts:1},
   {k:'par',t:'Comer é suficiente para a célula usar a energia do alimento? Explique',man:2},
   {k:'par',t:'Descreva a ligação entre catabolismo, ATP e anabolismo',man:2}]},
- {code:C1+'12',id:'fotossintese',titulo:'Aula 12 · De onde vem o umbuzeiro?',tipo:'Grupo + justificativa individual',desc:'Fluxo da fotossíntese.',itens:[
+ {code:C1+'12',id:'fotossintese',titulo:'Aula 12 · De onde vem o umbuzeiro?',tipo:'Individual',desc:'Fluxo da fotossíntese.',itens:[
   {k:'mc',t:'De onde vem a maior parte da massa seca de uma planta?',ch:['Do solo','Da água','Do CO₂ do ar','Da luz'],key:'Do CO₂ do ar',pts:1},
   {k:'mc',t:'Onde ocorre a etapa fotoquímica?',ch:['Tilacoides','Estroma','Mitocôndria'],key:'Tilacoides',pts:1},
   {k:'mc',t:'Onde o CO₂ é fixado?',ch:['Tilacoides','Estroma','Mitocôndria'],key:'Estroma',pts:1},
@@ -234,8 +234,8 @@ const SPEC=[
   {k:'mc',t:'Qual é o papel do O₂ na respiração?',ch:['Quebrar a glicose','Receber elétrons no fim da cadeia, formando água','Produzir CO₂'],key:'Receber elétrons no fim da cadeia, formando água',pts:1},
   {k:'mc',t:'Plantas respiram durante o dia?',ch:['Sim, respiram o tempo todo','Não, só à noite'],key:'Sim, respiram o tempo todo',pts:1},
   {k:'par',t:'Compare quimiossíntese e respiração celular',man:2}]},
- {code:C1+'14',id:'leveduras',titulo:'Aula 14 · Laboratório do pão',tipo:'Grupo',desc:'Investigação do metabolismo das leveduras (Apêndice 4). Circunferências em cm (média das réplicas) ou “sem inflação mensurável”.',itens:[
-  {k:'par',t:'Hipótese do grupo',man:1},
+ {code:C1+'14',id:'leveduras',titulo:'Aula 14 · Laboratório do pão',tipo:'Individual',desc:'Investigação do metabolismo das leveduras no experimento virtual. Circunferências em cm (média das réplicas) ou “sem inflação mensurável”.',itens:[
+  {k:'par',t:'Sua hipótese',man:1},
   ...['A','B','C','D'].flatMap(k=>[0,10,20].map(m=>({k:'txt',t:`${k} · ${m} min (cm)`,opt:true,cmp:true}))),
   {k:'mc',t:'Qual é a função da garrafa B (sem levedura)?',ch:['Verificar se a levedura é necessária para produzir gás','Verificar o efeito da temperatura','Aumentar a produção de gás'],key:'Verificar se a levedura é necessária para produzir gás',pts:1},
   {k:'mc',t:'A circunferência do balão mede diretamente a quantidade de CO₂?',ch:['Sim','Não: é um indicador indireto'],key:'Não: é um indicador indireto',pts:1},
@@ -250,7 +250,7 @@ const SPEC=[
   {k:'par',t:'Situação do pão: explique o crescimento da massa',man:2},
   {k:'par',t:'Situação do músculo: o que acontece num esforço intenso e rápido?',man:2},
   {k:'par',t:'Registre uma dúvida para a revisão'}]},
- {code:C1+'16',id:'revisao',titulo:'Aula 16 · Autoavaliação',tipo:'Individual (sem nota)',desc:'Autoavaliação da unidade. A avaliação do Apêndice 5 é feita em papel.',itens:[
+ {code:C1+'16',id:'revisao',titulo:'Aula 16 · Autoavaliação',tipo:'Individual (sem nota)',desc:'Autoavaliação da unidade.',itens:[
   {k:'hdr',t:'Para cada objetivo, como você está?'},
   {k:'mc',t:'O1 · Teoria celular e níveis de organização',ch:SEMAF},
   {k:'mc',t:'O2 · Tipos de célula, estruturas e funções',ch:SEMAF},
