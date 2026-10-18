@@ -11,7 +11,7 @@ Inclui a Área do professor (turmas, link e QR code, receptor no Google Apps Scr
 
 ## Publicação
 
-O Cloudflare Pages publica a pasta `site/`, sem comando de build.
+Publicado no Cloudflare Pages: https://biologia-em-investigacao.pages.dev (sem comando de build). O `build.py` gera `site/` e copia o mesmo conteúdo para a raiz do repositório.
 
 ## Estrutura
 
