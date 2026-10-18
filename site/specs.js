@@ -4,10 +4,10 @@ window.SPECS={};
 const REL_OPTS=['Mutualismo ou protocooperação','Comensalismo','Inquilinismo (epifitismo)','Competição','Predação','Parasitismo','Sociedade','Colônia','Faltam evidências para classificar'];
 const PAPEIS=['Parasito','Vetor','Hospedeiro intermediário','Hospedeiro definitivo','Reservatório'];
 const SPEC=[
- {code:'Aula 01',titulo:'Aulas 1 e 2 · Detetive ecológico',tipo:'Grupo + bilhete individual',
-  desc:'Cada estudante envia este formulário com as respostas do grupo e o seu próprio bilhete.',
+ {code:'Aula 01',titulo:'Aulas 1 e 2 · Detetive ecológico',tipo:'Individual',
+  desc:'Envie as suas classificações dos cartões e o seu bilhete.',
   itens:[
-   {k:'hdr',t:'Classifique a relação de cada cartão (Apêndice 1)'},
+   {k:'hdr',t:'Classifique a relação de cada cartão'},
    {k:'mc',t:'Cartão A · Abelha e flor',ch:REL_OPTS,key:'Mutualismo ou protocooperação',pts:1},
    {k:'mc',t:'Cartão B · Parasita e hospedeiro',ch:REL_OPTS,key:'Parasitismo',pts:1},
    {k:'mc',t:'Cartão C · Plantas vizinhas',ch:REL_OPTS,key:'Faltam evidências para classificar',pts:1},
@@ -23,8 +23,8 @@ const SPEC=[
   desc:'Registro da observação ao microscópio e bilhete de saída.',
   itens:[
    {k:'txt',t:'Organismo ou estrutura observada'},
-   {k:'txt',t:'Ampliação total usada (ocular × objetiva)',help:'Exemplo: 400× (10× × 40×). Se usou fotografia, escreva "imagem".'},
-   {k:'par',t:'Descreva as estruturas que você identificou e a legenda do seu desenho',man:2},
+   {k:'txt',t:'Ampliação total usada (ocular × objetiva)',help:'Exemplo: 400× (10× × 40×), como aparece no microscópio virtual.'},
+   {k:'par',t:'Descreva as estruturas que você identificou no microscópio virtual',man:2},
    {k:'hdr',t:'Qual é o papel de cada um?'},
    {k:'mc',t:'Schistosoma mansoni',ch:PAPEIS,key:'Parasito',pts:1},
    {k:'mc',t:'Caramujo Biomphalaria',ch:PAPEIS,key:'Hospedeiro intermediário',pts:1},
@@ -33,8 +33,8 @@ const SPEC=[
    {k:'mc',t:'Cão doméstico (leishmaniose visceral urbana)',ch:PAPEIS,key:'Reservatório',pts:1},
    {k:'par',t:'Bilhete de saída: qual a diferença entre parasito e vetor?',man:2},
   ]},
- {code:'Aula 04',titulo:'Aula 4 · Quantos há na bandeja?',tipo:'Grupo',
-  desc:'Cada estudante envia com os dados do seu grupo (Apêndice 2). Use vírgula ou ponto nos decimais.',
+ {code:'Aula 04',titulo:'Aula 4 · Quantos há na bandeja?',tipo:'Individual',
+  desc:'Use os dados da sua bandeja. Use vírgula ou ponto nos decimais.',
   itens:[
    {k:'par',t:'Estratégia de seleção dos quadrantes',man:1},
    {k:'num',t:'Contagem do quadrante 1'},{k:'num',t:'Contagem do quadrante 2'},{k:'num',t:'Contagem do quadrante 3'},{k:'num',t:'Contagem do quadrante 4'},
@@ -45,7 +45,7 @@ const SPEC=[
    {k:'par',t:'Como a distribuição das peças pode afetar a estimativa? Como melhorar a amostragem?',man:2},
   ]},
  {code:'Aula 05',titulo:'Aulas 5 e 6 · Populações em movimento',tipo:'Individual',
-  desc:'Respostas da ficha do Apêndice 3 (dados simulados).',
+  desc:'Use o laboratório de populações e as pirâmides C e D (dados simulados).',
   itens:[
    {k:'hdr',t:'População inicial 80 · Nascimentos 18 · Mortes 12 · Imigrantes 7 · Emigrantes 3'},
    {k:'num',t:'População final',key:90,tol:0,pts:1},
@@ -55,7 +55,7 @@ const SPEC=[
    {k:'par',t:'Que limites existem para prever o futuro apenas com os dados de estrutura etária?',man:2},
   ]},
  {code:'Aula 07',titulo:'Aula 7 · Paisagens que se transformam',tipo:'Individual',
-  desc:'Cenários do Apêndice 4 (situações fictícias inspiradas na Caatinga).',
+  desc:'Cenários do gestor da área (situações fictícias inspiradas na Caatinga).',
   itens:[
    {k:'mc',t:'Cenário A (substrato rochoso exposto) passa por qual sucessão?',ch:['Primária','Secundária'],key:'Primária',pts:1},
    {k:'mc',t:'Cenário B (Caatinga parcialmente desmatada, com solo e sementes) passa por qual sucessão?',ch:['Primária','Secundária'],key:'Secundária',pts:1},
@@ -64,7 +64,7 @@ const SPEC=[
    {k:'par',t:'Proponha uma intervenção para B ou C e um indicador de acompanhamento',man:2},
   ]},
  {code:'Aula 08',titulo:'Aulas 8 e 9 · Ciclos do carbono e do nitrogênio',tipo:'Individual',
-  desc:'Depois de montar os modelos com os cartões do Apêndice 5.',
+  desc:'Depois de montar os modelos dos ciclos no site.',
   itens:[
    {k:'mc',t:'Qual processo retira CO₂ da atmosfera?',ch:['Respiração','Combustão','Fotossíntese','Decomposição'],key:'Fotossíntese',pts:1},
    {k:'mc',t:'A queima de combustíveis fósseis leva carbono de onde para onde?',ch:['Da atmosfera para os oceanos','Dos reservatórios de longa duração para a atmosfera','Dos produtores para os consumidores','Da atmosfera para as rochas'],key:'Dos reservatórios de longa duração para a atmosfera',pts:1},
@@ -73,10 +73,10 @@ const SPEC=[
    {k:'mc',t:'Excesso de nutrientes em lagos pode causar:',ch:['Eutrofização','Sucessão primária','Fixação biológica','Desnitrificação'],key:'Eutrofização',pts:1},
    {k:'par',t:'Explique a diferença entre circulação de matéria e fluxo de energia',man:2},
   ]},
- {code:'Aula 10',titulo:'Aulas 10 e 11 · Solo, cobertura e água',tipo:'Grupo + síntese individual',
-  desc:'Cada estudante envia com os dados do grupo (Apêndice 6). Volumes em mL.',
+ {code:'Aula 10',titulo:'Aulas 10 e 11 · Solo, cobertura e água',tipo:'Individual',
+  desc:'Use os resultados da sua bancada virtual. Volumes em mL.',
   itens:[
-   {k:'par',t:'Hipótese do grupo',man:1},
+   {k:'par',t:'Sua hipótese',man:1},
    {k:'txt',t:'Variável manipulada'},
    {k:'par',t:'Cite dois controles experimentais',man:2},
    {k:'num',t:'Volume aplicado em cada réplica (mL)'},
@@ -93,7 +93,7 @@ const SPEC=[
    {k:'par',t:'Síntese individual: compare cobertura morta e cobertura viva. O que os resultados indicam? Relacione ao ciclo da água',man:3},
   ]},
  {code:'Aula 12',titulo:'Aula 12 · Água, parasitos e território',tipo:'Individual',
-  desc:'Caso fictício do Apêndice 7.',
+  desc:'Caso fictício desta aula.',
   itens:[
    {k:'mc',t:'Como as cercárias de Schistosoma mansoni entram no corpo humano?',ch:['Pela picada de um mosquito','Pela ingestão de carne crua','Pela penetração ativa na pele, em água doce','Pelo contato com cães'],key:'Pela penetração ativa na pele, em água doce',pts:1},
    {k:'mc',t:'Na esquistossomose, o caramujo Biomphalaria é:',ch:['O vetor','O hospedeiro intermediário','O hospedeiro definitivo','O parasito'],key:'O hospedeiro intermediário',pts:1},
@@ -101,10 +101,10 @@ const SPEC=[
    {k:'par',t:'Em que etapas o saneamento pode interromper o ciclo?',man:2},
    {k:'par',t:'Bilhete: que setores devem participar e por quê?',man:2},
   ]},
- {code:'Aula 13',titulo:'Aula 13 · Conselho de Saúde Única',tipo:'Grupo + síntese individual',
-  desc:'Cada estudante envia com a proposta do seu setor (Apêndice 8) e a sua síntese.',
+ {code:'Aula 13',titulo:'Aula 13 · Conselho de Saúde Única',tipo:'Individual',
+  desc:'Envie a sua proposta principal e a sua síntese.',
   itens:[
-   {k:'mc',t:'Setor do grupo',ch:['Moradores','Saúde humana','Saúde animal','Ambiente e saneamento']},
+   {k:'mc',t:'Setor da sua proposta principal',ch:['Moradores','Saúde humana','Saúde animal','Ambiente e saneamento']},
    {k:'par',t:'Necessidade prioritária',man:1},
    {k:'par',t:'Informação que falta',man:1},
    {k:'par',t:'Proposta 1 e justificativa',man:2},
@@ -113,7 +113,7 @@ const SPEC=[
    {k:'par',t:'Síntese individual: escolha uma ação e explique como ela articula saúde humana, saúde animal e/ou ambiente',man:3},
   ]},
  {code:'Aula 14',titulo:'Aula 14 · O que você consegue explicar?',tipo:'Avaliação individual',
-  desc:'Versão digital do Apêndice 9. Responda com suas palavras.',
+  desc:'Avaliação da unidade. Responda com suas palavras.',
   itens:[
    {k:'par',t:'1 · Classifique as relações ave–inseto e parasito–hospedeiro, indique os efeitos e explique uma diferença',man:2},
    {k:'num',t:'2a · População final (inicial 50; 12 nascimentos, 5 mortes, 4 imigrações, 1 emigração)',key:60,tol:0,pts:1},

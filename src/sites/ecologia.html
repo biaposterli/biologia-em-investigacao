@@ -293,7 +293,7 @@ ul.struct li::before{content:"";position:absolute;left:3px;top:.55em;width:8px;h
       <div class="stack" style="gap:18px">
         <span class="eyebrow" style="color:var(--ochre)">Unidade bimestral · 2º ano do Ensino Médio</span>
         <h1>Ecologia em <span>investigação</span></h1>
-        <p class="lede">Simuladores, jogos e painéis para usar no projetor junto com os apêndices impressos. Cada aula tem a sua ferramenta; as fichas continuam sendo o registro dos estudantes.</p>
+        <p class="lede">Simuladores, jogos e laboratórios virtuais para fazer no celular ou no computador. Cada aula tem a sua ferramenta e termina com a ficha de respostas.</p>
         <div class="hero-facts">
           <div><b>14</b><span>aulas</span></div>
           <div><b>10</b><span>ferramentas</span></div>
@@ -449,7 +449,7 @@ const ICONS={
 const icon=(id,size=24)=>{const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('width',size);e.setAttribute('height',size);e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','1.7');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.setAttribute('aria-hidden','true');e.innerHTML=ICONS[id]||'';return e;};
 const TEMAS={t20:'Tema 20 · Relações ecológicas e parasitismo',t21:'Tema 21 · Populações e comunidades',t22:'Tema 22 · Ciclos biogeoquímicos',t24:'Temas 20 a 24 · Saúde Única'};
 const TOOLS=[
-  {id:'detetive',n:'1–2',t:'t20',short:'A1–2',title:'Detetive ecológico',desc:'Os cartões A–H do Apêndice 1: efeitos (+, −, 0), relação proposta e uma pista nova que pode mudar a hipótese.'},
+  {id:'detetive',n:'1–2',t:'t20',short:'A1–2',title:'Detetive ecológico',desc:'Oito cartões de casos: efeitos (+, −, 0), relação proposta e uma pista nova que pode mudar a hipótese.'},
   {id:'microscopio',n:'3',t:'t20',short:'A3',title:'Microscópio virtual',desc:'Ovos, cistos e trofozoítos desenhados com suas estruturas diagnósticas e no tamanho real em relação ao campo.'},
   {id:'quadrantes',n:'4',t:'t21',short:'A4',title:'Bandeja de quadrantes',desc:'Bandeja de 40 × 40 cm com sementes em três distribuições. Estime a população e compare com o total real.'},
   {id:'populacoes',n:'5–6',t:'t21',short:'A5–6',title:'Laboratório de populações',desc:'Balanço populacional, curvas J e S com capacidade de suporte que muda, e as estruturas etárias C e D.'},
@@ -457,8 +457,8 @@ const TOOLS=[
   {id:'ciclos',n:'8–9',t:'t22',short:'A8–9',title:'Ciclos em construção',desc:'Monte os ciclos do carbono e do nitrogênio com retorno em cada seta, e jogue “A viagem do átomo”.'},
   {id:'experimento',n:'10–11',t:'t22',short:'A10–11',title:'Chuva na bancada',desc:'Monte bandejas de solo, faça chover e meça quanto escorre pela superfície e quanto drena pelo fundo. Os resultados vão direto para a tabela e o gráfico.'},
   {id:'esquisto',n:'12',t:'t24',short:'A12',title:'Água, parasitos e território',desc:'“Fato ou boato?” sobre a água transparente e o ciclo de Schistosoma mansoni com barreiras.'},
-  {id:'conselho',n:'13',t:'t24',short:'A13',title:'Conselho de Saúde Única',desc:'Os setores registram propostas, a turma vota e o quadro de ações do Apêndice 8 se monta no projetor.'},
-  {id:'quiz',n:'14',t:'t24',short:'A14',title:'Quiz da unidade',desc:'Revisão de todos os temas com cronômetro, placar por grupo e explicação de cada resposta.'},
+  {id:'conselho',n:'13',t:'t24',short:'A13',title:'Conselho de Saúde Única',desc:'Você representa os setores, registra propostas, define as prioridades e monta o quadro de ações.'},
+  {id:'quiz',n:'14',t:'t24',short:'A14',title:'Quiz da unidade',desc:'Revisão de todos os temas, com a explicação de cada resposta.'},
 ];
 const inited={};
 const INIT={};
@@ -598,19 +598,20 @@ const CARDS=[
   pista:'Um pólipo separado do conjunto tem dificuldade de sobreviver sozinho.',pq:'O que isso indica sobre a dependência entre os indivíduos da colônia?'},
 ];
 INIT.detetive=root=>{
-  root.append(head('Aulas 1 e 2 · Apêndice 1','Detetive ecológico','Escolha um cartão, registre as evidências e proponha uma relação. Depois revele uma pista nova e veja se a hipótese se sustenta.'));
+  root.append(head('Aulas 1 e 2','Detetive ecológico','Escolha um cartão, registre as evidências e proponha uma relação. Depois revele uma pista nova e veja se a hipótese se sustenta.'));
   const scores=store.get('det-scores',[0,0,0,0,0,0]);
   const grid=h('div',{class:'cols wide-right'});root.append(grid);
   const left=h('div',{class:'stack'});const right=h('div',{class:'panel stack'});grid.append(left,right);
   const cg=h('div',{style:'display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px'});left.append(cg);
   let cur=null,ans={};
   CARDS.forEach(c=>{const b=h('button',{class:'tool-card card-ilu',style:'min-height:0;padding:10px'},ilu(c.id,'ilu ilu-card'),h('span',{class:'num'},'CARTÃO '+c.id),h('h3',{style:'font-size:1rem'},c.t));b.onclick=()=>{$$('.tool-card',cg).forEach(x=>x.style.borderColor='');b.style.borderColor='var(--accent)';open(c);};cg.append(b);c.btn=b;});
-  // placar
-  const sb=h('div',{class:'panel stack'},h('span',{class:'label'},'Placar dos grupos'));left.append(sb);
-  const sg=h('div',{style:'display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px'});sb.append(sg);
-  function drawScores(){sg.innerHTML='';scores.forEach((v,i)=>{sg.append(h('div',{class:'stat',style:'align-items:center;border:1px solid var(--line);border-radius:8px;padding:8px'},h('span',{class:'note'},'Grupo '+(i+1)),h('span',{class:'big-num'},v),h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{scores[i]=Math.max(0,scores[i]-1);store.set('det-scores',scores);drawScores();},'aria-label':'Tirar ponto'},'−'),h('button',{class:'btn sm primary',onclick:()=>{scores[i]++;store.set('det-scores',scores);drawScores();},'aria-label':'Dar ponto'},'+'))));});}
+  // progresso individual
+  const done=store.get('det-done',{});
+  const sb=h('div',{class:'panel stack'},h('span',{class:'label'},'Seu progresso'));left.append(sb);
+  const prog=h('div',{class:'stack',style:'gap:6px'});sb.append(prog);
+  function drawScores(){prog.innerHTML='';const n=CARDS.filter(c=>done[c.id]).length;prog.append(h('span',{class:'big-num'},n+'/'+CARDS.length),h('span',{class:'note'},'cartões classificados corretamente'));CARDS.forEach(c=>{if(c.btn)c.btn.querySelector('.num').textContent='CARTÃO '+c.id+(done[c.id]?' · ✓':'');});}
   drawScores();
-  sb.append(h('button',{class:'btn sm ghost',onclick:()=>{scores.fill(0);store.set('det-scores',scores);drawScores();}},'Zerar placar'));
+  sb.append(h('button',{class:'btn sm ghost',style:'align-self:flex-start',onclick:()=>{Object.keys(done).forEach(k=>delete done[k]);store.set('det-done',done);drawScores();}},'Recomeçar'));
 
   function open(c){
     cur=c;ans={same:null,eff:[null,null],rel:null};right.innerHTML='';
@@ -634,6 +635,7 @@ INIT.detetive=root=>{
       out.append(line(okEff,'Efeitos: '+c.p.map((p,i)=>p+' '+c.eff[i]).join(' · ')));
       out.append(line(okRel,'Relação: '+c.rel.map(r=>REL[r]).join(' ou ')));
       out.append(h('div',{class:'fb '+(okSame&&okEff&&okRel?'ok':'info')},c.why));
+      if(okSame&&okEff&&okRel){done[c.id]=true;store.set('det-done',done);drawScores();}
     }
     function pista(){out.innerHTML='';out.append(h('div',{class:'callout stack'},h('strong',{},'Pista nova: '+c.pista),h('span',{},c.pq)));}
   }
@@ -753,8 +755,8 @@ function drawDebris(g,kind,cx,cy,fov,clear){
     else if(d.t==='cel'){g.append(s('path',{d:blobPath(d.sz/2,d.sd,.18,5),transform:`translate(${d.x},${d.y}) rotate(${d.a})`,fill:'#d2c79e',stroke:'#9c8f62','stroke-width':.9,opacity:.35}));}
   });}
 INIT.microscopio=root=>{
-  root.append(head('Aula 3 · Apêndice 1, ficha de observação','Microscópio virtual','Cada organismo aparece com as estruturas usadas no diagnóstico e no tamanho real em relação ao campo de visão. Troque a objetiva, ajuste o foco e registre a ampliação total na ficha.'));
-  root.append(h('p',{class:'callout'},'Ilustração esquemática, não é fotografia de microscopia. Na ficha, registre como “esquema” e use a ampliação só quando observar lâmina de verdade.'));
+  root.append(head('Aula 3','Microscópio virtual','Cada organismo aparece com as estruturas usadas no diagnóstico e no tamanho real em relação ao campo de visão. Troque a objetiva, ajuste o foco e registre a ampliação total na ficha.'));
+  root.append(h('p',{class:'callout'},'Ilustração esquemática, não é fotografia de microscopia. Na ficha, registre o organismo escolhido e a ampliação total usada no microscópio virtual.'));
   const grid=h('div',{class:'cols'});root.append(grid);
   const L=h('div',{class:'panel stack scope'});const R=h('div',{class:'stack'});grid.append(L,R);
   let org=ORGS.find(o=>o.id==='ascaris'),obj=40,focus=0,target=0,dx=0,dy=0;
@@ -846,7 +848,7 @@ function genTray(dist){
 const countQ=(pts,q)=>{const cx=q%4,cy=Math.floor(q/4);return pts.filter(([x,y])=>x>=cx*10&&x<cx*10+10&&y>=cy*10&&y<cy*10+10).length;};
 const QNAME=q=>'Linha '+(Math.floor(q/4)+1)+', coluna '+(q%4+1);
 INIT.quadrantes=root=>{
-  root.append(head('Aula 4 · Apêndice 2','Bandeja de quadrantes','Uma população simulada de sementes numa bandeja de 40 × 40 cm, dividida em 16 quadrantes de 10 × 10 cm. Escolha pelo menos 4 quadrantes antes de contar.'));
+  root.append(head('Aula 4','Bandeja de quadrantes','Uma população simulada de sementes numa bandeja de 40 × 40 cm, dividida em 16 quadrantes de 10 × 10 cm. Escolha pelo menos 4 quadrantes antes de contar.'));
   let dist='aleatoria',pts=genTray(dist),sel=new Set(),counted=false,revealed=false,show=true;
   const hist=[];
   const grid=h('div',{class:'cols wide-left'});root.append(grid);
@@ -892,7 +894,7 @@ INIT.quadrantes=root=>{
     histDraw();
   }
   const DN={aleatoria:'Aleatória',agrupada:'Agrupada',uniforme:'Uniforme'};
-  function histDraw(){hp.innerHTML='';hp.append(h('h3',{},'Rodadas da turma'));if(!hist.length){hp.append(h('p',{class:'note'},'Cada rodada revelada aparece aqui para comparação.'));}else hp.append(h('div',{class:'tbl-wrap'},h('table',{class:'data'},h('thead',{},h('tr',{},h('th',{},'Distribuição'),h('th',{class:'n'},'Quadr.'),h('th',{class:'n'},'Estimativa'),h('th',{class:'n'},'Real'),h('th',{class:'n'},'Erro'))),h('tbody',{},hist.map(r=>h('tr',{},h('td',{},DN[r.dist]),h('td',{class:'n'},r.n),h('td',{class:'n'},fmt(r.est)),h('td',{class:'n'},r.real),h('td',{class:'n'},fmt(Math.abs(r.est-r.real)/r.real*100)+'%')))))));
+  function histDraw(){hp.innerHTML='';hp.append(h('h3',{},'Suas rodadas'));if(!hist.length){hp.append(h('p',{class:'note'},'Cada rodada revelada aparece aqui para comparação.'));}else hp.append(h('div',{class:'tbl-wrap'},h('table',{class:'data'},h('thead',{},h('tr',{},h('th',{},'Distribuição'),h('th',{class:'n'},'Quadr.'),h('th',{class:'n'},'Estimativa'),h('th',{class:'n'},'Real'),h('th',{class:'n'},'Erro'))),h('tbody',{},hist.map(r=>h('tr',{},h('td',{},DN[r.dist]),h('td',{class:'n'},r.n),h('td',{class:'n'},fmt(r.est)),h('td',{class:'n'},r.real),h('td',{class:'n'},fmt(Math.abs(r.est-r.real)/r.real*100)+'%')))))));
     hp.append(h('button',{class:'btn',onclick:simulate},'Comparar estratégias (300 bandejas simuladas)'));hp.append(simOut);}
   const simOut=h('div',{class:'stack'});
   function simulate(){
@@ -901,14 +903,14 @@ INIT.quadrantes=root=>{
     const W=560,H=220,ml=96,max=Math.max(...rows.map(r=>r.e))*1.15;const sv=s('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart'});
     ['aleatoria','agrupada','uniforme'].forEach((d,i)=>{const y=20+i*66;sv.append(s('text',{x:ml-10,y:y+28,'text-anchor':'end','font-size':14,'font-weight':700,fill:'var(--ink)'},DN[d]));[4,8].forEach((n,j)=>{const r=rows.find(x=>x.d===d&&x.n===n);const w=(r.e/max)*(W-ml-60);const yy=y+j*24;sv.append(s('rect',{x:ml,y:yy,width:w,height:20,rx:3,fill:j?'var(--accent)':'var(--ochre)'}));sv.append(s('text',{x:ml+w+6,y:yy+15,'font-size':13,fill:'var(--ink)',class:'mono'},fmt(r.e,1)+'%'));});});
     simOut.append(h('div',{class:'row note'},h('span',{style:'display:inline-block;width:14px;height:14px;background:var(--ochre);border-radius:3px'}),'4 quadrantes sorteados',h('span',{style:'display:inline-block;width:14px;height:14px;background:var(--accent);border-radius:3px;margin-left:10px'}),'8 quadrantes sorteados'));
-    simOut.append(sv);simOut.append(h('p',{class:'note'},'Erro médio da estimativa em 300 bandejas por combinação. Pergunta para a turma: em que distribuição a amostragem erra mais, e o que ajuda a reduzir o erro?'));
+    simOut.append(sv);simOut.append(h('p',{class:'note'},'Erro médio da estimativa em 300 bandejas por combinação. Pense: em que distribuição a amostragem erra mais, e o que ajuda a reduzir o erro?'));
   }
   draw();
 };
 
 // ================= Aulas 5–6: Laboratório de populações =================
 INIT.populacoes=root=>{
-  root.append(head('Aulas 5 e 6 · Apêndice 3','Laboratório de populações','Todos os valores são simulados. Use para discutir as fichas, não para substituir o gráfico feito à mão.'));
+  root.append(head('Aulas 5 e 6','Laboratório de populações','Todos os valores são simulados. Use o laboratório para responder à ficha desta aula.'));
   const tabs=h('div',{class:'tabs-in'});root.append(tabs);
   const body=h('div',{});root.append(body);
   const views={balanco:balanco,curvas:curvas,etaria:etaria};
@@ -921,10 +923,10 @@ INIT.populacoes=root=>{
     L.append(h('h3',{},'Entradas e saídas'));L.append(ilu('balanco','ilu ilu-banner ilu-tall'));
     const flds=[['pi','População inicial'],['n','Nascimentos (+)'],['i','Imigrantes (+)'],['m','Mortes (−)'],['e','Emigrantes (−)'],['a','Área ocupada (m²)']];
     flds.forEach(([k,t])=>{const inp=h('input',{type:'number',id:'bal-'+k,min:0,value:v[k]});inp.oninput=()=>{v[k]=Math.max(0,+inp.value||0);hide();};L.append(h('label',{class:'row',style:'justify-content:space-between'},t,inp));});
-    L.append(h('p',{class:'note'},'Exemplo diferente das fichas. Troque pelos números da ficha ou da avaliação diagnóstica.'));
+    L.append(h('p',{class:'note'},'Exemplo para praticar. Depois, use os números da ficha desta aula.'));
     const out=h('div',{class:'stack'});
     R.append(h('h3',{},'Resultado'),out);
-    function hide(){out.innerHTML='';out.append(h('p',{class:'note'},'Façam a conta no caderno primeiro.'),h('button',{class:'btn primary',onclick:show},'Mostrar resultado'));}
+    function hide(){out.innerHTML='';out.append(h('p',{class:'note'},'Faça a conta antes de ver o resultado.'),h('button',{class:'btn primary',onclick:show},'Mostrar resultado'));}
     function show(){out.innerHTML='';const pf=v.pi+v.n+v.i-v.m-v.e;
       out.append(h('p',{class:'mono',style:'font-size:1.15rem'},`Pf = ${v.pi} + ${v.n} + ${v.i} − ${v.m} − ${v.e} = ${pf}`));
       out.append(h('div',{class:'stats'},h('div',{class:'stat'},h('span',{class:'note'},'População final'),h('span',{class:'big-num'},pf)),v.a>0?h('div',{class:'stat'},h('span',{class:'note'},'Densidade'),h('span',{class:'big-num'},fmt(pf/v.a,2)),h('span',{class:'note'},'indivíduos/m²')):null,h('div',{class:'stat'},h('span',{class:'note'},'Variação'),h('span',{class:'big-num'},(pf-v.pi>=0?'+':'')+(pf-v.pi)))));
@@ -949,14 +951,14 @@ INIT.populacoes=root=>{
     const sc=h('input',{type:'checkbox',id:'pop-seca'});sc.onchange=()=>{st.seca=sc.checked;draw();};
     L.append(h('label',{class:'row'},sc,'Seca entre os tempos 4 e 7 (recursos caem pela metade)'));
     const fc=h('input',{type:'checkbox',id:'pop-ficha',checked:true});fc.onchange=()=>{st.ficha=fc.checked;draw();};
-    L.append(h('label',{class:'row'},fc,'Mostrar dados A e B da ficha'));
+    L.append(h('label',{class:'row'},fc,'Mostrar as curvas A e B da ficha'));
     L.append(slider('T','Intervalos de tempo',5,20,1));
     function draw(){
       const r=(st.b-st.d)/100;const pts=[[0,st.p0]];let P=st.p0;const Ks=[];
       for(let t=1;t<=st.T;t++){const K=st.k?(st.seca&&t>=4&&t<=7?st.K/2:st.K):Infinity;Ks.push([t,isFinite(K)?K:null]);P=st.k?Math.max(0,P+r*P*(1-P/K)):Math.max(0,P*(1+r));pts.push([t,P]);}
       const series=[{name:'Simulação',color:'var(--accent)',points:pts,area:true}];
       if(st.k)series.push({name:'Capacidade de suporte',color:'var(--muted)',dash:'6 5',width:1.6,points:[[0,st.seca?st.K:st.K],...Ks.map(([t,k])=>[t,k])]});
-      if(st.ficha){series.push({name:'Ficha A',color:'var(--ochre)',dotsOnly:true,points:[[0,10],[1,20],[2,40],[3,80],[4,160],[5,320]]});series.push({name:'Ficha B',color:'var(--sky)',dotsOnly:true,points:[[0,10],[1,18],[2,30],[3,45],[4,57],[5,60]]});}
+      if(st.ficha){series.push({name:'Curva A',color:'var(--ochre)',dotsOnly:true,points:[[0,10],[1,20],[2,40],[3,80],[4,160],[5,320]]});series.push({name:'Curva B',color:'var(--sky)',dotsOnly:true,points:[[0,10],[1,18],[2,30],[3,45],[4,57],[5,60]]});}
       const ymax=Math.min(Math.max(...series.flatMap(se=>se.points.map(p=>p[1]||0)))*1.05,2000);
       lineChart(svg,{series,xMax:st.T,yMax:Math.max(ymax,10),xLabel:'Tempo (intervalos)',yLabel:'Tamanho da população',xStep:st.T>10?2:1});
       read.innerHTML='';
@@ -980,6 +982,13 @@ INIT.populacoes=root=>{
       pn.append(sv);pn.append(h('p',{class:'note'},k==='C'?'Base larga: muitos indivíduos jovens.':'Base estreita: proporção maior de adultos e idosos.'));p.append(pn);});
     el.append(h('div',{class:'panel stack',style:'margin-top:20px'},h('h3',{},'Para discutir'),h('p',{},'Qual população tende a crescer se as condições se mantiverem? Que informações faltam para prever o futuro só com esses dados (por exemplo: natalidade, mortalidade, migração, recursos)?')));
   }
+  // Estrutura etária: populações C e D (usadas na ficha)
+  const piram=(nome,v)=>{const W=380,H=200,cx=135;let g=`<rect width="${W}" height="${H}" fill="var(--surface)"/><line x1="${cx}" y1="10" x2="${cx}" y2="178" stroke="var(--line)"/>`;
+    v.forEach((x,i)=>{const y=162-i*30,w=x*12;g+=`<rect x="${cx-w}" y="${y}" width="${w}" height="24" rx="3" fill="var(--sky)" opacity=".85"/><rect x="${cx}" y="${y}" width="${w}" height="24" rx="3" fill="var(--berry)" opacity=".85"/>`;g+=`<text x="${W-6}" y="${y+16}" text-anchor="end" font-size="11" fill="var(--muted)">${['jovens','adultos jovens','adultos','maduros','idosos','muito idosos'][i]}</text>`;});
+    g+=`<text x="${cx}" y="196" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">${nome}</text>`;const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox',`0 0 ${W} ${H}`);e.setAttribute('class','chart');e.setAttribute('role','img');e.setAttribute('aria-label','Estrutura etária da '+nome);e.innerHTML=g;return e;};
+  root.append(h('div',{class:'panel stack'},h('h3',{},'Estrutura etária das populações C e D'),h('p',{class:'note'},'Cada barra mostra quantos indivíduos há em cada faixa de idade (machos à esquerda, fêmeas à direita). Dados fictícios.'),
+    h('div',{class:'cols'},piram('População C',[9,7,5,3.5,2,1]),piram('População D',[3,3.5,4,4.5,4,3])),
+    h('p',{class:'note'},'Pergunta da ficha: qual população tende a crescer, se as condições se mantiverem? Que limites existem para prever o futuro só com esses dados?')));
 };
 
 // ================= Aula 7: Sucessão =================
@@ -1002,7 +1011,7 @@ function sucModel(sc,iv,t){
   return {C:Math.max(0,Math.min(100,C)),S:Math.max(0,S),soil:Math.max(0,soil),ero};
 }
 INIT.sucessao=root=>{
-  root.append(head('Aula 7 · Apêndice 4','Gestor da área','Situações fictícias inspiradas na Caatinga. Escolha um cenário, aplique intervenções e avance o tempo. Os números são de um modelo didático, não dados de campo.'));
+  root.append(head('Aula 7','Gestor da área','Situações fictícias inspiradas na Caatinga. Escolha um cenário, aplique intervenções e avance o tempo. Os números são de um modelo didático, não dados de campo.'));
   let sc='B',t=0;const iv={iso:false,mud:false,cob:false};
   const grid=h('div',{class:'cols wide-left'});root.append(grid);
   const L=h('div',{class:'panel stack'});const R=h('div',{class:'stack'});grid.append(L,R);
@@ -1111,13 +1120,13 @@ const CYC={
  }
 };
 INIT.ciclos=root=>{
-  root.append(head('Aulas 8 e 9 · Apêndice 5','Ciclos em construção','Escolha um processo, depois clique no reservatório de origem e no de destino para desenhar a seta. Clique numa seta para apagá-la.'));
+  root.append(head('Aulas 8 e 9','Ciclos em construção','Escolha um processo, depois clique no reservatório de origem e no de destino para desenhar a seta. Clique numa seta para apagá-la.'));
   let key='carbono',proc=null,from=null,arrows=[],checked=false;
   const top=h('div',{class:'row'});root.append(top);
   top.append(seg([['carbono','Carbono'],['nitrogenio','Nitrogênio']],key,v=>{key=v;arrows=store.get('cyc-'+key,[]);proc=null;from=null;checked=false;build();}),h('span',{style:'flex:1'}),h('button',{class:'btn',onclick:()=>{arrows=[];checked=false;save();render();}},'Limpar setas'),h('button',{class:'btn',onclick:()=>{const c=CYC[key];arrows=c.links.filter(l=>l[4]).map(l=>({f:l[0],t:l[1],p:l[2][0]}));checked=true;save();render();}},'Mostrar modelo de referência'),h('button',{class:'btn primary',onclick:()=>{checked=true;render();}},'Conferir modelo'));
   const grid=h('div',{class:'cols wide-left'});root.append(grid);
   const L=h('div',{class:'panel stack'});const R=h('div',{class:'stack'});grid.append(L,R);
-  const procBox=h('div',{class:'chips'});L.append(h('div',{class:'stack',style:'gap:6px'},h('span',{class:'label'},'Processos (tiras do apêndice)'),procBox));
+  const procBox=h('div',{class:'chips'});L.append(h('div',{class:'stack',style:'gap:6px'},h('span',{class:'label'},'Processos'),procBox));
   const hint=h('p',{class:'note'});L.append(hint);
   const wrap=h('div',{class:'tbl-wrap'});L.append(wrap);
   const svg=s('svg',{viewBox:'0 0 800 540',style:'width:100%;min-width:560px;height:auto;display:block',role:'img'});wrap.append(svg);
@@ -1158,7 +1167,7 @@ INIT.ciclos=root=>{
     const c=CYC[key];fbBox.innerHTML='';fbBox.append(h('h3',{},c.titulo));
     const req=c.links.filter(l=>l[4]);const done=req.filter(l=>arrows.some(a=>a.f===l[0]&&a.t===l[1]&&l[2].includes(a.p)));
     fbBox.append(h('div',{class:'stats'},h('div',{class:'stat'},h('span',{class:'note'},'Setas desenhadas'),h('span',{class:'big-num'},arrows.length)),h('div',{class:'stat'},h('span',{class:'note'},'Conexões essenciais'),h('span',{class:'big-num'},checked?`${done.length}/${req.length}`:'?'))));
-    if(!checked){fbBox.append(h('p',{class:'note'},'Quando o grupo terminar, clique em “Conferir modelo”.'));return;}
+    if(!checked){fbBox.append(h('p',{class:'note'},'Quando terminar, clique em “Conferir modelo”.'));return;}
     if(!arrows.length){fbBox.append(h('p',{},'Nenhuma seta ainda.'));return;}
     arrows.forEach(a=>{const j=judge(a);fbBox.append(h('div',{class:'fb '+(j.ok?'ok':'no')},h('strong',{},`${c.nodes[a.f][0]} → ${c.nodes[a.t][0]} (${c.procs[a.p]}): `),j.msg,j.extra?' (Conexão extra, válida.)':''));});
     const miss=req.length-done.length;if(miss>0)fbBox.append(h('p',{class:'callout'},`Faltam ${miss} conex${miss>1?'ões':'ão'} essenciais. Dica: todo reservatório precisa ter alguma saída.`));
@@ -1189,7 +1198,7 @@ INIT.ciclos=root=>{
   function step(tab,pos,die){let acc=0;for(const[n,dest,why]of tab.st[pos]){acc+=n;if(die<=acc)return[dest,why];}return[pos,'permanece'];}
   function game(){
     gameBox.innerHTML='';const tab=DICE[key];let pos=tab.start,round=0;const log=[];
-    gameBox.append(h('h3',{},'A viagem do átomo'),h('p',{class:'note'},`Cada estudante é um átomo de ${key==='carbono'?'carbono':'nitrogênio'}. Role o dado 10 vezes e anote o caminho no caderno.`));
+    gameBox.append(h('h3',{},'A viagem do átomo'),h('p',{class:'note'},`Você é um átomo de ${key==='carbono'?'carbono':'nitrogênio'}. Role o dado 10 vezes: o caminho fica anotado abaixo.`));
     const face=h('span',{style:'font-size:3.4rem;line-height:1'},'🎲');const where=h('div',{class:'stack',style:'gap:2px'});
     const logEl=h('ol',{class:'note',style:'margin:0;padding-left:1.4em;max-height:220px;overflow:auto'});
     const btn=h('button',{class:'btn primary'},'Rolar o dado');
@@ -1210,10 +1219,10 @@ INIT.ciclos=root=>{
 const REL_OPTS=['Mutualismo ou protocooperação','Comensalismo','Inquilinismo (epifitismo)','Competição','Predação','Parasitismo','Sociedade','Colônia','Faltam evidências para classificar'];
 const PAPEIS=['Parasito','Vetor','Hospedeiro intermediário','Hospedeiro definitivo','Reservatório'];
 const SPEC=[
- {code:'Aula 01',titulo:'Aulas 1 e 2 · Detetive ecológico',tipo:'Grupo + bilhete individual',
-  desc:'Cada estudante envia este formulário com as respostas do grupo e o seu próprio bilhete.',
+ {code:'Aula 01',titulo:'Aulas 1 e 2 · Detetive ecológico',tipo:'Individual',
+  desc:'Envie as suas classificações dos cartões e o seu bilhete.',
   itens:[
-   {k:'hdr',t:'Classifique a relação de cada cartão (Apêndice 1)'},
+   {k:'hdr',t:'Classifique a relação de cada cartão'},
    {k:'mc',t:'Cartão A · Abelha e flor',ch:REL_OPTS,key:'Mutualismo ou protocooperação',pts:1},
    {k:'mc',t:'Cartão B · Parasita e hospedeiro',ch:REL_OPTS,key:'Parasitismo',pts:1},
    {k:'mc',t:'Cartão C · Plantas vizinhas',ch:REL_OPTS,key:'Faltam evidências para classificar',pts:1},
@@ -1229,8 +1238,8 @@ const SPEC=[
   desc:'Registro da observação ao microscópio e bilhete de saída.',
   itens:[
    {k:'txt',t:'Organismo ou estrutura observada'},
-   {k:'txt',t:'Ampliação total usada (ocular × objetiva)',help:'Exemplo: 400× (10× × 40×). Se usou fotografia, escreva "imagem".'},
-   {k:'par',t:'Descreva as estruturas que você identificou e a legenda do seu desenho',man:2},
+   {k:'txt',t:'Ampliação total usada (ocular × objetiva)',help:'Exemplo: 400× (10× × 40×), como aparece no microscópio virtual.'},
+   {k:'par',t:'Descreva as estruturas que você identificou no microscópio virtual',man:2},
    {k:'hdr',t:'Qual é o papel de cada um?'},
    {k:'mc',t:'Schistosoma mansoni',ch:PAPEIS,key:'Parasito',pts:1},
    {k:'mc',t:'Caramujo Biomphalaria',ch:PAPEIS,key:'Hospedeiro intermediário',pts:1},
@@ -1239,8 +1248,8 @@ const SPEC=[
    {k:'mc',t:'Cão doméstico (leishmaniose visceral urbana)',ch:PAPEIS,key:'Reservatório',pts:1},
    {k:'par',t:'Bilhete de saída: qual a diferença entre parasito e vetor?',man:2},
   ]},
- {code:'Aula 04',titulo:'Aula 4 · Quantos há na bandeja?',tipo:'Grupo',
-  desc:'Cada estudante envia com os dados do seu grupo (Apêndice 2). Use vírgula ou ponto nos decimais.',
+ {code:'Aula 04',titulo:'Aula 4 · Quantos há na bandeja?',tipo:'Individual',
+  desc:'Use os dados da sua bandeja. Use vírgula ou ponto nos decimais.',
   itens:[
    {k:'par',t:'Estratégia de seleção dos quadrantes',man:1},
    {k:'num',t:'Contagem do quadrante 1'},{k:'num',t:'Contagem do quadrante 2'},{k:'num',t:'Contagem do quadrante 3'},{k:'num',t:'Contagem do quadrante 4'},
@@ -1251,7 +1260,7 @@ const SPEC=[
    {k:'par',t:'Como a distribuição das peças pode afetar a estimativa? Como melhorar a amostragem?',man:2},
   ]},
  {code:'Aula 05',titulo:'Aulas 5 e 6 · Populações em movimento',tipo:'Individual',
-  desc:'Respostas da ficha do Apêndice 3 (dados simulados).',
+  desc:'Use o laboratório de populações e as pirâmides C e D (dados simulados).',
   itens:[
    {k:'hdr',t:'População inicial 80 · Nascimentos 18 · Mortes 12 · Imigrantes 7 · Emigrantes 3'},
    {k:'num',t:'População final',key:90,tol:0,pts:1},
@@ -1261,7 +1270,7 @@ const SPEC=[
    {k:'par',t:'Que limites existem para prever o futuro apenas com os dados de estrutura etária?',man:2},
   ]},
  {code:'Aula 07',titulo:'Aula 7 · Paisagens que se transformam',tipo:'Individual',
-  desc:'Cenários do Apêndice 4 (situações fictícias inspiradas na Caatinga).',
+  desc:'Cenários do gestor da área (situações fictícias inspiradas na Caatinga).',
   itens:[
    {k:'mc',t:'Cenário A (substrato rochoso exposto) passa por qual sucessão?',ch:['Primária','Secundária'],key:'Primária',pts:1},
    {k:'mc',t:'Cenário B (Caatinga parcialmente desmatada, com solo e sementes) passa por qual sucessão?',ch:['Primária','Secundária'],key:'Secundária',pts:1},
@@ -1270,7 +1279,7 @@ const SPEC=[
    {k:'par',t:'Proponha uma intervenção para B ou C e um indicador de acompanhamento',man:2},
   ]},
  {code:'Aula 08',titulo:'Aulas 8 e 9 · Ciclos do carbono e do nitrogênio',tipo:'Individual',
-  desc:'Depois de montar os modelos com os cartões do Apêndice 5.',
+  desc:'Depois de montar os modelos dos ciclos no site.',
   itens:[
    {k:'mc',t:'Qual processo retira CO₂ da atmosfera?',ch:['Respiração','Combustão','Fotossíntese','Decomposição'],key:'Fotossíntese',pts:1},
    {k:'mc',t:'A queima de combustíveis fósseis leva carbono de onde para onde?',ch:['Da atmosfera para os oceanos','Dos reservatórios de longa duração para a atmosfera','Dos produtores para os consumidores','Da atmosfera para as rochas'],key:'Dos reservatórios de longa duração para a atmosfera',pts:1},
@@ -1279,10 +1288,10 @@ const SPEC=[
    {k:'mc',t:'Excesso de nutrientes em lagos pode causar:',ch:['Eutrofização','Sucessão primária','Fixação biológica','Desnitrificação'],key:'Eutrofização',pts:1},
    {k:'par',t:'Explique a diferença entre circulação de matéria e fluxo de energia',man:2},
   ]},
- {code:'Aula 10',titulo:'Aulas 10 e 11 · Solo, cobertura e água',tipo:'Grupo + síntese individual',
-  desc:'Cada estudante envia com os dados do grupo (Apêndice 6). Volumes em mL.',
+ {code:'Aula 10',titulo:'Aulas 10 e 11 · Solo, cobertura e água',tipo:'Individual',
+  desc:'Use os resultados da sua bancada virtual. Volumes em mL.',
   itens:[
-   {k:'par',t:'Hipótese do grupo',man:1},
+   {k:'par',t:'Sua hipótese',man:1},
    {k:'txt',t:'Variável manipulada'},
    {k:'par',t:'Cite dois controles experimentais',man:2},
    {k:'num',t:'Volume aplicado em cada réplica (mL)'},
@@ -1299,7 +1308,7 @@ const SPEC=[
    {k:'par',t:'Síntese individual: compare cobertura morta e cobertura viva. O que os resultados indicam? Relacione ao ciclo da água',man:3},
   ]},
  {code:'Aula 12',titulo:'Aula 12 · Água, parasitos e território',tipo:'Individual',
-  desc:'Caso fictício do Apêndice 7.',
+  desc:'Caso fictício desta aula.',
   itens:[
    {k:'mc',t:'Como as cercárias de Schistosoma mansoni entram no corpo humano?',ch:['Pela picada de um mosquito','Pela ingestão de carne crua','Pela penetração ativa na pele, em água doce','Pelo contato com cães'],key:'Pela penetração ativa na pele, em água doce',pts:1},
    {k:'mc',t:'Na esquistossomose, o caramujo Biomphalaria é:',ch:['O vetor','O hospedeiro intermediário','O hospedeiro definitivo','O parasito'],key:'O hospedeiro intermediário',pts:1},
@@ -1307,10 +1316,10 @@ const SPEC=[
    {k:'par',t:'Em que etapas o saneamento pode interromper o ciclo?',man:2},
    {k:'par',t:'Bilhete: que setores devem participar e por quê?',man:2},
   ]},
- {code:'Aula 13',titulo:'Aula 13 · Conselho de Saúde Única',tipo:'Grupo + síntese individual',
-  desc:'Cada estudante envia com a proposta do seu setor (Apêndice 8) e a sua síntese.',
+ {code:'Aula 13',titulo:'Aula 13 · Conselho de Saúde Única',tipo:'Individual',
+  desc:'Envie a sua proposta principal e a sua síntese.',
   itens:[
-   {k:'mc',t:'Setor do grupo',ch:['Moradores','Saúde humana','Saúde animal','Ambiente e saneamento']},
+   {k:'mc',t:'Setor da sua proposta principal',ch:['Moradores','Saúde humana','Saúde animal','Ambiente e saneamento']},
    {k:'par',t:'Necessidade prioritária',man:1},
    {k:'par',t:'Informação que falta',man:1},
    {k:'par',t:'Proposta 1 e justificativa',man:2},
@@ -1319,7 +1328,7 @@ const SPEC=[
    {k:'par',t:'Síntese individual: escolha uma ação e explique como ela articula saúde humana, saúde animal e/ou ambiente',man:3},
   ]},
  {code:'Aula 14',titulo:'Aula 14 · O que você consegue explicar?',tipo:'Avaliação individual',
-  desc:'Versão digital do Apêndice 9. Responda com suas palavras.',
+  desc:'Avaliação da unidade. Responda com suas palavras.',
   itens:[
    {k:'par',t:'1 · Classifique as relações ave–inseto e parasito–hospedeiro, indique os efeitos e explique uma diferença',man:2},
    {k:'num',t:'2a · População final (inicial 50; 12 nascimentos, 5 mortes, 4 imigrações, 1 emigração)',key:60,tol:0,pts:1},
@@ -1364,10 +1373,10 @@ function attachFicha(secId){
   if(code==='Aula 04')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const q=window.__quad;if(!q){fillMsg.textContent='Primeiro conte os quadrantes na bandeja acima.';return;}
     q.cs.slice(0,4).forEach((c,i)=>draft['Contagem do quadrante '+(i+1)]=String(c));draft['Densidade estimada (sementes por cm²)']=fmt(q.dens,3);draft['Total estimado na bandeja']=fmt(q.est);if(q.real!=null){draft['Total real contado']=String(q.real);draft['Diferença |estimativa − total real|']=fmt(Math.abs(q.est-q.real));}
     fillMsg.textContent=q.cs.length>4?'Usei os 4 primeiros quadrantes escolhidos.':'Dados da bandeja copiados. Confira antes de enviar.';saveDraft();build();}},'Usar os dados da bandeja'),(fillMsg=h('span',{class:'note'}))));
-  if(code==='Aula 10')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const t=/B$/i.test(ident.turma||'')?'2B':'2A';const d=migraExp(store.get('exp-'+t,null),()=>[null,null,null]);if(!d){fillMsg.textContent='Registre antes as chuvas da bancada acima.';return;}
+  if(code==='Aula 10')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const t='2A';const d=migraExp(store.get('exp-'+t,null),()=>[null,null,null]);if(!d){fillMsg.textContent='Registre antes as chuvas da bancada acima.';return;}
     if(d[0]&&d[0][0]!=null)draft['Volume aplicado em cada réplica (mL)']=String(d[0][0]);
     EXP_ROWS.forEach((n,i)=>{if(!d[i])return;if(d[i][1]!=null)draft[n+' · fundo (mL)']=String(d[i][1]);if(d[i][2]!=null)draft[n+' · superfície (mL)']=String(d[i][2]);});
-    fillMsg.textContent='Resultados da bancada da Turma '+(ident.turma||'A')+' copiados. Confira antes de enviar.';saveDraft();build();}},'Usar os resultados da bancada'),(fillMsg=h('span',{class:'note'}))));
+    fillMsg.textContent='Resultados da bancada copiados. Confira antes de enviar.';saveDraft();build();}},'Usar os resultados da bancada'),(fillMsg=h('span',{class:'note'}))));
   var fillMsg;
   const itemsBox=h('div',{class:'ficha-itens'});box.append(itemsBox);
   function build(){itemsBox.innerHTML='';let n=0;
@@ -1438,7 +1447,7 @@ function simChuva(p){
   return {sup:Math.round(sup),fundo:Math.round(fundo),sed,atraso};
 }
 INIT.experimento=root=>{
-  root.append(head('Aulas 10 e 11 · Apêndice 6','Chuva na bancada','Monte a bandeja, faça chover e meça o destino da água: quanto escorre pela superfície e quanto drena pelo fundo. Para a comparação ser justa, só a cobertura pode mudar entre as bandejas.'));
+  root.append(head('Aulas 10 e 11','Chuva na bancada','Monte a bandeja, faça chover e meça o destino da água: quanto escorre pela superfície e quanto drena pelo fundo. Para a comparação ser justa, só a cobertura pode mudar entre as bandejas.'));
   let turma='2A';
   const load=()=>migraExp(store.get('exp-'+turma,null),()=>[null,null,null]);
   const loadP=()=>migraExp(store.get('expp-'+turma,EXP_ROWS.map(()=>null)),()=>null);
@@ -1448,7 +1457,7 @@ INIT.experimento=root=>{
 
   const top=h('div',{class:'row'});root.append(top);
   const badge=h('span',{});
-  top.append(h('span',{class:'label'},'Turma'),seg([['2A','Turma A'],['2B','Turma B']],turma,v=>{turma=v;data=load();isEx=!data;if(!data)data=EXP_EX.map(r=>r.slice());params=loadP();table();draw();}),badge,h('span',{style:'flex:1'}),h('button',{class:'btn',onclick:()=>{data=EXP_ROWS.map(()=>[null,null,null]);params=EXP_ROWS.map(()=>null);isEx=false;save();table();draw();}},'Apagar e começar a turma'));
+  top.append(badge,h('span',{style:'flex:1'}),h('button',{class:'btn',onclick:()=>{data=EXP_ROWS.map(()=>[null,null,null]);params=EXP_ROWS.map(()=>null);isEx=false;save();table();draw();}},'Apagar e começar de novo'));
   const save=()=>{store.set('exp-'+turma,data);store.set('expp-'+turma,params);};
 
   // ===== Bancada =====
@@ -1767,13 +1776,13 @@ const AB={
 };
 // ================= Aula 12: Esquistossomose =================
 INIT.esquisto=root=>{
-  root.append(head('Aula 12 · Apêndice 7','Água, parasitos e território','Caso fictício de uma comunidade do Nordeste. Não há confirmação de transmissão no local.'));
+  root.append(head('Aula 12','Água, parasitos e território','Caso fictício de uma comunidade do Nordeste. Não há confirmação de transmissão no local.'));
   const grid=h('div',{class:'cols wide-right'});root.append(grid);
   const L=h('div',{class:'panel stack'});const R=h('div',{class:'panel stack'});grid.append(L,R);
   L.append(h('h3',{},'Fato ou boato?'));
   L.append(h('div',{style:'background:var(--good-soft);border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:12px 14px;max-width:34ch;font-size:1.15rem;box-shadow:0 1px 0 var(--line)'},h('span',{class:'note',style:'display:block;margin-bottom:4px'},'Encaminhada'),'Se a água estiver transparente, o banho é seguro 👍',h('span',{class:'note',style:'display:block;text-align:right'},'09:41')));
-  const votes=store.get('esq-votes',{f:0,b:0,d:0});const vb=h('div',{class:'row'});L.append(h('span',{class:'label'},'Votação da turma'),vb);
-  const vdraw=()=>{vb.innerHTML='';[['f','É fato'],['b','É boato'],['d','Precisamos de dados']].forEach(([k,t])=>vb.append(h('button',{class:'btn',onclick:()=>{votes[k]++;store.set('esq-votes',votes);vdraw();}},t,h('span',{class:'pill'},votes[k]))));vb.append(h('button',{class:'btn ghost sm',onclick:()=>{votes.f=votes.b=votes.d=0;store.set('esq-votes',votes);vdraw();}},'Zerar'));};vdraw();
+  let voto=store.get('esq-voto',null);const vb=h('div',{class:'row'});L.append(h('span',{class:'label'},'Qual é a sua opinião?'),vb);
+  const vdraw=()=>{vb.innerHTML='';vb.append(seg([['f','É fato'],['b','É boato'],['d','Precisamos de dados']],voto,v=>{voto=v;store.set('esq-voto',v);},{label:'Sua opinião'}));};vdraw();
   const an=h('div',{class:'stack'});L.append(h('button',{class:'btn primary',onclick:()=>{an.innerHTML='';an.append(
     h('div',{class:'fb info'},'A aparência da água não basta. As cercárias medem menos de 1 mm e são praticamente invisíveis a olho nu. Água transparente indica pouco material em suspensão, não ausência de parasitos.'),
     h('strong',{},'Dados para investigar a mensagem'),
@@ -1820,7 +1829,7 @@ INIT.esquisto=root=>{
 
 // ================= Aula 13: Conselho de Saúde Única =================
 INIT.conselho=root=>{
-  root.append(head('Aula 13 · Apêndice 8','Conselho de Saúde Única','Desafio fictício: famílias sem esgotamento adequado, uso de água doce para lazer, resíduos acumulados, cães e solo degradado. Preocupação com esquistossomose e leishmaniose visceral, sem transmissão confirmada.'));
+  root.append(head('Aula 13','Conselho de Saúde Única','Desafio fictício: famílias sem esgotamento adequado, uso de água doce para lazer, resíduos acumulados, cães e solo degradado. Preocupação com esquistossomose e leishmaniose visceral, sem transmissão confirmada. Você representa os quatro setores: proponha ações, ordene as prioridades e monte o quadro do conselho.'));
   const SET=[['mor','Moradores','Necessidades, hábitos e dificuldades da comunidade.'],['sh','Saúde humana','Investigação, vigilância e atendimento às pessoas.'],['sa','Saúde animal','Vigilância e atenção veterinária, considerando animais e vetores.'],['amb','Ambiente e saneamento','Água, esgoto, resíduos e conservação.']];
   const sg=h('div',{class:'cards'});root.append(sg);
   SET.forEach(([k,t,d])=>sg.append(h('div',{class:'panel stack',style:'gap:4px'},ilu(k,'ilu ilu-wide'),h('span',{class:'eyebrow'},'Setor'),h('h3',{},t),h('p',{class:'note'},d))));
@@ -1853,10 +1862,10 @@ INIT.conselho=root=>{
     const list=[...props].sort((a,b)=>b.v-a.v);
     list.forEach((p,i)=>{B.append(h('div',{class:'panel stack',style:'gap:8px'+(i<3?';border-color:var(--accent)':'')},
       h('div',{class:'row',style:'justify-content:space-between'},h('div',{class:'row'},i<3?h('span',{class:'pill ok'},(i+1)+'º'):null,h('span',{class:'pill'},p.prazo),h('span',{class:'pill'},p.doenca),p.ex?h('span',{class:'pill ex'},'Exemplo'):null),
-        h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{p.v=Math.max(0,p.v-1);save();draw();},'aria-label':'Tirar voto'},'−'),h('span',{class:'mono',style:'font-weight:700;min-width:2ch;text-align:center'},p.v),h('button',{class:'btn sm primary',onclick:()=>{p.v++;save();draw();},'aria-label':'Votar'},'+ voto'),h('button',{class:'btn sm ghost',onclick:()=>{props=props.filter(x=>x!==p);save();draw();}},'Apagar'))),
+        h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{p.v=Math.max(0,p.v-1);save();draw();},'aria-label':'Diminuir a prioridade'},'−'),h('span',{class:'mono',style:'font-weight:700;min-width:2ch;text-align:center'},p.v),h('button',{class:'btn sm primary',onclick:()=>{p.v++;save();draw();},'aria-label':'Aumentar a prioridade'},'+ prioridade'),h('button',{class:'btn sm ghost',onclick:()=>{props=props.filter(x=>x!==p);save();draw();}},'Apagar'))),
       h('p',{style:'font-size:1.1rem;font-weight:700'},p.acao),
       h('p',{class:'note'},'Setores: '+p.set.map(k=>SN[k]).join(', ')+(p.ind?' · Indicador: '+p.ind:''))));});
-    B.append(h('div',{class:'callout'},'Síntese: escolham 3 ações iniciais e 1 de médio prazo, considerando a capacidade de execução. Uma mesma medida não precisa prevenir as duas doenças.'));
+    B.append(h('div',{class:'callout'},'Síntese: escolha 3 ações iniciais e 1 de médio prazo, considerando a capacidade de execução. As ações com mais prioridade sobem na lista. Uma mesma medida não precisa prevenir as duas doenças.'));
   }
   draw();
 };
@@ -1887,26 +1896,18 @@ const QZ=[
 ];
 const QZ_IL=['F','B','E','balanco','densidade','densidade','curvaS','piramide','rocha','caatinga','fotossintese','fabrica','nodulos','bacterias','eutrofizacao','bandeja','copo','e6','esq','leish','saudeunica'];
 INIT.quiz=root=>{
-  root.append(head('Aula 14 · Revisão','Quiz da unidade','Perguntas diferentes das da avaliação individual. Os grupos respondem, o professor revela e dá os pontos.'));
-  let nT=store.get('qz-n',4),score=store.get('qz-score',[0,0,0,0,0,0]),i=0,revealed=false,picked=null,timer=null,left=30;
-  const top=h('div',{class:'row'});root.append(top);
-  const board=h('div',{class:'row'});
-  top.append(h('span',{class:'label'},'Grupos'),seg([2,3,4,5,6].map(n=>[n,String(n)]),nT,v=>{nT=v;store.set('qz-n',nT);sb();}),h('button',{class:'btn ghost sm',onclick:()=>{score=[0,0,0,0,0,0];store.set('qz-score',score);sb();}},'Zerar placar'));
-  root.append(board);
-  const card=h('div',{class:'panel stack',style:'padding:24px'});root.append(card);
-  function sb(){board.innerHTML='';for(let g=0;g<nT;g++){board.append(h('div',{class:'panel stat',style:'padding:10px 14px;align-items:center;min-width:110px'},h('span',{class:'note'},'Grupo '+(g+1)),h('span',{class:'big-num'},score[g]),h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{score[g]=Math.max(0,score[g]-1);store.set('qz-score',score);sb();},'aria-label':'Tirar ponto'},'−'),h('button',{class:'btn sm primary',onclick:()=>{score[g]++;store.set('qz-score',score);sb();},'aria-label':'Dar ponto'},'+'))));}}
-  function q(){
-    clearInterval(timer);left=30;revealed=false;picked=null;card.innerHTML='';const[t,opts,c,ex]=QZ[i];
-    const clock=h('span',{class:'mono',style:'font-size:1.6rem;font-weight:600'},'30s');
-    card.append(h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'eyebrow'},`Pergunta ${i+1} de ${QZ.length}`),h('div',{class:'row'},clock,h('button',{class:'btn sm',onclick:()=>{clearInterval(timer);left=30;clock.textContent='30s';clock.style.color='';timer=setInterval(()=>{left--;clock.textContent=left+'s';if(left<=5)clock.style.color='var(--bad)';if(left<=0){clearInterval(timer);clock.textContent='Tempo!';}},1000);}},'Iniciar cronômetro'))));
-    card.append(h('div',{class:'quiz-q'},ilu(QZ_IL[i],'ilu'),h('h3',{style:'font-size:clamp(1.3rem,2.6vw,2rem)'},t)));
-    const og=h('div',{style:'display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px'});card.append(og);
-    const L='ABCD';
-    opts.forEach((o,j)=>{const b=h('button',{class:'tool-card',style:'min-height:0;flex-direction:row;align-items:center;gap:12px;font-size:1.1rem'},h('span',{class:'mono',style:'font-weight:700;color:var(--ochre)'},L[j]),h('span',{},o));b.onclick=()=>{if(revealed)return;picked=j;$$('.tool-card',og).forEach(x=>x.style.borderColor='');b.style.borderColor='var(--sky)';};og.append(b);});
-    const ans=h('div',{});card.append(ans);
-    card.append(h('div',{class:'row'},h('button',{class:'btn',disabled:i===0,onclick:()=>{i--;q();}},'← Anterior'),h('button',{class:'btn primary',onclick:()=>{revealed=true;clearInterval(timer);$$('.tool-card',og).forEach((x,j)=>{x.style.borderColor=j===c?'var(--good)':j===picked?'var(--bad)':'';x.style.background=j===c?'var(--good-soft)':'';});ans.innerHTML='';ans.append(h('div',{class:'fb ok'},h('strong',{},'Resposta: '+L[c]+'. '),ex));}},'Revelar resposta'),h('button',{class:'btn',disabled:i===QZ.length-1,onclick:()=>{i++;q();}},'Próxima →')));
-  }
-  sb();q();
+  root.append(head('Aula 14 · Revisão','Quiz da unidade','Perguntas diferentes das da avaliação individual. Toque numa alternativa para ver se acertou e ler a explicação.'));
+  let qi=0,resp=store.get('qz-resp',{});const qcard=h('div',{class:'panel stack',style:'padding:24px'});const qstats=h('div',{class:'stats'});
+  function q(){const it=QZ[qi];const t=it[0],o=it[1],c=it[2],e=it[3];const done=Object.prototype.hasOwnProperty.call(resp,qi);qcard.innerHTML='';
+    qcard.append(h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'eyebrow'},`Pergunta ${qi+1} de ${QZ.length}`),h('span',{class:'pill'+(done?' ok':'')},done?'Respondida':'Não respondida')));
+    const qil=ilu(QZ_IL[qi],'ilu');const qt=h('h3',{style:'font-size:clamp(1.2rem,2.4vw,1.8rem)'},t);qcard.append(qil?h('div',{class:'quiz-q'},qil,qt):qt);
+    const og=h('div',{style:'display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px'});
+    o.forEach((a,j)=>{const b=h('button',{class:'tool-card',style:`min-height:0;flex-direction:row;align-items:center;gap:12px;font-size:1.05rem;${done&&j===c?'border-color:var(--good);background:var(--good-soft)':''}${done&&j===resp[qi]&&j!==c?'border-color:var(--bad);background:var(--bad-soft)':''}`,disabled:done},h('span',{class:'mono',style:'font-weight:700;color:var(--tema)'},'ABCD'[j]),h('span',{},a));b.onclick=()=>{resp[qi]=j;store.set('qz-resp',resp);q();};og.append(b);});qcard.append(og);
+    if(done)qcard.append(h('div',{class:'fb '+(resp[qi]===c?'ok':'info')},h('strong',{},resp[qi]===c?'Resposta correta. ':'Vamos revisar: a resposta é '+'ABCD'[c]+'. '),e));
+    qcard.append(h('div',{class:'row',style:'justify-content:space-between'},h('button',{class:'btn',disabled:qi===0,onclick:()=>{qi--;q();}},'← Anterior'),h('button',{class:'btn primary',disabled:qi===QZ.length-1,onclick:()=>{qi++;q();}},'Próxima →')));
+    const n=Object.keys(resp).length,ok=Object.entries(resp).filter(([k,a])=>QZ[k]&&QZ[k][2]===a).length;qstats.innerHTML='';[['Respondidas',n+'/'+QZ.length],['Acertos na 1ª tentativa',String(ok)]].forEach(([a,b])=>qstats.append(h('div',{class:'stat'},h('span',{class:'note'},a),h('span',{class:'big-num'},b))));}
+  const qside=h('div',{class:'panel stack'},h('h3',{},'Seu percurso'),qstats,h('button',{class:'btn ghost sm',style:'align-self:flex-start',onclick:()=>{resp={};store.set('qz-resp',resp);qi=0;q();}},'Recomeçar o quiz'),h('p',{class:'note'},'Toque numa alternativa para ver se acertou e ler a explicação. Vale a primeira resposta.'));
+  root.append(h('div',{class:'cols wide-left'},qcard,qside));q();
 };
 
 // ================= Início =================
