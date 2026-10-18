@@ -1,0 +1,481 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style><link rel="icon" href="icons/favicon.ico" sizes="any"><link rel="icon" href="icons/portal.svg" type="image/svg+xml"><link rel="icon" href="icons/portal-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="icons/portal-180.png"></head><body>
+<title>Área do Professor · Biologia em Investigação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+/* Layout: bancada da coleção; cada site aparece como um caderno com a sua cor e o seu papel (pontilhado ou quadriculado) */
+:root{
+  --bg:#edf0ec; --dot:#d6dcd5; --surface:#fbfcfa; --surface-2:#e5eae4; --ink:#18221d; --muted:#56635b; --line:#d3dad2;
+  --eco:#1d6b58; --eco-soft:#d6e9e1; --cel:#a3601b; --cel-soft:#f3e3cd; --gen:#a3336b; --gen-soft:#f6dfeb; --mic:#2c58a5; --mic-soft:#dde6f6;
+  --accent:#1d6b58; --accent-soft:#d6e9e1;
+  --good:#2b7a4b; --good-soft:#dbefe1; --bad:#b03c35; --bad-soft:#f7e0dd; --warn:#94650c; --warn-soft:#f6ead0;
+  --shadow:0 1px 0 rgba(24,34,29,.04), 0 12px 30px -18px rgba(24,34,29,.32);
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --r:16px; --tema:var(--accent); --tema-soft:var(--accent-soft);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1512; --dot:#1c2621; --surface:#161f1a; --surface-2:#202b25; --ink:#e3ebe5; --muted:#9aab9f; --line:#2a3731;
+  --eco:#4cb596; --eco-soft:#183329; --cel:#e2a25a; --cel-soft:#33261a; --gen:#ee86b6; --gen-soft:#3a1a2b; --mic:#86aaf0; --mic-soft:#1a2740;
+  --accent:#4cb596; --accent-soft:#183329;
+  --good:#5cc08a; --good-soft:#163222; --bad:#ec7d72; --bad-soft:#3a1d1a; --warn:#e2b456; --warn-soft:#33290f;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 30px -18px rgba(0,0,0,.7); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f1512; --dot:#1c2621; --surface:#161f1a; --surface-2:#202b25; --ink:#e3ebe5; --muted:#9aab9f; --line:#2a3731;
+  --eco:#4cb596; --eco-soft:#183329; --cel:#e2a25a; --cel-soft:#33261a; --gen:#ee86b6; --gen-soft:#3a1a2b; --mic:#86aaf0; --mic-soft:#1a2740;
+  --accent:#4cb596; --accent-soft:#183329;
+  --good:#5cc08a; --good-soft:#163222; --bad:#ec7d72; --bad-soft:#3a1d1a; --warn:#e2b456; --warn-soft:#33290f;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 30px -18px rgba(0,0,0,.7); color-scheme:dark }
+[data-s="eco"]{--tema:var(--eco);--tema-soft:var(--eco-soft)}
+[data-s="cel"]{--tema:var(--cel);--tema-soft:var(--cel-soft)}
+[data-s="gen"]{--tema:var(--gen);--tema-soft:var(--gen-soft)}
+[data-s="mic"]{--tema:var(--mic);--tema-soft:var(--mic-soft)}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{background-color:var(--bg);background-image:radial-gradient(var(--dot) 1.1px,transparent 1.3px);background-size:22px 22px;color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.55}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+[hidden]{display:none!important}
+h1,h2,h3{font-family:var(--f-display);line-height:1.1;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:800;letter-spacing:-.015em}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--tema);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Cabeçalho */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{display:flex;align-items:center;gap:14px;padding-block:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:1.15rem;letter-spacing:-.01em;text-decoration:none}
+.mark{width:28px;height:28px;flex:none}
+.top nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+.top nav a{text-decoration:none;padding:6px 12px;border-radius:999px;color:var(--muted);font-weight:700;font-size:.9rem}
+.top nav a:hover{background:var(--surface);color:var(--ink)}
+.top nav a[aria-current="page"]{background:var(--accent-soft);color:var(--ink)}
+@media (max-width:640px){.top nav{margin-left:0;width:100%}.top-in{gap:6px;padding-block:8px}}
+
+/* Componentes */
+.eyebrow{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tema);font-weight:600}
+.lede{color:var(--muted);font-size:1.08rem;max-width:60ch}
+.note{font-size:.88rem;color:var(--muted)}
+.label{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:10px;cursor:pointer;font-weight:700;font-size:.94rem;line-height:1.2;text-decoration:none;color:var(--ink);transition:border-color .15s,transform .15s}
+.btn:hover{border-color:var(--tema)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--tema);border-color:var(--tema);color:var(--surface)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 11px;font-size:.84rem;border-radius:8px}
+.btn.big{padding:12px 20px;font-size:1.02rem}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);min-width:0}
+.callout{border-left:4px solid var(--tema);background:var(--tema-soft);padding:11px 15px;border-radius:0 10px 10px 0}
+.fb{padding:10px 14px;border-radius:10px;font-size:.95rem}
+.fb.ok{background:var(--good-soft);border:1px solid color-mix(in srgb,var(--good) 55%,transparent)}
+.fb.no{background:var(--bad-soft);border:1px solid color-mix(in srgb,var(--bad) 55%,transparent)}
+.fb.warn{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 50%,transparent)}
+input[type=text],input[type=url],input[type=number],input[type=password],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:9px 11px;min-width:0;width:100%}
+input[type=number]{width:6em;font-family:var(--f-mono)}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;cursor:pointer;font-size:.92rem;font-weight:700;min-width:2.6em}
+.chip:hover{border-color:var(--tema)}
+.chip[aria-pressed="true"]{background:var(--tema);border-color:var(--tema);color:var(--surface)}
+pre.code{max-height:240px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:.74rem;font-family:var(--f-mono);white-space:pre;margin:0}
+.qr{background:#fff;border-radius:12px;padding:10px;line-height:0;align-self:flex-start}
+.qr svg{width:170px;height:170px;display:block}
+.link{font-family:var(--f-mono);font-size:.8rem;overflow-wrap:anywhere;color:var(--mic);word-break:break-all}
+.overlay{position:fixed;inset:0;background:rgba(10,15,12,.92);z-index:80;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;color:#fff;text-align:center}
+.overlay .qr svg{width:min(68vmin,560px);height:min(68vmin,560px)}
+.overlay h2{color:#fff;font-size:clamp(1.4rem,3.5vw,2.6rem)}
+.overlay .link{color:#cfe3ef;font-size:1.05rem;max-width:90ch}
+footer{border-top:1px solid var(--line);margin-top:48px}
+footer .wrap{padding-block:22px 40px;display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.page-head{display:flex;flex-direction:column;gap:10px;padding-block:34px 22px}
+.page-head h1{font-size:clamp(2.2rem,5.4vw,3.6rem);font-weight:800;letter-spacing:-.03em}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+@media (max-width:980px){.layout{grid-template-columns:minmax(0,1fr)}}
+.steps-col{display:flex;flex-direction:column;gap:18px;min-width:0}
+.step{display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:560px){.step{grid-template-columns:minmax(0,1fr)}.step-n{width:40px;height:40px;font-size:1.15rem}}
+.step-n{width:48px;height:48px;border-radius:14px;background:var(--surface-2);color:var(--muted);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.35rem}
+.step.done .step-n{background:var(--good);color:var(--surface)}
+.step .panel{display:flex;flex-direction:column;gap:16px}
+.step h2{font-size:1.4rem}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+@media (max-width:640px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.serie{display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;align-items:center;padding-block:8px;border-bottom:1px solid var(--line)}
+.serie:last-of-type{border-bottom:0}
+.serie b{font-family:var(--f-display);font-size:1.1rem}
+@media (max-width:480px){.serie{grid-template-columns:minmax(0,1fr)}}
+ol.howto{margin:0;padding-left:1.35em;display:flex;flex-direction:column;gap:9px}
+ol.howto li::marker{font-family:var(--f-mono);font-weight:700;color:var(--accent)}
+kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px}
+.senha{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.senha code{font-family:var(--f-mono);font-size:1.15rem;font-weight:600;letter-spacing:.06em;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.status{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.status i{width:10px;height:10px;border-radius:50%;flex:none;margin-top:6px;background:var(--muted)}
+.status.ok i{background:var(--good)} .status.no i{background:var(--bad)} .status.wait i{background:var(--warn)}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);display:flex;flex-direction:column;gap:14px}
+@media (max-width:980px){.side{position:static}}
+.check{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.check li{display:flex;gap:10px;align-items:center;font-size:.94rem}
+.check li::before{content:"";width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none}
+.check li.ok::before{background:var(--good);border-color:var(--good);box-shadow:inset 0 0 0 3px var(--surface)}
+.out{display:flex;flex-direction:column;gap:12px}
+.msgbox{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:.9rem;overflow-wrap:anywhere}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 4.5A9.5 9.5 0 0 0 4.5 14H14z" fill="var(--cel)"/><path d="M14 4.5A9.5 9.5 0 0 1 23.5 14H14z" fill="var(--mic)"/><path d="M4.5 14A9.5 9.5 0 0 0 14 23.5V14z" fill="var(--eco)"/><path d="M23.5 14A9.5 9.5 0 0 1 14 23.5V14z" fill="var(--gen)"/></svg>Biologia em Investigação</a>
+    <nav aria-label="Seções">
+      <a href="index.html#sites">Sites</a>
+      <a href="professor.html" aria-current="page">Área do professor</a>
+      <a href="painel.html">Painel de avaliação</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Para professores</span>
+    <h1>Área do professor</h1>
+    <p class="lede">Configure as suas turmas e ligue as fichas a uma planilha sua no Google. Depois é só compartilhar o link da turma com os estudantes. O que você preencher aqui fica salvo só neste navegador.</p>
+  </div>
+
+  <div class="layout">
+    <div class="steps-col">
+      <section class="step" id="s1"><span class="step-n">1</span>
+        <div class="panel">
+          <div class="stack" style="gap:4px"><h2>Seu nome</h2><p class="note">É o nome que aparece na ficha, no botão “Enviar para…” e na confirmação do envio.</p></div>
+          <div class="grid2">
+            <label class="field"><span class="label">Como os estudantes chamam você</span><input type="text" id="pNome" maxlength="60" placeholder="Prof.ª Ana Souza" autocomplete="name"></label>
+            <label class="field"><span class="label">Escola (opcional)</span><input type="text" id="pEscola" maxlength="80" placeholder="EE Professor João Lima"></label>
+          </div>
+        </div>
+      </section>
+
+      <section class="step" id="s2"><span class="step-n">2</span>
+        <div class="panel">
+          <div class="stack" style="gap:4px"><h2>Suas turmas</h2><p class="note">Marque as turmas de cada ano. O estudante escolhe a turma dele na ficha.</p></div>
+          <div id="series"></div>
+          <div class="grid2">
+            <label class="field"><span class="label">Outras turmas (separe por vírgula)</span><input type="text" id="pOutras" maxlength="200" placeholder="2º Técnico, EJA 3"></label>
+            <label class="field"><span class="label">Grupos por turma</span><input type="number" id="pGrupos" min="1" max="20" value="8" inputmode="numeric"></label>
+          </div>
+        </div>
+      </section>
+
+      <section class="step" id="s3"><span class="step-n">3</span>
+        <div class="panel">
+          <div class="stack" style="gap:4px"><h2>Sua planilha e o receptor</h2><p class="note">O receptor é um pequeno programa na sua conta Google que grava cada ficha na sua planilha, uma aba por aula. Você faz isso uma vez só.</p></div>
+          <div class="callout stack" style="gap:6px">
+            <span class="label">Senha do painel</span>
+            <div class="senha"><code id="senha">—</code><button type="button" class="btn sm ghost" id="novaSenha">Gerar outra senha</button></div>
+            <p class="note">Ela já vai dentro do código abaixo e protege o painel de avaliação. Anote: ela também fica visível no código, dentro do Apps Script.</p>
+          </div>
+          <ol class="howto">
+            <li>Crie uma planilha nova no Google Planilhas (<a href="https://sheets.new" target="_blank" rel="noopener">sheets.new</a>) e dê um nome, por exemplo “Fichas · Biologia em Investigação”.</li>
+            <li>Na planilha, abra o menu <b>Extensões → Apps Script</b>.</li>
+            <li>Apague o que estiver no editor, cole o código (botão <b>Copiar código</b>) e clique em <b>Salvar</b>.</li>
+            <li>No topo do editor, escolha a função <kbd>autorizar</kbd> e clique em <b>Executar</b>. Autorize com a sua conta. Se aparecer “O Google não verificou este app”, clique em <b>Avançado</b> e depois em <b>Acessar</b>: o aviso aparece porque o programa é seu e não passou por revisão do Google.</li>
+            <li>Clique em <b>Implantar → Nova implantação</b>, na engrenagem escolha <b>App da Web</b>. Em “Executar como”, escolha <b>Eu</b>; em “Quem pode acessar”, <b>Qualquer pessoa</b>. Clique em <b>Implantar</b>.</li>
+            <li>Copie o URL do app da Web (termina em <span class="mono">/exec</span>) e cole no campo abaixo.</li>
+          </ol>
+          <div class="row"><button type="button" class="btn primary" id="copiaCodigo">Copiar código</button><span class="note" id="codigoInfo"></span></div>
+          <pre class="code" id="codigo" tabindex="0" aria-label="Código do receptor"></pre>
+          <label class="field"><span class="label">URL do app da Web</span><input type="url" id="pReceptor" placeholder="https://script.google.com/macros/s/…/exec" spellcheck="false" autocomplete="off"></label>
+          <div class="row"><button type="button" class="btn" id="testar">Testar o receptor</button><a class="btn ghost" id="abrirReceptor" target="_blank" rel="noopener" hidden>Abrir o receptor em outra aba</a></div>
+          <div class="status" id="recStatus" role="status"><i></i><span>Cole o URL para ligar as fichas à sua planilha.</span></div>
+          <p class="note">Mudou o seu nome ou gerou outra senha depois de implantar? Cole o código de novo no Apps Script e atualize em <b>Implantar → Gerenciar implantações → Editar → Nova versão</b>. O endereço continua o mesmo.</p>
+        </div>
+      </section>
+
+      <section class="step" id="s4"><span class="step-n">4</span>
+        <div class="panel">
+          <div class="stack" style="gap:4px"><h2>Link da turma</h2><p class="note">Compartilhe com os estudantes por mensagem, no mural da turma ou projetando o QR code. Ao abrir, o celular do estudante entra na sua turma.</p></div>
+          <label class="field" id="baseField" hidden><span class="label">Endereço do portal publicado</span><input type="url" id="pBase" placeholder="https://biologia-investigacao.pages.dev/" spellcheck="false" autocomplete="off"><span class="note">Você está vendo o portal dentro do Claude. Informe o endereço em que ele está publicado para que o link funcione nos celulares dos estudantes.</span></label>
+          <div class="out" id="saida"></div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <div class="panel stack" style="gap:12px">
+        <span class="label">Situação</span>
+        <ul class="check" id="check"></ul>
+        <a class="btn primary" href="painel.html">Abrir o painel de avaliação</a>
+      </div>
+      <div class="panel stack" style="gap:8px">
+        <span class="label">Como fica para o estudante</span>
+        <p class="note">No fim de cada aula, a ficha mostra para quem ela vai, a escolha da turma e do grupo, e o botão de envio.</p>
+        <div id="previa"></div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer><div class="wrap"><p class="note">As fichas dos estudantes ficam somente na sua planilha. Nome, turmas e senha ficam salvos apenas neste navegador.</p></div></footer>
+
+<script type="text/plain" id="tpl">/**
+ * Biologia em Investigação · receptor das fichas
+ *
+ * Recebe as fichas que os estudantes enviam pelos sites e grava nesta planilha,
+ * uma aba por site e aula (por exemplo "Ecologia · Aula 01").
+ * Também entrega os dados ao Painel de avaliação, que só abre com a senha abaixo.
+ *
+ * Este código foi gerado na Área do professor do portal, já com o seu nome e a sua senha.
+ * Não é preciso alterar nada.
+ */
+const PROFESSOR = __PROFESSOR__;
+const SENHA_PAINEL = __SENHA__;
+
+const SITES = ['Ecologia', 'Células', 'Genética', 'Microcosmo'];
+const MAX_TEXTO = 1200;
+const MAX_PERGUNTAS = 80;
+const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Turma', 'Grupo'];
+const ABA_AVAL = 'Avaliação';
+const CAB_AVAL = ['Chave', 'Atividade', 'Turma', 'Nome', 'Grupo', 'Pontos automáticos', 'Máximo automático',
+  'Pontos das abertas', 'Nota', 'Comentário', 'Atualizado em'];
+
+function codigoValido(c) {
+  return typeof c === 'string' && new RegExp('^(' + SITES.join('|') + ') · Aula \\d{2}$').test(c);
+}
+
+// Envio pelo site aberto dentro do Claude: abre uma aba de confirmação.
+// Também atende o painel (acao=dados) e o teste de conexão (acao=teste).
+function doGet(e) {
+  const p = (e && e.parameter) || {};
+  if (p.acao === 'teste') return json({ ok: true, professor: PROFESSOR });
+  if (p.acao === 'dados') return json(dados(p.senha));
+  if (!p.d) return pagina('Receptor ativo', 'Este endereço recebe as fichas dos estudantes de ' + PROFESSOR + '. Está funcionando.', true);
+  let d;
+  try {
+    d = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(p.d)).getDataAsString('UTF-8'));
+  } catch (err) {
+    return pagina('Não foi possível ler o envio', 'Volte ao site e toque em Enviar de novo.', false);
+  }
+  const r = salvar(d);
+  return pagina(r.titulo, r.texto, r.ok, d);
+}
+
+// Envio direto do site publicado e gravação das notas pelo painel: responde em JSON.
+function doPost(e) {
+  let r;
+  try {
+    const d = JSON.parse(e.postData.contents);
+    r = d && d.acao === 'nota' ? salvarNota(d) : salvar(d);
+  } catch (err) {
+    r = { ok: false, status: 'erro', titulo: 'Não foi possível ler o envio', texto: 'Tente enviar de novo.' };
+  }
+  return json(r);
+}
+
+function json(o) {
+  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
+}
+function senhaOk(s) { return typeof s === 'string' && s.length >= 6 && s === SENHA_PAINEL; }
+
+function salvar(dados) {
+  const nome = limpar(dados && dados.nome, 120).trim();
+  if (!dados || !codigoValido(dados.code) || !nome) {
+    return { ok: false, status: 'incompleto', titulo: 'Envio incompleto', texto: 'Confira o nome e a atividade e envie de novo.' };
+  }
+  const resp = {};
+  Object.keys(dados.ans || {}).slice(0, MAX_PERGUNTAS).forEach(function (k) {
+    const t = limpar(k, 200).trim();
+    if (t && FIXAS.indexOf(t) < 0 && t !== 'ID do envio') resp[t] = limpar(dados.ans[k], MAX_TEXTO);
+  });
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let aba = ss.getSheetByName(dados.code);
+    if (!aba) {
+      aba = ss.insertSheet(dados.code);
+      const cab0 = FIXAS.concat(Object.keys(resp)).concat(['ID do envio']);
+      aba.getRange(1, 1, 1, cab0.length).setValues([cab0]).setFontWeight('bold');
+      aba.setFrozenRows(1);
+    }
+    let cab = aba.getRange(1, 1, 1, Math.max(aba.getLastColumn(), 1)).getValues()[0].map(String);
+    const faltam = Object.keys(resp).concat(['ID do envio']).filter(function (t) { return cab.indexOf(t) < 0; });
+    if (faltam.length) {
+      if (aba.getMaxColumns() < cab.length + faltam.length) aba.insertColumnsAfter(aba.getMaxColumns(), cab.length + faltam.length - aba.getMaxColumns());
+      aba.getRange(1, cab.length + 1, 1, faltam.length).setValues([faltam]).setFontWeight('bold');
+      cab = cab.concat(faltam);
+    }
+    const idEnvio = limpar(dados.id, 60);
+    const colId = cab.indexOf('ID do envio') + 1;
+    if (idEnvio && aba.getLastRow() > 1) {
+      const ids = aba.getRange(2, colId, aba.getLastRow() - 1, 1).getValues().map(function (r) { return String(r[0]); });
+      if (ids.indexOf(idEnvio) >= 0) return { ok: true, status: 'repetido', titulo: 'Já recebido', texto: 'Esta resposta já tinha chegado.' };
+    }
+    const fixo = {
+      'Carimbo de data/hora': Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm:ss'),
+      'Nome completo': nome, 'Turma': limpar(dados.turma, 20), 'Grupo': limpar(dados.grupo, 20), 'ID do envio': idEnvio
+    };
+    const linha = cab.map(function (t) { return t in fixo ? fixo[t] : (t in resp ? resp[t] : ''); });
+    aba.appendRow(linha.map(seguro));
+  } finally {
+    lock.releaseLock();
+  }
+  return { ok: true, status: 'salvo', titulo: 'Resposta enviada!', texto: PROFESSOR + ' já recebeu.' };
+}
+
+// Dados para o Painel de avaliação
+function dados(senha) {
+  if (!senhaOk(senha)) return { ok: false, erro: 'senha', texto: 'Senha do painel incorreta.' };
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const abas = {};
+  ss.getSheets().forEach(function (sh) {
+    const n = sh.getName();
+    if (codigoValido(n) || n === ABA_AVAL || n === 'Alunos') abas[n] = sh.getLastRow() ? sh.getDataRange().getDisplayValues() : [];
+  });
+  return { ok: true, professor: PROFESSOR, planilha: ss.getUrl(), abas: abas };
+}
+
+// Correção feita no painel: grava ou atualiza a linha do envio na aba Avaliação
+function salvarNota(d) {
+  if (!senhaOk(d.senha)) return { ok: false, erro: 'senha', texto: 'Senha do painel incorreta.' };
+  const row = Array.isArray(d.linha) ? d.linha.slice(0, CAB_AVAL.length) : null;
+  if (!row || row.length !== CAB_AVAL.length || !row[0] || !codigoValido(row[1])) return { ok: false, erro: 'dados', texto: 'Correção incompleta.' };
+  const linha = row.map(function (v) { return seguro(limpar(v, 2000)); });
+  const lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let aba = ss.getSheetByName(ABA_AVAL);
+    if (!aba) {
+      aba = ss.insertSheet(ABA_AVAL);
+      aba.getRange(1, 1, 1, CAB_AVAL.length).setValues([CAB_AVAL]).setFontWeight('bold');
+      aba.setFrozenRows(1);
+    }
+    const n = aba.getLastRow();
+    const chaves = n > 1 ? aba.getRange(2, 1, n - 1, 1).getValues().map(function (r) { return String(r[0]); }) : [];
+    const i = chaves.indexOf(String(row[0]));
+    if (i >= 0) aba.getRange(i + 2, 1, 1, linha.length).setValues([linha]);
+    else aba.appendRow(linha);
+  } finally {
+    lock.releaseLock();
+  }
+  return { ok: true };
+}
+
+function limpar(v, max) { return String(v == null ? '' : v).replace(/[\u0000-\u0008]/g, '').slice(0, max); }
+function seguro(v) { return (typeof v === 'string' && /^[=+\-@]/.test(v)) ? "'" + v : v; }
+
+function pagina(titulo, texto, ok, dados) {
+  const quem = dados && dados.nome ? '<p class="q">' + esc(dados.nome) + ' · Turma ' + esc(dados.turma || '') + ' · ' + esc(dados.code || '') + '</p>' : '';
+  const html = '<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>' +
+    'body{margin:0;font-family:system-ui,sans-serif;background:#eef0e9;color:#17231d;display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px}' +
+    '.c{background:#fff;border-radius:18px;padding:28px;max-width:420px;text-align:center;box-shadow:0 10px 30px -18px rgba(0,0,0,.4)}' +
+    '.i{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff;background:' + (ok ? '#2b7a4b' : '#b03c35') + '}' +
+    'h1{font-size:1.5rem;margin:0 0 8px}p{margin:0 0 8px;line-height:1.5}.q{color:#556459;font-size:.9rem}</style></head><body><div class="c"><div class="i">' + (ok ? '✓' : '!') + '</div><h1>' + esc(titulo) + '</h1><p>' + esc(texto) + (ok ? ' Pode fechar esta aba.' : '') + '</p>' + quem + '</div></body></html>';
+  return HtmlService.createHtmlOutput(html).setTitle(titulo).addMetaTag('viewport', 'width=device-width, initial-scale=1');
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+/** Rode uma vez pelo editor (botão Executar) para autorizar o acesso a esta planilha antes de implantar. */
+function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetApp.getActiveSpreadsheet().getName()); }
+</script>
+<script src="portal.js"></script>
+<script>
+(function(){
+  const P=window.PORTAL,el=P.el,$=s=>document.querySelector(s);
+  const SERIES=['1º','2º','3º'],LETRAS=['A','B','C','D','E','F','G','H'];
+  function novaSenha(){const a='abcdefghjkmnpqrstuvwxyz23456789';const r=new Uint32Array(10);crypto.getRandomValues(r);return Array.from(r,x=>a[x%a.length]).join('');}
+  let C=Object.assign({nome:'',escola:'',sel:[],outras:'',grupos:8,r:'',senha:'',base:''},P.prof()||{});
+  if(!C.senha)C.senha=novaSenha();
+  const turmasDe=c=>c.sel.slice().sort((a,b)=>SERIES.indexOf(a.slice(0,2))-SERIES.indexOf(b.slice(0,2))||a.localeCompare(b,'pt-BR')).concat(String(c.outras||'').split(',').map(s=>s.trim()).filter(Boolean)).filter((t,i,arr)=>arr.indexOf(t)===i).slice(0,40);
+  function save(){C.turmas=turmasDe(C);P.salvarProf(C);update();}
+
+  // 1. nome
+  $('#pNome').value=C.nome;$('#pEscola').value=C.escola;
+  $('#pNome').oninput=e=>{C.nome=e.target.value;save();};$('#pEscola').oninput=e=>{C.escola=e.target.value;save();};
+  // 2. turmas
+  const series=$('#series');
+  SERIES.forEach(sr=>{const chips=el('div',{class:'chips',role:'group','aria-label':sr+' ano'});
+    LETRAS.forEach(l=>{const t=sr+l;const b=el('button',{type:'button',class:'chip','aria-pressed':String(C.sel.includes(t))},l);b.onclick=()=>{const on=C.sel.includes(t);C.sel=on?C.sel.filter(x=>x!==t):C.sel.concat(t);b.setAttribute('aria-pressed',String(!on));save();};chips.append(b);});
+    series.append(el('div',{class:'serie'},el('b',{},sr+' ano'),chips));});
+  $('#pOutras').value=C.outras;$('#pOutras').oninput=e=>{C.outras=e.target.value;save();};
+  $('#pGrupos').value=C.grupos;$('#pGrupos').oninput=e=>{const n=parseInt(e.target.value,10);C.grupos=isNaN(n)?8:Math.max(1,Math.min(20,n));save();};
+  // 3. receptor
+  const TPL=$('#tpl').textContent;
+  const codigo=()=>TPL.replace('__PROFESSOR__',()=>JSON.stringify((C.nome||'').trim()||'o professor')).replace('__SENHA__',()=>JSON.stringify(C.senha));
+  $('#novaSenha').onclick=()=>{C.senha=novaSenha();save();$('#codigoInfo').textContent='Senha nova. Se o receptor já estava implantado, cole o código de novo no Apps Script.';};
+  $('#copiaCodigo').onclick=e=>copiar(codigo(),e.currentTarget,$('#codigo'));
+  const rec=$('#pReceptor');if(C.r)rec.value=P.urlDoReceptor(C.r);
+  let teste=null;
+  rec.oninput=()=>{C.r=P.idDoReceptor(rec.value);teste=null;save();};
+  $('#testar').onclick=async()=>{
+    if(!C.r){teste={st:'no',t:'Esse endereço não parece o URL de um app da Web do Apps Script. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'};update();return;}
+    if(!P.standalone()){teste={st:'wait',t:'Dentro do Claude o portal não consegue falar com o Google. Toque em “Abrir o receptor em outra aba”: se aparecer “Receptor ativo”, está tudo certo.'};update();return;}
+    teste={st:'wait',t:'Testando…'};update();
+    try{const r=await fetch(P.urlDoReceptor(C.r)+'?acao=teste');const j=await r.json();teste=j&&j.ok?{st:'ok',t:'Receptor funcionando. As fichas vão para a planilha de '+j.professor+'.'}:{st:'no',t:'O endereço respondeu, mas não é este receptor. Confira o código colado no Apps Script.'};}
+    catch(err){teste={st:'no',t:'Não consegui falar com o receptor. Confira se a implantação está como “Qualquer pessoa” e se o URL termina em /exec.'};}
+    update();};
+  // 4. link
+  if(!P.standalone())$('#baseField').hidden=false;
+  $('#pBase').value=C.base||'';$('#pBase').oninput=e=>{C.base=e.target.value.trim();save();};
+
+  function qrSvg(text){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true});}catch(e){return '';}}
+  function copiar(text,btn,alvo){const done=()=>{const t=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=t,1600);};
+    const sel=()=>{if(!alvo)return;const r=document.createRange();r.selectNodeContents(alvo);const s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selecionado: use Ctrl+C';setTimeout(()=>btn.textContent='Copiar',2400);};
+    try{navigator.clipboard.writeText(text).then(done).catch(sel);}catch(e){sel();}}
+  function projetar(link){const o=el('div',{class:'overlay',role:'dialog','aria-label':'QR code da turma'},el('h2',{},'Turma de '+((C.nome||'').trim()||'professor')),el('div',{class:'qr'}),el('span',{class:'link'},link),el('button',{type:'button',class:'btn',onclick:()=>o.remove()},'Fechar'));o.querySelector('.qr').innerHTML=qrSvg(link);o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
+
+  function update(){
+    C.turmas=turmasDe(C);
+    const okNome=!!(C.nome||'').trim(),okT=C.turmas.length>0,okR=!!C.r;
+    $('#s1').classList.toggle('done',okNome);$('#s2').classList.toggle('done',okT);$('#s3').classList.toggle('done',okR);
+    $('#senha').textContent=C.senha;$('#codigo').textContent=codigo();
+    const ab=$('#abrirReceptor');ab.hidden=!okR;if(okR)ab.href=P.urlDoReceptor(C.r);
+    const st=$('#recStatus');const T=teste||(okR?{st:'ok',t:'Endereço reconhecido. Use “Testar o receptor” para conferir.'}:(rec.value.trim()?{st:'no',t:'Esse endereço não parece o URL de um app da Web. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'}:{st:'',t:'Cole o URL para ligar as fichas à sua planilha.'}));
+    st.className='status '+T.st;st.lastChild.textContent=T.t;
+    // saída
+    const out=$('#saida');out.innerHTML='';
+    const pronto=okNome&&okT&&okR;$('#s4').classList.toggle('done',pronto);
+    if(!pronto){out.append(el('p',{class:'fb warn'},'Complete '+[!okNome&&'o seu nome',!okT&&'as turmas',!okR&&'o URL do receptor'].filter(Boolean).join(', ')+' para gerar o link da turma.'));}
+    else{
+      const cod=P.codigoDaTurma({n:C.nome,e:C.escola,r:C.r,t:C.turmas,g:C.grupos});const link=P.linkDaTurma(C);
+      if(link){
+        const linkEl=el('span',{class:'link'},link);
+        out.append(el('div',{class:'row',style:'align-items:flex-start;gap:18px'},el('div',{class:'qr'}),el('div',{class:'stack',style:'gap:10px;flex:1 1 240px;min-width:0'},el('span',{class:'label'},'Link da turma'),linkEl,
+          el('div',{class:'row'},el('button',{type:'button',class:'btn primary sm',onclick:e=>copiar(link,e.currentTarget,linkEl)},'Copiar link'),el('button',{type:'button',class:'btn sm',onclick:()=>projetar(link)},'Projetar QR code'),el('a',{class:'btn sm ghost',href:link,target:'_blank',rel:'noopener'},'Abrir como estudante')))));
+        out.querySelector('.qr').innerHTML=qrSvg(link);
+        const msg='Turma, para usar os sites de Biologia e enviar as fichas para mim, abram este link no celular:\n'+link;
+        const mEl=el('div',{class:'msgbox'},msg);
+        out.append(el('div',{class:'stack',style:'gap:6px'},el('span',{class:'label'},'Mensagem pronta para enviar'),mEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(msg,e.currentTarget,mEl)},'Copiar mensagem'))));
+      }else{
+        out.append(el('p',{class:'fb warn'},'Informe o endereço do portal publicado (acima) para gerar o link e o QR code. Enquanto isso, os estudantes podem entrar com o código da turma.'));
+      }
+      const cEl=el('div',{class:'msgbox mono',style:'font-size:.78rem'},cod);
+      out.append(el('details',{},el('summary',{style:'cursor:pointer;font-weight:700'},'Código da turma (para colar no site)'),el('div',{class:'stack',style:'gap:8px;margin-top:8px'},el('p',{class:'note'},'Quem não conseguir abrir o link pode colar este código no quadro “Entre na sua turma”, na página inicial, ou no topo de qualquer ficha.'),cEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(cod,e.currentTarget,cEl)},'Copiar código')))));
+    }
+    // situação
+    const ck=$('#check');ck.innerHTML='';
+    [['Nome',okNome],['Turmas'+(okT?' ('+C.turmas.length+')':''),okT],['Receptor da planilha',okR],['Link da turma',pronto]].forEach(([t,ok])=>ck.append(el('li',{class:ok?'ok':''},t)));
+    // prévia
+    const pv=$('#previa');pv.innerHTML='';
+    pv.append(el('div',{class:'panel stack',style:'gap:10px;padding:14px;box-shadow:none;background:var(--bg)'},
+      el('span',{class:'note'},'Esta ficha vai para ',el('strong',{},(C.nome||'').trim()||'(seu nome)')),
+      el('span',{class:'label'},'Turma'),el('div',{class:'chips'},(C.turmas.length?C.turmas:['—']).slice(0,9).map(t=>el('span',{class:'chip',style:'cursor:default'},t)),C.turmas.length>9?el('span',{class:'note'},'+'+(C.turmas.length-9)):null),
+      el('span',{class:'label'},'Grupo'),el('span',{class:'note'},'1 a '+C.grupos+' ou “Sem grupo”'),
+      el('span',{class:'btn primary',style:'pointer-events:none;align-self:flex-start'},'Enviar para '+((C.nome||'').trim()||'…'))));
+  }
+  save();
+})();
+</script>
+
+</body></html>

@@ -58,4 +58,13 @@ shutil.copytree(OUT / 'icons', SITE / 'icons')
 (SITE / 'receptor.gs').write_text(gs)
 shutil.copy(SRC / 'teste.html', SITE / 'teste.html')
 (SITE / '_headers').write_text('/*.html\n  Cache-Control: no-cache\n/portal.js\n  Cache-Control: no-cache\n/specs.js\n  Cache-Control: no-cache\n')
+
+# Cópia na raiz do repositório: o Cloudflare publica certo com a pasta de saída "site" ou em branco ("/")
+for p in SITE.iterdir():
+    alvo = R / p.name
+    if p.is_dir():
+        if alvo.exists(): shutil.rmtree(alvo)
+        shutil.copytree(p, alvo)
+    else:
+        shutil.copy(p, alvo)
 print('ok', sorted(p.name for p in SITE.iterdir()))
