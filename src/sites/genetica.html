@@ -267,7 +267,7 @@ svg text{font-family:var(--f-body)}
       <div class="stack" style="gap:18px">
         <span class="eyebrow" style="color:var(--her)">Unidade de Genética · Ensino Médio</span>
         <h1>Genética em <span>investigação</span></h1>
-        <p class="lede">Simuladores, modelos e desafios para usar no projetor e no celular Cada aula traz tudo o que é preciso: a pergunta para começar, as informações do caso, a ferramenta e a ficha de respostas.</p>
+        <p class="lede">Simuladores, modelos e desafios para fazer no celular ou no computador. Cada aula traz tudo o que é preciso: a pergunta para começar, as informações do caso, a ferramenta e a ficha de respostas.</p>
         <div class="hero-facts">
           <div><b>18</b><span>aulas</span></div>
           <div><b>16</b><span>ferramentas</span></div>
@@ -427,7 +427,7 @@ const icon=(id,size=24)=>{const e=document.createElementNS(NS,'svg');e.setAttrib
 const TEMAS={her:'Tema 28 · Genética mendeliana',int:'Tema 29 · Interações gênicas e herança quantitativa',dna:'Tema 30 · DNA e replicação',exp:'Tema 30 · Expressão gênica e mutações',rev:'Temas 28 a 30 · Revisão e avaliação'};
 const TOOLS=[
   {id:'mendel',n:1,t:'her',ap:1,pg:'324–328',title:'O arquivo de Mendel',desc:'Ordene os registros, veja as gerações P, F1 e F2 e teste três hipóteses contra os dados.'},
-  {id:'loteria',n:2,t:'her',ap:2,pg:'326–330',title:'A loteria dos alelos',desc:'Dois sacos, uma ficha A e uma a em cada. Sorteie com reposição e compare a amostra com a previsão.'},
+  {id:'loteria',n:2,t:'her',ap:2,pg:'326–330',title:'A loteria dos alelos',desc:'Dois sacos virtuais, uma ficha A e uma a em cada. Sorteie com reposição e compare a amostra com a previsão.'},
   {id:'agencia',n:3,t:'her',ap:2,pg:'331–334',title:'Agência de previsões',desc:'Monte previsões com “e” (produto) e “ou” (soma) e teste se o passado muda o próximo sorteio.'},
   {id:'heredo',n:4,t:'her',ap:3,pg:'334–335',title:'Detetives de heredogramas',desc:'Um pedigree fictício para separar o que é certo, o que é possível e o que não se sustenta.'},
   {id:'galeria',n:5,t:'her',ap:4,pg:'330–331',title:'Galeria das dominâncias',desc:'Dominância completa, incompleta e codominância lado a lado, da F1 até a F2.'},
@@ -435,14 +435,14 @@ const TOOLS=[
   {id:'abo',n:7,t:'her',ap:4,pg:'338–340',title:'Catálogo ABO',desc:'Três alelos na população, dois em cada pessoa. Monte genótipos, veja os antígenos e cruze.'},
   {id:'cristas',n:8,t:'int',ap:6,pg:'341–343',title:'Oficina das cristas',desc:'Dois genes, um mesmo caráter: as cristas noz, rosa, ervilha e simples.'},
   {id:'pigmento',n:9,t:'int',ap:6,pg:'343–345',title:'A fábrica de pigmentos',desc:'Labradores e abóboras: quando um gene mascara o efeito de outro (epistasia).'},
-  {id:'jardim',n:10,t:'int',ap:7,pg:'346–349',title:'Jardim das muitas possibilidades',desc:'Seis moedas por descendente, um histograma da turma e o efeito do ambiente sobre o mesmo genótipo.'},
+  {id:'jardim',n:10,t:'int',ap:7,pg:'346–349',title:'Jardim das muitas possibilidades',desc:'Seis moedas virtuais por descendente, o histograma de uma turma simulada e o efeito do ambiente sobre o mesmo genótipo.'},
   {id:'redacao',n:11,t:'int',ap:7,pg:'348–350',title:'Checador de manchetes',desc:'Encontre os erros de uma manchete determinista e escreva a nota de correção.'},
-  {id:'dna',n:12,t:'dna',ap:8,pg:'351–353',title:'DNA em escala de mesa',desc:'Monte a fita complementar, marque 5′ e 3′ e passe pela lista de auditoria.'},
+  {id:'dna',n:12,t:'dna',ap:8,pg:'351–353',title:'DNA peça por peça',desc:'Monte a fita complementar, marque 5′ e 3′ e passe pela lista de auditoria.'},
   {id:'copia',n:13,t:'dna',ap:8,pg:'353',title:'O DNA faz cópias de quê?',desc:'Três propostas de cópia por duas gerações e o experimento de Meselson e Stahl.'},
   {id:'correio',n:14,t:'exp',ap:9,pg:'354–355',title:'Correio do gene',desc:'Copie a fita molde em RNAm no “núcleo” e leve só o RNAm ao “citoplasma”.'},
   {id:'fabrica',n:15,t:'exp',ap:9,pg:'356–358',title:'Fábrica de proteínas',desc:'O ribossomo lê códon a códon, os RNAt chegam com os aminoácidos e a cadeia cresce.'},
   {id:'mutacao',n:16,t:'exp',ap:10,pg:'359–361',title:'Missão revisão das mutações',desc:'Quatro envelopes que só abrem com justificativa, e um laboratório para editar sequências.'},
-  {id:'museu',n:17,t:'rev',ap:11,pg:'324–361',title:'Museu dos modelos genéticos',desc:'Quatro estações de revisão e um quiz com placar por grupo e explicação de cada resposta.'},
+  {id:'museu',n:17,t:'rev',ap:11,pg:'324–361',title:'Museu dos modelos genéticos',desc:'Quatro estações de revisão e um quiz com a explicação de cada resposta.'},
   {id:'avaliacao',n:18,t:'rev',ap:12,pg:'339–340; 349; 361',title:'Síntese e devolutiva',desc:'A avaliação individual em versão digital, com a minitabela de códons e o cronômetro.'},
 ];
 const inited={};const INIT={};
@@ -618,7 +618,7 @@ INIT.mendel=root=>{
 
 // ================= Aula 2: A loteria dos alelos =================
 INIT.loteria=root=>{
-  root.append(head('Aula 2 · Livro p. 326–330','A loteria dos alelos','Modelo: gene autossômico, alelos A e a, dominância completa, gametas com a mesma probabilidade. Cada saco é um genitor Aa: uma ficha A e uma ficha a. Retire uma ficha de cada saco, registre e devolva.'));
+  root.append(head('Aula 2 · Livro p. 326–330','A loteria dos alelos','Modelo: gene autossômico, alelos A e a, dominância completa, gametas com a mesma probabilidade. Cada saco virtual é um genitor Aa: uma ficha A e uma ficha a. O site retira uma ficha de cada saco, registra e devolve.'));
   const grid=h('div',{class:'cols wl'});root.append(grid);
   let draws=store.get('lot-draws',[]);let anim=false;
   const L=panel();const R=panel();grid.append(L,R);
@@ -628,11 +628,7 @@ INIT.loteria=root=>{
   const reset=h('button',{class:'btn ghost sm'},'Apagar os sorteios');
   L.append(h('h3',{},'Sorteio com reposição'),
     h('p',{class:'note'},'Cada saco é um genitor Aa. Sorteie uma ficha de cada saco: as duas formam o genótipo de um descendente. “Com reposição” quer dizer que, depois de anotar, as fichas voltam para os sacos. Assim cada sorteio tem sempre a mesma chance: metade A, metade a.'),
-    svg,last,h('div',{class:'row'},btn1,btn10,reset),
-    h('div',{class:'stack',style:'gap:8px;border-top:1px dashed var(--line);padding-top:12px'},
-      h('span',{class:'label'},'Fez o sorteio com sacos e fichas de verdade?'),
-      h('p',{class:'note'},'Registre aqui cada descendente sorteado na mesa: a cada retirada, toque no genótipo que saiu (por exemplo, ficha A + ficha a = Aa). O resultado entra na tabela e no gráfico de “Registro e comparação”, junto com os sorteios feitos no site.'),
-      h('div',{class:'row'},...['AA','Aa','aa'].map(gn=>h('button',{class:'btn sm',onclick:()=>{draws.push(gn);save();upd();}},'+ '+gn)),h('button',{class:'btn sm ghost',onclick:()=>{draws.pop();save();upd();}},'Desfazer o último'))));
+    svg,last,h('div',{class:'row'},btn1,btn10,reset));
   function bag(x,lab,pick){const g=s('g',{transform:`translate(${x} 20)`});
     g.append(s('path',{d:'M20,40 q-20,70 10,140 h140 q30,-70 10,-140z',fill:'var(--surface-2)',stroke:'var(--muted)','stroke-width':2}));
     g.append(s('path',{d:'M30,40 q70,-26 140,0',fill:'none',stroke:'var(--muted)','stroke-width':4,'stroke-linecap':'round'}));
@@ -655,21 +651,20 @@ INIT.loteria=root=>{
   // Direita: tabela, gráfico e turma
   let turma=store.get('lot-turma',[]);
   const tbl=h('div',{class:'tbl-wrap'});const ch=s('svg',{class:'chart',role:'img','aria-label':'Frequências observadas e esperadas'});const msg=h('div',{});
-  const gin={AA:h('input',{type:'text',inputmode:'numeric',class:'num',id:'lot-gAA','aria-label':'AA de outro grupo'}),Aa:h('input',{type:'text',inputmode:'numeric',class:'num',id:'lot-gAa','aria-label':'Aa de outro grupo'}),aa:h('input',{type:'text',inputmode:'numeric',class:'num',id:'lot-gaa','aria-label':'aa de outro grupo'})};
   const tmsg=h('p',{class:'note'});
+  const simTurma=()=>{turma=[];for(let g=0;g<9;g++){const v=[0,0,0];for(let k=0;k<24;k++){const a=(Math.random()<.5)+(Math.random()<.5);v[a===2?0:a===1?1:2]++;}turma.push(v);}store.set('lot-turma',turma);tmsg.textContent='Turma simulada: 9 colegas virtuais com 24 sorteios cada, somados aos seus.';upd();};
   R.append(h('h3',{},'Registro e comparação'),tbl,ch,msg,
-    h('div',{class:'stack',style:'gap:8px;border-top:1px solid var(--line);padding-top:12px'},h('span',{class:'label'},'Total da turma: some os resultados dos outros grupos'),
-      h('div',{class:'row'},...['AA','Aa','aa'].map(k=>h('label',{class:'stack',style:'gap:2px'},h('span',{class:'mono'},k),gin[k])),
-        h('button',{class:'btn sm',style:'align-self:flex-end',onclick:()=>{const v=['AA','Aa','aa'].map(k=>parseInt(gin[k].value,10));if(v.some(x=>isNaN(x)||x<0)){tmsg.textContent='Preencha AA, Aa e aa do grupo com números inteiros.';return;}turma.push(v);store.set('lot-turma',turma);Object.values(gin).forEach(i=>i.value='');tmsg.textContent='Grupo somado ao total da turma.';upd();}},'Somar grupo'),
-        h('button',{class:'btn sm ghost',style:'align-self:flex-end',onclick:()=>{turma=[];store.set('lot-turma',turma);tmsg.textContent='Total da turma zerado.';upd();}},'Zerar turma')),tmsg));
+    h('div',{class:'stack',style:'gap:8px;border-top:1px solid var(--line);padding-top:12px'},h('span',{class:'label'},'E se a turma toda sorteasse?'),
+      h('p',{class:'note'},'Simule 9 colegas fazendo 24 sorteios cada. A coluna “Turma” soma os sorteios deles aos seus, para comparar uma amostra pequena com uma maior.'),
+      h('div',{class:'row'},h('button',{class:'btn sm',onclick:simTurma},'Simular a turma'),h('button',{class:'btn sm ghost',onclick:()=>{turma=[];store.set('lot-turma',turma);tmsg.textContent='Turma simulada apagada.';upd();}},'Apagar a turma')),tmsg));
   function upd(){const c={AA:0,Aa:0,aa:0};draws.forEach(d=>c[d]++);const n=draws.length;
     const t={AA:c.AA,Aa:c.Aa,aa:c.aa};turma.forEach(([a,b,cc])=>{t.AA+=a;t.Aa+=b;t.aa+=cc;});const nt=t.AA+t.Aa+t.aa;
     last.innerHTML='';draws.slice(-24).forEach(d=>last.append(h('span',{class:'pill'+(d==='aa'?' ex':'')},d)));
-    tbl.innerHTML='';tbl.append(h('table',{class:'data'},h('tr',{},h('th',{},'Genótipo'),h('th',{class:'n'},'Grupo'),h('th',{class:'n'},'Freq. do grupo'),h('th',{class:'n'},'Turma'),h('th',{class:'n'},'Esperado')),
+    tbl.innerHTML='';tbl.append(h('table',{class:'data'},h('tr',{},h('th',{},'Genótipo'),h('th',{class:'n'},'Seus'),h('th',{class:'n'},'Sua freq.'),h('th',{class:'n'},'Turma'),h('th',{class:'n'},'Esperado')),
       ...['AA','Aa','aa'].map((k,i)=>h('tr',{},h('td',{class:'al'},k),h('td',{class:'n'},c[k]),h('td',{class:'n'},n?pct(c[k]/n,0):'–'),h('td',{class:'n'},nt?t[k]+' ('+pct(t[k]/nt,0)+')':'–'),h('td',{class:'n'},['1/4','1/2','1/4'][i]))),
       h('tr',{},h('td',{},'Total'),h('td',{class:'n'},n),h('td',{}),h('td',{class:'n'},nt),h('td',{}))));
-    barChart(ch,{cats:['AA','Aa','aa'],series:[{name:'Grupo ('+n+')',color:'var(--tema)',values:['AA','Aa','aa'].map(k=>n?c[k]/n:0)},{name:'Turma ('+nt+')',color:'var(--dna)',values:['AA','Aa','aa'].map(k=>nt?t[k]/nt:0)},{name:'Esperado',color:'var(--muted)',dash:true,values:[.25,.5,.25]}],yMax:.7,yLabel:'Frequência',fmtY:v=>pct(v,0),height:240});
-    msg.innerHTML='';if(n)msg.append(h('div',{class:'fb info'},`Fenótipo recessivo (aa) no grupo: ${c.aa} de ${n} (${pct(c.aa/n,0)}). Esperado: 1/4 = 25%. `+(n<24?'Continue até 24.':'Uma amostra que se afasta de 3 : 1 não refuta sozinha o modelo. Compare com o total da turma: o que muda com uma amostra maior?')));}
+    barChart(ch,{cats:['AA','Aa','aa'],series:[{name:'Seus ('+n+')',color:'var(--tema)',values:['AA','Aa','aa'].map(k=>n?c[k]/n:0)},{name:'Turma ('+nt+')',color:'var(--dna)',values:['AA','Aa','aa'].map(k=>nt?t[k]/nt:0)},{name:'Esperado',color:'var(--muted)',dash:true,values:[.25,.5,.25]}],yMax:.7,yLabel:'Frequência',fmtY:v=>pct(v,0),height:240});
+    msg.innerHTML='';if(n)msg.append(h('div',{class:'fb info'},`Fenótipo recessivo (aa) nos seus sorteios: ${c.aa} de ${n} (${pct(c.aa/n,0)}). Esperado: 1/4 = 25%. `+(n<24?'Continue até 24.':'Uma amostra que se afasta de 3 : 1 não refuta sozinha o modelo. Simule a turma e compare: o que muda com uma amostra maior?')));}
   upd();
   // Meiose
   const mz=s('svg',{viewBox:'0 0 600 170',class:'chart',role:'img','aria-label':'Na meiose, os cromossomos homólogos se separam e cada gameta recebe um alelo do locus'});
@@ -680,7 +675,7 @@ INIT.loteria=root=>{
   <circle cx="470" cy="85" r="42" fill="var(--surface)" stroke="var(--tema)" stroke-width="2"/>${chrom(466,85,'a','#e295b9')}<text x="470" y="146" text-anchor="middle" font-size="12" fill="var(--muted)">gameta · 1/2</text></g>`;
   root.append(h('div',{class:'cols'},panel(h('h3',{},'De onde vem a ficha?'),mz,h('p',{class:'note'},'Os homólogos se separam na meiose; cada gameta recebe um alelo do locus. Esquema simplificado: omite a duplicação dos cromossomos e a segunda divisão.')),
     panel(h('h3',{},'Quadro de Punnett de Aa × Aa'),punnett(parseGeno('Aa'),parseGeno('Aa'),{cell:(td,z)=>{td.append(h('span',{class:'g'},genoTxt(z)),svgOf(seedSv(19,15,10,z[0].includes('A')?PEA.Y:PEA.G),'0 0 38 30'));}}),
-      h('p',{class:'note'},'Quatro combinações igualmente prováveis: 1/4 AA, 1/2 Aa (Aa e aA são o mesmo genótipo), 1/4 aa. Cor das sementes só para ilustrar o fenótipo dominante e o recessivo.'),model('Sorteio computacional com probabilidade 1/2 para cada ficha. Não substitui o sorteio com os sacos.'))));
+      h('p',{class:'note'},'Quatro combinações igualmente prováveis: 1/4 AA, 1/2 Aa (Aa e aA são o mesmo genótipo), 1/4 aa. Cor das sementes só para ilustrar o fenótipo dominante e o recessivo.'),model('Sorteio computacional com probabilidade 1/2 para cada ficha, como num sorteio com sacos e fichas.'))));
 };
 
 // ================= Aula 3: Agência de previsões =================
@@ -732,7 +727,7 @@ INIT.heredo=root=>{
   const grid=h('div',{class:'cols wl'});root.append(grid);
   const L=panel(h('h3',{},'O heredograma'));const R=panel(h('h3',{},'Genótipos'));grid.append(L,R);
   const svg=s('svg',{viewBox:'0 0 580 330',class:'chart',role:'img','aria-label':'Heredograma fictício com duas gerações'});
-  const cover=h('div',{class:'stack',style:'align-items:flex-start'},h('div',{class:'callout stack',style:'gap:6px'},h('strong',{},'Descrição do caso'),h('p',{},'I-1 e I-2 não apresentam o fenótipo investigado. Eles têm três descendentes: II-1, com o fenótipo; II-2 e II-3, sem ele.'),h('p',{},'I-1 é representado por quadrado e I-2 por círculo. II-1 é representada por círculo; II-2 e II-3, por quadrados. Preencha o símbolo somente quando o fenótipo estiver presente.'),h('p',{},'Desenhem o heredograma com as gerações e os indivíduos numerados. Depois comparem com o desenho daqui.')),h('button',{class:'btn primary',onclick:()=>{shown=true;store.set('her-shown',true);cover.hidden=true;svg.style.display='';draw();}},'Mostrar o heredograma'));
+  const cover=h('div',{class:'stack',style:'align-items:flex-start'},h('div',{class:'callout stack',style:'gap:6px'},h('strong',{},'Descrição do caso'),h('p',{},'I-1 e I-2 não apresentam o fenótipo investigado. Eles têm três descendentes: II-1, com o fenótipo; II-2 e II-3, sem ele.'),h('p',{},'I-1 é representado por quadrado e I-2 por círculo. II-1 é representada por círculo; II-2 e II-3, por quadrados. Preencha o símbolo somente quando o fenótipo estiver presente.'),h('p',{},'Antes de abrir o desenho, imagine o heredograma: quantas gerações, quantos indivíduos e quais símbolos ficam preenchidos. Depois mostre o heredograma e confira.')),h('button',{class:'btn primary',onclick:()=>{shown=true;store.set('her-shown',true);cover.hidden=true;svg.style.display='';draw();}},'Mostrar o heredograma'));
   L.append(cover,svg);if(!shown)svg.style.display='none';else cover.hidden=true;
   const hipSel=seg([['rec','Hipótese: recessiva'],['dom','Hipótese: dominante']],hip,v=>{hip=v;store.set('her-hip',v);draw();});
   const hipOut=h('div',{});L.append(h('span',{class:'label'},'Teste as duas hipóteses'),hipSel,hipOut);
@@ -939,25 +934,24 @@ INIT.jardim=root=>{
   const L=panel(h('h3',{},'Sorteie um descendente'));const R=panel(h('h3',{},'Histograma da turma'));grid.append(L,R);
   const coins=h('div',{class:'stack',style:'gap:6px'});const lastOut=h('div',{});
   L.append(h('p',{class:'note'},'Seis moedas: duas para A/a, duas para B/b, duas para C/c (uma de cada genitor). 1 = maiúscula, 0 = minúscula.'),coins,lastOut,
-    h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{one();upd();}},'Sortear 1'),h('button',{class:'btn',onclick:()=>{for(let i=0;i<8;i++)one(i<7);upd();}},'Sortear 8 (um grupo)'),h('button',{class:'btn ghost sm',onclick:()=>{off=[];store.set('jar-off',off);coins.innerHTML='';lastOut.innerHTML='';upd();}},'Apagar')));
+    h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{one();upd();}},'Sortear 1'),h('button',{class:'btn',onclick:()=>{for(let i=0;i<8;i++)one(i<7);upd();}},'Sortear 8'),h('button',{class:'btn ghost sm',onclick:()=>{off=[];store.set('jar-off',off);coins.innerHTML='';lastOut.innerHTML='';upd();}},'Apagar')));
   function one(quiet){const bits=[...Array(6)].map(()=>Math.random()<.5?1:0);const L3=['A','B','C'];const gt=L3.map((l,i)=>[bits[2*i],bits[2*i+1]].map(b=>b?l:l.toLowerCase()).sort((x,y)=>ORD(x)-ORD(y)).join('')).join('');const idx=bits.reduce((a,b)=>a+b,0);off.push({gt,idx});store.set('jar-off',off);
     if(!quiet){coins.innerHTML='';coins.append(h('div',{class:'row'},...bits.map((b,i)=>h('span',{class:'gam',style:b?'background:var(--int);color:var(--surface);border-color:var(--int)':''},(b?L3[Math.floor(i/2)]:L3[Math.floor(i/2)].toLowerCase())))));
       lastOut.innerHTML='';const sv=svgOf(`<rect width="120" height="90" fill="#eef3e6"/><rect y="78" width="120" height="12" fill="#a87b4f"/>${seedlingSv(60,78,14+idx*9)}`,'0 0 120 90','ilu ilu-sm');lastOut.append(h('div',{class:'row'},sv,h('div',{class:'stack',style:'gap:2px'},h('span',{class:'al al-big'},gt),h('strong',{},'Índice genético: '+idx+' unidade'+(idx===1?'':'s')))));}}
-  // entrada manual da turma
-  const man=h('div',{class:'row'});const ins=TEO.map((_,i)=>h('input',{type:'text',inputmode:'numeric',class:'num',id:'jar-m'+i,'aria-label':'Contagem do índice '+i,value:turma?String(turma[i]):''}));
-  man.append(...ins.map((x,i)=>h('label',{class:'stack',style:'gap:2px;align-items:center'},h('span',{class:'mono'},String(i)),x)));
+  // turma simulada
   const ch=s('svg',{class:'chart',role:'img','aria-label':'Histograma do índice genético'});const msg=h('p',{class:'note'});
-  R.append(h('span',{class:'label'},'Contagem digitada da turma (opcional; se vazia, usa os sorteios daqui)'),man,h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const v=ins.map(x=>parseInt(x.value,10));if(v.some(x=>isNaN(x)||x<0)){msg.textContent='Preencha os sete valores com números inteiros.';return;}turma=v;store.set('jar-turma',v);upd();}},'Usar contagem da turma'),h('button',{class:'btn sm ghost',onclick:()=>{turma=null;store.set('jar-turma',null);ins.forEach(x=>x.value='');upd();}},'Limpar contagem')),ch,msg);
+  const simT=()=>{const v=TEO.map(()=>0);for(let k=0;k<240;k++){let x=0;for(let b=0;b<6;b++)x+=Math.random()<.5?1:0;v[x]++;}turma=v;store.set('jar-turma',v);upd();};
+  R.append(h('p',{class:'note'},'O histograma mostra os seus sorteios. Para ver uma amostra grande, simule uma turma de 30 estudantes com 8 descendentes cada.'),h('div',{class:'row'},h('button',{class:'btn sm',onclick:simT},'Simular a turma (240 descendentes)'),h('button',{class:'btn sm ghost',onclick:()=>{turma=null;store.set('jar-turma',null);upd();}},'Voltar aos meus sorteios')),ch,msg);
   function upd(){const c=turma||TEO.map((_,i)=>off.filter(o=>o.idx===i).length);const n=c.reduce((a,b)=>a+b,0);
-    barChart(ch,{cats:TEO.map((_,i)=>String(i)),series:[{name:turma?'Turma (digitado)':'Sorteios ('+n+')',color:'var(--int)',values:c},{name:'Esperado para '+n,color:'var(--muted)',dash:true,values:TEO.map(t=>t/64*n)}],yMax:Math.max(1,...c,...TEO.map(t=>t/64*n))*1.15,xLabel:'Índice genético (unidades)',yLabel:'Frequência',height:270});
-    msg.textContent=n?`${n} descendentes. Distribuição teórica: 1 : 6 : 15 : 20 : 15 : 6 : 1 (em 64). Amostras da turma podem se afastar dela.`:'Sorteie descendentes ou digite a contagem da turma.';}
+    barChart(ch,{cats:TEO.map((_,i)=>String(i)),series:[{name:turma?'Turma simulada ('+n+')':'Seus sorteios ('+n+')',color:'var(--int)',values:c},{name:'Esperado para '+n,color:'var(--muted)',dash:true,values:TEO.map(t=>t/64*n)}],yMax:Math.max(1,...c,...TEO.map(t=>t/64*n))*1.15,xLabel:'Índice genético (unidades)',yLabel:'Frequência',height:270});
+    msg.textContent=n?`${n} descendentes. Distribuição teórica: 1 : 6 : 15 : 20 : 15 : 6 : 1 (em 64). Amostras pequenas podem se afastar dela.`:'Sorteie descendentes ou simule a turma.';}
   upd();
   // Ambiente
-  const E=panel(h('h3',{},'Mesmo genótipo, ambientes diferentes'),h('p',{class:'note'},'Os cartões ambientais −1, 0 e +1 são aplicados ao MESMO genótipo. O ajuste é ilustrativo, não uma estimativa de efeitos reais.'));root.append(E);
+  const E=panel(h('h3',{},'Mesmo genótipo, ambientes diferentes'),h('p',{class:'note'},'Os ambientes −1 (pobre), 0 e +1 (rico) são aplicados ao MESMO genótipo. O ajuste é ilustrativo, não uma estimativa de efeitos reais.'));root.append(E);
   let gi=store.get('jar-gi',3);const envBox=h('div',{});
   const drawE=()=>{envBox.innerHTML='';const sv=s('svg',{viewBox:'0 0 600 210',class:'chart',role:'img','aria-label':'Mesmo genótipo em três ambientes'});
     sv.append(s('rect',{width:600,height:210,fill:'var(--surface)'}));
-    [[-1,'Cartão −1','#c9a26a'],[0,'Cartão 0','#a87b4f'],[1,'Cartão +1','#7a5a3a']].forEach(([d,t,soil],k)=>{const x=100+k*200;const v=gi+d;
+    [[-1,'Ambiente −1','#c9a26a'],[0,'Ambiente 0','#a87b4f'],[1,'Ambiente +1','#7a5a3a']].forEach(([d,t,soil],k)=>{const x=100+k*200;const v=gi+d;
       sv.append(s('rect',{x:x-80,y:160,width:160,height:22,fill:soil,rx:4}));const pl=s('g');pl.innerHTML=seedlingSv(x,160,16+v*16);sv.append(pl);
       sv.append(s('text',{x,y:200,'text-anchor':'middle','font-size':13,'font-weight':700,fill:'var(--ink)'},t+' → fenótipo '+v));});
     envBox.append(sv,h('p',{class:'callout'},'O genótipo (índice '+gi+') é o mesmo nas três plantas. O fenótipo muda com o ambiente. Fenótipo = genótipo + ambiente (e a interação entre eles).'));};
@@ -1017,9 +1011,9 @@ function codonTable(hlCodon){const t=h('table',{class:'data',style:'font-size:.7
   return h('div',{class:'tbl-wrap'},t);}
 const clean=s0=>String(s0||'').toUpperCase().replace(/[^ACGTU]/g,'');
 
-// ================= Aula 12: DNA em escala de mesa =================
+// ================= Aula 12: DNA peça por peça =================
 INIT.dna=root=>{
-  root.append(head('Aula 12 · Livro p. 351–353','DNA em escala de mesa','Um nucleotídeo reúne fosfato, desoxirribose e uma base. Monte a segunda fita, complementar e antiparalela à primeira, e marque as extremidades 5′ e 3′.'));
+  root.append(head('Aula 12 · Livro p. 351–353','DNA peça por peça','Um nucleotídeo reúne fosfato, desoxirribose e uma base. Monte a segunda fita, complementar e antiparalela à primeira, e marque as extremidades 5′ e 3′.'));
   const pic=panel(h('h3',{},'As peças do modelo'));root.append(pic);
   const sv=s('svg',{viewBox:'0 0 620 250',class:'chart',role:'img','aria-label':'Esquema de quatro pares de nucleotídeos com fosfato, açúcar e bases, fitas antiparalelas'});pic.append(sv);
   (function(){sv.append(s('rect',{width:620,height:250,fill:'var(--surface)'}));const top=['A','T','G','C'];const cB={A:'var(--bA)',T:'var(--bT)',C:'var(--bC)',G:'var(--bG)'};
@@ -1053,13 +1047,13 @@ INIT.dna=root=>{
     const bonds=top.split('').reduce((a,b)=>a+((b==='A'||b==='T')?2:3),0);
     const row=(q,ok,msg)=>h('tr',{},h('td',{},q),h('td',{},h('span',{class:'pill '+(ok===null?'':ok?'ok':'no')},ok===null?'—':ok?'Sim':'Revisar')),h('td',{class:'note'},msg));
     aud.innerHTML='';aud.append(h('table',{class:'data'},h('tr',{},h('th',{},'Lista de auditoria'),h('th',{},'Conferência'),h('th',{},'Comentário')),
-      row('Cada base foi ligada ao açúcar do seu nucleotídeo?',null,'Confira no modelo de papel: a base sai do açúcar, não do fosfato.'),
+      row('Cada base foi ligada ao açúcar do seu nucleotídeo?',null,'Confira no esquema acima: a base sai do açúcar, não do fosfato.'),
       row('A–T e C–G foram respeitados?',filled?comp:null,filled?(comp?'Todas as posições pareadas corretamente.':'Há posições com pares que não se formam.'):'Complete as 8 posições.'),
       row('As fitas estão antiparalelas?',endL?anti:null,endL?(anti?'A fita de baixo começa em 3′ à esquerda: sentido oposto ao da de cima.':'As duas fitas estão no mesmo sentido. Inverta as extremidades.'):'Marque a extremidade à esquerda.'),
-      row('O grupo explica o que o modelo simplifica?',null,'Ex.: o modelo é plano, curto e não mostra a hélice nem as dimensões reais.')));
+      row('Você consegue explicar o que o modelo simplifica?',null,'Ex.: o modelo é plano, curto e não mostra a hélice nem as dimensões reais.')));
     if(filled&&comp&&anti)aud.append(h('p',{class:'fb ok'},`Segunda fita: 3′–${bot.join('')}–5′. Neste segmento há ${bonds} ligações de hidrogênio entre as bases.`));}
   draw();
-  root.append(model('Peças de papel representadas na tela. O modelo não substitui a montagem em grupo com papel e barbante.'));
+  root.append(model('Peças representadas na tela. O modelo é plano e curto: não mostra a hélice nem as dimensões reais.'));
 };
 
 // ================= Aula 13: O DNA faz cópias de quê? =================
@@ -1120,11 +1114,11 @@ INIT.copia=root=>{
 
 // ================= Aula 14: Correio do gene =================
 INIT.correio=root=>{
-  root.append(head('Aula 14 · Livro p. 354–355','Correio do gene','Segmento didático de um gene em célula eucariótica, sem íntrons nem processamento. O DNA fica na mesa “núcleo”. Copie a fita molde em RNAm e leve só o RNAm à mesa “citoplasma”.'));
+  root.append(head('Aula 14 · Livro p. 354–355','Correio do gene','Segmento didático de um gene em célula eucariótica, sem íntrons nem processamento. O DNA fica na área “núcleo”. Copie a fita molde em RNAm e leve só o RNAm à área “citoplasma”.'));
   let tpl=store.get('cor-tpl','TACTTTCCGATT');let mr=store.get('cor-m',Array(12).fill(''));let pickB='A';let sent=false;
   const grid=h('div',{class:'cols wl'});root.append(grid);const NU=panel();const CY=panel();grid.append(NU,CY);
   function draw(){const cod=tpl.split('').map(b=>COMP_DNA[b]).join('');const exp=tpl.split('').map(b=>COMP_RNA[b]);
-    NU.innerHTML='';NU.append(h('span',{class:'eyebrow'},'Mesa “núcleo”'),h('h3',{},'Transcrição'));
+    NU.innerHTML='';NU.append(h('span',{class:'eyebrow'},'Área “núcleo”'),h('h3',{},'Transcrição'));
     const grp=(arr,fn)=>{const out=[];for(let i=0;i<arr.length;i+=3)out.push(h('span',{class:'codon'},...arr.slice(i,i+3).map(fn)));return out;};
     NU.append(h('span',{class:'label'},'Fita molde do DNA'),h('div',{class:'seq'},h('span',{class:'end'},"3′"),...grp(tpl.split(''),b=>tile(b)),h('span',{class:'end'},"5′")));
     NU.append(h('span',{class:'label'},'Fita codificadora do DNA (não é copiada)'),h('div',{class:'seq',style:'opacity:.6'},h('span',{class:'end'},"5′"),...grp(cod.split(''),b=>tile(b,{small:true})),h('span',{class:'end'},"3′")));
@@ -1136,9 +1130,9 @@ INIT.correio=root=>{
     if(filled&&!ok){const wrong=mr.map((b,i)=>b!==exp[i]?i+1:null).filter(Boolean);fbx(fb,'no','Revise as posições '+wrong.join(', ')+'. No RNA, a base complementar de A é U (uracila); não há T.');}
     else if(ok)fbx(fb,'ok','RNAm 5′–'+mr.join('').replace(/(...)/g,'$1 ').trim()+'–3′. Repare: é igual à fita codificadora, com U no lugar de T.');
     NU.append(h('div',{class:'row'},h('button',{class:'btn primary',disabled:!ok||sent,onclick:()=>{sent=true;draw();}},'Levar o RNAm ao citoplasma →'),h('button',{class:'btn sm',onclick:()=>{tpl='TACTTTCCGATT';mr=Array(12).fill('');sent=false;store.set('cor-tpl',tpl);store.set('cor-m',mr);draw();}},'Fita da atividade'),h('button',{class:'btn sm',onclick:()=>{const PR=['TACCTGCCAACT','TACTTCCCAATC','TACGGTCTGATT'];tpl=PR[(PR.indexOf(tpl)+1)%PR.length];mr=Array(12).fill('');sent=false;store.set('cor-tpl',tpl);store.set('cor-m',mr);draw();}},'Fita para praticar'),h('button',{class:'btn sm ghost',onclick:()=>{mr=Array(12).fill('');sent=false;store.set('cor-m',mr);draw();}},'Limpar')));
-    CY.innerHTML='';CY.append(h('span',{class:'eyebrow'},'Mesa “citoplasma”'),h('h3',{},'O que chega aqui'));
+    CY.innerHTML='';CY.append(h('span',{class:'eyebrow'},'Área “citoplasma”'),h('h3',{},'O que chega aqui'));
     if(sent)CY.append(h('div',{class:'seq pop'},h('span',{class:'end'},"5′"),...grp(mr,b=>tile(b)),h('span',{class:'end'},"3′")),h('p',{class:'fb ok'},'Só o RNAm saiu do núcleo. O DNA continua lá, inteiro, como o livro raro que não sai da biblioteca.'));
-    else CY.append(h('p',{class:'note'},'Ainda vazia. Termine o RNAm na mesa “núcleo”.'));
+    else CY.append(h('p',{class:'note'},'Ainda vazia. Termine o RNAm na área “núcleo”.'));
     CY.append(h('p',{class:'note'},'A localização em núcleo e citoplasma vale para este exemplo eucariótico. Em bactérias, que não têm núcleo, transcrição e tradução acontecem no mesmo compartimento.'));}
   draw();
   // Tipos de RNA
@@ -1151,7 +1145,7 @@ INIT.correio=root=>{
 
 // ================= Aula 15: Fábrica de proteínas =================
 INIT.fabrica=root=>{
-  root.append(head('Aula 15 · Livro p. 356–358','Fábrica de proteínas','Papéis rotativos: RNAm mantém a sequência orientada; ribossomo indica o códon em leitura; RNAt apresenta o anticódon e traz o aminoácido; auditor confere início, ordem e término.'));
+  root.append(head('Aula 15 · Livro p. 356–358','Fábrica de proteínas','Acompanhe cada participante da tradução: o RNAm mantém a sequência orientada; o ribossomo lê um códon por vez; o RNAt traz o anticódon e o aminoácido. No fim, confira início, ordem e término.'));
   let m=store.get('fab-m','AUGGACGGUAAGUGA');let step=0,timer=null;
   const inp=h('input',{type:'text',id:'fab-in',value:m,style:'width:100%;font-family:var(--f-mono);letter-spacing:.1em','aria-label':'Sequência do RNAm, de 5 linha para 3 linha'});
   const C=panel(h('h3',{},'RNAm 5′ → 3′'),h('div',{class:'row'},inp),h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{inp.value='AUGAAAGGCUAA';setM();}},'RNAm da atividade'),h('button',{class:'btn sm',onclick:()=>{inp.value='AUGGACGGUAAGUGA';setM();}},'Exemplo para praticar'),h('span',{class:'note'},'Use A, U, C e G. Espaços são ignorados.')));
@@ -1221,10 +1215,10 @@ INIT.mutacao=root=>{
       if(!open){P.append(h('p',{class:'note'},'Abre depois da justificativa do envelope anterior.'));return;}
       P.append(h('div',{class:'cols'},h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Referência'),codRow(E.ref)),h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Variante'),codRow(E.var,E.ref))));
       if(E.n===4)P.append(h('p',{class:'note'},'Referência sem espaços: '+E.ref+'. Variante: C inserido logo após AUG → '+E.var+'. Reagrupe em trincas a partir de AUG.'));
-      const ta=h('textarea',{rows:2,id:'mut-j'+E.n,placeholder:'Justificativa da equipe: compare os códons e a cadeia.',maxlength:500});ta.value=st.jus[E.n]||'';ta.oninput=()=>{st.jus[E.n]=ta.value;store.set('mut-st',st);};
+      const ta=h('textarea',{rows:2,id:'mut-j'+E.n,placeholder:'Sua justificativa: compare os códons e a cadeia.',maxlength:500});ta.value=st.jus[E.n]||'';ta.oninput=()=>{st.jus[E.n]=ta.value;store.set('mut-st',st);};
       P.append(ta);const fb=h('div',{});P.append(fb);
       if(done){P.append(h('div',{class:'fb ok stack',style:'gap:4px'},h('strong',{},E.cls),h('span',{},E.conc),h('span',{class:'note'},'Limite: '+E.lim)));}
-      else P.append(h('button',{class:'btn primary',onclick:()=>{if((ta.value||'').trim().length<15){fbx(fb,'no','Escreva a justificativa da equipe (pelo menos uma frase) antes de abrir a análise.');return;}st.open=E.n+1;store.set('mut-st',st);draw();}},E.n<4?'Ver análise e abrir o próximo envelope':'Ver análise'));});
+      else P.append(h('button',{class:'btn primary',onclick:()=>{if((ta.value||'').trim().length<15){fbx(fb,'no','Escreva a sua justificativa (pelo menos uma frase) antes de abrir a análise.');return;}st.open=E.n+1;store.set('mut-st',st);draw();}},E.n<4?'Ver análise e abrir o próximo envelope':'Ver análise'));});
     box.append(h('div',{class:'row'},h('button',{class:'btn ghost sm',onclick:()=>{st={open:1,jus:{}};store.set('mut-st',st);draw();}},'Fechar os envelopes de novo')));}
   draw();
   // Laboratório livre
@@ -1262,26 +1256,23 @@ const QZ=[
  ['Qual a diferença entre replicação e transcrição?',['Nenhuma','Replicação produz DNA; transcrição produz RNA','Replicação produz proteína','Transcrição ocorre no ribossomo'],1,'Replicação copia o DNA; transcrição copia um trecho de DNA em RNA; tradução produz a cadeia polipeptídica.'],
 ];
 INIT.museu=root=>{
-  root.append(head('Aula 17 · Livro p. 324–361','Museu dos modelos genéticos','Quatro estações reutilizam os modelos e registros das aulas. Cada painel apresenta uma pergunta central, um modelo ou dado, uma explicação e um limite. Depois, o quiz da unidade.'));
+  root.append(head('Aula 17 · Livro p. 324–361','Museu dos modelos genéticos','Quatro estações de revisão reúnem os modelos das aulas. Escolha uma estação, reabra as ferramentas e prepare uma explicação com um modelo ou dado e um limite. Depois, faça o quiz da unidade.'));
   const ST=[['her','1 · Herança e probabilidade','Por que Aa × Aa não garante exatamente um aa em quatro filhos?',['mendel','loteria','agencia','heredo','galeria','diibr','abo']],['int','2 · Interações e ambiente','Como dois genes, ou genes e ambiente, produzem um fenótipo?',['cristas','pigmento','jardim','redacao']],['dna','3 · Estrutura e replicação do DNA','Como uma molécula se copia mantendo a sequência?',['dna','copia']],['exp','4 · Transcrição, tradução e mutações','Como uma sequência de bases vira uma sequência de aminoácidos?',['correio','fabrica','mutacao']]];
   root.append(h('div',{class:'cards'},...ST.map(([t,n,q,ids])=>h('div',{class:'panel stack','data-tema':t,style:'border-top:5px solid var(--tema)'},h('span',{class:'eyebrow'},'Estação'),h('h3',{},n),h('p',{},h('strong',{},'Pergunta central: '),q),h('span',{class:'label'},'Ferramentas para reusar'),h('div',{class:'chips'},...ids.map(id=>h('button',{class:'chip','data-go':id},TOOLS.find(x=>x.id===id).title)))))));
-  root.append(h('p',{class:'callout'},'O visitante registra uma dúvida sobre a explicação, não sobre beleza ou popularidade. Não incluir informações pessoais de estudantes.'));
-  // Quiz
-  let nT=store.get('qz-n',4),score=store.get('qz-score',[0,0,0,0,0,0]),i=0,revealed=false,picked=null,timer=null,left=40;
-  const top=h('div',{class:'row'});root.append(h('h3',{style:'font-size:1.5rem'},'Quiz da unidade'),h('p',{class:'note'},'Números diferentes dos da avaliação individual. Os grupos respondem, o professor revela e dá os pontos.'),top);
-  const board=h('div',{class:'row'});
-  top.append(h('span',{class:'label'},'Grupos'),seg([2,3,4,5,6].map(n=>[n,String(n)]),nT,v=>{nT=v;store.set('qz-n',nT);sb();}),h('button',{class:'btn ghost sm',onclick:()=>{score=[0,0,0,0,0,0];store.set('qz-score',score);sb();}},'Zerar placar'));
-  root.append(board);const card=h('div',{class:'panel stack',style:'padding:24px'});root.append(card);
-  function sb(){board.innerHTML='';for(let g=0;g<nT;g++)board.append(h('div',{class:'panel stat',style:'padding:10px 14px;align-items:center;min-width:110px'},h('span',{class:'note'},'Grupo '+(g+1)),h('span',{class:'big-num'},score[g]),h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{score[g]=Math.max(0,score[g]-1);store.set('qz-score',score);sb();},'aria-label':'Tirar ponto'},'−'),h('button',{class:'btn sm primary',onclick:()=>{score[g]++;store.set('qz-score',score);sb();},'aria-label':'Dar ponto'},'+'))));}
-  function q(){clearInterval(timer);left=40;revealed=false;picked=null;card.innerHTML='';const[t,opts,c,ex]=QZ[i];
-    const clock=h('span',{class:'mono',style:'font-size:1.6rem;font-weight:600'},'40s');
-    card.append(h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'eyebrow'},`Pergunta ${i+1} de ${QZ.length}`),h('div',{class:'row'},clock,h('button',{class:'btn sm',onclick:()=>{clearInterval(timer);left=40;clock.textContent='40s';clock.style.color='';timer=setInterval(()=>{left--;clock.textContent=left+'s';if(left<=5)clock.style.color='var(--bad)';if(left<=0){clearInterval(timer);clock.textContent='Tempo!';}},1000);}},'Iniciar cronômetro'))));
-    card.append(h('h3',{style:'font-size:clamp(1.3rem,2.6vw,2rem)'},t));
-    const og=h('div',{style:'display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px'});card.append(og);const L='ABCD';
-    opts.forEach((o,j)=>{const b=h('button',{class:'tool-card',style:'min-height:0;flex-direction:row;align-items:center;gap:12px;font-size:1.1rem'},h('span',{class:'mono',style:'font-weight:700;color:var(--tema)'},L[j]),h('span',{},o));b.onclick=()=>{if(revealed)return;picked=j;$$('.tool-card',og).forEach(x=>x.style.borderColor='');b.style.borderColor='var(--info)';};og.append(b);});
-    const ans=h('div',{});card.append(ans);
-    card.append(h('div',{class:'row'},h('button',{class:'btn',disabled:i===0,onclick:()=>{i--;q();}},'← Anterior'),h('button',{class:'btn primary',onclick:()=>{revealed=true;clearInterval(timer);$$('.tool-card',og).forEach((x,j)=>{x.style.borderColor=j===c?'var(--good)':j===picked?'var(--bad)':'';x.style.background=j===c?'var(--good-soft)':'';});fbx(ans,'ok',h('strong',{},'Resposta: '+L[c]+'. '),ex);}},'Revelar resposta'),h('button',{class:'btn',disabled:i===QZ.length-1,onclick:()=>{i++;q();}},'Próxima →')));}
-  sb();q();
+  root.append(h('p',{class:'callout'},'Na ficha, registre a estação escolhida, a pergunta central, o modelo ou dado usado, a explicação e um limite do modelo.'));
+  // Quiz individual
+  root.append(h('h3',{style:'font-size:1.5rem'},'Quiz da unidade'),h('p',{class:'note'},'Números diferentes dos da avaliação individual.'));
+  let qi=0,resp=store.get('qz-resp',{});const qcard=h('div',{class:'panel stack',style:'padding:24px'});const qstats=h('div',{class:'stats'});
+  function q(){const it=QZ[qi];const t=it[0],o=it[1],c=it[2],e=it[3];const done=Object.prototype.hasOwnProperty.call(resp,qi);qcard.innerHTML='';
+    qcard.append(h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'eyebrow'},`Pergunta ${qi+1} de ${QZ.length}`),h('span',{class:'pill'+(done?' ok':'')},done?'Respondida':'Não respondida')));
+    const qil=null;const qt=h('h3',{style:'font-size:clamp(1.2rem,2.4vw,1.8rem)'},t);qcard.append(qil?h('div',{class:'quiz-q'},qil,qt):qt);
+    const og=h('div',{style:'display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px'});
+    o.forEach((a,j)=>{const b=h('button',{class:'tool-card',style:`min-height:0;flex-direction:row;align-items:center;gap:12px;font-size:1.05rem;${done&&j===c?'border-color:var(--good);background:var(--good-soft)':''}${done&&j===resp[qi]&&j!==c?'border-color:var(--bad);background:var(--bad-soft)':''}`,disabled:done},h('span',{class:'mono',style:'font-weight:700;color:var(--tema)'},'ABCD'[j]),h('span',{},a));b.onclick=()=>{resp[qi]=j;store.set('qz-resp',resp);q();};og.append(b);});qcard.append(og);
+    if(done)qcard.append(h('div',{class:'fb '+(resp[qi]===c?'ok':'info')},h('strong',{},resp[qi]===c?'Resposta correta. ':'Vamos revisar: a resposta é '+'ABCD'[c]+'. '),e));
+    qcard.append(h('div',{class:'row',style:'justify-content:space-between'},h('button',{class:'btn',disabled:qi===0,onclick:()=>{qi--;q();}},'← Anterior'),h('button',{class:'btn primary',disabled:qi===QZ.length-1,onclick:()=>{qi++;q();}},'Próxima →')));
+    const n=Object.keys(resp).length,ok=Object.entries(resp).filter(([k,a])=>QZ[k]&&QZ[k][2]===a).length;qstats.innerHTML='';[['Respondidas',n+'/'+QZ.length],['Acertos na 1ª tentativa',String(ok)]].forEach(([a,b])=>qstats.append(h('div',{class:'stat'},h('span',{class:'note'},a),h('span',{class:'big-num'},b))));}
+  const qside=h('div',{class:'panel stack'},h('h3',{},'Seu percurso'),qstats,h('button',{class:'btn ghost sm',style:'align-self:flex-start',onclick:()=>{resp={};store.set('qz-resp',resp);qi=0;q();}},'Recomeçar o quiz'),h('p',{class:'note'},'Toque numa alternativa para ver se acertou e ler a explicação. Vale a primeira resposta.'));
+  root.append(h('div',{class:'cols wl'},qcard,qside));q();
 };
 
 // ================= Aula 18: Síntese e devolutiva =================
@@ -1292,7 +1283,7 @@ INIT.avaliacao=root=>{
     ...[['AUG','Metionina (Met); início neste exemplo'],['AAA ou AAG','Lisina (Lys)'],['GGC ou GGU','Glicina (Gly)'],['GAC','Ácido aspártico (Asp)'],['UAA, UAG ou UGA','Término; não acrescenta aminoácido']].map(([a,b])=>h('tr',{},h('td',{class:'mono'},a),h('td',{},b))))));
   let left=store.get('av-left',1800),tm=null;const clock=h('span',{class:'big-num mono'});const fmtT=v=>String(Math.floor(v/60)).padStart(2,'0')+':'+String(v%60).padStart(2,'0');clock.textContent=fmtT(left);
   const C=panel(h('h3',{},'Cronômetro da aula'),clock,h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{if(tm)return;tm=setInterval(()=>{left=Math.max(0,left-1);store.set('av-left',left);clock.textContent=fmtT(left);clock.style.color=left<=300?'var(--bad)':'';if(!left){clearInterval(tm);tm=null;}},1000);}},'Iniciar'),h('button',{class:'btn',onclick:()=>{clearInterval(tm);tm=null;}},'Pausar'),h('button',{class:'btn ghost sm',onclick:()=>{clearInterval(tm);tm=null;left=1800;store.set('av-left',left);clock.textContent=fmtT(left);clock.style.color='';}},'Voltar a 30:00')),
-    h('p',{class:'note'},'Adaptações de acesso (tempo ampliado, resposta oral ou por desenho) mantêm a exigência conceitual.'));
+    h('p',{class:'note'},'Use o cronômetro para controlar o seu tempo. Se precisar de mais tempo, combine com o professor.'));
   grid.append(T,C);
   root.append(panel(h('h3',{},'Depois da prova: revisão comentada'),h('p',{},'Na devolutiva, cada estudante escolhe uma resposta para revisar, explica o motivo da revisão e define uma ação para estudar a dificuldade. A recuperação retoma o erro específico com um exemplo resolvido e um problema equivalente (por exemplo, Aa × aa no lugar de Aa × Aa).')));
 };
@@ -1355,7 +1346,7 @@ const AB={
   render(el,api){const T=['O1 · Primeira lei e meiose','O2 · Probabilidade e heredogramas','O3 · Dominâncias, dois genes e ABO','O4 · Interações gênicas e epistasia','O5 · Herança quantitativa e ambiente','O6 · Estrutura e replicação do DNA','O7 · Transcrição e tradução','O8 · Mutações e seus efeitos'];
    const ans=api.state('ans',{});const g=h('div',{class:'stack',style:'gap:8px'});
    T.forEach((t,i)=>{const row=h('div',{class:'ab-sem'},h('span',{},t));[['g','Verde'],['y','Amarelo'],['r','Vermelho']].forEach(([k,n])=>{const b=h('button',{class:'sem '+k,'aria-pressed':String(ans[i]===k),'aria-label':t+': '+n,title:n});b.onclick=()=>{ans[i]=k;api.setState('ans',ans);$$('.sem',row).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');};row.append(b);});g.append(row);});
-   const out=h('div',{});el.append(g,h('button',{class:'btn primary',onclick:()=>{if(T.some((_,i)=>!ans[i])){fbx(out,'no','Marque uma cor para cada objetivo.');return;}const n={g:'verde',y:'amarelo',r:'vermelho'};api.save(T.map((t,i)=>t+': '+n[ans[i]]).join(' | '));const red=T.filter((_,i)=>ans[i]==='r');fbx(out,'info',red.length?'Visite primeiro as estações de: '+red.join('; ')+'.':'Ótimo. No museu, explique o seu tema para um colega.');}},'Registrar meu semáforo'),out);}},
+   const out=h('div',{});el.append(g,h('button',{class:'btn primary',onclick:()=>{if(T.some((_,i)=>!ans[i])){fbx(out,'no','Marque uma cor para cada objetivo.');return;}const n={g:'verde',y:'amarelo',r:'vermelho'};api.save(T.map((t,i)=>t+': '+n[ans[i]]).join(' | '));const red=T.filter((_,i)=>ans[i]==='r');fbx(out,'info',red.length?'Visite primeiro as estações de: '+red.join('; ')+'.':'Ótimo. No museu, escolha uma estação e prepare a sua explicação.');}},'Registrar meu semáforo'),out);}},
  avaliacao:{tempo:'3 min',titulo:'Plano de prova',lede:'Antes de começar, organize a estratégia.',render:abQuiz([
    {t:'Por qual tipo de questão você vai começar?',o:[['calc','Cálculo de probabilidade'],['mol','Sequências de DNA e RNA'],['exp','Explicação com limites']],c:null,e:'Comece pelo que você domina e volte às outras com calma.'},
    {t:'O que você vai conferir em toda resposta?',o:[['pres','Os pressupostos do modelo'],['rap','Se terminei rápido'],['tam','Se escrevi bastante']],c:'pres',e:'Os pressupostos (dominância, independência, sentido das fitas) sustentam cada conclusão.'}]),},
@@ -1382,28 +1373,28 @@ const lotCounts=()=>{const d=store.get('lot-draws',[]);const c={AA:0,Aa:0,aa:0};
 const lotTurma=()=>{const c=lotCounts();store.get('lot-turma',[]).forEach(([a,b,cc])=>{c.AA+=a;c.Aa+=b;c.aa+=cc;});return c;};
 const jarCounts=()=>{const t=store.get('jar-turma',null);if(t)return t;const o=store.get('jar-off',[]);return TEO.map((_,i)=>o.filter(x=>x.idx===i).length);};
 const SPEC=[
- {code:'Aula 01',titulo:'Aula 1 · O arquivo de Mendel',tipo:'Grupo + registro individual',desc:'O grupo discute o arquivo; cada estudante envia o seu registro.',itens:[
-   {k:'txt',t:'Ordem dos registros',help:'Use o botão “Preencher com os dados da ferramenta” ou resuma os registros na ordem que o grupo escolheu.',fill:()=>store.get('m-ordem',null)},
+ {code:'Aula 01',titulo:'Aula 1 · O arquivo de Mendel',tipo:'Individual',desc:'Organize o arquivo, teste as hipóteses e envie o seu registro.',itens:[
+   {k:'txt',t:'Ordem dos registros',help:'Use o botão “Preencher com os dados da ferramenta” ou resuma os registros na ordem que você escolheu.',fill:()=>store.get('m-ordem',null)},
    {k:'mc',t:'Qual hipótese explica melhor os registros?',ch:['Hipótese 1 · mistura irreversível','Hipótese 2 · fatores discretos','Hipótese 3 · surgem ao acaso'],key:'Hipótese 2 · fatores discretos',pts:1},
    {k:'par',t:'Justifique com duas evidências do arquivo',man:2},
    {k:'par',t:'Uma pergunta que ainda precisa ser investigada',man:1},
    {k:'par',t:'Fechamento: cite um dado do arquivo e explique por que ele exige uma explicação para a herança',man:2}]},
- {code:'Aula 02',titulo:'Aula 2 · A loteria dos alelos',tipo:'Grupo + registro individual',desc:'Dados do sorteio (com os sacos ou no site). Não altere resultados para obter a proporção esperada.',itens:[
-   {k:'num',t:'Contagem do grupo · AA',fill:()=>lotCounts().AA},{k:'num',t:'Contagem do grupo · Aa',fill:()=>lotCounts().Aa},{k:'num',t:'Contagem do grupo · aa',fill:()=>lotCounts().aa},
-   {k:'num',t:'Total da turma · AA',fill:()=>lotTurma().AA},{k:'num',t:'Total da turma · Aa',fill:()=>lotTurma().Aa},{k:'num',t:'Total da turma · aa',fill:()=>lotTurma().aa},
+ {code:'Aula 02',titulo:'Aula 2 · A loteria dos alelos',tipo:'Individual',desc:'Dados dos seus sorteios e da turma simulada. Não altere resultados para obter a proporção esperada.',itens:[
+   {k:'num',t:'Seus sorteios · AA',fill:()=>lotCounts().AA},{k:'num',t:'Seus sorteios · Aa',fill:()=>lotCounts().Aa},{k:'num',t:'Seus sorteios · aa',fill:()=>lotCounts().aa},
+   {k:'num',t:'Total com a turma simulada · AA',fill:()=>lotTurma().AA},{k:'num',t:'Total com a turma simulada · Aa',fill:()=>lotTurma().Aa},{k:'num',t:'Total com a turma simulada · aa',fill:()=>lotTurma().aa},
    {k:'par',t:'1 · Escreva as quatro casas do quadro de Punnett de Aa × Aa',man:1},
    {k:'par',t:'2 · Compare as contagens com a previsão',man:2},
    {k:'mc',t:'3 · O que a reposição representa?',ch:['Que cada gameta tem sempre a mesma chance de levar A ou a','Que o genitor perde um alelo a cada filho','Que os resultados anteriores mudam o próximo sorteio'],key:'Que cada gameta tem sempre a mesma chance de levar A ou a',pts:1},
    {k:'par',t:'4 · O que muda ao reunir uma amostra maior?',man:2},
    {k:'par',t:'Fechamento: por que uma amostra que se afasta de 3:1 não refuta sozinha o modelo?',man:2}]},
- {code:'Aula 03',titulo:'Aula 3 · Agência de previsões',tipo:'Dupla + registro individual',desc:'Pedidos A, B e C da agência, com cálculo e condição de validade.',itens:[
+ {code:'Aula 03',titulo:'Aula 3 · Agência de previsões',tipo:'Individual',desc:'Pedidos A, B e C da agência, com cálculo e condição de validade.',itens:[
    {k:'mc',t:'Pedido A · Em Aa × Aa, P(fenótipo recessivo no próximo descendente)',ch:['1/2','1/4','3/4','1/16'],key:'1/4',pts:1},
    {k:'mc',t:'Pedido B · P(dois descendentes aa), eventos independentes',ch:['1/4','1/8','1/16','1/2'],key:'1/16',pts:1},
    {k:'mc',t:'Pedido C · P(um descendente ser AA ou Aa)',ch:['1/2','1/4','3/4','1'],key:'3/4',pts:1},
    {k:'par',t:'Cálculo e condição de validade de cada pedido',man:3},
    {k:'par',t:'Por que as alternativas do pedido C são mutuamente exclusivas?',man:1},
    {k:'par',t:'Fechamento: em Aa × Aa, qual é a probabilidade de aa no próximo descendente, mesmo após dois aa anteriores? Justifique',man:2}]},
- {code:'Aula 04',titulo:'Aula 4 · Detetives de heredogramas',tipo:'Grupo + argumento individual',desc:'Família fictícia desta aula. Modelo: um locus, dois alelos, penetrância completa, sem mutações novas.',itens:[
+ {code:'Aula 04',titulo:'Aula 4 · Detetives de heredogramas',tipo:'Individual',desc:'Família fictícia desta aula. Modelo: um locus, dois alelos, penetrância completa, sem mutações novas.',itens:[
    {k:'hdr',t:'Genótipos sob o modelo'},
    {k:'mc',t:'Genótipo de I-1',ch:GEN3,key:'Aa',pts:1},{k:'mc',t:'Genótipo de I-2',ch:GEN3,key:'Aa',pts:1},{k:'mc',t:'Genótipo de II-1',ch:GEN3,key:'aa',pts:1},{k:'mc',t:'Genótipo de II-2',ch:GEN3,key:'AA ou Aa',pts:1},{k:'mc',t:'Genótipo de II-3',ch:GEN3,key:'AA ou Aa',pts:1},
    {k:'hdr',t:'Necessária, possível ou não sustentada?'},
@@ -1413,28 +1404,28 @@ const SPEC=[
    {k:'mc',t:'O desenho permite diagnosticar uma condição clínica real',ch:CLS3,key:'Não sustentada',pts:1},
    {k:'par',t:'Justifique as classificações e escreva os pressupostos que tornam a inferência válida',man:3},
    {k:'par',t:'Fechamento: indique um genótipo certo e um que permaneça indeterminado no caso',man:2}]},
- {code:'Aula 05',titulo:'Aula 5 · Galeria das dominâncias',tipo:'Grupo + registro individual',desc:'Três modelos didáticos de um locus.',itens:[
+ {code:'Aula 05',titulo:'Aula 5 · Galeria das dominâncias',tipo:'Individual',desc:'Três modelos didáticos de um locus.',itens:[
    ...[1,2,3].flatMap(n=>[{k:'mc',t:`Modelo ${n} · genótipos em F2`,ch:['1 : 2 : 1','3 : 1','1 : 1'],key:'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · fenótipos em F2`,ch:['3 : 1','1 : 2 : 1','1 : 1'],key:n===1?'3 : 1':'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · relação de dominância`,ch:['Dominância completa','Dominância incompleta','Codominância'],key:['Dominância completa','Dominância incompleta','Codominância'][n-1],pts:1}]),
    {k:'par',t:'Explique por que os alelos continuam segregando',man:2},
    {k:'par',t:'Fechamento: como a F2 ajuda a mostrar que, na dominância incompleta, os alelos não foram diluídos?',man:2}]},
- {code:'Aula 06',titulo:'Aula 6 · Duas características em uma semente',tipo:'Grupo + registro individual',desc:'AaBb × AaBb com dois loci em cromossomos diferentes.',itens:[
+ {code:'Aula 06',titulo:'Aula 6 · Duas características em uma semente',tipo:'Individual',desc:'AaBb × AaBb com dois loci em cromossomos diferentes.',itens:[
    {k:'mc',t:'Gametas de AaBb e suas probabilidades',ch:['AB e ab, 1/2 cada','AB, Ab, aB e ab, 1/4 cada','Aa e Bb, 1/2 cada'],key:'AB, Ab, aB e ab, 1/4 cada',pts:1},
    {k:'mc',t:'P(aabb) pelo quadro',ch:['1/4','1/8','1/16','9/16'],key:'1/16',pts:1},
    {k:'mc',t:'Proporção fenotípica de AaBb × AaBb',ch:['3 : 1','1 : 2 : 1','9 : 3 : 3 : 1','1 : 1 : 1 : 1'],key:'9 : 3 : 3 : 1',pts:1},
    {k:'par',t:'Quais condições sustentam o cálculo P(aa) × P(bb)?',man:2},
    {k:'par',t:'Seria adequado aplicar a segregação independente automaticamente a dois loci muito próximos no mesmo cromossomo?',man:2},
    {k:'par',t:'Fechamento: por que a proporção 9:3:3:1 não descreve automaticamente qualquer par de genes?',man:2}]},
- {code:'Aula 07',titulo:'Aula 7 · Catálogo ABO',tipo:'Grupo + registro individual',desc:'Laboratório fictício do sistema ABO: sem testes nem inferências de parentesco real.',itens:[
+ {code:'Aula 07',titulo:'Aula 7 · Catálogo ABO',tipo:'Individual',desc:'Laboratório fictício do sistema ABO: sem testes nem inferências de parentesco real.',itens:[
    {k:'hdr',t:'Fenótipo de cada genótipo'},
    ...[['IᴬIᴬ','A'],['Iᴬi','A'],['IᴮIᴮ','B'],['Iᴮi','B'],['IᴬIᴮ','AB'],['ii','O']].map(([g,f])=>({k:'mc',t:'Fenótipo de '+g,ch:['A','B','AB','O'],key:f,pts:1})),
    {k:'mc',t:'Iᴬi × Iᴮi: fenótipos e probabilidades',ch:['Só AB','A e B, 1/2 cada','A, B, AB e O, 1/4 cada','A, B e AB, 1/3 cada'],key:'A, B, AB e O, 1/4 cada',pts:1},
    {k:'par',t:'Audite a frase: “O fenótipo A revela exatamente o genótipo”',man:2},
    {k:'par',t:'Fechamento: por que conhecer apenas o fenótipo A pode ser insuficiente para determinar o genótipo?',man:2}]},
- {code:'Aula 08',titulo:'Aula 8 · Oficina das cristas',tipo:'Grupo + registro individual',desc:'RrEe × RrEe agrupado por fenótipo (em 16 eventos).',itens:[
+ {code:'Aula 08',titulo:'Aula 8 · Oficina das cristas',tipo:'Individual',desc:'RrEe × RrEe agrupado por fenótipo (em 16 eventos).',itens:[
    {k:'num',t:'Cristas noz (em 16)',key:9,tol:0,pts:1},{k:'num',t:'Cristas rosa (em 16)',key:3,tol:0,pts:1},{k:'num',t:'Cristas ervilha (em 16)',key:3,tol:0,pts:1},{k:'num',t:'Cristas simples (em 16)',key:1,tol:0,pts:1},
    {k:'par',t:'Explique por que se trata de dois genes, não de dois alelos do mesmo gene',man:2},
    {k:'par',t:'Fechamento: qual é a diferença entre codominância e a interação gênica estudada hoje?',man:2}]},
- {code:'Aula 09',titulo:'Aula 9 · A fábrica de pigmentos',tipo:'Grupo + registro individual',desc:'Labradores (P/A) e abóboras (W/Y).',itens:[
+ {code:'Aula 09',titulo:'Aula 9 · A fábrica de pigmentos',tipo:'Individual',desc:'Labradores (P/A) e abóboras (W/Y).',itens:[
    {k:'mc',t:'PpAa × PpAa: proporção fenotípica',ch:['9 : 3 : 3 : 1','9 : 3 : 4','12 : 3 : 1','3 : 1'],key:'9 : 3 : 4',pts:1},
    {k:'mc',t:'PpAa × PpAa: qual gene mascara qual?',ch:['aa mascara o efeito de P/p','pp mascara o efeito de A/a','Não há mascaramento'],key:'aa mascara o efeito de P/p',pts:1},
    {k:'mc',t:'WwYy × WwYy: proporção fenotípica',ch:['9 : 3 : 3 : 1','9 : 3 : 4','12 : 3 : 1','15 : 1'],key:'12 : 3 : 1',pts:1},
@@ -1442,8 +1433,8 @@ const SPEC=[
    {k:'par',t:'Compare WwYY e Wwyy: registre uma evidência de mascaramento',man:1},
    {k:'par',t:'Explique a diferença entre epistasia e dominância',man:2},
    {k:'par',t:'Fechamento: explique por que PPaa e ppaa têm o mesmo fenótipo no modelo dos labradores',man:2}]},
- {code:'Aula 10',titulo:'Aula 10 · Jardim das muitas possibilidades',tipo:'Grupo + registro individual',desc:'Contagem da turma por índice genético (0 a 6).',itens:[
-   ...TEO.map((_,i)=>({k:'num',t:'Contagem da turma · índice '+i,fill:()=>jarCounts()[i]})),
+ {code:'Aula 10',titulo:'Aula 10 · Jardim das muitas possibilidades',tipo:'Individual',desc:'Contagem por índice genético (0 a 6): use a turma simulada ou os seus sorteios.',itens:[
+   ...TEO.map((_,i)=>({k:'num',t:'Contagem por índice · '+i,fill:()=>jarCounts()[i]})),
    {k:'par',t:'O que muda entre ambientes para a mesma linhagem (L1 ou L2)?',man:2},
    {k:'par',t:'Uma tabela com médias permite concluir como cada gene atua? Indique uma informação adicional necessária',man:2},
    {k:'par',t:'Fechamento: por que a diferença de fenótipo entre dois indivíduos não prova, sozinha, diferença genética?',man:2}]},
@@ -1451,30 +1442,30 @@ const SPEC=[
    {k:'par',t:'Nota de correção (até 100 palavras): dois problemas, uma correção e a fonte',man:4,fill:()=>store.get('red-nota',null)||null},
    {k:'txt',t:'Fonte citada (livro e página ou endereço)'},
    {k:'par',t:'Fechamento: reescreva uma frase determinista em uma explicação que reconheça genes, ambiente e limites',man:2}]},
- {code:'Aula 12',titulo:'Aula 12 · DNA em escala de mesa',tipo:'Grupo + registro individual',desc:'Segmento 5′–ATGCCATT–3′.',itens:[
+ {code:'Aula 12',titulo:'Aula 12 · DNA peça por peça',tipo:'Individual',desc:'Segmento 5′–ATGCCATT–3′.',itens:[
    {k:'txt',t:'Segunda fita, com as extremidades (ex.: 3′–…–5′)',fill:()=>{const t=store.get('dna-top','');const b=store.get('dna-bot',[]);return t==='ATGCCATT'&&b.every(Boolean)?"3′–"+b.join('')+"–5′":null;}},
    {k:'mc',t:'As fitas do DNA são:',ch:['Paralelas (mesmo sentido)','Antiparalelas (sentidos opostos)'],key:'Antiparalelas (sentidos opostos)',pts:1},
    {k:'par',t:'Resultado da lista de auditoria: o que foi conferido e corrigido',man:2},
-   {k:'par',t:'Fechamento: aponte uma propriedade do DNA representada e uma que o modelo de papel não mostra',man:2}]},
- {code:'Aula 13',titulo:'Aula 13 · O DNA faz cópias de quê?',tipo:'Grupo + registro individual',desc:'Três propostas de cópia.',itens:[
+   {k:'par',t:'Fechamento: aponte uma propriedade do DNA representada e uma que o modelo do site não mostra',man:2}]},
+ {code:'Aula 13',titulo:'Aula 13 · O DNA faz cópias de quê?',tipo:'Individual',desc:'Três propostas de cópia.',itens:[
    {k:'mc',t:'Qual proposta corresponde ao modelo semiconservativo?',ch:['Proposta A','Proposta B','Proposta C'],key:'Proposta B',pts:1},
    {k:'mc',t:'Em que sentido as fitas novas são sintetizadas?',ch:['5′ → 3′','3′ → 5′','Nos dois sentidos'],key:'5′ → 3′',pts:1},
-   {k:'par',t:'Descreva as duas moléculas-filhas que o grupo construiu',man:2},
+   {k:'par',t:'Descreva as duas moléculas-filhas da primeira geração no modelo semiconservativo',man:2},
    {k:'par',t:'Diferencie duplicar DNA, transcrever RNA e traduzir uma cadeia polipeptídica',man:2},
    {k:'par',t:'Fechamento: explique o significado de semiconservativa sem usar apenas a expressão “metade”',man:2}]},
- {code:'Aula 14',titulo:'Aula 14 · Correio do gene',tipo:'Grupo + registro individual',desc:'Fita molde 3′–TAC TTT CCG ATT–5′.',itens:[
+ {code:'Aula 14',titulo:'Aula 14 · Correio do gene',tipo:'Individual',desc:'Fita molde 3′–TAC TTT CCG ATT–5′.',itens:[
    {k:'txt',t:'RNAm transcrito, com as extremidades',fill:()=>{const m=store.get('cor-m',[]);const t=store.get('cor-tpl','');return t==='TACTTTCCGATT'&&m.every(Boolean)?"5′–"+m.join('').replace(/(...)/g,'$1 ').trim()+"–3′":null;}},
    {k:'mc',t:'Função do RNAm',ch:['Leva a sequência de códons ao ribossomo','Traz o aminoácido','Forma o ribossomo'],key:'Leva a sequência de códons ao ribossomo',pts:1},
    {k:'mc',t:'Função do RNAt',ch:['Leva a sequência de códons ao ribossomo','Traz o aminoácido','Forma o ribossomo'],key:'Traz o aminoácido',pts:1},
    {k:'mc',t:'Função do RNAr',ch:['Leva a sequência de códons ao ribossomo','Traz o aminoácido','Forma o ribossomo'],key:'Forma o ribossomo',pts:1},
-   {k:'par',t:'Por que só o RNAm vai à mesa “citoplasma”?',man:2},
+   {k:'par',t:'Por que só o RNAm vai à área “citoplasma”?',man:2},
    {k:'par',t:'Fechamento: por que a sequência do RNAm não é idêntica à fita molde escrita no mesmo alinhamento?',man:2}]},
- {code:'Aula 15',titulo:'Aula 15 · Fábrica de proteínas',tipo:'Grupo + registro individual',desc:'RNAm 5′–AUG AAA GGC UAA–3′.',itens:[
+ {code:'Aula 15',titulo:'Aula 15 · Fábrica de proteínas',tipo:'Individual',desc:'RNAm 5′–AUG AAA GGC UAA–3′.',itens:[
    {k:'txt',t:'Sequência de aminoácidos produzida'},
-   {k:'par',t:'Como o grupo soube onde começar e onde terminar?',man:2},
+   {k:'par',t:'Como você soube onde começar e onde terminar?',man:2},
    {k:'txt',t:'Anticódon do RNAt para AUG, com os sentidos'},
    {k:'par',t:'Fechamento: por que UAA termina a leitura e não deve virar uma conta de aminoácido na cadeia?',man:2}]},
- {code:'Aula 16',titulo:'Aula 16 · Missão revisão das mutações',tipo:'Grupo + registro individual',desc:'Dossiê da equipe sobre os quatro envelopes.',itens:[
+ {code:'Aula 16',titulo:'Aula 16 · Missão revisão das mutações',tipo:'Individual',desc:'Seu dossiê sobre os quatro envelopes.',itens:[
    {k:'mc',t:'Envelope 1 · tipo de alteração',ch:['Substituição sinônima','Troca de aminoácido','Término precoce','Deslocamento do quadro'],key:'Substituição sinônima',pts:1},
    {k:'mc',t:'Envelope 2 · tipo de alteração',ch:['Substituição sinônima','Troca de aminoácido','Término precoce','Deslocamento do quadro'],key:'Troca de aminoácido',pts:1},
    {k:'mc',t:'Envelope 3 · tipo de alteração',ch:['Substituição sinônima','Troca de aminoácido','Término precoce','Deslocamento do quadro'],key:'Término precoce',pts:1},
@@ -1482,9 +1473,9 @@ const SPEC=[
    {k:'par',t:'Para cada envelope: um limite do que se pode concluir',man:3},
    {k:'par',t:'Diferencie mutação somática e alteração na linhagem germinativa',man:2},
    {k:'par',t:'Fechamento: uma substituição manteve o aminoácido. O que é possível e o que não é possível concluir com esse dado?',man:2}]},
- {code:'Aula 17',titulo:'Aula 17 · Museu dos modelos',tipo:'Grupo + síntese individual',desc:'Registro do painel do grupo e a sua síntese.',itens:[
-   {k:'mc',t:'Estação do grupo',ch:['1 · Herança e probabilidade','2 · Interações e ambiente','3 · Estrutura e replicação do DNA','4 · Transcrição, tradução e mutações']},
-   {k:'par',t:'Pergunta da estação',man:1},{k:'par',t:'Modelo ou dado usado',man:1},{k:'par',t:'Explicação e limite',man:2},{k:'par',t:'Pergunta recebida de um visitante',man:1},{k:'par',t:'Correção realizada e evidência que a sustenta',man:2},
+ {code:'Aula 17',titulo:'Aula 17 · Museu dos modelos',tipo:'Individual',desc:'Registro da estação que você escolheu e a sua síntese.',itens:[
+   {k:'mc',t:'Estação escolhida',ch:['1 · Herança e probabilidade','2 · Interações e ambiente','3 · Estrutura e replicação do DNA','4 · Transcrição, tradução e mutações']},
+   {k:'par',t:'Pergunta da estação',man:1},{k:'par',t:'Modelo ou dado usado',man:1},{k:'par',t:'Explicação e limite',man:2},{k:'par',t:'Uma dúvida que ficou depois de revisar a estação',man:1},{k:'par',t:'Correção realizada e evidência que a sustenta',man:2},
    {k:'par',t:'Síntese individual: conecte dois níveis de explicação e indique uma dificuldade e uma ação de estudo',man:3},
    {k:'par',t:'Fechamento: explique uma conexão entre os temas e indique um ponto que ainda precisa revisar',man:2}]},
  {code:'Aula 18',titulo:'Aula 18 · Avaliação individual',tipo:'Avaliação individual',desc:'Seis questões individuais. Responda com suas palavras; cálculos podem ser escritos no texto.',itens:[
@@ -1611,13 +1602,13 @@ extend('loteria',root=>{
     [0,.25,.5,.75,1].forEach(f=>g.fillText(fmt(f*max),X(f*max)-8,268));
     g.setLineDash([6,4]);g.strokeStyle=tok('--ink');g.lineWidth=2;g.beginPath();g.moveTo(50,Y(.25));g.lineTo(625,Y(.25));g.stroke();g.setLineDash([]);g.lineWidth=1;g.fillStyle=tok('--ink');g.fillText('esperado: 25% de aa',470,Y(.25)-6);return{X,Y};}
   axes(N);
-  const run=h('button',{class:'btn primary'},'Simular 6 grupos');
+  const run=h('button',{class:'btn primary'},'Simular 6 amostras');
   run.onclick=async()=>{run.disabled=true;const {X,Y}=axes(N);const g=cv.g;const st=COLS.map(()=>({aa:0,n:0,last:null}));let i=0;const per=Math.max(1,Math.ceil(N/90));
     await new Promise(res=>{const step=()=>{for(let k=0;k<per&&i<N;k++,i++){st.forEach((o,j)=>{const aa=Math.random()<.5&&Math.random()<.5;o.n++;if(aa)o.aa++;const p=[X(o.n),Y(o.aa/o.n)];if(o.last){g.strokeStyle=tok(COLS[j]);g.lineWidth=2;g.beginPath();g.moveTo(...o.last);g.lineTo(...p);g.stroke();}o.last=p;});}
-      out.textContent=`${fmt(i)} descendentes por grupo. Frequência de aa nos grupos: ${st.map(o=>pct(o.aa/o.n,0)).join(' · ')}`;
+      out.textContent=`${fmt(i)} descendentes por amostra. Frequência de aa nas amostras: ${st.map(o=>pct(o.aa/o.n,0)).join(' · ')}`;
       if(i<N&&!reduced())requestAnimationFrame(step);else if(i<N)step();else res();};step();});
     run.disabled=false;};
-  root.append(sim('Seis grupos, a mesma loteria','Cada linha é um grupo sorteando Aa × Aa. No começo as linhas oscilam muito; com mais sorteios, se aproximam de 25%.',h('div',{class:'row'},h('span',{class:'label'},'Descendentes por grupo'),seg([[24,'24'],[200,'200'],[1000,'1.000']],N,v=>{N=v;store.set('lln-N',v);axes(N);},{label:'Descendentes'}),run),cv,out,model('Isso é a lei dos grandes números: a frequência observada tende à probabilidade quando a amostra cresce.')));
+  root.append(sim('Seis amostras, a mesma loteria','Cada linha é uma amostra de sorteios Aa × Aa, como seis estudantes sorteando ao mesmo tempo. No começo as linhas oscilam muito; com mais sorteios, se aproximam de 25%.',h('div',{class:'row'},h('span',{class:'label'},'Descendentes por amostra'),seg([[24,'24'],[200,'200'],[1000,'1.000']],N,v=>{N=v;store.set('lln-N',v);axes(N);},{label:'Descendentes'}),run),cv,out,model('Isso é a lei dos grandes números: a frequência observada tende à probabilidade quando a amostra cresce.')));
 });
 
 // ---------- Aula 3: Maternidade virtual ----------
@@ -2147,7 +2138,7 @@ extend('mutacao',root=>{
     Q.forEach(q=>{const fb=h('div',{});pq.append(h('div',{class:'ab-q'},h('strong',{},q.t),chipsPick(q.o,null,v=>fbx(fb,v===q.c?'ok':'info',(v===q.c?'Isso. ':'Ainda não. ')+q.e)),fb));});}
   drawC();if(aberto)perguntas();
   root.append(sim('Da mutação à forma da hemácia','Três esfregaços de sangue corados, de três pessoas fictícias. Use a objetiva de 100×, ajuste o foco e conte as hemácias normais e em foice em vários campos de cada lâmina.',
-    h('div',{class:'mf'},sc,h('div',{class:'stack'},h('div',{class:'row'},lamSeg),h('div',{class:'mf-count'},btnN,btnF),info,h('div',{class:'row'},desf,zer),h('span',{class:'label'},'Contagem da equipe'),resumo,h('div',{},revBtn),revel,pq)),
+    h('div',{class:'mf'},sc,h('div',{class:'stack'},h('div',{class:'row'},lamSeg),h('div',{class:'mf-count'},btnN,btnF),info,h('div',{class:'row'},desf,zer),h('span',{class:'label'},'Sua contagem'),resumo,h('div',{},revBtn),revel,pq)),
     model('Desenho gerado pelo site, em escala aproximada (hemácia ≈ 7,5 µm). Não é fotografia nem serve para diagnóstico. Também aparecem plaquetas (pontos roxos) e, às vezes, um leucócito.')),molec);
 });
 

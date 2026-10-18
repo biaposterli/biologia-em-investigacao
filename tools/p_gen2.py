@@ -1,0 +1,11 @@
+import sys; sys.path.insert(0,'tools')
+from patchlib import P
+p=P('src/sites/genetica.html')
+p.rep("// ================= Aula 12: DNA em escala de mesa =================","// ================= Aula 12: DNA peça por peça =================")
+p.rep("'Mesa “núcleo”'","'Área “núcleo”'");p.rep("'Mesa “citoplasma”'","'Área “citoplasma”'")
+p.rep("{k:'par',t:'Por que só o RNAm vai à mesa “citoplasma”?',man:2}","{k:'par',t:'Por que só o RNAm vai à área “citoplasma”?',man:2}")
+p.rep("h('span',{class:'label'},'Contagem da equipe')","h('span',{class:'label'},'Sua contagem')")
+p.rep("'Simular 6 grupos'","'Simular 6 amostras'")
+p.rep("`${fmt(i)} descendentes por grupo. Frequência de aa nos grupos:","`${fmt(i)} descendentes por amostra. Frequência de aa nas amostras:")
+i=p.t.index("root.append(sim('Seis grupos, a mesma loteria'");seg=p.t[i:i+400];print(seg)
+p.save()

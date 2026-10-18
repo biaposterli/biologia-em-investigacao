@@ -270,28 +270,28 @@ const lotCounts=()=>{const d=store.get('lot-draws',[]);const c={AA:0,Aa:0,aa:0};
 const lotTurma=()=>{const c=lotCounts();store.get('lot-turma',[]).forEach(([a,b,cc])=>{c.AA+=a;c.Aa+=b;c.aa+=cc;});return c;};
 const jarCounts=()=>{const t=store.get('jar-turma',null);if(t)return t;const o=store.get('jar-off',[]);return TEO.map((_,i)=>o.filter(x=>x.idx===i).length);};
 const SPEC=[
- {code:'Aula 01',titulo:'Aula 1 · O arquivo de Mendel',tipo:'Grupo + registro individual',desc:'O grupo discute o arquivo; cada estudante envia o seu registro.',itens:[
-   {k:'txt',t:'Ordem dos registros',help:'Use o botão “Preencher com os dados da ferramenta” ou resuma os registros na ordem que o grupo escolheu.',fill:()=>store.get('m-ordem',null)},
+ {code:'Aula 01',titulo:'Aula 1 · O arquivo de Mendel',tipo:'Individual',desc:'Organize o arquivo, teste as hipóteses e envie o seu registro.',itens:[
+   {k:'txt',t:'Ordem dos registros',help:'Use o botão “Preencher com os dados da ferramenta” ou resuma os registros na ordem que você escolheu.',fill:()=>store.get('m-ordem',null)},
    {k:'mc',t:'Qual hipótese explica melhor os registros?',ch:['Hipótese 1 · mistura irreversível','Hipótese 2 · fatores discretos','Hipótese 3 · surgem ao acaso'],key:'Hipótese 2 · fatores discretos',pts:1},
    {k:'par',t:'Justifique com duas evidências do arquivo',man:2},
    {k:'par',t:'Uma pergunta que ainda precisa ser investigada',man:1},
    {k:'par',t:'Fechamento: cite um dado do arquivo e explique por que ele exige uma explicação para a herança',man:2}]},
- {code:'Aula 02',titulo:'Aula 2 · A loteria dos alelos',tipo:'Grupo + registro individual',desc:'Dados do sorteio (com os sacos ou no site). Não altere resultados para obter a proporção esperada.',itens:[
-   {k:'num',t:'Contagem do grupo · AA',fill:()=>lotCounts().AA},{k:'num',t:'Contagem do grupo · Aa',fill:()=>lotCounts().Aa},{k:'num',t:'Contagem do grupo · aa',fill:()=>lotCounts().aa},
-   {k:'num',t:'Total da turma · AA',fill:()=>lotTurma().AA},{k:'num',t:'Total da turma · Aa',fill:()=>lotTurma().Aa},{k:'num',t:'Total da turma · aa',fill:()=>lotTurma().aa},
+ {code:'Aula 02',titulo:'Aula 2 · A loteria dos alelos',tipo:'Individual',desc:'Dados dos seus sorteios e da turma simulada. Não altere resultados para obter a proporção esperada.',itens:[
+   {k:'num',t:'Seus sorteios · AA',fill:()=>lotCounts().AA},{k:'num',t:'Seus sorteios · Aa',fill:()=>lotCounts().Aa},{k:'num',t:'Seus sorteios · aa',fill:()=>lotCounts().aa},
+   {k:'num',t:'Total com a turma simulada · AA',fill:()=>lotTurma().AA},{k:'num',t:'Total com a turma simulada · Aa',fill:()=>lotTurma().Aa},{k:'num',t:'Total com a turma simulada · aa',fill:()=>lotTurma().aa},
    {k:'par',t:'1 · Escreva as quatro casas do quadro de Punnett de Aa × Aa',man:1},
    {k:'par',t:'2 · Compare as contagens com a previsão',man:2},
    {k:'mc',t:'3 · O que a reposição representa?',ch:['Que cada gameta tem sempre a mesma chance de levar A ou a','Que o genitor perde um alelo a cada filho','Que os resultados anteriores mudam o próximo sorteio'],key:'Que cada gameta tem sempre a mesma chance de levar A ou a',pts:1},
    {k:'par',t:'4 · O que muda ao reunir uma amostra maior?',man:2},
    {k:'par',t:'Fechamento: por que uma amostra que se afasta de 3:1 não refuta sozinha o modelo?',man:2}]},
- {code:'Aula 03',titulo:'Aula 3 · Agência de previsões',tipo:'Dupla + registro individual',desc:'Pedidos A, B e C da agência, com cálculo e condição de validade.',itens:[
+ {code:'Aula 03',titulo:'Aula 3 · Agência de previsões',tipo:'Individual',desc:'Pedidos A, B e C da agência, com cálculo e condição de validade.',itens:[
    {k:'mc',t:'Pedido A · Em Aa × Aa, P(fenótipo recessivo no próximo descendente)',ch:['1/2','1/4','3/4','1/16'],key:'1/4',pts:1},
    {k:'mc',t:'Pedido B · P(dois descendentes aa), eventos independentes',ch:['1/4','1/8','1/16','1/2'],key:'1/16',pts:1},
    {k:'mc',t:'Pedido C · P(um descendente ser AA ou Aa)',ch:['1/2','1/4','3/4','1'],key:'3/4',pts:1},
    {k:'par',t:'Cálculo e condição de validade de cada pedido',man:3},
    {k:'par',t:'Por que as alternativas do pedido C são mutuamente exclusivas?',man:1},
    {k:'par',t:'Fechamento: em Aa × Aa, qual é a probabilidade de aa no próximo descendente, mesmo após dois aa anteriores? Justifique',man:2}]},
- {code:'Aula 04',titulo:'Aula 4 · Detetives de heredogramas',tipo:'Grupo + argumento individual',desc:'Família fictícia desta aula. Modelo: um locus, dois alelos, penetrância completa, sem mutações novas.',itens:[
+ {code:'Aula 04',titulo:'Aula 4 · Detetives de heredogramas',tipo:'Individual',desc:'Família fictícia desta aula. Modelo: um locus, dois alelos, penetrância completa, sem mutações novas.',itens:[
    {k:'hdr',t:'Genótipos sob o modelo'},
    {k:'mc',t:'Genótipo de I-1',ch:GEN3,key:'Aa',pts:1},{k:'mc',t:'Genótipo de I-2',ch:GEN3,key:'Aa',pts:1},{k:'mc',t:'Genótipo de II-1',ch:GEN3,key:'aa',pts:1},{k:'mc',t:'Genótipo de II-2',ch:GEN3,key:'AA ou Aa',pts:1},{k:'mc',t:'Genótipo de II-3',ch:GEN3,key:'AA ou Aa',pts:1},
    {k:'hdr',t:'Necessária, possível ou não sustentada?'},
@@ -301,28 +301,28 @@ const SPEC=[
    {k:'mc',t:'O desenho permite diagnosticar uma condição clínica real',ch:CLS3,key:'Não sustentada',pts:1},
    {k:'par',t:'Justifique as classificações e escreva os pressupostos que tornam a inferência válida',man:3},
    {k:'par',t:'Fechamento: indique um genótipo certo e um que permaneça indeterminado no caso',man:2}]},
- {code:'Aula 05',titulo:'Aula 5 · Galeria das dominâncias',tipo:'Grupo + registro individual',desc:'Três modelos didáticos de um locus.',itens:[
+ {code:'Aula 05',titulo:'Aula 5 · Galeria das dominâncias',tipo:'Individual',desc:'Três modelos didáticos de um locus.',itens:[
    ...[1,2,3].flatMap(n=>[{k:'mc',t:`Modelo ${n} · genótipos em F2`,ch:['1 : 2 : 1','3 : 1','1 : 1'],key:'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · fenótipos em F2`,ch:['3 : 1','1 : 2 : 1','1 : 1'],key:n===1?'3 : 1':'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · relação de dominância`,ch:['Dominância completa','Dominância incompleta','Codominância'],key:['Dominância completa','Dominância incompleta','Codominância'][n-1],pts:1}]),
    {k:'par',t:'Explique por que os alelos continuam segregando',man:2},
    {k:'par',t:'Fechamento: como a F2 ajuda a mostrar que, na dominância incompleta, os alelos não foram diluídos?',man:2}]},
- {code:'Aula 06',titulo:'Aula 6 · Duas características em uma semente',tipo:'Grupo + registro individual',desc:'AaBb × AaBb com dois loci em cromossomos diferentes.',itens:[
+ {code:'Aula 06',titulo:'Aula 6 · Duas características em uma semente',tipo:'Individual',desc:'AaBb × AaBb com dois loci em cromossomos diferentes.',itens:[
    {k:'mc',t:'Gametas de AaBb e suas probabilidades',ch:['AB e ab, 1/2 cada','AB, Ab, aB e ab, 1/4 cada','Aa e Bb, 1/2 cada'],key:'AB, Ab, aB e ab, 1/4 cada',pts:1},
    {k:'mc',t:'P(aabb) pelo quadro',ch:['1/4','1/8','1/16','9/16'],key:'1/16',pts:1},
    {k:'mc',t:'Proporção fenotípica de AaBb × AaBb',ch:['3 : 1','1 : 2 : 1','9 : 3 : 3 : 1','1 : 1 : 1 : 1'],key:'9 : 3 : 3 : 1',pts:1},
    {k:'par',t:'Quais condições sustentam o cálculo P(aa) × P(bb)?',man:2},
    {k:'par',t:'Seria adequado aplicar a segregação independente automaticamente a dois loci muito próximos no mesmo cromossomo?',man:2},
    {k:'par',t:'Fechamento: por que a proporção 9:3:3:1 não descreve automaticamente qualquer par de genes?',man:2}]},
- {code:'Aula 07',titulo:'Aula 7 · Catálogo ABO',tipo:'Grupo + registro individual',desc:'Laboratório fictício do sistema ABO: sem testes nem inferências de parentesco real.',itens:[
+ {code:'Aula 07',titulo:'Aula 7 · Catálogo ABO',tipo:'Individual',desc:'Laboratório fictício do sistema ABO: sem testes nem inferências de parentesco real.',itens:[
    {k:'hdr',t:'Fenótipo de cada genótipo'},
    ...[['IᴬIᴬ','A'],['Iᴬi','A'],['IᴮIᴮ','B'],['Iᴮi','B'],['IᴬIᴮ','AB'],['ii','O']].map(([g,f])=>({k:'mc',t:'Fenótipo de '+g,ch:['A','B','AB','O'],key:f,pts:1})),
    {k:'mc',t:'Iᴬi × Iᴮi: fenótipos e probabilidades',ch:['Só AB','A e B, 1/2 cada','A, B, AB e O, 1/4 cada','A, B e AB, 1/3 cada'],key:'A, B, AB e O, 1/4 cada',pts:1},
    {k:'par',t:'Audite a frase: “O fenótipo A revela exatamente o genótipo”',man:2},
    {k:'par',t:'Fechamento: por que conhecer apenas o fenótipo A pode ser insuficiente para determinar o genótipo?',man:2}]},
- {code:'Aula 08',titulo:'Aula 8 · Oficina das cristas',tipo:'Grupo + registro individual',desc:'RrEe × RrEe agrupado por fenótipo (em 16 eventos).',itens:[
+ {code:'Aula 08',titulo:'Aula 8 · Oficina das cristas',tipo:'Individual',desc:'RrEe × RrEe agrupado por fenótipo (em 16 eventos).',itens:[
    {k:'num',t:'Cristas noz (em 16)',key:9,tol:0,pts:1},{k:'num',t:'Cristas rosa (em 16)',key:3,tol:0,pts:1},{k:'num',t:'Cristas ervilha (em 16)',key:3,tol:0,pts:1},{k:'num',t:'Cristas simples (em 16)',key:1,tol:0,pts:1},
    {k:'par',t:'Explique por que se trata de dois genes, não de dois alelos do mesmo gene',man:2},
    {k:'par',t:'Fechamento: qual é a diferença entre codominância e a interação gênica estudada hoje?',man:2}]},
- {code:'Aula 09',titulo:'Aula 9 · A fábrica de pigmentos',tipo:'Grupo + registro individual',desc:'Labradores (P/A) e abóboras (W/Y).',itens:[
+ {code:'Aula 09',titulo:'Aula 9 · A fábrica de pigmentos',tipo:'Individual',desc:'Labradores (P/A) e abóboras (W/Y).',itens:[
    {k:'mc',t:'PpAa × PpAa: proporção fenotípica',ch:['9 : 3 : 3 : 1','9 : 3 : 4','12 : 3 : 1','3 : 1'],key:'9 : 3 : 4',pts:1},
    {k:'mc',t:'PpAa × PpAa: qual gene mascara qual?',ch:['aa mascara o efeito de P/p','pp mascara o efeito de A/a','Não há mascaramento'],key:'aa mascara o efeito de P/p',pts:1},
    {k:'mc',t:'WwYy × WwYy: proporção fenotípica',ch:['9 : 3 : 3 : 1','9 : 3 : 4','12 : 3 : 1','15 : 1'],key:'12 : 3 : 1',pts:1},
@@ -330,8 +330,8 @@ const SPEC=[
    {k:'par',t:'Compare WwYY e Wwyy: registre uma evidência de mascaramento',man:1},
    {k:'par',t:'Explique a diferença entre epistasia e dominância',man:2},
    {k:'par',t:'Fechamento: explique por que PPaa e ppaa têm o mesmo fenótipo no modelo dos labradores',man:2}]},
- {code:'Aula 10',titulo:'Aula 10 · Jardim das muitas possibilidades',tipo:'Grupo + registro individual',desc:'Contagem da turma por índice genético (0 a 6).',itens:[
-   ...TEO.map((_,i)=>({k:'num',t:'Contagem da turma · índice '+i,fill:()=>jarCounts()[i]})),
+ {code:'Aula 10',titulo:'Aula 10 · Jardim das muitas possibilidades',tipo:'Individual',desc:'Contagem por índice genético (0 a 6): use a turma simulada ou os seus sorteios.',itens:[
+   ...TEO.map((_,i)=>({k:'num',t:'Contagem por índice · '+i,fill:()=>jarCounts()[i]})),
    {k:'par',t:'O que muda entre ambientes para a mesma linhagem (L1 ou L2)?',man:2},
    {k:'par',t:'Uma tabela com médias permite concluir como cada gene atua? Indique uma informação adicional necessária',man:2},
    {k:'par',t:'Fechamento: por que a diferença de fenótipo entre dois indivíduos não prova, sozinha, diferença genética?',man:2}]},
@@ -339,30 +339,30 @@ const SPEC=[
    {k:'par',t:'Nota de correção (até 100 palavras): dois problemas, uma correção e a fonte',man:4,fill:()=>store.get('red-nota',null)||null},
    {k:'txt',t:'Fonte citada (livro e página ou endereço)'},
    {k:'par',t:'Fechamento: reescreva uma frase determinista em uma explicação que reconheça genes, ambiente e limites',man:2}]},
- {code:'Aula 12',titulo:'Aula 12 · DNA em escala de mesa',tipo:'Grupo + registro individual',desc:'Segmento 5′–ATGCCATT–3′.',itens:[
+ {code:'Aula 12',titulo:'Aula 12 · DNA peça por peça',tipo:'Individual',desc:'Segmento 5′–ATGCCATT–3′.',itens:[
    {k:'txt',t:'Segunda fita, com as extremidades (ex.: 3′–…–5′)',fill:()=>{const t=store.get('dna-top','');const b=store.get('dna-bot',[]);return t==='ATGCCATT'&&b.every(Boolean)?"3′–"+b.join('')+"–5′":null;}},
    {k:'mc',t:'As fitas do DNA são:',ch:['Paralelas (mesmo sentido)','Antiparalelas (sentidos opostos)'],key:'Antiparalelas (sentidos opostos)',pts:1},
    {k:'par',t:'Resultado da lista de auditoria: o que foi conferido e corrigido',man:2},
-   {k:'par',t:'Fechamento: aponte uma propriedade do DNA representada e uma que o modelo de papel não mostra',man:2}]},
- {code:'Aula 13',titulo:'Aula 13 · O DNA faz cópias de quê?',tipo:'Grupo + registro individual',desc:'Três propostas de cópia.',itens:[
+   {k:'par',t:'Fechamento: aponte uma propriedade do DNA representada e uma que o modelo do site não mostra',man:2}]},
+ {code:'Aula 13',titulo:'Aula 13 · O DNA faz cópias de quê?',tipo:'Individual',desc:'Três propostas de cópia.',itens:[
    {k:'mc',t:'Qual proposta corresponde ao modelo semiconservativo?',ch:['Proposta A','Proposta B','Proposta C'],key:'Proposta B',pts:1},
    {k:'mc',t:'Em que sentido as fitas novas são sintetizadas?',ch:['5′ → 3′','3′ → 5′','Nos dois sentidos'],key:'5′ → 3′',pts:1},
-   {k:'par',t:'Descreva as duas moléculas-filhas que o grupo construiu',man:2},
+   {k:'par',t:'Descreva as duas moléculas-filhas da primeira geração no modelo semiconservativo',man:2},
    {k:'par',t:'Diferencie duplicar DNA, transcrever RNA e traduzir uma cadeia polipeptídica',man:2},
    {k:'par',t:'Fechamento: explique o significado de semiconservativa sem usar apenas a expressão “metade”',man:2}]},
- {code:'Aula 14',titulo:'Aula 14 · Correio do gene',tipo:'Grupo + registro individual',desc:'Fita molde 3′–TAC TTT CCG ATT–5′.',itens:[
+ {code:'Aula 14',titulo:'Aula 14 · Correio do gene',tipo:'Individual',desc:'Fita molde 3′–TAC TTT CCG ATT–5′.',itens:[
    {k:'txt',t:'RNAm transcrito, com as extremidades',fill:()=>{const m=store.get('cor-m',[]);const t=store.get('cor-tpl','');return t==='TACTTTCCGATT'&&m.every(Boolean)?"5′–"+m.join('').replace(/(...)/g,'$1 ').trim()+"–3′":null;}},
    {k:'mc',t:'Função do RNAm',ch:['Leva a sequência de códons ao ribossomo','Traz o aminoácido','Forma o ribossomo'],key:'Leva a sequência de códons ao ribossomo',pts:1},
    {k:'mc',t:'Função do RNAt',ch:['Leva a sequência de códons ao ribossomo','Traz o aminoácido','Forma o ribossomo'],key:'Traz o aminoácido',pts:1},
    {k:'mc',t:'Função do RNAr',ch:['Leva a sequência de códons ao ribossomo','Traz o aminoácido','Forma o ribossomo'],key:'Forma o ribossomo',pts:1},
-   {k:'par',t:'Por que só o RNAm vai à mesa “citoplasma”?',man:2},
+   {k:'par',t:'Por que só o RNAm vai à área “citoplasma”?',man:2},
    {k:'par',t:'Fechamento: por que a sequência do RNAm não é idêntica à fita molde escrita no mesmo alinhamento?',man:2}]},
- {code:'Aula 15',titulo:'Aula 15 · Fábrica de proteínas',tipo:'Grupo + registro individual',desc:'RNAm 5′–AUG AAA GGC UAA–3′.',itens:[
+ {code:'Aula 15',titulo:'Aula 15 · Fábrica de proteínas',tipo:'Individual',desc:'RNAm 5′–AUG AAA GGC UAA–3′.',itens:[
    {k:'txt',t:'Sequência de aminoácidos produzida'},
-   {k:'par',t:'Como o grupo soube onde começar e onde terminar?',man:2},
+   {k:'par',t:'Como você soube onde começar e onde terminar?',man:2},
    {k:'txt',t:'Anticódon do RNAt para AUG, com os sentidos'},
    {k:'par',t:'Fechamento: por que UAA termina a leitura e não deve virar uma conta de aminoácido na cadeia?',man:2}]},
- {code:'Aula 16',titulo:'Aula 16 · Missão revisão das mutações',tipo:'Grupo + registro individual',desc:'Dossiê da equipe sobre os quatro envelopes.',itens:[
+ {code:'Aula 16',titulo:'Aula 16 · Missão revisão das mutações',tipo:'Individual',desc:'Seu dossiê sobre os quatro envelopes.',itens:[
    {k:'mc',t:'Envelope 1 · tipo de alteração',ch:['Substituição sinônima','Troca de aminoácido','Término precoce','Deslocamento do quadro'],key:'Substituição sinônima',pts:1},
    {k:'mc',t:'Envelope 2 · tipo de alteração',ch:['Substituição sinônima','Troca de aminoácido','Término precoce','Deslocamento do quadro'],key:'Troca de aminoácido',pts:1},
    {k:'mc',t:'Envelope 3 · tipo de alteração',ch:['Substituição sinônima','Troca de aminoácido','Término precoce','Deslocamento do quadro'],key:'Término precoce',pts:1},
@@ -370,9 +370,9 @@ const SPEC=[
    {k:'par',t:'Para cada envelope: um limite do que se pode concluir',man:3},
    {k:'par',t:'Diferencie mutação somática e alteração na linhagem germinativa',man:2},
    {k:'par',t:'Fechamento: uma substituição manteve o aminoácido. O que é possível e o que não é possível concluir com esse dado?',man:2}]},
- {code:'Aula 17',titulo:'Aula 17 · Museu dos modelos',tipo:'Grupo + síntese individual',desc:'Registro do painel do grupo e a sua síntese.',itens:[
-   {k:'mc',t:'Estação do grupo',ch:['1 · Herança e probabilidade','2 · Interações e ambiente','3 · Estrutura e replicação do DNA','4 · Transcrição, tradução e mutações']},
-   {k:'par',t:'Pergunta da estação',man:1},{k:'par',t:'Modelo ou dado usado',man:1},{k:'par',t:'Explicação e limite',man:2},{k:'par',t:'Pergunta recebida de um visitante',man:1},{k:'par',t:'Correção realizada e evidência que a sustenta',man:2},
+ {code:'Aula 17',titulo:'Aula 17 · Museu dos modelos',tipo:'Individual',desc:'Registro da estação que você escolheu e a sua síntese.',itens:[
+   {k:'mc',t:'Estação escolhida',ch:['1 · Herança e probabilidade','2 · Interações e ambiente','3 · Estrutura e replicação do DNA','4 · Transcrição, tradução e mutações']},
+   {k:'par',t:'Pergunta da estação',man:1},{k:'par',t:'Modelo ou dado usado',man:1},{k:'par',t:'Explicação e limite',man:2},{k:'par',t:'Uma dúvida que ficou depois de revisar a estação',man:1},{k:'par',t:'Correção realizada e evidência que a sustenta',man:2},
    {k:'par',t:'Síntese individual: conecte dois níveis de explicação e indique uma dificuldade e uma ação de estudo',man:3},
    {k:'par',t:'Fechamento: explique uma conexão entre os temas e indique um ponto que ainda precisa revisar',man:2}]},
  {code:'Aula 18',titulo:'Aula 18 · Avaliação individual',tipo:'Avaliação individual',desc:'Seis questões individuais. Responda com suas palavras; cálculos podem ser escritos no texto.',itens:[
