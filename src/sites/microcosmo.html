@@ -1,0 +1,1086 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="icons/microcosmo.svg" type="image/svg+xml"><link rel="icon" href="icons/microcosmo-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="icons/microcosmo-180.png"></head><body>
+<script>window.PORTAL_SITE='mic';</script><script src="portal.js"></script>
+<title>Microcosmo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<style>
+/* Layout: caderno quadriculado; cada tema tem uma cor (t1 magenta, t2 âmbar, t3 anil, t4 verde-azulado, t5 violeta); cada aula abre com uma faixa colorida.
+   NÃO ALTERE estas cores, fontes e medidas: elas são a identidade visual da coleção de sites. */
+:root{
+  --bg:#edf0f4; --grid:#dde3eb; --surface:#fbfcfd; --surface-2:#e6eaf0; --ink:#1a1f2b; --muted:#566074; --line:#d4dae3;
+  --t1:#a3336b; --t1-soft:#f6dfeb; --t2:#9a5a10; --t2-soft:#f5e5cd; --t3:#2c58a5; --t3-soft:#dde6f6;
+  --t4:#16705d; --t4-soft:#d3ebe4; --t5:#5a48ad; --t5-soft:#e6e2f7;
+  --good:#2b7a4b; --good-soft:#dbefe1; --bad:#b03c35; --bad-soft:#f7e0dd; --warn:#94650c; --info:#2c58a5; --info-soft:#dde6f6;
+  --shadow:0 1px 0 rgba(26,31,43,.04), 0 10px 30px -18px rgba(26,31,43,.30);
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --r:14px; --tema:var(--t1); --tema-soft:var(--t1-soft);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f131a; --grid:#1a202b; --surface:#161b24; --surface-2:#202733; --ink:#e4e8ef; --muted:#9ba5b6; --line:#2b3340;
+  --t1:#ee86b6; --t1-soft:#3a1a2b; --t2:#e8a95b; --t2-soft:#36271a; --t3:#86aaf0; --t3-soft:#1a2740;
+  --t4:#5cc6aa; --t4-soft:#15302a; --t5:#ab9cf2; --t5-soft:#272143;
+  --good:#5cc08a; --good-soft:#163222; --bad:#ec7d72; --bad-soft:#3a1d1a; --warn:#e2b456; --info:#86aaf0; --info-soft:#1a2740;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 30px -18px rgba(0,0,0,.7);
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f131a; --grid:#1a202b; --surface:#161b24; --surface-2:#202733; --ink:#e4e8ef; --muted:#9ba5b6; --line:#2b3340;
+  --t1:#ee86b6; --t1-soft:#3a1a2b; --t2:#e8a95b; --t2-soft:#36271a; --t3:#86aaf0; --t3-soft:#1a2740;
+  --t4:#5cc6aa; --t4-soft:#15302a; --t5:#ab9cf2; --t5-soft:#272143;
+  --good:#5cc08a; --good-soft:#163222; --bad:#ec7d72; --bad-soft:#3a1d1a; --warn:#e2b456; --info:#86aaf0; --info-soft:#1a2740;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 30px -18px rgba(0,0,0,.7);
+  color-scheme:dark }
+[data-tema="t1"]{--tema:var(--t1);--tema-soft:var(--t1-soft)}
+[data-tema="t2"]{--tema:var(--t2);--tema-soft:var(--t2-soft)}
+[data-tema="t3"]{--tema:var(--t3);--tema-soft:var(--t3-soft)}
+[data-tema="t4"]{--tema:var(--t4);--tema-soft:var(--t4-soft)}
+[data-tema="t5"]{--tema:var(--t5);--tema-soft:var(--t5-soft)}
+html{font-size:16px}
+html.proj{font-size:20px}
+body{background-color:var(--bg);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.12;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:800;letter-spacing:-.015em}
+h3{font-size:1.18rem;font-weight:700;letter-spacing:-.005em}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--tema);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+sup,sub{line-height:0}
+
+/* Cabeçalho */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);transition:transform .25s ease}
+.top.escondido{transform:translateY(-130%)}
+.top-in{max-width:1280px;margin:0 auto;padding-block:12px 10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:10px}
+.brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand-name{font-family:var(--f-display);font-weight:800;font-size:1.2rem;letter-spacing:-.01em;cursor:pointer;background:none;border:0;padding:0}
+.brand-meta{color:var(--muted);font-size:.85rem}
+.brand-tools{margin-left:auto;display:flex;gap:6px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none;border:1px solid transparent;background:none;padding:6px 12px;border-radius:999px;cursor:pointer;color:var(--muted);font-size:.9rem;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+nav.tabs button b{font-family:var(--f-mono);font-weight:600;font-size:.74rem;color:var(--tema)}
+nav.tabs button:hover{color:var(--ink);background:var(--surface)}
+nav.tabs button[aria-current="true"]{color:var(--ink);background:var(--tema-soft);border-color:color-mix(in srgb,var(--tema) 35%,transparent);font-weight:700}
+nav.tabs .sep{flex:none;width:1px;background:var(--line);margin:4px 2px}
+@media (max-width:640px){.brand-meta,.brand-tools{display:none}.top-in{padding-block:8px 6px;gap:6px}.brand-name{font-size:1.05rem}nav.tabs button{padding:5px 10px;font-size:.85rem}}
+
+main{max-width:1280px;margin:0 auto;padding-block:28px 90px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section.aula{display:flex;flex-direction:column;gap:22px}
+
+/* Faixa de abertura de cada aula */
+.aula-head{position:relative;overflow:hidden;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:22px;row-gap:6px;align-items:start;padding:24px 26px;background:var(--tema-soft);border-radius:20px;border:1px solid color-mix(in srgb,var(--tema) 22%,transparent)}
+.aula-head>*{grid-column:2;position:relative;z-index:1;max-width:74ch}
+.aula-badge{grid-column:1!important;grid-row:1/5;align-self:center;width:88px;height:88px;border-radius:18px;background:var(--tema);color:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.aula-badge-k{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.aula-badge-n{font-family:var(--f-display);font-weight:800;font-size:2rem;letter-spacing:-.02em;margin-top:4px}
+.aula-wm{position:absolute!important;right:-14px;bottom:-30px;color:var(--tema);opacity:.13;z-index:0!important;grid-column:auto!important;pointer-events:none}
+@media (max-width:640px){.aula-head{grid-template-columns:minmax(0,1fr);padding:20px}.aula-head>*{grid-column:1}.aula-badge{grid-row:auto;width:auto;height:auto;flex-direction:row;gap:8px;padding:6px 12px;justify-self:start;border-radius:10px}.aula-badge-n{font-size:1.2rem;margin:0}}
+.eyebrow{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tema);font-weight:600}
+.lede{color:var(--muted);font-size:1.05rem}
+.aula-head .lede{color:var(--ink);opacity:.85}
+.base{font-size:.86rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
+
+/* Componentes */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:8px 15px;border-radius:10px;cursor:pointer;font-weight:700;font-size:.92rem;line-height:1.2;transition:border-color .15s,transform .15s}
+.btn:hover{border-color:var(--tema)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--tema);border-color:var(--tema);color:var(--surface)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 10px;font-size:.82rem;border-radius:8px}
+.btn.big{padding:12px 22px;font-size:1.05rem;text-decoration:none}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;min-width:0;box-shadow:var(--shadow)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+.cols.wl{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+.cols.wr{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr)}
+.cols.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.cols,.cols.wl,.cols.wr,.cols.three{grid-template-columns:minmax(0,1fr)}}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex-wrap:wrap;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:7px 13px;cursor:pointer;font-weight:700;border-right:1px solid var(--line);min-width:2.6em}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--tema);color:var(--surface)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;cursor:pointer;font-size:.9rem}
+.chip:hover{border-color:var(--tema)}
+.chip[aria-pressed="true"]{background:var(--tema);border-color:var(--tema);color:var(--surface);font-weight:700}
+.label{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.note{font-size:.86rem;color:var(--muted)}
+.callout{border-left:4px solid var(--tema);background:var(--tema-soft);padding:11px 15px;border-radius:0 10px 10px 0}
+.model{font-size:.84rem;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+.model::before{content:"Modelo didático";flex:none;font-family:var(--f-mono);font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--surface-2);color:var(--muted);padding:2px 7px;border-radius:6px;margin-top:1px}
+.fb{padding:10px 14px;border-radius:10px;font-size:.95rem}
+.fb.ok{background:var(--good-soft);border:1px solid color-mix(in srgb,var(--good) 55%,transparent)}
+.fb.no{background:var(--bad-soft);border:1px solid color-mix(in srgb,var(--bad) 55%,transparent)}
+.fb.info{background:var(--info-soft);border:1px solid color-mix(in srgb,var(--info) 45%,transparent)}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:700;background:var(--surface-2);color:var(--muted)}
+.pill.ok{background:var(--good-soft);color:var(--good)} .pill.no{background:var(--bad-soft);color:var(--bad)} .pill.ex{background:var(--tema-soft);color:var(--tema)}
+input[type=number],input[type=text],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-width:0}
+input.num{width:5.5em;font-family:var(--f-mono)}
+input[type=range]{accent-color:var(--tema);width:100%}
+input[type=checkbox]{accent-color:var(--tema);width:1.05em;height:1.05em}
+.tbl-wrap{overflow-x:auto;max-width:100%}
+table.data{border-collapse:collapse;width:100%;font-size:.92rem}
+table.data th,table.data td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:middle}
+table.data th{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+table.data td.n,table.data th.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.big-num{font-family:var(--f-display);font-weight:800;font-size:2rem;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px}
+.stat-box{background:var(--surface-2);border-radius:10px;padding:10px 12px}
+svg text{font-family:var(--f-body)}
+.chart{width:100%;height:auto;display:block;max-width:min(100%,780px);margin-inline:auto}
+.stack>.btn,.panel>.btn{align-self:flex-start}
+
+/* Início */
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:36px;align-items:center;padding:12px 0 18px}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero h1{font-size:clamp(2.6rem,7vw,5rem);font-weight:800;letter-spacing:-.035em;line-height:.95}
+.hero h1 span{display:block;color:var(--t1);font-weight:500}
+.hero .lede{font-size:1.12rem;max-width:54ch}
+.hero-facts{display:flex;gap:26px;flex-wrap:wrap;padding-top:6px}
+.hero-facts div{display:flex;flex-direction:column}
+.hero-facts b{font-family:var(--f-display);font-size:2rem;font-weight:800;line-height:1;letter-spacing:-.02em}
+.hero-facts span{font-size:.82rem;color:var(--muted)}
+.book-src{font-size:.88rem;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--t3);border-radius:0 10px 10px 0;padding:10px 14px;max-width:62ch}
+.hero-art{display:flex;flex-direction:column;align-items:center;gap:10px}
+.hero-svg{width:100%;max-width:500px;height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.18))}
+.hero-cap{font-size:.82rem;color:var(--muted);text-align:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.cards-group{grid-column:1/-1;display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tema);font-weight:600;padding-top:14px}
+.cards-group::after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--tema) 30%,transparent)}
+.cards-dot{width:10px;height:10px;border-radius:50%;background:var(--tema)}
+.tool-card{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:18px;cursor:pointer;display:flex;flex-direction:column;gap:10px;min-height:180px;box-shadow:var(--shadow);transition:transform .18s,border-color .18s}
+.tool-card:hover{border-color:var(--tema);transform:translateY(-2px)}
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between}
+.tc-ic{width:48px;height:48px;border-radius:14px;background:var(--tema-soft);color:var(--tema);display:grid;place-items:center}
+.tc-n{font-family:var(--f-display);font-weight:800;font-size:2rem;line-height:1;color:var(--tema);letter-spacing:-.03em;display:flex;flex-direction:column;align-items:flex-end}
+.tc-n small{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.tool-card h3{font-size:1.18rem}
+.tool-card p{color:var(--muted);font-size:.9rem}
+.tc-go{margin-top:auto;font-weight:700;font-size:.86rem;color:var(--tema)}
+.refs{display:flex;flex-direction:column;gap:6px;font-size:.88rem;color:var(--muted)}
+
+/* Ilustrações */
+.ilu{width:100%;max-width:100%;height:auto;display:block;border-radius:12px;background:var(--surface-2);aspect-ratio:4/3}
+.ilu-card{max-width:180px;margin:0 auto}
+.ilu-sm{max-width:110px}
+
+/* Para começar */
+.abertura{display:flex;flex-direction:column;gap:14px;background:linear-gradient(135deg,var(--tema-soft),var(--surface) 70%);border:1px dashed color-mix(in srgb,var(--tema) 55%,transparent);border-radius:20px;padding:22px}
+.ab-head{display:flex;flex-direction:column;gap:4px}
+.ab-tag{align-self:flex-start;background:var(--tema);color:var(--surface);font-family:var(--f-mono);font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.ab-body{display:flex;flex-direction:column;gap:12px}
+.ab-body>.btn{align-self:flex-start}
+.ab-choices{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.ab-choice{display:flex;flex-direction:column;gap:6px;align-items:center;text-align:center;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:10px;cursor:pointer;font-weight:700}
+.ab-choice[aria-pressed="true"]{border-color:var(--tema);background:var(--tema-soft)}
+.ab-choice .ilu{max-width:200px}
+.ab-q{display:flex;flex-direction:column;gap:6px;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.ab-sem{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;padding:6px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.sem{width:30px;height:30px;border-radius:50%;border:3px solid transparent;cursor:pointer;opacity:.35}
+.sem.g{background:#2b7a4b}.sem.y{background:#d9a21b}.sem.r{background:#b03c35}
+.sem[aria-pressed="true"]{opacity:1;border-color:var(--ink)}
+.ab-recap{border-left:4px solid var(--tema);background:var(--tema-soft);border-radius:0 12px 12px 0;padding:10px 14px;display:flex;flex-direction:column;gap:4px}
+@media (max-width:520px){.abertura{padding:16px}}
+
+/* Ficha de respostas */
+.ficha{display:flex;flex-direction:column;gap:16px;background:var(--surface);border:2px solid var(--tema);border-radius:20px;padding:24px;box-shadow:var(--shadow);scroll-margin-top:130px}
+.ficha-head{display:flex;flex-direction:column;gap:4px}
+.ficha-id{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;padding:14px;background:var(--tema-soft);border-radius:12px}
+.ficha-id input[type=text]{width:100%}
+.ficha-itens{display:flex;flex-direction:column;gap:14px}
+.ficha-item{display:flex;flex-direction:column;gap:6px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.ficha-item:last-child{border-bottom:0}
+.ficha-item input[type=text]{max-width:340px}
+.ficha-item textarea{width:100%;resize:vertical}
+.ficha-q{font-weight:700}
+.ficha-q b{color:var(--tema);margin-right:2px}
+.ficha-send{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ficha-jump{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+@media (max-width:640px){.ficha{padding:16px}}
+
+.menu-flutuante{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:10px 16px;font-weight:700;box-shadow:var(--shadow);cursor:pointer;opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .2s,transform .2s}
+.menu-flutuante.visivel{opacity:1;pointer-events:auto;transform:none}
+.sim{border:2px solid color-mix(in srgb,var(--tema) 45%,transparent);background:linear-gradient(180deg,var(--tema-soft),var(--surface) 140px)}
+.sim canvas{border-radius:12px}
+.fade{animation:fade .28s ease}
+@keyframes fade{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:none}}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.pop{animation:pop .25s ease}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ===== Componentes específicos deste site ===== */
+.bancada-wrap{border:2px solid color-mix(in srgb,var(--tema) 40%,transparent)}
+.bancada{display:grid;grid-template-columns:230px minmax(0,1fr) 270px;gap:18px;align-items:start}
+@media (max-width:1150px){.bancada{grid-template-columns:minmax(0,1fr) 260px}.bancada .lst{grid-column:1/-1}}
+@media (max-width:760px){.bancada{grid-template-columns:minmax(0,1fr)}}
+.lst-items{display:flex;flex-direction:column;gap:6px;max-height:560px;overflow:auto;padding:2px}
+@media (max-width:1150px){.lst-items{flex-direction:row;overflow-x:auto;max-height:none;padding-bottom:6px}}
+.lam-btn{display:flex;align-items:center;gap:8px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:5px 10px 5px 5px;cursor:pointer;flex:none;min-width:0}
+@media (max-width:1150px){.lam-btn{width:220px}}
+.lam-btn img{width:44px;height:44px;border-radius:50%;flex:none;background:#0b0f0d}
+.lam-btn[aria-pressed="true"]{border-color:var(--tema);background:var(--tema-soft);box-shadow:0 0 0 2px var(--tema) inset}
+.campo{background:#0b0f0d;border-radius:20px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.campo canvas{width:100%;max-width:560px;aspect-ratio:1;margin:0 auto;display:block;touch-action:none;cursor:grab;border-radius:50%}
+.campo-top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#cfd8d2;font-family:var(--f-mono);font-size:.78rem}
+.ctl{display:flex;flex-direction:column;gap:3px}
+.ctl-box{background:var(--surface-2);border-radius:14px;padding:14px}
+.charriot{display:grid;grid-template-columns:repeat(3,46px);gap:4px;justify-content:center}
+.charriot .btn{padding:8px 0}
+.est-list{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:3px}
+.thumb{width:100%;aspect-ratio:1;max-width:180px;border-radius:50%;align-self:center;background:#0b0f0d}
+.scope-map .hot{cursor:pointer}
+.scope-map .hot text{transition:fill .15s}
+.scope-map .hot:hover text,.scope-map .hot.on text{fill:var(--t1);text-decoration:underline}
+.scope-map .hot:focus-visible{outline:none}
+.scope-map .hot:focus-visible text{fill:var(--t1);text-decoration:underline}
+
+</style>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <button class="brand-name" data-go="inicio"></button>
+      <span class="brand-meta"></span>
+      <div class="brand-tools">
+        <button class="btn sm ghost" id="btnProj" aria-pressed="false" title="Aumenta o texto para leitura no projetor">Modo projetor</button>
+        <button class="btn sm ghost" id="btnFull">Tela cheia</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Aulas"></nav>
+  </div>
+</header>
+<button class="menu-flutuante" id="btnMenu" type="button" aria-label="Mostrar o menu das aulas">☰ Aulas</button>
+<main id="main">
+  <section class="aula" id="inicio">
+    <div class="hero">
+      <div class="stack" style="gap:18px">
+        <span class="eyebrow" style="color:var(--t1)" id="heroEyebrow"></span>
+        <h1 id="heroH1"></h1>
+        <p class="lede" id="heroLede"></p>
+        <div class="hero-facts" id="heroFacts"></div>
+        <p class="book-src" id="heroBook"></p>
+        <p class="note" id="heroNote"></p>
+      </div>
+      <div class="hero-art" id="heroArt"></div>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="panel stack" style="gap:8px"><h3>Referências</h3><div class="refs" id="refs"></div></div>
+  </section>
+</main>
+<script>
+// =====================================================================
+//  1. CONFIGURAÇÃO DO SITE
+// =====================================================================
+const SITE={
+  nome:'Microcosmo',
+  h1:['A vida em','outra escala'],
+  meta:'Laboratório virtual de microscopia · Ensino Médio',
+  eyebrow:'Laboratório virtual de microscopia · Ensino Médio',
+  lede:'Conheça o microscópio, ajuste o foco, troque a objetiva e investigue 20 lâminas de células, tecidos e microrganismos. Cada aula traz a pergunta para começar, o roteiro, a bancada, um simulador e a ficha de respostas.',
+  sobre:'<strong>Sobre as imagens.</strong> As 20 lâminas são desenhos originais gerados pelo próprio site, em escala aproximada (µm), com o campo de visão de um microscópio real (ocular 10×, número de campo 18 mm). Não são fotografias nem material diagnóstico.',
+  nota:'Funciona sem login; o que é digitado fica salvo só neste aparelho.',
+  chave:'micro',
+  legenda:'Um microscópio e três campos de observação: tecido vegetal, sangue e uma folha com cloroplastos',
+  referencias:[
+    'CLARK, M. A.; DOUGLAS, M.; CHOI, J. <i>Biology 2e</i>. Houston: OpenStax, 2018. Cap. 4, Studying Cells. Disponível em: openstax.org/books/biology-2e/pages/4-1-studying-cells.',
+    'PARKER, N. et al. <i>Microbiology</i>. Houston: OpenStax, 2016. Cap. 2, Instruments of Microscopy. Disponível em: openstax.org/books/microbiology/pages/2-3-instruments-of-microscopy.',
+    'NIKON. <i>MicroscopyU</i>: Resolution; Field of view. Disponível em: microscopyu.com.',
+    'Desenhos das lâminas, atividades e dados: elaboração didática autoral.'],
+  fatos:[[8,'aulas'],[20,'lâminas'],[4,'objetivas']],
+  mostrarCatalogo:false,
+  receptor:'',
+};
+const TEMAS={t1:'Microscopia',t2:'Biologia celular',t3:'Botânica',t4:'Histologia animal',t5:'Microrganismos, diversidade e revisão'};
+const BASE_GERAL='OpenStax Biology 2e (cap. 4) e Microbiology (cap. 2); desenhos das lâminas originais do site.';
+const TOOLS=[
+  {id:'microscopio',n:1,t:'t1',icon:'microscopio',base:BASE_GERAL,title:'Conheça o microscópio',desc:'As partes do microscópio, ampliação total e o campo de visão que encolhe a cada objetiva.'},
+  {id:'passos',n:2,t:'t1',icon:'lupa',base:BASE_GERAL,title:'Primeiros passos na bancada',desc:'Foco, charriot e objetivas na epiderme de cebola. Estime o tamanho de uma célula e conheça o acervo.'},
+  {id:'celulas',n:3,t:'t2',icon:'celula',base:BASE_GERAL,title:'Células animais e vegetais',desc:'Cebola, mucosa bucal e elódea lado a lado: o que é de todas e o que é só de algumas.'},
+  {id:'mitose',n:4,t:'t2',icon:'dna',base:BASE_GERAL,title:'Células em divisão',desc:'O meristema da raiz de cebola: reconheça as fases da mitose e calcule o índice mitótico.'},
+  {id:'plantas',n:5,t:'t3',icon:'folha',base:BASE_GERAL,title:'Estrutura e função nas plantas',desc:'Estômatos, mesofilo e pelos absorventes, com um estômato que abre e fecha.'},
+  {id:'tecidos',n:6,t:'t4',icon:'tecido',base:BASE_GERAL,title:'Tecidos e organização animal',desc:'Sangue, músculo, tecido nervoso, epitélio, tecido adiposo e cartilagem, com um jogo de identificação.'},
+  {id:'diversidade',n:7,t:'t5',icon:'gota',base:BASE_GERAL,title:'Diversidade de formas microscópicas',desc:'Bactérias, leveduras, algas, fungos, pólen e um ciliado em movimento. Ordene os seres por tamanho.'},
+  {id:'desafio',n:8,t:'t5',icon:'quiz',base:BASE_GERAL,title:'Desafio final e caderno',desc:'Dezesseis questões com explicação e o caderno com todas as suas observações.'},
+];
+const ICONS={
+  microscopio:'<path d="M7.6 3.2l3.9 3.9-2.6 2.6-3.9-3.9z"/><path d="M10.2 8.4l3.2 3.2"/><path d="M4 21h15"/><path d="M13.6 21a6.2 6.2 0 0 0 2.1-10.6"/><path d="M8.3 21v-3h5"/>',
+  lupa:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3L21 21"/>',
+  celula:'<ellipse cx="12" cy="12" rx="9" ry="7"/><circle cx="12" cy="12" r="2.6"/>',
+  dna:'<rect x="3.5" y="4" width="17" height="16" rx="2"/><path d="M12 4v16"/><circle cx="7.5" cy="12" r="2"/><circle cx="16.5" cy="12" r="2"/>',
+  folha:'<path d="M12 21v-8.5"/><path d="M12 12.5c-4.2 0-6.5-2.7-6.5-7 4.2 0 6.5 2.7 6.5 7z"/><path d="M12 10.5c0-3.4 2.2-6 7-6 0 4-2.6 6-7 6z"/>',
+  tecido:'<path d="M3 7h18M3 12h18M3 17h18"/><path d="M6 5v4M10 5v4M14 5v4M18 5v4M8 15v4M12 15v4M16 15v4"/>',
+  gota:'<ellipse cx="12" cy="12" rx="8.5" ry="5"/><path d="M3.5 12l-2-2M3.5 12l-2 2M20.5 12l2-2M20.5 12l2 2"/><circle cx="13" cy="12" r="2"/>',
+  quiz:'<path d="M4 4.5h16v11.5H9.5L4 20.5z"/><path d="M10 8.6a2.1 2.1 0 1 1 2.8 2c-.6.2-.8.6-.8 1.2"/>',
+};
+// Ilustração da abertura: microscópio e três campos com lâminas reais do acervo
+function heroArt(){
+  const box=$('#heroArt');if(!box)return;const W=480,H=420;
+  const sv=s('svg',{viewBox:`0 0 ${W} ${H}`,class:'hero-svg',role:'img','aria-label':SITE.legenda});
+  const defs=s('defs');const cp=s('clipPath',{id:'hclip'});cp.append(s('rect',{width:W,height:H,rx:28}));defs.append(cp);
+  [[110,108,72],[372,96,64],[392,268,56]].forEach(([cx,cy,r],k)=>{const c=s('clipPath',{id:'hlens'+k});c.append(s('circle',{cx,cy,r}));defs.append(c);});sv.append(defs);
+  const g=s('g',{'clip-path':'url(#hclip)'});sv.append(g);
+  g.append(s('rect',{width:W,height:H,fill:'#e9eef5'}));
+  for(let x=0;x<=W;x+=24)g.append(s('line',{x1:x,x2:x,y1:0,y2:H,stroke:'#d7dfea'}));for(let y=0;y<=H;y+=24)g.append(s('line',{x1:0,x2:W,y1:y,y2:y,stroke:'#d7dfea'}));
+  const m=s('g',{transform:'translate(70 70) scale(.62)'});m.innerHTML=`<ellipse cx="351" cy="501" rx="154" ry="14" fill="rgba(29,107,88,.12)"/><path d="M278 471 L310 446 H434 Q458 446 467 469 L481 488 Q482 498 468 498 H241 Q228 498 234 486 L244 471Z" fill="#1d6b58" stroke="#173e33" stroke-width="3"/><path d="M402 462 C435 395 440 260 404 203 Q389 176 356 168 L348 198 Q373 204 381 235 C398 299 398 384 370 457Z" fill="#c3cfc4" stroke="#708c7e" stroke-width="3"/><path d="M342 103 L373 121 L327 207 L296 190Z" fill="#c3cfc4" stroke="#708c7e" stroke-width="3"/><path d="M347 84 L380 103 L370 126 L335 106Z" fill="#213c31" stroke="#152d24" stroke-width="3"/><path d="M295 190 L330 208 L344 223 L316 246 L280 220Z" fill="#456b59" stroke="#234836" stroke-width="3"/><path d="M286 222 L299 228 L284 260 L273 255Z" fill="#a6b7aa" stroke="#557462" stroke-width="2"/><path d="M302 234 L315 239 L309 283 L295 281Z" fill="#cad4c7" stroke="#557462" stroke-width="2"/><path d="M321 234 L335 228 L352 257 L340 265Z" fill="#a6b7aa" stroke="#557462" stroke-width="2"/><path d="M228 301 L384 301 L406 314 L244 314Z" fill="#375244" stroke="#1b3d2a" stroke-width="3"/><path d="M270 293 L332 293 L345 299 L280 299Z" fill="#c1e4db" stroke="#5a9d89" stroke-width="1.5"/><path d="M286 333 H331 L326 352 H292Z" fill="#8fa99a" stroke="#527560" stroke-width="2"/><path d="M299 442 L309 365 L320 442" fill="rgba(231,200,102,.3)"/><ellipse cx="309" cy="445" rx="29" ry="12" fill="#d5dcd0" stroke="#63856b" stroke-width="3"/><circle cx="416" cy="300" r="28" fill="#284b39" stroke="#8aa694" stroke-width="3"/><circle cx="419" cy="300" r="15" fill="#759280"/>`;g.append(m);
+  [[110,108,72,0,10],[372,96,64,2,40],[392,268,56,5,100]].forEach(([cx,cy,r,i,ob],k)=>{g.append(s('line',{x1:258,y1:240,x2:cx,y2:cy,stroke:'#566074','stroke-width':1.5,'stroke-dasharray':'4 4'}));
+    g.append(s('circle',{cx,cy,r:r+6,fill:'#0b0f0d'}));const img=s('image',{href:thumbOf(i,ob),x:cx-r,y:cy-r,width:r*2,height:r*2,'clip-path':`url(#hlens${k})`,preserveAspectRatio:'xMidYMid slice'});g.append(img);g.append(s('circle',{cx,cy,r:r+3,fill:'none',stroke:'#2b3a33','stroke-width':4}));});
+  [[110,196,'Cebola · 100×'],[372,176,'Elódea · 400×'],[392,340,'Sangue · 1000×']].forEach(([x,y,t])=>g.append(s('text',{x,y,'text-anchor':'middle','font-size':13,'font-weight':700,fill:'#1a1f2b'},t)));
+  box.append(sv,h('p',{class:'hero-cap'},SITE.legenda));
+}
+
+// =====================================================================
+//  MOTOR: funções de apoio (não precisa mexer)
+// =====================================================================
+// ================= Núcleo =================
+const $=(q,r=document)=>r.querySelector(q);
+const $$=(q,r=document)=>[...r.querySelectorAll(q)];
+function h(tag,attrs={},...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs||{})){if(v==null||v===false)continue;if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(k==='html')e.innerHTML=v;else e.setAttribute(k,v===true?'':v);}for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+const NS='http://www.w3.org/2000/svg';
+function s(tag,attrs={},...kids){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs||{})){if(v==null)continue;e.setAttribute(k,v);}for(const c of kids.flat()){if(c==null)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+const store={get(k,d){try{const v=localStorage.getItem(SITE.chave+'-'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(SITE.chave+'-'+k,JSON.stringify(v))}catch(e){}}};
+const fmt=(n,d=0)=>Number(n).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const pct=(x,d=1)=>fmt(x*100,d)+'%';
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function seeded(seed){return()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};}
+function gcd(a,b){return b?gcd(b,a%b):a;}
+function frac(n,d){if(!n)return '0';const g=gcd(n,d);return (n/g)+'/'+(d/g);}
+function head(eyebrow,title,lede){return h('div',{class:'aula-head'},h('span',{class:'eyebrow'},eyebrow),h('h2',{},title),lede?h('p',{class:'lede'},lede):null);}
+function seg(options,value,onChange,{label}={}){const w=h('div',{class:'seg',role:'group','aria-label':label||''});options.forEach(o=>{const[v,t]=Array.isArray(o)?o:[o,o];const b=h('button',{type:'button','aria-pressed':String(v===value)},t);b.onclick=()=>{$$('button',w).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');onChange(v);};w.append(b);});w.set=v=>{$$('button',w).forEach((x,i)=>{const ov=Array.isArray(options[i])?options[i][0]:options[i];x.setAttribute('aria-pressed',String(ov===v));});};return w;}
+function chipsPick(options,value,onChange,{multi=false}={}){const w=h('div',{class:'chips'});let cur=multi?new Set(value||[]):value;options.forEach(o=>{const[v,t]=Array.isArray(o)?o:[o,o];const on=multi?cur.has(v):cur===v;const b=h('button',{type:'button',class:'chip','aria-pressed':String(on)},t);b.onclick=()=>{if(multi){cur.has(v)?cur.delete(v):cur.add(v);b.setAttribute('aria-pressed',String(cur.has(v)));onChange([...cur]);}else{cur=v;$$('.chip',w).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');onChange(v);}};w.append(b);});return w;}
+function panel(...kids){return h('div',{class:'panel stack'},...kids);}
+function model(t){return h('p',{class:'model'},t);}
+function base(t){return h('p',{class:'base'},h('strong',{},'Base: '),t);}
+function fbx(el,cls,...kids){el.innerHTML='';el.append(h('div',{class:'fb '+cls},...kids));}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const reduced=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
+
+// Gráfico de barras agrupadas (SVG)
+function barChart(svg,{cats,series,yMax,yLabel,xLabel,height=260,fmtY=v=>fmt(v)}){
+  const W=640,H=height,ml=52,mr=14,mt=series.length>1?30:14,mb=xLabel?52:34;svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const step=(()=>{const raw=yMax/5;const p=Math.pow(10,Math.floor(Math.log10(raw||1)));const m=raw/p;return(m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*p;})();
+  const top=Math.max(step,Math.ceil(yMax/step)*step);const ys=v=>H-mb-(v/top)*(H-mt-mb);
+  for(let v=0;v<=top+1e-9;v+=step){svg.append(s('line',{x1:ml,x2:W-mr,y1:ys(v),y2:ys(v),stroke:'var(--line)'}));svg.append(s('text',{x:ml-8,y:ys(v)+4,'text-anchor':'end','font-size':12,fill:'var(--muted)'},fmtY(v)));}
+  const bw=(W-ml-mr)/cats.length;const inner=Math.min(46,(bw-14)/series.length);
+  cats.forEach((c,i)=>{const x0=ml+i*bw+(bw-inner*series.length)/2;
+    series.forEach((se,j)=>{const v=se.values[i];if(v==null)return;const x=x0+j*inner;
+      if(se.dash){svg.append(s('rect',{x:x+2,y:ys(v),width:inner-4,height:Math.max(0,ys(0)-ys(v)),fill:'none',stroke:se.color,'stroke-width':2,'stroke-dasharray':'5 4'}));}
+      else svg.append(s('rect',{x:x+2,y:ys(v),width:inner-4,height:Math.max(0,ys(0)-ys(v)),rx:3,fill:se.color}));
+      if(se.labels)svg.append(s('text',{x:x+inner/2,y:ys(v)-5,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'var(--ink)'},se.labels(v)));});
+    svg.append(s('text',{x:ml+i*bw+bw/2,y:H-mb+18,'text-anchor':'middle','font-size':13,'font-weight':700,fill:'var(--ink)','font-family':'var(--f-mono)'},c));});
+  svg.append(s('line',{x1:ml,x2:W-mr,y1:ys(0),y2:ys(0),stroke:'var(--muted)'}));
+  if(xLabel)svg.append(s('text',{x:(ml+W-mr)/2,y:H-8,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:'var(--ink)'},xLabel));
+  if(yLabel)svg.append(s('text',{x:14,y:(mt+H-mb)/2,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:'var(--ink)',transform:`rotate(-90 14 ${(mt+H-mb)/2})`},yLabel));
+  if(series.length>1){let lx=ml;series.forEach(se=>{svg.append(s('rect',{x:lx,y:8,width:16,height:12,rx:2,fill:se.dash?'none':se.color,stroke:se.color,'stroke-width':2,'stroke-dasharray':se.dash?'4 3':null}));svg.append(s('text',{x:lx+22,y:18,'font-size':12.5,fill:'var(--ink)'},se.name));lx+=34+se.name.length*7;});}
+}
+
+
+const IL={};
+function ilu(key,cls='ilu',vb='0 0 120 90'){const f=IL[key];const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox',vb);e.setAttribute('class',cls);e.setAttribute('aria-hidden','true');e.setAttribute('preserveAspectRatio','xMidYMid meet');if(f)e.innerHTML=f();return e;}
+function svgOf(str,vb='0 0 120 90',cls=''){const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox',vb);if(cls)e.setAttribute('class',cls);e.setAttribute('aria-hidden','true');e.setAttribute('preserveAspectRatio','xMidYMid meet');e.innerHTML=str;return e;}
+// Toque em ordem (funciona no celular)
+function tapOrder(items,onDone,{render}={}){
+  const wrap=h('div',{class:'stack',style:'gap:10px'});let order=[];
+  const pool=h('div',{class:'chips',style:'min-height:44px;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--surface)'});
+  const lane=h('ol',{class:'stack',style:'gap:6px;margin:0;padding:8px 8px 8px 2em;min-height:44px;border-radius:12px;background:var(--tema-soft)'});
+  const draw=()=>{pool.innerHTML='';lane.innerHTML='';
+    items.forEach((it,i)=>{if(order.includes(i))return;const b=h('button',{class:'chip',type:'button'},render?render(it):it.n);b.onclick=()=>{order.push(i);draw();};pool.append(b);});
+    order.forEach((i,k)=>{const b=h('button',{class:'chip',type:'button','aria-pressed':'true',title:'Tocar para devolver',style:'text-align:left'},render?render(items[i]):items[i].n);b.onclick=()=>{order.splice(k,1);draw();};lane.append(h('li',{},b));});
+    if(order.length===items.length)onDone(order.slice());};
+  wrap.append(h('span',{class:'label'},'Toque na ordem'),pool,h('span',{class:'label'},'Sua ordem'),lane);draw();
+  wrap.reset=()=>{order=[];draw();};return wrap;
+}
+
+function tween(ms,fn){return new Promise(res=>{if(reduced()){fn(1);res();return;}const t0=performance.now();const step=now=>{const t=Math.min(1,(now-t0)/ms);const e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;fn(e,t);if(t<1)requestAnimationFrame(step);else res();};requestAnimationFrame(step);});}
+const tok=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim()||'#888';
+function mkCanvas(w,hh){const dpr=Math.min(2,window.devicePixelRatio||1);const c=h('canvas',{class:'chart',width:w*dpr,height:hh*dpr,style:`aspect-ratio:${w}/${hh}`});const g=c.getContext('2d');g.scale(dpr,dpr);c.W=w;c.H=hh;c.g=g;return c;}
+const lerp=(a,b,t)=>a+(b-a)*t;
+function sim(title,sub,...kids){return h('div',{class:'panel stack sim'},h('span',{class:'eyebrow'},'Simulador'),h('h3',{},title),sub?h('p',{class:'note'},sub):null,...kids);}
+function binom(n,k){let r=1;for(let i=1;i<=k;i++)r=r*(n-k+i)/i;return r;}
+function abQuiz(qs,{intro,final}={}){return (el,api)=>{const ans=api.state('ans',{});const out=h('div',{class:'stack',style:'gap:8px'});
+  if(intro)el.append(intro());
+  qs.forEach((q,k)=>{el.append(h('div',{class:'ab-q'},q.il?h('div',{class:'row'},...q.il.map(x=>ilu(x,'ilu ilu-sm'))):null,h('strong',{},q.t),chipsPick(q.o,ans[k]??null,v=>{ans[k]=v;api.setState('ans',ans);})));});
+  el.append(h('button',{class:'btn primary',onclick:()=>{if(qs.some((_,k)=>ans[k]==null)){fbx(out,'no','Responda todas as perguntas antes de registrar.');return;}
+    api.save(qs.map((q,k)=>q.t.replace(/[?:]\s*$/,'')+' → '+(q.o.find(o=>o[0]===ans[k])||[,''])[1]).join(' | '));
+    out.innerHTML='';qs.forEach((q,k)=>{if(q.e)out.append(h('div',{class:'fb '+(q.c==null?'info':ans[k]===q.c?'ok':'info')},q.e));});if(final)out.append(h('p',{class:'callout'},final));}},'Registrar e revelar'),out);};}
+function abertura(secId){
+  const sec=document.getElementById(secId);const A=AB[secId];if(!A||!sec||sec.querySelector('.abertura'))return;
+  const box=h('section',{class:'abertura',id:'abert-'+secId,'aria-label':'Para começar'});const saved=h('div',{});
+  box.append(h('div',{class:'ab-head'},h('span',{class:'ab-tag'},'Para começar · '+A.tempo),h('h2',{},A.titulo),h('p',{class:'lede'},A.lede)));
+  const body=h('div',{class:'ab-body'});box.append(body,saved);
+  const api={save(text){store.set('prev-'+secId,{text,quando:new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});showSaved();updRecap(secId);},
+    get(){return store.get('prev-'+secId,null);},state(k,d){return store.get('ab-'+secId+'-'+k,d);},setState(k,v){store.set('ab-'+secId+'-'+k,v);}};
+  function showSaved(){const p=api.get();saved.innerHTML='';if(p)saved.append(h('p',{class:'fb ok'},'Previsão registrada em '+p.quando+'. No fim da aula, ela aparece na sua ficha para você comparar com o que descobriu.'));}
+  A.render(body,api);showSaved();
+  const anchor=sec.querySelector('.ficha-jump')||sec.querySelector('.aula-head');anchor.after(box);updRecap(secId);
+}
+function updRecap(secId){const sec=document.getElementById(secId);const f=sec&&sec.querySelector('.ficha');if(!f)return;let r=f.querySelector('.ab-recap');const p=store.get('prev-'+secId,null);
+  if(!p){if(r)r.remove();return;}if(!r){r=h('div',{class:'ab-recap'});f.querySelector('.ficha-head').after(r);}
+  r.innerHTML='';r.append(h('span',{class:'label'},'Sua previsão no começo da aula'),h('p',{},p.text),h('p',{class:'note'},'Ela se confirmou? O que mudou depois da atividade? Use isso nas respostas abaixo.'));}
+
+// ================= Fichas de resposta (envio para o professor) =================
+// Endereço do receptor (Google Apps Script implantado como app da Web). Vazio = envio ainda não ativado.
+const RECEIVER=PORTAL.receiver();
+const STANDALONE=(()=>{try{return window.top===window&&!window.claude;}catch(e){return false;}})();
+const FICHA_DE=Object.fromEntries(TOOLS.map(t=>[t.id,'Aula '+String(t.n).padStart(2,'0')]));
+const MAXTXT=1000;
+function b64url(str){const b=btoa(unescape(encodeURIComponent(str)));return b.replace(/\+/g,'-').replace(/\//g,'_');}
+function attachFicha(secId){
+  const code=FICHA_DE[secId];const f=SPEC.find(x=>x.code===code);const sec=document.getElementById(secId);if(!f||!sec||sec.querySelector('.ficha'))return;
+  const draftKey='draft-'+code;let draft=store.get(draftKey,{});let sendId=store.get('sid-'+code,null);
+  const saveDraft=()=>{store.set(draftKey,draft);sendId=null;store.set('sid-'+code,null);refresh();};
+  const box=h('section',{class:'ficha',id:'ficha-'+secId,'aria-label':'Ficha de respostas'});
+  const hd=sec.querySelector('.aula-head');if(hd)hd.after(h('div',{class:'ficha-jump'},h('button',{class:'btn',onclick:()=>box.scrollIntoView({behavior:'smooth',block:'start'})},'Responder a ficha desta aula ↓'),h('span',{class:'note'},f.tipo)));
+  box.append(h('div',{class:'ficha-head'},h('span',{class:'eyebrow'},'Ficha da aula · '+f.tipo),h('h2',{},'Minhas respostas'),h('p',{class:'lede'},f.desc)));box.append(PORTAL.fichaBanner());
+  const ident=PORTAL.ident();
+  const nome=h('input',{type:'text',id:'id-nome-'+secId,autocomplete:'name',placeholder:'Nome e sobrenome',value:ident.nome});
+  const grupo=h('select',{id:'id-grupo-'+secId},h('option',{value:''},'Escolha'),...PORTAL.grupos().map(g=>h('option',{value:g,selected:g===ident.grupo},g)));
+  const turmaSeg=PORTAL.turmaCtl(seg,ident,v=>{ident.turma=v;PORTAL.saveIdent(ident);refresh();});
+  nome.oninput=()=>{ident.nome=nome.value;PORTAL.saveIdent(ident);refresh();};grupo.onchange=()=>{ident.grupo=grupo.value;PORTAL.saveIdent(ident);refresh();};
+  box.append(h('div',{class:'ficha-id'},h('label',{class:'stack',style:'gap:4px;flex:1 1 240px'},h('span',{class:'label'},'Nome completo'),nome),h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Turma'),turmaSeg),h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Grupo'),grupo)));
+  const fillable=f.itens.filter(it=>it.fill);
+  if(fillable.length){const fm=h('span',{class:'note'});box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{let n=0;fillable.forEach(it=>{const v=it.fill();if(v!=null&&v!==''){draft[it.t]=String(v);n++;}});saveDraft();build();fm.textContent=n?'Dados da ferramenta copiados. Confira antes de enviar.':'Use primeiro a ferramenta desta aula.';}},'Preencher com os dados da ferramenta'),fm));}
+  const itemsBox=h('div',{class:'ficha-itens'});box.append(itemsBox);
+  function build(){itemsBox.innerHTML='';let n=0;
+    f.itens.forEach(it=>{if(it.k==='hdr'){itemsBox.append(h('p',{class:'callout'},it.t));return;}
+      n++;const lab=h('span',{class:'ficha-q'},h('b',{class:'mono'},n+'.'),' '+it.t);let ctl;
+      if(it.k==='mc'){ctl=h('div',{class:'chips',role:'radiogroup','aria-label':it.t});it.ch.forEach(c=>{const b=h('button',{type:'button',class:'chip',role:'radio','aria-checked':String(draft[it.t]===c),'aria-pressed':String(draft[it.t]===c)},c);b.onclick=()=>{draft[it.t]=c;$$('.chip',ctl).forEach(x=>{x.setAttribute('aria-pressed','false');x.setAttribute('aria-checked','false');});b.setAttribute('aria-pressed','true');b.setAttribute('aria-checked','true');saveDraft();};ctl.append(b);});}
+      else if(it.k==='par'){const ta=h('textarea',{rows:3,maxlength:MAXTXT,'aria-label':it.t});ta.value=draft[it.t]||'';const cnt=h('span',{class:'note'},ta.value.length+'/'+MAXTXT);ta.oninput=()=>{draft[it.t]=ta.value;cnt.textContent=ta.value.length+'/'+MAXTXT;store.set(draftKey,draft);sendId=null;refresh();};ctl=h('div',{class:'stack',style:'gap:2px'},ta,cnt);}
+      else{const inp=h('input',{type:'text',inputmode:it.k==='num'?'decimal':'text','aria-label':it.t,placeholder:it.k==='num'?'Só o número':''});inp.value=draft[it.t]||'';inp.oninput=()=>{draft[it.t]=inp.value;store.set(draftKey,draft);sendId=null;refresh();};ctl=inp;}
+      itemsBox.append(h('div',{class:'ficha-item'},lab,it.help?h('span',{class:'note'},it.help):null,ctl));});}
+  build();
+  const status=h('div',{});
+  const send=STANDALONE?h('button',{class:'btn primary big',type:'button'},PORTAL.sendLabel()):h('a',{class:'btn primary big',target:'_blank',rel:'noopener',href:'#'},PORTAL.sendLabel());
+  const clear=h('button',{class:'btn ghost',onclick:()=>{if(clear.dataset.ok){draft={};saveDraft();build();clear.textContent='Limpar respostas';delete clear.dataset.ok;}else{clear.textContent='Toque de novo para apagar';clear.dataset.ok='1';setTimeout(()=>{clear.textContent='Limpar respostas';delete clear.dataset.ok;},3000);}}},'Limpar respostas');
+  box.append(h('div',{class:'ficha-send'},send,clear),status);
+  function missing(){const m=[];if(!ident.nome||ident.nome.trim().split(/\s+/).length<2)m.push('nome e sobrenome');if(!ident.turma)m.push('turma');if(!ident.grupo)m.push('grupo');
+    f.itens.forEach(it=>{if(it.k==='hdr')return;if(!String(draft[it.t]||'').trim())m.push('“'+it.t.slice(0,48)+(it.t.length>48?'…':'')+'”');});return m;}
+  function payload(){if(!sendId){sendId=Date.now().toString(36)+Math.random().toString(36).slice(2,8);store.set('sid-'+code,sendId);}
+    const ans={};f.itens.forEach(it=>{if(it.k!=='hdr')ans[it.t]=String(draft[it.t]||'').slice(0,MAXTXT);});
+    const pv=store.get('prev-'+secId,null);if(pv)ans['Previsão inicial']=String(pv.text).slice(0,MAXTXT);
+    return {code:PORTAL.code(code),nome:ident.nome.trim(),turma:ident.turma,grupo:ident.grupo,id:sendId,ans};}
+  const url=()=>RECEIVER+'?d='+encodeURIComponent(b64url(JSON.stringify(payload())));
+  const quando=()=>new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  let busy=false;
+  function refresh(){status.innerHTML='';
+    if(!RECEIVER){send.setAttribute('aria-disabled','true');if(!STANDALONE)send.removeAttribute('href');status.append(h('p',{class:'note'},PORTAL.offText()));return;}
+    const m=missing();send.setAttribute('aria-disabled',String(m.length>0||busy));if(!STANDALONE)send.href=url();
+    const sent=store.get('sent-'+code,null);
+    if(sent&&sent.id===sendId)status.append(h('p',{class:'fb ok'},STANDALONE?'Recebido em '+sent.quando+'. Se mudar alguma resposta, envie de novo.':'Enviado em '+sent.quando+'. Confira a aba que abriu: ela deve dizer “Resposta enviada!”. Se mudar alguma resposta, envie de novo.'));
+    else if(m.length)status.append(h('p',{class:'note'},'Falta preencher: '+m.slice(0,4).join(', ')+(m.length>4?' e mais '+(m.length-4):'')+'.'));
+    else status.append(h('p',{class:'note'},STANDALONE?'Tudo pronto para enviar.':'Tudo pronto. Ao tocar em Enviar, abre uma aba do Google confirmando o recebimento.'));
+    if(!STANDALONE&&url().length>7800)status.append(h('p',{class:'fb no'},'As respostas estão longas demais para enviar de uma vez. Encurte os textos.'));}
+  function blockIfMissing(e){const m=missing();if(!RECEIVER||m.length){if(e)e.preventDefault();refresh();if(m.length&&RECEIVER){status.innerHTML='';status.append(h('p',{class:'fb no'},'Antes de enviar, preencha: '+m.join(', ')+'.'));}return true;}return false;}
+  if(STANDALONE){send.addEventListener('click',async()=>{if(busy||blockIfMissing())return;busy=true;send.textContent='Enviando…';send.setAttribute('aria-disabled','true');
+      try{const res=await fetch(RECEIVER,{method:'POST',body:JSON.stringify(payload())});const r=await res.json();if(r&&r.ok){store.set('sent-'+code,{id:sendId,quando:quando()});busy=false;send.textContent=PORTAL.sendLabel();refresh();}else throw new Error((r&&r.texto)||'erro');}
+      catch(err){busy=false;send.textContent=PORTAL.sendLabel();refresh();status.innerHTML='';status.append(h('div',{class:'fb no stack',style:'gap:6px'},h('span',{},'Não consegui enviar agora. Confira a internet e tente de novo.'),h('a',{href:url(),target:'_blank',rel:'noopener'},'Ou envie por esta outra via (abre uma aba do Google)')));}});}
+  else send.addEventListener('click',e=>{if(blockIfMissing(e))return;if(url().length>7800){e.preventDefault();return;}store.set('sent-'+code,{id:sendId,quando:quando()});setTimeout(refresh,50);});
+  refresh();sec.append(box);
+}
+
+
+// =====================================================================
+//  6. MOTOR DE NAVEGAÇÃO (não precisa mexer)
+// =====================================================================
+const icon=(id,size=24)=>{const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('width',size);e.setAttribute('height',size);e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','1.7');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.setAttribute('aria-hidden','true');e.innerHTML=ICONS[id]||'';return e;};
+const inited={};const INIT={};
+function decorateHead(id){const t=TOOLS.find(x=>x.id===id);const hd=$('#'+id+' .aula-head');if(!t||!hd||hd.dataset.dec)return;hd.dataset.dec='1';
+  hd.prepend(h('div',{class:'aula-badge'},h('span',{class:'aula-badge-k'},'Aula'),h('span',{class:'aula-badge-n'},t.n)));const wm=icon(t.icon,180);wm.classList.add('aula-wm');hd.append(wm);}
+function go(id){
+  if(!document.getElementById(id))id='inicio';
+  $$('section.aula').forEach(sc=>sc.hidden=sc.id!==id);
+  $$('#tabs button').forEach(b=>b.setAttribute('aria-current',String(b.dataset.go===id)));
+  if(!inited[id]&&INIT[id]){inited[id]=true;const sec=$('#'+id);try{INIT[id](sec);}catch(e){console.error(e);sec.append(h('p',{class:'fb no'},'Esta ferramenta não carregou. Recarregue a página.'));}
+    const t=TOOLS.find(x=>x.id===id);if(t)sec.append(base(t.base||`livro didático, p. ${t.pg}.`));decorateHead(id);attachFicha(id);abertura(id);}
+  const sec=$('#'+id);sec.classList.remove('fade');void sec.offsetWidth;sec.classList.add('fade');
+  try{history.replaceState(null,'','#'+id);}catch(e){}
+  const tb=$(`#tabs button[data-go="${id}"]`);if(tb)tb.scrollIntoView({block:'nearest',inline:'nearest'});
+  window.scrollTo({top:0});const tp=$('.top');if(tp)tp.classList.remove('escondido');const bm=$('#btnMenu');if(bm)bm.classList.remove('visivel');
+}
+function buildNav(){
+  document.title=SITE.nome;$('.brand-name').textContent=SITE.nome;$('.brand-meta').textContent=SITE.meta;
+  $('#heroEyebrow').textContent=SITE.eyebrow;$('#heroH1').innerHTML=SITE.h1[0]+' <span>'+SITE.h1[1]+'</span>';$('#heroLede').textContent=SITE.lede;$('#heroNote').textContent=SITE.nota;
+  $('#heroBook').innerHTML=SITE.sobre||('<strong>Sobre a numeração dos temas.</strong> Os temas seguem o livro didático adotado: '+SITE.livro);
+  $('#heroFacts').append(...(SITE.fatos||[[Math.max(...TOOLS.map(t=>t.n)),'aulas'],[TOOLS.length,'ferramentas'],[Object.keys(TEMAS).length,'temas']]).map(([n,l])=>h('div',{},h('b',{},n),h('span',{},l))));
+  $('#refs').append(...SITE.referencias.map(r=>h('p',{html:r})));
+  const nav=$('#tabs'),main=$('#main');
+  nav.append(h('button',{'data-go':'inicio'},'Início'));let last=null;
+  TOOLS.forEach(t=>{if(last&&t.t!==last)nav.append(h('span',{class:'sep','aria-hidden':'true'}));last=t.t;
+    nav.append(h('button',{'data-go':t.id,'data-tema':t.t},h('b',{},'A'+t.n),t.title));
+    main.append(h('section',{class:'aula',id:t.id,'data-tema':t.t,hidden:true}));});
+  if(SITE.mostrarCatalogo){nav.append(h('span',{class:'sep'}),h('button',{'data-go':'catalogo','data-tema':'t5'},h('b',{},'★'),'Catálogo (produção)'));main.append(h('section',{class:'aula',id:'catalogo','data-tema':'t5',hidden:true}));INIT.catalogo=catalogo;}
+  const cards=$('#cards');last=null;
+  TOOLS.forEach(t=>{if(t.t!==last){cards.append(h('div',{class:'cards-group','data-tema':t.t},h('span',{class:'cards-dot'}),TEMAS[t.t]));last=t.t;}
+    cards.append(h('button',{class:'tool-card','data-go':t.id,'data-tema':t.t},h('div',{class:'tc-top'},h('span',{class:'tc-ic'},icon(t.icon,26)),h('span',{class:'tc-n'},h('small',{},'aula'),t.n)),h('h3',{},t.title),h('p',{},t.desc),h('span',{class:'tc-go'},'Abrir →')));});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go);});
+  const bp=$('#btnProj');const setProj=on=>{document.documentElement.classList.toggle('proj',on);bp.setAttribute('aria-pressed',String(on));bp.textContent=on?'Sair do modo projetor':'Modo projetor';};
+  setProj(!!store.get('proj',false));bp.onclick=()=>{const on=!document.documentElement.classList.contains('proj');setProj(on);store.set('proj',on);};
+  $('#btnFull').onclick=()=>{try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{});}catch(e){}};
+  heroArt();
+  const top=$('.top'),btnMenu=$('#btnMenu');let lastY=window.scrollY,ticking=false;
+  const mostrar=()=>{top.classList.remove('escondido');btnMenu.classList.remove('visivel');};
+  const esconder=()=>{if(top.contains(document.activeElement))return;top.classList.add('escondido');btnMenu.classList.add('visivel');};
+  window.addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const y=window.scrollY;const dy=y-lastY;if(y<60||dy<-6)mostrar();else if(dy>6)esconder();lastY=y;ticking=false;});},{passive:true});
+  top.addEventListener('focusin',mostrar);btnMenu.onclick=mostrar;
+}
+
+// =====================================================================
+//  CATÁLOGO DE COMPONENTES (só para quem produz; some com mostrarCatalogo:false)
+// =====================================================================
+function catalogo(root){
+  root.append(h('div',{class:'aula-head'},h('span',{class:'eyebrow'},'Para quem produz · não aparece para os alunos'),h('h2',{},'Catálogo de componentes'),h('p',{class:'lede'},'Todos os blocos do site, com o nome que se usa no código. Copie daqui; não invente estilos novos.')));
+  const ex=(nome,code,...kids)=>h('div',{class:'panel stack'},h('div',{class:'row',style:'justify-content:space-between'},h('h3',{},nome),h('code',{class:'mono note'},code)),...kids);
+  root.append(h('div',{class:'cols'},
+    ex('Botões',"h('button',{class:'btn primary'},…)",h('div',{class:'row'},h('button',{class:'btn primary'},'Principal'),h('button',{class:'btn'},'Secundário'),h('button',{class:'btn ghost sm'},'Discreto'),h('button',{class:'btn',disabled:true},'Desativado'))),
+    ex('Escolha única',"seg([[v,'Texto'],…], valor, fn)",seg([['a','Opção A'],['b','Opção B'],['c','Opção C']],'a',()=>{}),h('p',{class:'note'},'Para controles (modelo, cruzamento, número).')),
+    ex('Fichas de escolha',"chipsPick(opções, valor, fn, {multi})",chipsPick(['Sim','Não','Faltam dados'],null,()=>{}),h('p',{class:'note'},'Para respostas e perguntas.')),
+    ex('Retornos',"fbx(el,'ok'|'no'|'info',texto)",h('div',{class:'fb ok'},'Certo, com explicação.'),h('div',{class:'fb no'},'Revise: diga o que corrigir.'),h('div',{class:'fb info'},'Informação ou revelação.')),
+    ex('Destaques',"h('p',{class:'callout'}) · model(…) · base(…)",h('p',{class:'callout'},'Chamada com a ideia central da aula.'),model('Avisa que é modelo didático e o que ele simplifica.'),base('livro didático, p. 000.')),
+    ex('Selos',"h('span',{class:'pill ok|no|ex'})",h('div',{class:'row'},h('span',{class:'pill'},'Neutro'),h('span',{class:'pill ok'},'Certo'),h('span',{class:'pill no'},'Revisar'),h('span',{class:'pill ex'},'Exemplo'))),
+    ex('Números',"h('div',{class:'stats'},…stat-box)",h('div',{class:'stats'},...[['Amostra','120'],['Média','3,4'],['Razão','3 : 1']].map(([a,b])=>h('div',{class:'stat stat-box'},h('span',{class:'note'},a),h('span',{class:'big-num'},b))))),
+    ex('Gráfico de barras',"barChart(svg,{cats,series,yMax,…})",(()=>{const sv=s('svg',{class:'chart'});barChart(sv,{cats:['A','B','C'],series:[{name:'Observado',color:'var(--t1)',values:[.3,.5,.2]},{name:'Esperado',color:'var(--muted)',dash:true,values:[.25,.5,.25]}],yMax:.6,fmtY:v=>pct(v,0),height:220});return sv;})()),
+  ));
+  root.append(ex('Painel de simulador',"sim('Título','Subtítulo', …conteúdo)",h('p',{class:'note'},'Todo simulador animado vai dentro de sim(...). Animações com tween(ms, t=>…) ou requestAnimationFrame num canvas mkCanvas(640, 300). Respeite reduced().')));
+  root.append(h('div',{class:'cards'},...Object.keys({t1:1,t2:1,t3:1,t4:1,t5:1}).map(k=>h('div',{class:'panel stack','data-tema':k,style:'border-top:5px solid var(--tema)'},h('span',{class:'eyebrow'},'data-tema="'+k+'"'),h('h3',{},['Magenta','Âmbar','Anil','Verde-azulado','Violeta'][+k[1]-1]),h('p',{class:'note'},'Um tema do livro = uma cor, na ordem.')))));
+}
+
+
+// =====================================================================
+//  LÂMINAS · desenhos procedurais em micrômetros (µm), em mosaico que se repete sem emenda
+//  Cada lâmina: T = tamanho do mosaico [x, y] em µm · R = pixels por µm do mosaico · mode = repeat | repeat-x | repeat-y
+// =====================================================================
+const TAU=Math.PI*2;
+function rng(seed){let s=seed%2147483647;if(s<=0)s+=2147483646;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646;};}
+const E=(g,x,y,rx,ry,rot,fill,stroke,lw)=>{g.beginPath();g.ellipse(x,y,Math.max(.05,rx),Math.max(.05,ry),rot||0,0,TAU);if(fill){g.fillStyle=fill;g.fill();}if(stroke){g.strokeStyle=stroke;g.lineWidth=lw||1;g.stroke();}};
+const P=(g,pts,fill,stroke,lw,close=true)=>{g.beginPath();pts.forEach((p,i)=>i?g.lineTo(p[0],p[1]):g.moveTo(p[0],p[1]));if(close)g.closePath();if(fill){g.fillStyle=fill;g.fill();}if(stroke){g.strokeStyle=stroke;g.lineWidth=lw||1;g.stroke();}};
+const L=(g,x1,y1,x2,y2,c,lw)=>{g.beginPath();g.moveTo(x1,y1);g.lineTo(x2,y2);g.strokeStyle=c;g.lineWidth=lw;g.stroke();};
+function wrapAt(T,mode,x,y,r,fn){const xs=[0],ys=[0];if(mode!=='repeat-y'){if(x-r<0)xs.push(T[0]);if(x+r>T[0])xs.push(-T[0]);}if(mode!=='repeat-x'){if(y-r<0)ys.push(T[1]);if(y+r>T[1])ys.push(-T[1]);}for(const dx of xs)for(const dy of ys)fn(x+dx,y+dy);}
+function splitLen(r,total,min,max){const out=[];let acc=0;while(acc<total){let l=min+r()*(max-min);if(total-acc-l<min)l=total-acc;out.push(l);acc+=l;}return out;}
+// Voronoi periódico (para células poligonais)
+function voronoi(sites,T){const res=[];const near=(a,b)=>{let dx=b[0]-a[0],dy=b[1]-a[1];dx-=Math.round(dx/T[0])*T[0];dy-=Math.round(dy/T[1])*T[1];return[a[0]+dx,a[1]+dy];};
+  sites.forEach((s,i)=>{let poly=[[s[0]-200,s[1]-200],[s[0]+200,s[1]-200],[s[0]+200,s[1]+200],[s[0]-200,s[1]+200]];
+    sites.forEach((o,j)=>{if(i===j)return;const q=near(s,o);const dx=q[0]-s[0],dy=q[1]-s[1];if(dx*dx+dy*dy>200*200)return;const mx=(s[0]+q[0])/2,my=(s[1]+q[1])/2;
+      const inside=p=>(p[0]-mx)*dx+(p[1]-my)*dy<=0;const out=[];for(let k=0;k<poly.length;k++){const a=poly[k],b=poly[(k+1)%poly.length];const ia=inside(a),ib=inside(b);if(ia)out.push(a);if(ia!==ib){const da=(a[0]-mx)*dx+(a[1]-my)*dy,db=(b[0]-mx)*dx+(b[1]-my)*dy;const t=da/(da-db);out.push([a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t]);}}poly=out;});
+    res.push(poly);});return res;}
+function jitterGrid(r,T,step,j){const s=[];for(let y=step/2;y<T[1];y+=step)for(let x=step/2;x<T[0];x+=step)s.push([x+(r()-.5)*step*j,y+(r()-.5)*step*j]);return s;}
+function scatter(r,T,n,minD,tries=30,first){const pts=first?[first]:[];const ok=(x,y)=>pts.every(p=>{let dx=Math.abs(p[0]-x),dy=Math.abs(p[1]-y);dx=Math.min(dx,T[0]-dx);dy=Math.min(dy,T[1]-dy);return dx*dx+dy*dy>=minD*minD;});
+  for(let i=0;i<n;i++){for(let t=0;t<tries;t++){const x=r()*T[0],y=r()*T[1];if(ok(x,y)){pts.push([x,y]);break;}}}return pts;}
+
+const LAMINAS=[
+ {nome:'Epiderme de cebola',area:'Biologia celular',prep:'Montagem a fresco com lugol',T:[1500,1500],R:1.6,mode:'repeat',bg:'#f2e7c8',max:40,
+  desc:'Células da epiderme interna do catafilo (a “pele” entre as camadas do bulbo), alongadas e justapostas, sem espaços entre elas. O lugol cora o núcleo de castanho.',
+  est:[['Parede celular','contorno nítido de cada célula'],['Núcleo','≈ 15–20 µm, com nucléolo'],['Citoplasma','faixa fina junto à parede'],['Vacúolo','ocupa quase toda a célula']],tam:'Células com ≈ 200–300 µm × 50 µm',q:'Por que não há cloroplastos nesta preparação?',
+  gen(g,r,T,m){const H=50;for(let y=0;y<T[1];y+=H){const x0=r()*T[0];let x=x0;splitLen(r,T[0],180,320).forEach(l=>{const a=x,b=x+l;x=b;const cx=(a+b)/2;
+    wrapAt(T,m,cx,y+H/2,l/2+4,(X,Y)=>{const ax=X-l/2,bx=X+l/2,ty=Y-H/2;P(g,[[ax,ty],[bx,ty],[bx,ty+H],[ax,ty+H]],'#f3e3b6');
+      for(let k=0;k<l/9;k++){const px=ax+3+r()*(l-6),side=r()<.5;E(g,px,side?ty+3+r()*2:ty+H-3-r()*2,1,.7,0,'rgba(190,150,80,.55)');}
+      P(g,[[ax,ty],[bx,ty],[bx,ty+H],[ax,ty+H]],null,'#b0823a',2.2);});
+    const nx=a+20+r()*(l-40),ny=y+H*(.3+r()*.4);wrapAt(T,m,nx,ny,12,(X,Y)=>{E(g,X,Y,9,7,(r()-.5)*.4,'rgba(160,100,36,.78)','#7a4a16',.8);E(g,X+2,Y-1,2.2,2,0,'#5a3410');});});}}},
+ {nome:'Células da mucosa bucal',area:'Biologia celular',prep:'Raspado corado com azul de metileno',T:[900,900],R:1.6,mode:'repeat',bg:'#eef3f8',max:40,
+  desc:'Células epiteliais pavimentosas soltas pela raspagem: achatadas, de contorno irregular, às vezes dobradas ou sobrepostas. Pontinhos escuros ao redor são bactérias da boca.',
+  est:[['Membrana plasmática','contorno fino e irregular'],['Núcleo','≈ 8–10 µm, central'],['Citoplasma','claro, com dobras'],['Bactérias','pontos de ≈ 1 µm']],tam:'Células com ≈ 50–70 µm',q:'Como a forma dessas células difere da epiderme de cebola?',
+  gen(g,r,T,m){const C=scatter(r,T,110,45);C.forEach(([x,y])=>{const R0=26+r()*12,rot=r()*TAU,n=9;const pts=[...Array(n)].map((_,k)=>{const a=rot+k*TAU/n,rr=R0*(.82+r()*.3);return[Math.cos(a)*rr,Math.sin(a)*rr];});
+    wrapAt(T,m,x,y,R0*1.2,(X,Y)=>{P(g,pts.map(p=>[X+p[0],Y+p[1]]),'rgba(165,195,232,.42)','#6c93c4',.9);
+      for(let f=0;f<2;f++){g.beginPath();const a=r()*TAU;g.arc(X+Math.cos(a)*R0*.3,Y+Math.sin(a)*R0*.3,R0*(.5+r()*.3),a,a+1.4);g.strokeStyle='rgba(108,147,196,.45)';g.lineWidth=.7;g.stroke();}
+      E(g,X+(r()-.5)*4,Y+(r()-.5)*4,4.6,3.8,r()*3,'#35568f','#203a6b',.4);for(let k=0;k<5;k++)E(g,X+(r()-.5)*5,Y+(r()-.5)*4,.6,.6,0,'#1d3260');});});
+   for(let i=0;i<700;i++){const x=r()*T[0],y=r()*T[1];E(g,x,y,.55,.55,0,'rgba(45,72,130,.7)');}}},
+ {nome:'Folha de elódea',area:'Botânica',prep:'Montagem a fresco, sem corante',T:[1200,1200],R:2,mode:'repeat',bg:'#eaf0d4',max:40,
+  desc:'Folha de planta aquática, com uma ou duas camadas de células. Os cloroplastos ficam junto às paredes porque o grande vacúolo central ocupa o meio da célula.',
+  est:[['Parede celular','retangular'],['Cloroplastos','discos de ≈ 5 µm, verdes'],['Vacúolo central','região clara no meio']],tam:'Células com ≈ 70–120 µm × 30 µm',q:'Todas as células de uma planta apresentam cloroplastos?',
+  gen(g,r,T,m){const H=30;for(let y=0;y<T[1];y+=H){let x=r()*T[0];splitLen(r,T[0],70,120).forEach(l=>{const cx=x+l/2;x+=l;const cl=[];const n=Math.round(l*.26);for(let k=0;k<n;k++){const side=r();let px,py;if(side<.38){px=r()*(l-6)+3;py=3.2;}else if(side<.76){px=r()*(l-6)+3;py=H-3.2;}else if(side<.88){px=3.2;py=r()*(H-6)+3;}else if(side<.97){px=l-3.2;py=r()*(H-6)+3;}else{px=8+r()*(l-16);py=8+r()*(H-16);}cl.push([px-l/2,py-H/2,r()*3]);}
+    wrapAt(T,m,cx,y+H/2,l/2+3,(X,Y)=>{const ax=X-l/2,ty=Y-H/2;P(g,[[ax,ty],[ax+l,ty],[ax+l,ty+H],[ax,ty+H]],'#e3edc2');cl.forEach(c=>E(g,X+c[0],Y+c[1],2.7,2,c[2],'#4c8c30','#2f6420',.3));P(g,[[ax,ty],[ax+l,ty],[ax+l,ty+H],[ax,ty+H]],null,'#7b9a48',1.5);});});}}},
+ {nome:'Epiderme com estômatos',area:'Botânica',prep:'Película da face inferior da folha',T:[900,900],R:2,mode:'repeat',bg:'#eef4e2',max:40,
+  desc:'Vista de frente da epiderme: células de parede sinuosa, encaixadas como quebra-cabeça, e estômatos formados por duas células-guarda em forma de rim ao redor do ostíolo.',
+  est:[['Células epidérmicas','paredes sinuosas'],['Células-guarda','≈ 25 µm, com cloroplastos'],['Ostíolo','fenda entre as células-guarda']],tam:'Estômatos com ≈ 25–30 µm',q:'Como as células-guarda participam das trocas gasosas?',
+  gen(g,r,T,m){const S=jitterGrid(r,T,45,.7);const V=voronoi(S,T);const wav=(a,b)=>{const k=a[0]<b[0]||(a[0]===b[0]&&a[1]<b[1]);const A=k?a:b,B=k?b:a;const dx=B[0]-A[0],dy=B[1]-A[1],len=Math.hypot(dx,dy);const n=Math.max(2,Math.round(len/9));const nx=-dy/len,ny=dx/len;const amp=3.2*((Math.round(A[0]*7+A[1]*13)%2)?1:-1);const pts=[];for(let i=0;i<=n*4;i++){const t=i/(n*4);const s=Math.sin(t*n*Math.PI)*amp;pts.push([A[0]+dx*t+nx*s,A[1]+dy*t+ny*s]);}return pts;};
+    V.forEach((poly,i)=>{const [sx,sy]=S[i];wrapAt(T,m,sx,sy,60,(X,Y)=>{const ox=X-sx,oy=Y-sy;const pp=poly.map(p=>[p[0]+ox,p[1]+oy]);P(g,pp,'#eff5e3');for(let k=0;k<pp.length;k++){P(g,wav(pp[k],pp[(k+1)%pp.length]),null,'#7d9a6c',1.1,false);}});});
+    S.forEach(([x,y])=>{if(r()>.13)return;const a=r()*TAU;wrapAt(T,m,x,y,20,(X,Y)=>{g.save();g.translate(X,Y);g.rotate(a);E(g,0,0,13,15,0,'#eff5e3');[-1,1].forEach(sd=>{E(g,sd*5.2,0,5,13,0,'#a8cd86','#5f8a4a',.9);for(let k=0;k<6;k++)E(g,sd*(5.5+(r()-.5)*2),(r()-.5)*18,1.1,1.1,0,'#3f7f2a');});E(g,0,0,1.5,8.5,0,'#3d4b38');g.restore();});});}},
+ {nome:'Mitose na raiz de cebola',area:'Genética',prep:'Esmagamento da ponta da raiz com orceína acética',T:[600,600],R:3,mode:'repeat',bg:'#f2e2e8',max:40,
+  desc:'Meristema da ponta da raiz: células pequenas, quase quadradas, em fileiras. A maioria está em interfase; algumas mostram os cromossomos em diferentes fases da mitose.',
+  est:[['Interfase','núcleo redondo com nucléolo'],['Prófase','cromossomos em fios'],['Metáfase','cromossomos alinhados no meio'],['Anáfase','dois grupos indo aos polos'],['Telófase','dois núcleos e a placa celular']],tam:'Células com ≈ 20–30 µm',q:'Que diferenças na disposição dos cromossomos você observa?',
+  gen(g,r,T,m,S){const W=25;S.fases={interfase:0,'prófase':0,'metáfase':0,'anáfase':0,'telófase':0};for(let x=0;x<T[0];x+=W){let y=r()*T[1];splitLen(r,T[1],20,30).forEach(h=>{const cy0=y+h/2;y+=h;const p=r();const ph=p<.78?'interfase':p<.87?'prófase':p<.91?'metáfase':p<.94?'anáfase':'telófase';S.fases[ph]++;const seeds=[...Array(24)].map(()=>r());
+    wrapAt(T,m,x+W/2,cy0,h,(X,Y)=>{const ax=X-W/2,ty=Y-h/2;P(g,[[ax,ty],[ax+W,ty],[ax+W,ty+h],[ax,ty+h]],'#f1dbe3','#c49aac',.9);const C='#5e1748';let si=0;const q=()=>seeds[(si++)%24];
+      if(ph==='interfase'){E(g,X,Y,6.4,6,0,'rgba(170,90,135,.72)','#8a4a72',.5);E(g,X+1.5,Y-1,1.6,1.6,0,'#4f143c');if(q()<.5)E(g,X-2,Y+1.8,1.2,1.2,0,'#4f143c');}
+      else if(ph==='prófase'){E(g,X,Y,6.6,6.2,0,'rgba(170,90,135,.3)','#8a4a72',.5);for(let k=0;k<9;k++){g.beginPath();const a=q()*TAU,b=q()*TAU;g.moveTo(X+Math.cos(a)*5,Y+Math.sin(a)*5);g.quadraticCurveTo(X+(q()-.5)*6,Y+(q()-.5)*6,X+Math.cos(b)*4.5,Y+Math.sin(b)*4.5);g.strokeStyle=C;g.lineWidth=.8;g.stroke();}}
+      else if(ph==='metáfase'){for(let k=0;k<12;k++){const px=X-7+k*1.25+(q()-.5)*.6;L(g,px,Y-1.8-q(),px+(q()-.5)*.8,Y+1.8+q(),C,1);}}
+      else if(ph==='anáfase'){[-1,1].forEach(sd=>{const yy=Y+sd*h*.26;for(let k=0;k<8;k++){const px=X-6+k*1.7;g.beginPath();g.moveTo(px-.9,yy-sd*2.8);g.lineTo(px,yy);g.lineTo(px+.9,yy-sd*2.8);g.strokeStyle=C;g.lineWidth=.9;g.stroke();}});}
+      else{[-1,1].forEach(sd=>E(g,X,Y+sd*h*.28,5.2,3.4,0,'#8a3a6a','#5e1748',.4));g.setLineDash([1.2,.8]);L(g,ax+1,Y,ax+W-1,Y,'#b07a92',.8);g.setLineDash([]);}});});}}},
+ {nome:'Esfregaço sanguíneo',area:'Histologia',prep:'Esfregaço corado com corante de Leishman',T:[300,300],R:4,mode:'repeat',bg:'#f6ece9',max:100,
+  desc:'Sangue humano em camada fina. Hemácias rosadas com centro mais claro (são bicôncavas e sem núcleo); leucócitos com núcleo arroxeado; plaquetas pequenas. Os leucócitos aparecem aqui em número maior que o real, para facilitar a busca.',
+  est:[['Hemácias','≈ 7,5 µm, sem núcleo'],['Neutrófilo','≈ 12 µm, núcleo com 3–5 lobos'],['Eosinófilo','grânulos alaranjados'],['Linfócito','núcleo grande e redondo'],['Monócito','≈ 16 µm, núcleo em forma de rim'],['Plaquetas','≈ 2–3 µm']],tam:'Use a objetiva de 100× para ver os detalhes',q:'Quais elementos apresentam núcleo visível?',
+  gen(g,r,T,m){const WBC=[['neu',6],['neu',6],['neu',6],['eos',6.2],['lin',4.3],['lin',4.3],['mon',8]].map(([t,rad],k)=>({t,rad,x:k===0?T[0]/2:r()*T[0],y:k===0?T[1]/2:r()*T[1]}));
+    const far=(x,y,d)=>WBC.every(w=>{let dx=Math.abs(w.x-x),dy=Math.abs(w.y-y);dx=Math.min(dx,T[0]-dx);dy=Math.min(dy,T[1]-dy);return Math.hypot(dx,dy)>w.rad+d;});
+    const R0=scatter(r,T,1300,6.4,14).filter(([x,y])=>far(x,y,4));
+    R0.forEach(([x,y])=>{const rr=3.6+r()*.35;wrapAt(T,m,x,y,5,(X,Y)=>{E(g,X,Y,rr,rr*.97,0,'#e5a0a6','#c88089',.35);E(g,X,Y,rr*.45,rr*.42,0,'rgba(250,226,226,.9)');});});
+    for(let i=0;i<50;i++){const x=r()*T[0],y=r()*T[1];if(!far(x,y,2))continue;const pts=[...Array(6)].map((_,k)=>{const a=k*TAU/6,rr=.9+r()*.6;return[Math.cos(a)*rr,Math.sin(a)*rr];});wrapAt(T,m,x,y,2,(X,Y)=>{P(g,pts.map(p=>[X+p[0],Y+p[1]]),'#9a6cb8');E(g,X,Y,.4,.4,0,'#5a2f7a');});}
+    const N='#4b2b7f';WBC.forEach(w=>wrapAt(T,m,w.x,w.y,w.rad+1,(X,Y)=>{
+      if(w.t==='neu'){E(g,X,Y,6,5.8,0,'#ecd8e6','#cbb0cd',.4);for(let k=0;k<70;k++){const a=r()*TAU,d=Math.sqrt(r())*5.3;E(g,X+Math.cos(a)*d,Y+Math.sin(a)*d,.25,.25,0,'rgba(190,140,180,.7)');}const lob=3+Math.floor(r()*3);let pr=null;for(let k=0;k<lob;k++){const a=-1.6+k*(3.2/(lob-1)),px=X+Math.cos(a)*2.8,py=Y+Math.sin(a)*2.4;if(pr)L(g,pr[0],pr[1],px,py,N,.6);E(g,px,py,1.6,1.3,a,N);pr=[px,py];}}
+      else if(w.t==='eos'){E(g,X,Y,6.2,6,0,'#f3d6cc','#d9b2a6',.4);for(let k=0;k<120;k++){const a=r()*TAU,d=Math.sqrt(r())*5.6;E(g,X+Math.cos(a)*d,Y+Math.sin(a)*d,.45,.45,0,'#e3683f');}E(g,X-2.2,Y,2.1,1.7,.3,N);E(g,X+2.2,Y+.3,2.1,1.7,-.3,N);L(g,X-.6,Y,X+.6,Y,N,.7);}
+      else if(w.t==='lin'){E(g,X,Y,4.3,4.2,0,'#a9c2ea','#7d9fd4',.35);E(g,X+.4,Y,3.5,3.4,0,'#3b2a78');for(let k=0;k<12;k++)E(g,X+(r()-.5)*5,Y+(r()-.5)*5,.35,.35,0,'#271a58');}
+      else{E(g,X,Y,8,7.6,0,'#d9dbec','#b8bad6',.4);for(let k=0;k<10;k++)E(g,X+(r()-.5)*11,Y+(r()-.5)*11,.6,.6,0,'rgba(255,255,255,.8)');g.beginPath();g.ellipse(X,Y-.5,4.8,3.6,0,0,TAU);g.fillStyle='#5b4b94';g.fill();E(g,X+1.6,Y+2.6,2.4,1.6,0,'#d9dbec');}}));}},
+ {nome:'Músculo estriado esquelético',area:'Histologia',prep:'Corte longitudinal corado com hematoxilina e eosina (HE)',T:[600,600],R:2.4,mode:'repeat',bg:'#f2d6dd',max:40,
+  desc:'Fibras musculares longas e paralelas, com estriações transversais (faixas claras e escuras alternadas) e vários núcleos achatados na periferia de cada fibra.',
+  est:[['Fibra muscular','≈ 50 µm de diâmetro, muito longa'],['Estriações','bandas A (escuras) e I (claras)'],['Núcleos','vários, achatados, na periferia']],tam:'Fibras com ≈ 40–60 µm de diâmetro; sarcômero ≈ 2,5 µm',q:'Como a organização das fibras se relaciona à contração?',
+  gen(g,r,T,m){let y=0;splitLen(r,T[1],44,60).forEach(hh=>{const top=y+1.3,h=hh-2.6;y+=hh;const ph=r()*2.5;g.fillStyle='#d88c9e';g.fillRect(0,top,T[0],h);g.fillStyle='rgba(140,50,90,.42)';for(let x=-2.5+ph;x<T[0];x+=2.5)g.fillRect(x,top,1.5,h);g.fillStyle='rgba(255,230,236,.25)';for(let x=-2.5+ph+1.9;x<T[0];x+=2.5)g.fillRect(x,top,.25,h);
+    let x=r()*40;while(x<T[0]){const side=r()<.5;const ny=side?top+2:top+h-2;wrapAt(T,m,x,ny,8,(X,Y)=>E(g,X,Y,6.5,1.5,0,'#5a3478'));x+=30+r()*45;}});}},
+ {nome:'Tecido nervoso',area:'Histologia',prep:'Corte de medula espinal corado (método para corpúsculos de Nissl)',T:[1000,1000],R:1.6,mode:'repeat',bg:'#efe4ef',max:40,
+  desc:'Neurônios multipolares com corpo celular grande, núcleo claro e nucléolo evidente, e vários prolongamentos. Os pequenos núcleos escuros espalhados são de células da glia.',
+  est:[['Corpo celular','≈ 30–50 µm, com grânulos de Nissl'],['Núcleo','claro, com nucléolo grande'],['Dendritos e axônio','prolongamentos'],['Núcleos da glia','≈ 5–6 µm, escuros']],tam:'Corpos celulares com ≈ 30–50 µm',q:'O que a forma dessas células sugere sobre sua função?',
+  gen(g,r,T,m){for(let i=0;i<1600;i++){const x=r()*T[0],y=r()*T[1],a=r()*TAU,l=10+r()*25;wrapAt(T,m,x,y,l,(X,Y)=>{g.beginPath();g.moveTo(X,Y);g.quadraticCurveTo(X+Math.cos(a+.5)*l*.5,Y+Math.sin(a+.5)*l*.5,X+Math.cos(a)*l,Y+Math.sin(a)*l);g.strokeStyle='rgba(150,110,165,.22)';g.lineWidth=.6;g.stroke();});}
+    for(let i=0;i<260;i++){const x=r()*T[0],y=r()*T[1];wrapAt(T,m,x,y,4,(X,Y)=>E(g,X,Y,2.6+r(),2.3+r()*.8,r()*3,'#6c4a8c'));}
+    scatter(r,T,16,170,30,[T[0]/2,T[1]/2]).forEach(([x,y])=>{const rs=15+r()*6,nd=5+Math.floor(r()*2),a0=r()*TAU;const br=[];
+      for(let k=0;k<nd;k++){const a=a0+k*TAU/nd+(r()-.5)*.5;const len=k===0?320:110+r()*120;br.push({a,len,ax:k===0});}
+      wrapAt(T,m,x,y,360,(X,Y)=>{br.forEach(b=>{const seg=12;let px=X+Math.cos(b.a)*rs*.9,py=Y+Math.sin(b.a)*rs*.9,ang=b.a;for(let s=0;s<seg;s++){const t=s/seg;const nx=px+Math.cos(ang)*b.len/seg,ny=py+Math.sin(ang)*b.len/seg;L(g,px,py,nx,ny,b.ax?'#9a78ab':'#a582b6',b.ax?1.6:Math.max(.8,5.5*(1-t)));if(!b.ax&&s===5){const ba=ang+(r()<.5?.6:-.6);let qx=nx,qy=ny;for(let u=0;u<5;u++){const zx=qx+Math.cos(ba)*12,zy=qy+Math.sin(ba)*12;L(g,qx,qy,zx,zy,'#a582b6',Math.max(.6,2.4*(1-u/5)));qx=zx;qy=zy;}}ang+=(r()-.5)*.25;px=nx;py=ny;}});
+        const pts=[...Array(nd)].map((_,k)=>{const b=br[k];return[X+Math.cos(b.a)*rs*1.15,Y+Math.sin(b.a)*rs*1.15];});const mid=[];pts.forEach((p,k)=>{const q=pts[(k+1)%nd];const ma=(br[k].a+br[(k+1)%nd].a)/2+(k===nd-1?Math.PI:0);mid.push(p,[X+Math.cos(ma)*rs*.8,Y+Math.sin(ma)*rs*.8]);});
+        P(g,mid,'#b58fc4','#8a68a0',.6);for(let k=0;k<55;k++){const a=r()*TAU,d=7+r()*(rs-7);E(g,X+Math.cos(a)*d,Y+Math.sin(a)*d,1,.7,a,'#764590');}
+        E(g,X,Y,6.8,6.5,0,'#f1e6f4','#9a78ab',.6);E(g,X+1,Y-.5,2.1,2.1,0,'#4a2a62');});});}},
+ {nome:'Bactérias: cocos e bacilos',area:'Microbiologia',prep:'Esfregaço com coloração simples (cor didática)',T:[120,120],R:10,mode:'repeat',bg:'#f4eef6',max:100,
+  desc:'Formas bacterianas: cocos (esféricos) isolados, aos pares, em cachos ou em cadeias, e bacilos (bastonetes). São muito pequenas: use a objetiva de 100×. A cor é didática e não indica resultado de Gram.',
+  est:[['Cocos','≈ 1 µm, em pares, cachos ou cadeias'],['Bacilos','≈ 0,8 × 2–4 µm']],tam:'Bactérias com ≈ 1–4 µm',q:'A forma é suficiente para identificar uma espécie bacteriana?',
+  gen(g,r,T,m){const C='#7b4fa0',S='#5a3080';const co=(x,y)=>wrapAt(T,m,x,y,1,(X,Y)=>E(g,X,Y,.5,.5,0,C,S,.08));
+    for(let i=0;i<12;i++){const cx=r()*T[0],cy=r()*T[1];const pts=[];for(let k=0;k<30&&pts.length<18;k++){const a=r()*TAU,d=Math.sqrt(r())*2.6;const x=cx+Math.cos(a)*d,y=cy+Math.sin(a)*d;if(pts.every(p=>Math.hypot(p[0]-x,p[1]-y)>.95))pts.push([x,y]);}pts.forEach(p=>co(...p));}
+    for(let i=0;i<8;i++){let x=r()*T[0],y=r()*T[1],a=r()*TAU;const n=6+Math.floor(r()*9);for(let k=0;k<n;k++){co(x,y);a+=(r()-.5)*.5;x+=Math.cos(a)*1.02;y+=Math.sin(a)*1.02;}}
+    for(let i=0;i<16;i++){const x=r()*T[0],y=r()*T[1],a=r()*TAU;co(x,y);co(x+Math.cos(a)*1,y+Math.sin(a)*1);}
+    for(let i=0;i<70;i++){let x=r()*T[0],y=r()*T[1];const a=r()*TAU,l=2+r()*2;const n=r()<.2?2:1;for(let k=0;k<n;k++){wrapAt(T,m,x,y,3,(X,Y)=>{g.save();g.translate(X,Y);g.rotate(a);g.beginPath();g.roundRect(-l/2,-.4,l,.8,.4);g.fillStyle=C;g.fill();g.restore();});x+=Math.cos(a)*(l+.3);y+=Math.sin(a)*(l+.3);}}}},
+ {nome:'Leveduras em brotamento',area:'Microbiologia',prep:'Suspensão de fermento biológico, montagem a fresco',T:[200,200],R:6,mode:'repeat',bg:'#f1ecdf',max:100,
+  desc:'Células de levedura, ovais e isoladas. Várias apresentam um broto preso à célula-mãe: é a reprodução por brotamento. O vacúolo aparece como área mais clara.',
+  est:[['Célula-mãe','≈ 5–8 µm, oval'],['Broto','projeção menor presa à célula'],['Vacúolo','área clara interna']],tam:'Células com ≈ 5–8 µm',q:'Qual evidência sugere reprodução nesta preparação?',
+  gen(g,r,T,m){scatter(r,T,150,9).forEach(([x,y])=>{const a=r()*TAU,rx=2.5+r()*.6,ry=3.2+r()*.7;const bud=r()<.38?(.9+r()*1.2):0;wrapAt(T,m,x,y,7,(X,Y)=>{if(bud){const bx=X+Math.cos(a)*(ry+bud*.7),by=Y+Math.sin(a)*(ry+bud*.7);E(g,bx,by,bud*.85,bud,a+Math.PI/2,'#e6d6b3','#9c8150',.3);}E(g,X,Y,rx,ry,a+Math.PI/2,'#e3d2ad','#9c8150',.32);E(g,X+.3,Y-.2,1,1.2,a,'#f5ecd7','#c8b48a',.15);});});}},
+ {nome:'Microalgas de água doce',area:'Ecologia',prep:'Gota de água de açude, montagem a fresco',T:[800,800],R:2,mode:'repeat',bg:'#ecf2e6',max:40,
+  desc:'Diversidade de formas: algas unicelulares em crescente, diatomáceas com parede ornamentada, colônias em estrela, células flageladas e pequenos cenóbios. Sem identificação de espécies.',
+  est:[['Formas unicelulares','crescentes, esféricas, em barco'],['Colônias','células unidas em padrão'],['Cloroplastos','verdes ou dourados']],tam:'Formas de ≈ 10 a 200 µm',q:'Quais diferenças de organização você consegue reconhecer?',
+  gen(g,r,T,m){scatter(r,T,52,95).forEach(([x,y])=>{const t=r(),a=r()*TAU;wrapAt(T,m,x,y,120,(X,Y)=>{g.save();g.translate(X,Y);g.rotate(a);
+    if(t<.25){const l=80+r()*30;g.beginPath();g.moveTo(-l,0);g.quadraticCurveTo(0,-l*.55,l,0);g.quadraticCurveTo(0,-l*.32,-l,0);g.fillStyle='#86b85e';g.fill();g.strokeStyle='#4a7a32';g.lineWidth=.8;g.stroke();g.beginPath();g.moveTo(-l*.8,-l*.08);g.quadraticCurveTo(0,-l*.4,l*.8,-l*.08);g.strokeStyle='#3e7428';g.lineWidth=1.5;g.stroke();E(g,-l*.82,-l*.05,3,3,0,'#f2f7ea','#4a7a32',.4);E(g,l*.82,-l*.05,3,3,0,'#f2f7ea','#4a7a32',.4);}
+    else if(t<.5){const l=22+r()*6;g.beginPath();g.moveTo(-l,0);g.quadraticCurveTo(0,-11,l,0);g.quadraticCurveTo(0,11,-l,0);g.fillStyle='#c9a85a';g.fill();g.strokeStyle='#8a6a2a';g.lineWidth=.7;g.stroke();L(g,-l*.85,0,l*.85,0,'#8a6a2a',.6);for(let k=-l*.8;k<l*.8;k+=1.6){const hh=Math.sqrt(Math.max(0,1-(k/l)**2))*9;L(g,k,-hh,k,-1.4,'rgba(120,85,30,.55)',.35);L(g,k,1.4,k,hh,'rgba(120,85,30,.55)',.35);}}
+    else if(t<.68){const ring=[[0,0,1]];[[10,5],[20,10]].forEach(([rd,n])=>{for(let k=0;k<n;k++){const aa=k*TAU/n;ring.push([Math.cos(aa)*rd,Math.sin(aa)*rd,n===10]);}});ring.forEach(([cx,cy,out])=>{E(g,cx,cy,5,5,0,'#8cbf62','#4f7f35',.6);if(out===true){const aa=Math.atan2(cy,cx);[-.3,.3].forEach(o=>L(g,cx+Math.cos(aa+o)*4,cy+Math.sin(aa+o)*4,cx+Math.cos(aa+o)*9,cy+Math.sin(aa+o)*9,'#4f7f35',.9));}});}
+    else if(t<.85){E(g,0,0,6,6,0,'#79b454','#4a7a32',.6);E(g,2.5,-2,1,1,0,'#d4483a');g.beginPath();g.moveTo(-5.5,-1);g.quadraticCurveTo(-10,-6,-17,-3);g.moveTo(-5.5,1);g.quadraticCurveTo(-10,6,-17,3);g.strokeStyle='#4a7a32';g.lineWidth=.4;g.stroke();}
+    else{for(let k=0;k<4;k++){E(g,-11+k*7.3,0,3.4,9,0,'#86b85e','#4a7a32',.6);}[-1,1].forEach(s2=>{L(g,-11,s2*9,-15,s2*15,'#4a7a32',.6);L(g,11,s2*9,15,s2*15,'#4a7a32',.6);});}
+    g.restore();});});
+   for(let i=0;i<500;i++){const x=r()*T[0],y=r()*T[1];E(g,x,y,.5+r(),.4+r()*.8,r()*3,'rgba(150,140,110,.4)');}}},
+ {nome:'Ciliado de água doce',area:'Diversidade',prep:'Cultura em água com folhas, montagem a fresco',T:[1500,1500],R:1.5,mode:'repeat',bg:'#edf1e8',max:40,
+  desc:'Protozoário ciliado em forma de chinelo, coberto de cílios. Dentro dele: macronúcleo, vacúolos contráteis (com canais em estrela) e vacúolos digestivos. Modelo didático, sem identificação de espécie.',
+  est:[['Cílios','cobrem toda a superfície'],['Sulco oral','depressão lateral por onde entra o alimento'],['Macronúcleo','grande, central'],['Vacúolos contráteis','dois, com canais radiais'],['Vacúolos digestivos','esferas com alimento']],tam:'Célula com ≈ 200 µm de comprimento',q:'Como os cílios ajudam na interação com o ambiente?',
+  gen(g,r,T,m){for(let i=0;i<900;i++){const x=r()*T[0],y=r()*T[1];E(g,x,y,.6+r()*1.2,.5+r(),r()*3,'rgba(160,150,120,.35)');}
+    scatter(r,T,16,250,30,[T[0]/2,T[1]/2]).forEach(([x,y])=>{const a=r()*TAU;const fv=[...Array(12)].map(()=>[(r()-.5)*120,(r()-.5)*30,3+r()*3,['#d6c08a','#c9a7a0','#b9c99a'][Math.floor(r()*3)]]);
+      wrapAt(T,m,x,y,115,(X,Y)=>{g.save();g.translate(X,Y);g.rotate(a);const top=[],bot=[];for(let k=0;k<=60;k++){const u=-100+k*200/60;const w=31*Math.sqrt(Math.max(0,1-(u/100)**2))*(u<0?1:.88);top.push([u,-w]);const dent=(u>-25&&u<45)?11*Math.sin((u+25)/70*Math.PI):0;bot.push([u,w-dent]);}
+        const out=top.concat(bot.reverse());for(let k=0;k<out.length;k+=1){const p=out[k],q2=out[(k+1)%out.length];const nx=-(q2[1]-p[1]),ny=q2[0]-p[0],nl=Math.hypot(nx,ny)||1;const sgn=k<61?1:-1;L(g,p[0],p[1],p[0]+nx/nl*6*sgn*-1,p[1]+ny/nl*6*sgn*-1,'rgba(110,130,100,.55)',.45);}
+        P(g,out,'rgba(196,212,184,.9)','#7d9270',1.2);g.beginPath();g.moveTo(-20,22);g.quadraticCurveTo(10,8,40,18);g.strokeStyle='#7d9270';g.lineWidth=1;g.stroke();
+        fv.forEach(([fx,fy,fr,fc])=>{if(Math.abs(fx)>80)return;E(g,fx,fy,fr,fr,0,fc,'rgba(90,100,80,.5)',.4);E(g,fx+.8,fy-.6,fr*.35,fr*.35,0,'rgba(80,70,50,.5)');});
+        g.beginPath();g.ellipse(6,-2,22,12,.1,0,TAU);g.fillStyle='#9aa89a';g.fill();g.strokeStyle='#6a786a';g.lineWidth=.7;g.stroke();E(g,24,-9,3,3,0,'#6a786a');
+        [-62,62].forEach(cx=>{for(let k=0;k<7;k++){const aa=k*TAU/7;L(g,cx+Math.cos(aa)*5,-6+Math.sin(aa)*5,cx+Math.cos(aa)*13,-6+Math.sin(aa)*11,'rgba(120,150,180,.7)',1);}E(g,cx,-6,5.5,5.5,0,'#eef6ff','#8aa0b8',.6);});g.restore();});});}},
+ {nome:'Epitélio simples cúbico',area:'Histologia',prep:'Corte corado com HE',T:[600,600],R:2.4,mode:'repeat',bg:'#f3dce4',max:40,
+  desc:'Cortes transversais de túbulos revestidos por uma única camada de células cúbicas, com núcleo redondo e central. O espaço claro no meio de cada túbulo é o lúmen. Não representa um órgão específico.',
+  est:[['Lúmen','espaço claro central'],['Células cúbicas','altura ≈ largura, ≈ 10–12 µm'],['Núcleos','redondos e centrais'],['Membrana basal','linha fina por fora'],['Capilares','com hemácias, entre os túbulos']],tam:'Túbulos com ≈ 50–70 µm de diâmetro',q:'Como distinguir o lúmen dos núcleos?',
+  gen(g,r,T,m){for(let i=0;i<500;i++){const x=r()*T[0],y=r()*T[1],a=r()*TAU;L(g,x,y,x+Math.cos(a)*12,y+Math.sin(a)*12,'rgba(205,140,165,.35)',.5);}
+    const tub=scatter(r,T,22,78);tub.forEach(([x,y])=>{const R0=25+r()*9,Rl=R0-11.5;const n=Math.round(TAU*(R0-5)/10.5);const a0=r()*TAU;wrapAt(T,m,x,y,R0+2,(X,Y)=>{E(g,X,Y,R0+.8,R0+.8,0,null,'#c97a98',.9);
+      for(let k=0;k<n;k++){const a1=a0+k*TAU/n,a2=a0+(k+1)*TAU/n;P(g,[[X+Math.cos(a1)*Rl,Y+Math.sin(a1)*Rl],[X+Math.cos(a1)*R0,Y+Math.sin(a1)*R0],[X+Math.cos(a2)*R0,Y+Math.sin(a2)*R0],[X+Math.cos(a2)*Rl,Y+Math.sin(a2)*Rl]],'#e8a8c0','rgba(255,240,245,.9)',.5);const am=(a1+a2)/2,rm=(R0+Rl)/2;E(g,X+Math.cos(am)*rm,Y+Math.sin(am)*rm,2.6,2.5,0,'#563a86');}
+      E(g,X,Y,Rl,Rl,0,'#fcf4f7');});});
+    for(let i=0;i<40;i++){const x=r()*T[0],y=r()*T[1];if(tub.some(([tx,ty])=>Math.hypot(tx-x,ty-y)<40))continue;wrapAt(T,m,x,y,6,(X,Y)=>{E(g,X,Y,5,3.6,r()*3,'#f6e6ec','#c97a98',.5);E(g,X,Y,3.4,2.2,0,'#d2606e');});}}},
+ {nome:'Tecido adiposo branco',area:'Histologia',prep:'Corte corado com HE',T:[960,960],R:1.6,mode:'repeat',bg:'#f5e2e9',max:40,
+  desc:'Adipócitos uniloculares: grandes, poligonais, com uma única gota de gordura que se dissolve no preparo e deixa o espaço vazio. O núcleo fica achatado na periferia (aspecto de “anel de sinete”).',
+  est:[['Adipócitos','≈ 60–120 µm'],['Espaço da gota lipídica','claro, ocupa quase toda a célula'],['Núcleo periférico','achatado junto à membrana'],['Capilares','entre as células']],tam:'Adipócitos com ≈ 60–120 µm',q:'Por que os núcleos aparecem deslocados para a periferia?',
+  gen(g,r,T,m){const S=jitterGrid(r,T,80,.75);const V=voronoi(S,T);V.forEach((poly,i)=>{const [sx,sy]=S[i];const nuc=r()<.35;const k=Math.floor(r()*poly.length);
+    wrapAt(T,m,sx,sy,90,(X,Y)=>{const ox=X-sx,oy=Y-sy;const pp=poly.map(p=>[p[0]+ox,p[1]+oy]);P(g,pp,'#fefbfb','#d88ea9',1.5);
+      if(nuc){const a=pp[k],b=pp[(k+1)%pp.length];const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2;const ang=Math.atan2(b[1]-a[1],b[0]-a[0]);const ix=X-mx,iy=Y-my,il=Math.hypot(ix,iy)||1;E(g,mx+ix/il*2.4,my+iy/il*2.4,7,1.9,ang,'#5a3a86');}});});
+   V.forEach(poly=>{if(r()<.25){const p=poly[0];wrapAt(T,m,p[0],p[1],5,(X,Y)=>{E(g,X,Y,3.5,2.8,0,'#f6e6ec','#d88ea9',.5);E(g,X,Y,2.2,1.6,0,'#d2606e');});}});}},
+ {nome:'Cartilagem hialina',area:'Histologia',prep:'Corte corado com HE',T:[600,600],R:2.4,mode:'repeat',bg:'#c9b8dc',max:40,
+  desc:'Matriz extracelular abundante e homogênea, onde ficam os condrócitos, dentro de lacunas, muitas vezes em pequenos grupos (grupos isógenos) originados de uma mesma célula.',
+  est:[['Matriz','homogênea, lilás'],['Lacunas','espaços onde ficam as células'],['Condrócitos','≈ 10–20 µm, isolados ou em grupos'],['Matriz territorial','mais corada ao redor dos grupos']],tam:'Condrócitos com ≈ 10–20 µm',q:'O que distingue esta organização de um epitélio?',
+  gen(g,r,T,m){for(let i=0;i<5000;i++){E(g,r()*T[0],r()*T[1],.5,.5,0,'rgba(110,80,140,.07)');}
+    scatter(r,T,75,48).forEach(([x,y])=>{const n=1+Math.floor(r()*4),a=r()*TAU,lin=r()<.5;const cells=[...Array(n)].map((_,k)=>lin?[Math.cos(a)*(k-(n-1)/2)*13,Math.sin(a)*(k-(n-1)/2)*13]:[Math.cos(a+k*TAU/n)*(n>1?8:0),Math.sin(a+k*TAU/n)*(n>1?8:0)]);
+      wrapAt(T,m,x,y,34,(X,Y)=>{E(g,X,Y,10+n*5,9+n*3.5,a,'rgba(140,110,180,.35)');cells.forEach(([cx,cy])=>{const ra=r()*3;E(g,X+cx,Y+cy,6.6,5.2,ra,'#f1ebf6','#a58bbd',.4);E(g,X+cx-.6,Y+cy+.3,4.6,3.6,ra,'#b9a2cc','#8a6aa6',.4);E(g,X+cx-.4,Y+cy,1.8,1.7,0,'#55367a');});});});}},
+ {nome:'Corte de folha: mesofilo',area:'Botânica',prep:'Corte transversal à mão livre, sem corante',T:[600,320],R:2.4,mode:'repeat-x',bg:'#f6f4ea',max:40,
+  desc:'Corte transversal: epidermes superior e inferior, parênquima paliçádico (células alongadas e cheias de cloroplastos) e parênquima lacunoso (células irregulares com espaços de ar). Na epiderme inferior aparece um estômato, e no meio, uma nervura.',
+  est:[['Epiderme e cutícula','camadas externas'],['Parênquima paliçádico','células colunares, ≈ 50 µm'],['Parênquima lacunoso','células soltas e espaços de ar'],['Estômato','na epiderme inferior'],['Nervura','xilema e floema']],tam:'Espessura da folha ≈ 200 µm',q:'Como os espaços intercelulares favorecem as trocas gasosas?',
+  gen(g,r,T,m){const W=T[0];const row=(y0,h,minW,maxW,fill)=>{let x=0;splitLen(r,W,minW,maxW).forEach(w=>{P(g,[[x,y0],[x+w,y0],[x+w,y0+h],[x,y0+h]],fill,'#7b9a55',.8);x+=w;});};
+    g.fillStyle='#e4dc9a';g.fillRect(0,38,W,2.4);row(40.4,17,18,26,'#f3f7e6');
+    let x=0;splitLen(r,W,12,16).forEach(w=>{const cx=x+w/2;x+=w;g.beginPath();g.roundRect(cx-w/2+.6,58,w-1.2,56,5);g.fillStyle='#cfe1a8';g.fill();g.strokeStyle='#7b9a55';g.lineWidth=.8;g.stroke();for(let k=0;k<14;k++){const sd=r()<.5?-1:1;E(g,cx+sd*(w/2-2.6),60+r()*52,1.6,2.4,0,'#4c8c30');}});
+    scatter(r,[W,104],70,19).forEach(([sx,sy])=>{const cx=sx,cy=120+sy;if(Math.hypot(cx-300,cy-160)<40)return;const pts=[...Array(8)].map((_,k)=>{const a=k*TAU/8,rr=9+r()*5;return[Math.cos(a)*rr,Math.sin(a)*rr*.85];});wrapAt([W,320],'repeat-x',cx,cy,16,(X,Y)=>{P(g,pts.map(p=>[X+p[0],Y+p[1]]),'#d8e7b8','#7b9a55',.8);for(let k=0;k<6;k++)E(g,X+(r()-.5)*14,Y+(r()-.5)*12,1.5,1.5,0,'#4c8c30');});});
+    [150,470].forEach(sx=>{E(g,sx,230,9,6,0,'#f6f4ea');});
+    let xb=0;splitLen(r,W,18,26).forEach(w=>{const cx=xb+w/2;const st=[150,470].some(s=>Math.abs(cx-s)<14);if(!st)P(g,[[xb,229],[xb+w,229],[xb+w,245],[xb,245]],'#f3f7e6','#7b9a55',.8);xb+=w;});
+    [150,470].forEach(sx=>{[-1,1].forEach(sd=>{E(g,sx+sd*5,238,4.6,4,0,'#a8cd86','#5f8a4a',.8);E(g,sx+sd*5,238,1,1,0,'#3f7f2a');});});g.fillStyle='#e4dc9a';g.fillRect(0,245,W,2.4);
+    for(let k=0;k<12;k++){const a=k*TAU/12;E(g,300+Math.cos(a)*31,160+Math.sin(a)*31,6,6,0,'#e9f0cf','#7b9a55',.7);}
+    for(let k=0;k<9;k++){const a=-Math.PI+k*Math.PI/8;E(g,300+Math.cos(a)*14,152+Math.sin(a)*10,4.2,4.2,0,'#f4eee0','#8a6a3a',1.6);}
+    for(let k=0;k<14;k++)E(g,300+(r()-.5)*36,170+r()*12,2.2,2,0,'#dfe9c4','#7b9a55',.5);}},
+ {nome:'Pelos absorventes',area:'Botânica',prep:'Raiz de plântula, montagem a fresco',T:[1400,800],R:1.4,mode:'repeat-y',bg:'#f4f1e4',max:40,
+  desc:'Região da raiz em que muitas células da epiderme crescem para fora, formando pelos longos e finos. Cada pelo é parte de uma única célula epidérmica.',
+  est:[['Epiderme','camada externa da raiz'],['Pelo absorvente','≈ 10 µm de largura, até 1 mm de comprimento'],['Córtex','células internas arredondadas']],tam:'Raiz com ≈ 250 µm de diâmetro',q:'Como o formato do pelo absorvente se relaciona à absorção?',
+  gen(g,r,T,m){const x0=570,x1=830;for(let cx=x0+25;cx<x1-20;cx+=32){let y=0;splitLen(r,T[1],34,44).forEach(h=>{wrapAt(T,m,cx,y+h/2,h,(X,Y)=>{g.beginPath();g.roundRect(X-14,Y-h/2+1,28,h-2,7);g.fillStyle='#efe6cf';g.fill();g.strokeStyle='#a8996a';g.lineWidth=.8;g.stroke();});y+=h;});}
+    [[x0,-1],[x1,1]].forEach(([ex,sd])=>{let y=0;splitLen(r,T[1],26,34).forEach(h=>{const cy=y+h/2;y+=h;const hair=r()<.6;const len=150+r()*380,bend=(r()-.5)*120;
+      wrapAt(T,m,ex,cy,len+60,(X,Y)=>{if(hair){const tx=X+sd*len,ty=Y+bend;g.beginPath();g.moveTo(X,Y-4.5);g.quadraticCurveTo(X+sd*len*.5,Y-4.5+bend*.3,tx,ty-4.5);g.arc(tx,ty,4.5,-Math.PI/2,Math.PI/2,sd<0);g.quadraticCurveTo(X+sd*len*.5,Y+4.5+bend*.3,X,Y+4.5);g.closePath();g.fillStyle='#f6efdc';g.fill();g.strokeStyle='#a8996a';g.lineWidth=.9;g.stroke();E(g,tx-sd*14,ty,3.6,2.4,0,'#a8987a');}
+        g.beginPath();g.roundRect(X-(sd<0?0:20),Y-h/2+.5,20,h-1,4);g.fillStyle='#f3ecd8';g.fill();g.strokeStyle='#a8996a';g.lineWidth=.8;g.stroke();});});});}},
+ {nome:'Fungo filamentoso',area:'Microbiologia',prep:'Montagem com lactofenol azul de algodão',T:[600,600],R:2.5,mode:'repeat',bg:'#f1f3fa',max:40,
+  desc:'Hifas septadas e ramificadas formando o micélio. Algumas hifas erguem conidióforos com cadeias de esporos (conídios). A morfologia, sozinha, não identifica a espécie.',
+  est:[['Hifa','filamento de ≈ 3–5 µm'],['Septo','divisão transversal da hifa'],['Ramificação','em ângulo agudo'],['Conídios','esporos em cadeia']],tam:'Hifas com ≈ 3–5 µm de largura',q:'Como esta organização difere de uma levedura?',
+  gen(g,r,T,m){const segs=[];const walk=(x,y,a,len,depth)=>{let d=0,next=20+r()*15;while(d<len){const nx=x+Math.cos(a)*6,ny=y+Math.sin(a)*6;segs.push([x,y,nx,ny,d>=next]);if(d>=next)next=d+22+r()*18;if(depth<2&&r()<.035)walk(nx,ny,a+(r()<.5?-1:1)*(.6+r()*.3),100+r()*160,depth+1);a+=(r()-.5)*.18;x=nx;y=ny;d+=6;}};
+    for(let i=0;i<9;i++)walk(r()*T[0],r()*T[1],r()*TAU,450+r()*350,0);
+    const wseg=(s,c,lw)=>wrapAt(T,m,(s[0]+s[2])/2,(s[1]+s[3])/2,8,(X,Y)=>{const dx=(s[2]-s[0])/2,dy=(s[3]-s[1])/2;L(g,X-dx,Y-dy,X+dx,Y+dy,c,lw);});
+    g.lineCap='round';segs.forEach(s=>wseg(s,'#5f80c8',4.4));segs.forEach(s=>wseg(s,'#b9cbf0',2.6));
+    segs.forEach(s=>{if(!s[4])return;const a=Math.atan2(s[3]-s[1],s[2]-s[0]);wrapAt(T,m,s[2],s[3],4,(X,Y)=>L(g,X+Math.cos(a+1.57)*2.2,Y+Math.sin(a+1.57)*2.2,X-Math.cos(a+1.57)*2.2,Y-Math.sin(a+1.57)*2.2,'#3f5fa5',.9));});
+    for(let i=0;i<7;i++){const s=segs[Math.floor(r()*segs.length)];const a=Math.atan2(s[3]-s[1],s[2]-s[0])+1.4;wrapAt(T,m,s[2],s[3],80,(X,Y)=>{const tx=X+Math.cos(a)*45,ty=Y+Math.sin(a)*45;L(g,X,Y,tx,ty,'#5f80c8',3.4);for(let k=-2;k<=2;k++){const b=a+k*.28;const px=tx+Math.cos(b)*6,py=ty+Math.sin(b)*6;L(g,tx,ty,px,py,'#5f80c8',2);for(let c=1;c<=5;c++)E(g,px+Math.cos(b)*c*2.7,py+Math.sin(b)*c*2.7,1.3,1.3,0,'#4d6fc0');}});}g.lineCap='butt';}},
+ {nome:'Grãos de pólen',area:'Reprodução',prep:'Pólen de flores diversas, montagem a seco',T:[800,800],R:2.4,mode:'repeat',bg:'#f6f0dc',max:40,
+  desc:'Grãos de pólen de formas diferentes: com sulcos (colpos), com poros, com espinhos e com sacos de ar. A parede externa (exina) é ornamentada. Sem identificação de espécies.',
+  est:[['Exina','parede externa ornamentada'],['Aberturas','sulcos ou poros'],['Espinhos','em alguns tipos'],['Sacos de ar','em alguns tipos']],tam:'Grãos com ≈ 20–60 µm',q:'A forma dos grãos permite reconhecer uma única espécie com segurança?',
+  gen(g,r,T,m){const F='#e8c56c',S='#a77c2a';scatter(r,T,48,85).forEach(([x,y])=>{const t=r(),a=r()*TAU;wrapAt(T,m,x,y,45,(X,Y)=>{g.save();g.translate(X,Y);g.rotate(a);
+    if(t<.3){E(g,0,0,15,15,0,F,S,1);for(let k=0;k<40;k++){const aa=r()*TAU,d=Math.sqrt(r())*13;E(g,Math.cos(aa)*d,Math.sin(aa)*d,.8,.8,0,'rgba(167,124,42,.5)');}for(let k=0;k<3;k++){const aa=k*TAU/3;g.beginPath();g.moveTo(Math.cos(aa)*5,Math.sin(aa)*5);g.lineTo(Math.cos(aa)*14.5,Math.sin(aa)*14.5);g.strokeStyle='#f8e6b4';g.lineWidth=2.4;g.stroke();}}
+    else if(t<.55){E(g,0,0,17,17,0,F,S,1);for(let k=0;k<26;k++){const aa=k*TAU/26;P(g,[[Math.cos(aa-.06)*17,Math.sin(aa-.06)*17],[Math.cos(aa)*21.5,Math.sin(aa)*21.5],[Math.cos(aa+.06)*17,Math.sin(aa+.06)*17]],S);}for(let k=0;k<14;k++){const aa=r()*TAU,d=r()*12;P(g,[[Math.cos(aa)*d-1,Math.sin(aa)*d],[Math.cos(aa)*d,Math.sin(aa)*d-1.8],[Math.cos(aa)*d+1,Math.sin(aa)*d]],'rgba(167,124,42,.7)');}}
+    else if(t<.8){E(g,0,0,12,11.5,0,F,S,1);for(let k=0;k<3;k++){const aa=k*TAU/3;E(g,Math.cos(aa)*9,Math.sin(aa)*9,2.4,2.4,0,'#f8e6b4',S,.7);}}
+    else{[-1,1].forEach(sd=>{E(g,sd*15,3,12,10,0,'#f1dc9c',S,.8);for(let k=0;k<30;k++)E(g,sd*15+(r()-.5)*18,3+(r()-.5)*14,.6,.6,0,'rgba(167,124,42,.45)');});E(g,0,0,17,11,0,F,S,1);}
+    g.restore();});});}},
+ {nome:'Alga filamentosa',area:'Diversidade',prep:'Filamentos de água doce, montagem a fresco',T:[800,800],R:2.4,mode:'repeat',bg:'#ecf2e4',max:40,
+  desc:'Filamentos formados por células cilíndricas em sequência. Em cada célula, o cloroplasto tem forma de fita em espiral, com pirenoides (pontos mais escuros), e o núcleo fica no centro.',
+  est:[['Filamento','células enfileiradas'],['Parede celular','separa as células'],['Cloroplasto em espiral','fita verde com pirenoides'],['Núcleo','central']],tam:'Filamentos com ≈ 30 µm de largura',q:'Que evidência permite reconhecer as unidades celulares?',
+  gen(g,r,T,m){[90,250,400,560,700].forEach(fy=>{const D=26+r()*8,y0=fy+(r()-.5)*40;let x=r()*T[0];splitLen(r,T[0],60,100).forEach(l=>{const cx=x+l/2;x+=l;wrapAt(T,m,cx,y0,l/2+2,(X,Y)=>{const ax=X-l/2,ty=Y-D/2;g.save();g.beginPath();g.rect(ax,ty,l,D);g.fillStyle='#e6f0d6';g.fill();g.clip();
+      g.strokeStyle='rgba(55,130,40,.85)';g.lineWidth=3.2;for(let k=-2;k<l/22+2;k++){const sx=ax+k*22;g.beginPath();g.moveTo(sx,ty);g.lineTo(sx+D*.8,ty+D);g.stroke();for(let p=.25;p<1;p+=.35)E(g,sx+D*.8*p,ty+D*p,1.5,1.5,0,'#2e6a1e');}
+      g.restore();P(g,[[ax,ty],[ax+l,ty],[ax+l,ty+D],[ax,ty+D]],null,'#78a050',1);E(g,X,Y,4,3.2,0,'rgba(230,238,214,.9)','#7a8a6a',.5);});});});
+   for(let i=0;i<400;i++)E(g,r()*T[0],r()*T[1],.5+r(),.5+r(),0,'rgba(150,140,110,.35)');}},
+];
+const TILES={};
+function tileOf(i){if(TILES[i])return TILES[i];const S=LAMINAS[i];const c=document.createElement('canvas');c.width=Math.round(S.T[0]*S.R);c.height=Math.round(S.T[1]*S.R);const g=c.getContext('2d');g.setTransform(S.R,0,0,S.R,0,0);g.fillStyle=S.bg;g.fillRect(0,0,S.T[0],S.T[1]);
+  try{S.gen(g,rng(1000+i*97),S.T,S.mode,S);}catch(e){console.error('lâmina',i,e);}c.R=S.R;return TILES[i]=c;}
+// Mosaico em alta resolução para a objetiva de 100× (só um por vez na memória)
+let HI=null;function hiTileOf(i){const S=LAMINAS[i];const R=Math.min(3.4,Math.sqrt(16e6/(S.T[0]*S.T[1])));if(R<=S.R*1.05)return tileOf(i);if(HI&&HI.i===i)return HI.c;if(HI){HI.c.width=HI.c.height=0;}
+  const c=document.createElement('canvas');c.width=Math.round(S.T[0]*R);c.height=Math.round(S.T[1]*R);const g=c.getContext('2d');g.setTransform(R,0,0,R,0,0);g.fillStyle=S.bg;g.fillRect(0,0,S.T[0],S.T[1]);try{S.gen(g,rng(1000+i*97),S.T,S.mode,S);}catch(e){console.error('lâmina',i,e);}c.R=R;HI={i,c};return c;}
+// Desenha uma vista de microscópio (campo circular) em um canvas qualquer
+function renderView(ctx,size,i,{obj=10,cx=null,cy=null,blur=0,bright=1,contrast=1,mask=true,scale=true}={}){const S=LAMINAS[i];const tile=obj>=100?hiTileOf(i):tileOf(i);const TR=tile.R;
+  const fov=18000/obj;const k=size/fov;const px=cx??S.T[0]/2,py=cy??S.T[1]/2;
+  const off=renderView.off||(renderView.off=document.createElement('canvas'));off.width=size;off.height=size;const o=off.getContext('2d');
+  o.setTransform(1,0,0,1,0,0);o.fillStyle=S.bg;o.fillRect(0,0,size,size);
+  o.imageSmoothingEnabled=true;o.imageSmoothingQuality='high';const pat=o.createPattern(tile,S.mode);const sc=k/TR;o.setTransform(sc,0,0,sc,size/2-px*k,size/2-py*k);o.fillStyle=pat;
+  const x0=(px-fov/2)*TR,y0=(py-fov/2)*TR,w=fov*TR;if(S.mode==='repeat-x')o.fillRect(x0,0,w,tile.height);else if(S.mode==='repeat-y')o.fillRect(0,y0,tile.width,w);else o.fillRect(x0,y0,w,w);
+  ctx.save();ctx.clearRect(0,0,size,size);ctx.filter=`blur(${blur*size/600}px) brightness(${bright}) contrast(${contrast})`;ctx.drawImage(off,0,0);ctx.filter='none';
+  if(mask){const r0=size/2-1;const gr=ctx.createRadialGradient(size/2,size/2,r0*.72,size/2,size/2,r0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,.35)');ctx.fillStyle=gr;ctx.fillRect(0,0,size,size);
+    ctx.beginPath();ctx.rect(0,0,size,size);ctx.arc(size/2,size/2,r0,0,TAU,true);ctx.fillStyle='#0b0f0d';ctx.fill('evenodd');}
+  if(scale){const cand=[1,2,5,10,20,50,100,200,500,1000];const Lm=cand.find(v=>v*k>=size*.12)||1000;const bw=Lm*k;const bx=size*.5-bw/2,by=size*.86;ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(bx-6,by-16,bw+12,26);ctx.fillStyle='#111';ctx.fillRect(bx,by,bw,Math.max(3,size/150));ctx.font=`600 ${Math.round(size/38)}px sans-serif`;ctx.textAlign='center';ctx.fillText(Lm>=1000?(Lm/1000)+' mm':Lm+' µm',size/2,by-4);ctx.textAlign='start';}
+  ctx.restore();return{fov,k};}
+const THUMBS={};function thumbOf(i,obj){const key=i+'-'+(obj||0);if(THUMBS[key])return THUMBS[key];const c=document.createElement('canvas');c.width=c.height=320;const S=LAMINAS[i];renderView(c.getContext('2d'),320,i,{obj:obj||(S.max===100?40:10),scale:true});return THUMBS[key]=c.toDataURL('image/jpeg',.82);}
+
+// =====================================================================
+//  BANCADA VIRTUAL · microscópio de campo claro (ocular 10×, número de campo 18 mm)
+// =====================================================================
+const OBJS=[4,10,40,100];
+const fovMM=o=>18/o;
+function lamBtn(i,on,click){const S=LAMINAS[i];const b=h('button',{type:'button',class:'lam-btn','aria-pressed':String(on)},h('img',{src:thumbOf(i),alt:'',loading:'lazy'}),h('span',{class:'stack',style:'gap:0'},h('b',{style:'font-size:.88rem;line-height:1.2'},S.nome),h('small',{class:'note'},S.area)));b.onclick=click;return b;}
+function bancada(root,{ids,key}){
+  const st=store.get('banc-'+key,{sel:ids[0],obj:10,all:false});let sel=st.sel,obj=st.obj,showAll=st.all;
+  const pan={x:0,y:0};let coarse=40,fine=0,light=75,contrast=100,labels=false,pending=false;
+  const save=()=>store.set('banc-'+key,{sel,obj,all:showAll});
+  const tgt=i=>50+((i*37)%11)-5;const shift={4:0,10:2,40:-3,100:4};
+  const wrap=h('div',{class:'panel stack bancada-wrap'});root.append(wrap);
+  wrap.append(h('div',{class:'row',style:'justify-content:space-between'},h('div',{class:'stack',style:'gap:2px'},h('span',{class:'eyebrow'},'Bancada virtual'),h('h3',{},'Microscópio óptico de campo claro')),h('span',{class:'pill'},'Ocular 10× · número de campo 18 mm')));
+  const grid=h('div',{class:'bancada'});wrap.append(grid);
+  // lista
+  const lst=h('div',{class:'lst stack',style:'gap:8px'});const items=h('div',{class:'lst-items'});const allC=h('input',{type:'checkbox',id:'all-'+key});allC.checked=showAll;
+  allC.onchange=()=>{showAll=allC.checked;save();drawList();};
+  lst.append(h('span',{class:'label'},'Lâminas'),items,h('label',{class:'row note',style:'flex-wrap:nowrap'},allC,'Mostrar todo o acervo (20)'));
+  // campo
+  const cv=h('canvas',{width:600,height:600,role:'img',tabindex:0,'aria-label':'Campo do microscópio. Arraste ou use as setas do teclado para mover a lâmina.'});
+  const magT=h('span',{});const oilNote=h('p',{class:'callout',hidden:true},'Objetiva de imersão (100×): no microscópio real, pinga-se uma gota de óleo de imersão sobre a lâmina, e a objetiva toca o óleo. O campo fica pequeno (0,18 mm) e o foco é muito sensível: use só o micrométrico.');const fovT=h('span',{});const objBox=h('div',{class:'seg',role:'group','aria-label':'Objetiva'});
+  const campo=h('div',{class:'campo'},h('div',{class:'campo-top'},h('span',{},'◉ CAMPO DE OBSERVAÇÃO'),magT),cv,h('div',{class:'campo-top'},fovT,h('button',{class:'btn sm',style:'background:#1d2622;color:#e4ebe6;border-color:#334039',onclick:()=>{pan.x=0;pan.y=0;draw();}},'⌖ Centralizar')));
+  const mid=h('div',{class:'stack',style:'gap:10px'},campo,h('div',{class:'row'},h('span',{class:'label'},'Objetiva'),objBox),h('p',{class:'note'},'Arraste o campo ou use as setas. Comece sempre pela menor objetiva.'),oilNote);
+  // controles
+  const status=h('p',{class:'fb info',style:'margin:0','aria-live':'polite'});
+  const sl=(id,lab,min,max,step,val,on,f)=>{const o=h('output',{class:'mono'},f(val));const i=h('input',{type:'range',id:id+'-'+key,min,max,step,value:val,'aria-label':lab});i.oninput=()=>{o.textContent=f(+i.value);on(+i.value);draw();};return h('label',{class:'ctl'},h('span',{class:'row',style:'justify-content:space-between'},h('span',{class:'label'},lab),o),i);};
+  const stepMv=(dx,dy)=>{const fine2=$('#pf-'+key).checked;const s=fovMM(obj)*1000*(fine2?.01:.05);moveBy(dx*s,dy*s);};
+  const arrow=(t,dx,dy,lab)=>{const b=h('button',{class:'btn',type:'button','aria-label':lab},t);let tm=null;const stop=()=>{clearInterval(tm);tm=null;};b.addEventListener('pointerdown',e=>{e.preventDefault();stop();stepMv(dx,dy);tm=setInterval(()=>stepMv(dx,dy),60);});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));b.addEventListener('click',e=>{if(e.detail===0)stepMv(dx,dy);});return b;};
+  const pos=h('p',{class:'note mono'});
+  const lbC=h('input',{type:'checkbox',id:'lb-'+key});lbC.onchange=()=>{labels=lbC.checked;draw();};
+  const ctr=h('div',{class:'stack ctl-box',style:'gap:10px'},h('span',{class:'label'},'Ajustes'),
+    sl('mac','Foco macrométrico',0,100,1,coarse,v=>coarse=v,v=>String(v)),sl('mic','Foco micrométrico',-10,10,.5,fine,v=>fine=v,v=>fmt(v,1)),
+    sl('luz','Intensidade da luz',20,100,1,light,v=>light=v,v=>v+'%'),sl('con','Diafragma (contraste)',70,150,1,contrast,v=>contrast=v,v=>v+'%'),
+    h('span',{class:'label'},'Charriot (move a lâmina)'),h('div',{class:'charriot'},h('span',{}),arrow('↑',0,-1,'Mover a lâmina para cima'),h('span',{}),arrow('←',-1,0,'Mover a lâmina para a esquerda'),h('button',{class:'btn',type:'button','aria-label':'Centralizar',onclick:()=>{pan.x=0;pan.y=0;draw();}},'⌖'),arrow('→',1,0,'Mover a lâmina para a direita'),h('span',{}),arrow('↓',0,1,'Mover a lâmina para baixo'),h('span',{})),
+    h('label',{class:'row note',style:'flex-wrap:nowrap'},h('input',{type:'checkbox',id:'pf-'+key}),'Passo fino'),pos,
+    h('label',{class:'row note',style:'flex-wrap:nowrap'},lbC,'Identificar estruturas'),status);
+  grid.append(lst,mid,ctr);
+  // informações + caderno
+  const info=h('div',{class:'stack',style:'gap:8px'});const nota=h('textarea',{rows:4,id:'nota-'+key,placeholder:'O que você observou? Descreva forma, organização e estruturas antes de explicar.'});const notaMsg=h('span',{class:'note'});
+  nota.oninput=()=>{store.set('nota-'+sel,nota.value);notaMsg.textContent='Salvo neste aparelho.';};
+  wrap.append(h('div',{class:'cols'},info,h('div',{class:'stack',style:'gap:6px'},h('h3',{},'Caderno desta lâmina'),nota,notaMsg)));
+  function lim(){const S=LAMINAS[sel];const fov=fovMM(obj)*1000;const LX=S.mode==='repeat-y'?Math.max(0,S.T[0]/2-fov/2):2500,LY=S.mode==='repeat-x'?Math.max(0,S.T[1]/2-fov/2):2500;pan.x=Math.max(-LX,Math.min(LX,pan.x));pan.y=Math.max(-LY,Math.min(LY,pan.y));}
+  function moveBy(dx,dy){pan.x+=dx;pan.y+=dy;lim();draw();}
+  function drawList(){items.innerHTML='';(showAll?LAMINAS.map((_,i)=>i):ids).forEach(i=>items.append(lamBtn(i,i===sel,()=>select(i))));}
+  function drawObj(){objBox.innerHTML='';const S=LAMINAS[sel];OBJS.forEach(o=>{const b=h('button',{type:'button','aria-pressed':String(o===obj)},o===100?'100× (imersão)':o+'×');b.onclick=()=>{obj=o;save();lim();drawObj();draw();};objBox.append(b);});}
+  function drawInfo(){const S=LAMINAS[sel];info.innerHTML='';info.append(h('span',{class:'eyebrow'},S.area),h('h3',{style:'font-size:1.4rem'},S.nome),h('span',{class:'pill ex',style:'align-self:flex-start'},S.prep),h('p',{},S.desc),
+    h('span',{class:'label'},'Estruturas para identificar'),h('ul',{class:'est-list'},...S.est.map(([a,b])=>h('li',{},h('strong',{},a),' · ',h('span',{class:'note'},b)))),h('p',{class:'note'},'Tamanho de referência: '+S.tam),h('p',{class:'callout'},h('strong',{},'Investigue: '),S.q));
+    nota.value=store.get('nota-'+sel,'');notaMsg.textContent='';}
+  function select(i){sel=i;pan.x=0;pan.y=0;const v=store.get('visitadas',[]);if(!v.includes(i)){v.push(i);store.set('visitadas',v);}save();drawList();drawObj();drawInfo();draw();}
+  function draw(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;render();});}
+  function render(){const S=LAMINAS[sel];const err=Math.abs(coarse+fine*.35-(tgt(sel)+shift[obj]));const blur=Math.min(14,err*(.3+obj/60));
+    const g=cv.getContext('2d');const cx=S.T[0]/2+pan.x,cy=S.T[1]/2+pan.y;renderView(g,600,sel,{obj,cx,cy,blur,bright:.35+light/100*.9,contrast:contrast/100});
+    if(labels){g.save();g.fillStyle='rgba(15,20,18,.86)';const n=S.est.length;const bh=26+n*24;g.beginPath();g.roundRect(150,120,300,bh,10);g.fill();g.fillStyle='#fff';g.font='600 17px sans-serif';S.est.forEach(([a],k)=>g.fillText('• '+a,170,148+k*24));g.restore();}
+    magT.textContent=(obj*10)+'×';oilNote.hidden=obj!==100;fovT.textContent='Campo ≈ '+fmt(fovMM(obj),fovMM(obj)<1?2:1)+' mm';pos.textContent=`X ${Math.round(pan.x)} µm · Y ${Math.round(pan.y)} µm`;
+    status.className='fb '+(blur<1.2?'ok':'info');status.textContent=blur<1.2?'Em foco. Explore a preparação.':err>6?'Fora de foco: use o macrométrico.':'Quase lá: ajuste o micrométrico.';}
+  let drag=null;cv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId);cv.style.cursor='grabbing';});
+  cv.addEventListener('pointermove',e=>{if(!drag)return;const k=fovMM(obj)*1000/cv.clientWidth;pan.x-=(e.clientX-drag.x)*k;pan.y-=(e.clientY-drag.y)*k;drag={x:e.clientX,y:e.clientY};lim();draw();});
+  ['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{drag=null;cv.style.cursor='';}));
+  cv.addEventListener('keydown',e=>{const m={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(m){e.preventDefault();const s=fovMM(obj)*1000*.05;moveBy(-m[0]*s,-m[1]*s);}});
+  // charriot: mover a lâmina para a direita faz a imagem ir para a esquerda (imagem invertida)
+  const api={select:i=>{if(!ids.includes(i)&&!showAll){showAll=true;allC.checked=true;}select(i);wrap.scrollIntoView({behavior:'smooth',block:'start'});},get sel(){return sel;},get obj(){return obj;},setObj(o){obj=o;drawObj();draw();}};
+  select(sel);return api;}
+function acervo(root,onPick){const grid=h('div',{class:'cards'});LAMINAS.forEach((S,i)=>grid.append(h('button',{class:'tool-card',onclick:()=>onPick(i)},h('img',{class:'thumb',src:thumbOf(i),alt:'Esquema ilustrado: '+S.nome,loading:'lazy'}),h('span',{class:'eyebrow'},'Lâmina '+String(i+1).padStart(2,'0')+' · '+S.area),h('h3',{},S.nome),h('p',{class:'note'},S.prep),h('span',{class:'tc-go'},'Levar à bancada ↑'))));root.append(panel(h('span',{class:'eyebrow'},'Acervo'),h('h3',{},'Coleção de 20 lâminas'),h('p',{class:'note'},'Toque numa lâmina para colocá-la na bancada desta aula.'),grid));}
+function roteiro(root,p,key){const steps=store.get('rot-'+key,{});const box=panel(h('span',{class:'eyebrow'},'Roteiro de investigação · '+p.level),h('h3',{},p.title),h('p',{class:'note'},p.goal));
+  const fb=h('div',{});box.append(h('div',{class:'stack',style:'gap:6px'},...p.tasks.map((t,n)=>{const c=h('input',{type:'checkbox',id:`rot-${key}-${n}`});c.checked=!!steps[n];c.onchange=()=>{steps[n]=c.checked;store.set('rot-'+key,steps);};return h('label',{class:'row',style:'flex-wrap:nowrap;align-items:flex-start'},c,h('span',{},t));})),
+    h('p',{class:'callout'},h('strong',{},'Pergunta: '),p.prompt),h('button',{class:'btn',onclick:()=>{if(!p.tasks.every((_,n)=>steps[n])){fbx(fb,'no','Marque todas as etapas antes de abrir a discussão.');return;}fbx(fb,'ok',h('strong',{},'Discussão: '),p.discussion);}},'Abrir a discussão'),fb);root.append(box);}
+
+// =====================================================================
+//  CONTEÚDO DAS AULAS
+// =====================================================================
+const PARTES={ocular:['Ocular','É a lente pela qual você observa. Na bancada virtual, a ocular tem ampliação fixa de 10×.'],tubo:['Tubo óptico','Mantém o alinhamento dos elementos ópticos entre a ocular e as objetivas.'],revolver:['Revólver','Suporte giratório que permite trocar a objetiva. Comece pela de menor aumento para localizar a amostra.'],objetivas:['Objetivas','Lentes próximas à preparação. A ampliação total é ocular × objetiva: 10× × 40× = 400×.'],platina:['Platina e lâmina','A platina sustenta a lâmina, que deve ficar sobre a abertura por onde passa a luz.'],condensador:['Condensador e diafragma','O condensador concentra a luz sobre a preparação; o diafragma regula a abertura do feixe e muda o contraste.'],iluminador:['Iluminador','Fornece a luz que atravessa a preparação no microscópio de campo claro.'],braco:['Braço','Sustenta o conjunto. Para transportar o microscópio, segure o braço e apoie a base.'],foco:['Parafusos de foco','O macrométrico faz deslocamentos grandes; o micrométrico faz o ajuste fino. Em maiores aumentos, use só o micrométrico.'],charriot:['Charriot','Desloca a lâmina nos eixos X e Y. No microscópio composto, a imagem é invertida: ela se move no sentido oposto ao da lâmina.'],base:['Base','Sustenta o equipamento e, neste modelo, abriga a iluminação.']};
+const ROT=[
+ {title:'Primeiros passos na microscopia',level:'Introdução · 15 min',goal:'Operar a bancada e relacionar ampliação, campo de visão e foco.',tasks:['Selecione a epiderme de cebola e a objetiva de 4×.','Centralize uma região usando o charriot.','Ajuste o foco macrométrico e refine com o micrométrico.','Passe para 10× e 40× e compare a área visível.','Registre no caderno como mudou o campo observado.'],prompt:'O que aconteceu com o número de células visíveis ao aumentar a objetiva?',discussion:'Ao aumentar a ampliação, o campo diminui: com a ocular de 10×, o campo tem cerca de 4,5 mm em 4×, 1,8 mm em 10× e 0,45 mm em 40×. Você vê menos células, mas maiores. Ampliação e resolução são conceitos diferentes.'},
+ {title:'Células animais e vegetais',level:'Biologia celular · 20 min',goal:'Comparar a organização celular e evitar generalizações sobre cloroplastos.',tasks:['Observe os contornos da epiderme de cebola.','Compare com as células da mucosa bucal.','Procure cloroplastos na folha de elódea.','Registre duas semelhanças e duas diferenças.'],prompt:'Por que não há cloroplastos na epiderme do bulbo de cebola?',discussion:'O bulbo é um órgão subterrâneo de reserva, e sua epiderme geralmente não tem cloroplastos. A presença dessa organela depende do tipo de célula e da função dela, não só de ser “vegetal”.'},
+ {title:'Estrutura e função nas plantas',level:'Botânica · 25 min',goal:'Relacionar estruturas vegetais a trocas gasosas e absorção.',tasks:['Localize um estômato e identifique as células-guarda.','Compare a vista de frente da epiderme com o corte da folha.','Localize os espaços de ar no parênquima lacunoso.','Observe os pelos absorventes e escreva uma hipótese sobre a função deles.'],prompt:'Que relação existe entre forma, superfície e função?',discussion:'Estômatos controlam as trocas gasosas. Os espaços do mesofilo facilitam a difusão de gases até as células com cloroplastos. Os pelos absorventes aumentam muito a superfície de contato da raiz com a água do solo.'},
+ {title:'Tecidos e organização animal',level:'Histologia · 25 min',goal:'Reconhecer padrões de organização dos tecidos.',tasks:['Compare as fibras musculares com os neurônios.','Localize o lúmen nos túbulos do epitélio cúbico.','Observe a posição dos núcleos nos adipócitos.','Compare a matriz da cartilagem com a disposição das células do epitélio.','No sangue (100×), encontre uma hemácia, um leucócito e plaquetas.'],prompt:'Em quais tecidos as células ficam mais próximas entre si? Em quais há mais matriz?',discussion:'Nos epitélios, as células ficam bem próximas, com pouca matriz entre elas. Na cartilagem, a matriz extracelular é abundante e envolve as células em lacunas. Os desenhos simplificam a variedade real dos tecidos.'},
+ {title:'Células em divisão',level:'Genética · 20 min',goal:'Relacionar a organização dos cromossomos às fases da mitose.',tasks:['Localize o meristema em 10× e passe para 40×.','Encontre uma célula em cada fase: prófase, metáfase, anáfase e telófase.','Conte, num campo, as células em divisão e as em interfase.','Calcule o índice mitótico do campo.'],prompt:'Por que a maioria das células aparece em interfase?',discussion:'A interfase é a fase mais longa do ciclo celular, então, num instante qualquer, a maioria das células está nela. Cada imagem registra um momento: as fases são categorias úteis de um processo contínuo.'},
+ {title:'Diversidade de formas microscópicas',level:'Diversidade · 25 min',goal:'Comparar formas e tipos de organização sem atribuir espécies.',tasks:['Compare cocos e bacilos (use 100×).','Observe o brotamento nas leveduras e as ramificações das hifas.','Compare as algas unicelulares, as coloniais e as filamentosas.','Observe os cílios e os vacúolos no ciliado.','Registre quais características não bastam para identificar uma espécie.'],prompt:'É possível identificar uma espécie apenas pela forma?',discussion:'A forma orienta a investigação, mas em geral não define a espécie. A identificação exige outros caracteres, métodos adequados (cultivo, bioquímica, genética) e comparação com referências.'}];
+const APRENDER=[['Ampliação e resolução','A ampliação total é o produto da ocular pela objetiva. A resolução é a capacidade de distinguir dois pontos próximos: ampliar uma imagem não revela detalhes que não foram registrados. No microscópio óptico, o limite fica em torno de 0,2 µm.'],['Uma sequência para começar','Comece em 4×. Localize e centralize a região de interesse, ajuste o foco e só então aumente a objetiva. Num equipamento real, olhe de lado ao aproximar a objetiva, para não encostar na lâmina.'],['Foco, luz e contraste','O foco altera a nitidez. A luz altera o brilho. O diafragma muda o contraste: fechado demais, a imagem fica escura e com halos; aberto demais, estruturas transparentes somem.'],['Charriot e imagem invertida','No microscópio composto, a imagem aparece invertida: quando a lâmina vai para a direita, a imagem vai para a esquerda.'],['Preparação e coloração','A amostra pode ser vista a fresco, em esfregaço ou em corte. Corantes evidenciam estruturas: lugol cora núcleo e amido; azul de metileno, núcleos; HE deixa núcleos roxos e citoplasma rosa.'],['Campo de visão e tamanho','Com ocular de número de campo 18 mm, o campo mede 18 mm ÷ objetiva: 4,5 mm em 4×, 1,8 mm em 10×, 0,45 mm em 40×. Sabendo o diâmetro do campo, dá para estimar o tamanho de uma célula.'],['Outras formas de observar','A fluorescência evidencia moléculas marcadas; a microscopia eletrônica usa elétrons e chega a detalhes muito menores. O estereomicroscópio (lupa) serve para amostras inteiras, como um inseto.'],['Limites deste laboratório','As lâminas são desenhos originais em escala aproximada, não fotografias. A régua do campo indica a escala do modelo; uma medida real exige ocular micrométrica calibrada.']];
+const QZ=[['Uma ocular de 10× com uma objetiva de 40× produz qual ampliação total?',['40×','50×','400×','4.000×'],2,'A ampliação total é o produto: 10 × 40 = 400.'],['Ao trocar a objetiva de 4× pela de 40×, a área do campo:',['Aumenta','Diminui','Fica igual','Depende da cor da amostra'],1,'Com mais ampliação, vemos uma região menor: de cerca de 4,5 mm para 0,45 mm de diâmetro.'],['Qual controle desloca a lâmina nos eixos X e Y?',['Diafragma','Ocular','Charriot','Condensador'],2,'O charriot move a lâmina sobre a platina.'],['Qual é a melhor estratégia inicial para encontrar a amostra?',['Começar na maior objetiva','Começar na menor objetiva e centralizar','Aumentar só o contraste','Retirar a ocular'],1,'O menor aumento tem o maior campo e facilita localizar a amostra.'],['A epiderme do bulbo de cebola não mostra cloroplastos. Isso significa que:',['Não é um tecido vegetal','Toda célula vegetal precisa de cloroplastos','A presença de cloroplastos depende do tipo de célula','A célula não tem membrana'],2,'Nem toda célula vegetal tem cloroplastos; tecidos subterrâneos de reserva são um exemplo.'],['As células-guarda delimitam:',['O ostíolo do estômato','O núcleo','A hifa','O lúmen de um túbulo'],0,'As duas células-guarda delimitam o poro do estômato, o ostíolo.'],['Qual característica identifica o músculo estriado esquelético?',['Cílios na superfície','Estriações e vários núcleos periféricos','Cloroplastos','Parede de quitina'],1,'As miofibrilas organizadas em sarcômeros produzem as estriações; cada fibra tem muitos núcleos na periferia.'],['Em humanos, quais elementos do sangue não têm núcleo quando maduros?',['Os leucócitos','As hemácias','Os linfócitos','Os monócitos'],1,'As hemácias humanas maduras não têm núcleo. Isso não vale para todos os vertebrados: em aves, por exemplo, elas são nucleadas.'],['O brotamento numa levedura é evidência de:',['Reprodução assexuada','Fotossíntese','Tecido nervoso','Divisão de uma hemácia'],0,'No brotamento, uma projeção cresce a partir da célula-mãe e pode originar outra célula.'],['Qual observação é suficiente para identificar uma espécie bacteriana?',['Ser um bacilo','Ser um coco','A cor do desenho','Nenhuma das anteriores'],3,'Forma e cor didática não determinam a espécie. São necessárias outras evidências.'],['Sobre resolução, é correto afirmar:',['É sempre igual à ampliação','É a capacidade de distinguir detalhes próximos','Aumenta sem limite com o zoom digital','Depende só do tamanho da tela'],1,'Resolução é separar detalhes próximos. O zoom digital não cria detalhes ausentes.'],['No epitélio simples cúbico, as células:',['Ficam espalhadas em muita matriz','Formam uma única camada ao redor de um lúmen','Formam um filamento ramificado','São grãos isolados'],1,'Uma camada de células cúbicas delimita o lúmen.'],['O núcleo periférico de um adipócito unilocular é causado por:',['Uma grande gota de gordura','Muitos cílios','Uma parede celular','Cromossomos externos'],0,'A gota lipídica ocupa quase toda a célula e empurra citoplasma e núcleo para a borda.'],['Hifas são:',['Elementos do sangue','Filamentos de fungos','Células-guarda','Tipos de objetiva'],1,'As hifas formam o micélio de muitos fungos e podem ter septos.'],['Com a objetiva de 10× (campo de 1,8 mm), cabem cerca de 6 células enfileiradas no diâmetro. Cada célula mede cerca de:',['30 µm','300 µm','3 mm','18 mm'],1,'1,8 mm ÷ 6 = 0,3 mm = 300 µm.'],['Para observar a superfície de um pequeno inseto inteiro, o mais adequado é:',['Estereomicroscópio','Só o microscópio eletrônico de transmissão','Uma ocular isolada','O condensador'],0,'O estereomicroscópio serve para amostras maiores e para observar superfícies, com menor aumento.']];
+
+// ---------- Para começar ----------
+const AB={
+ microscopio:{tempo:'5 min',titulo:'Quanto aumenta?',lede:'Antes de conhecer as peças, faça as suas apostas.',render:abQuiz([
+   {t:'Uma ocular de 10× com uma objetiva de 40×: qual é a ampliação total?',o:[['50','50×'],['400','400×'],['40','40×']],c:'400',e:'400×: as ampliações se multiplicam (10 × 40).'},
+   {t:'Uma célula da epiderme de cebola tem cerca de 0,3 mm. Dá para ver a olho nu?',o:[['sim','Sim, com dificuldade'],['nao','Não, nunca']],c:'sim',e:'Por pouco: o olho distingue detalhes de cerca de 0,1 mm. Mas para ver o núcleo, com uns 0,02 mm, só com microscópio.'}])},
+ passos:{tempo:'5 min',titulo:'Por onde começar?',lede:'Pense em como você procuraria algo pequeno numa lâmina.',render:abQuiz([
+   {t:'Qual objetiva usar primeiro?',o:[['4','A de menor aumento (4×)'],['40','A de maior aumento (40×)']],c:'4',e:'A de menor aumento tem o maior campo: é mais fácil achar a amostra.'},
+   {t:'Movendo a lâmina para a direita, a imagem no microscópio vai para:',o:[['dir','A direita'],['esq','A esquerda']],c:'esq',e:'A esquerda: no microscópio composto, a imagem é invertida.'}])},
+ celulas:{tempo:'5 min',titulo:'Vegetal × animal',lede:'Responda pelo que você já sabe.',render:abQuiz([
+   {t:'Toda célula de planta tem cloroplasto?',o:[['sim','Sim'],['nao','Não']],c:'nao',e:'Não. Células de raízes e bulbos, por exemplo, geralmente não têm.'},
+   {t:'Qual estrutura existe na célula da cebola e não na célula da bochecha?',o:[['parede','Parede celular'],['nucleo','Núcleo'],['membrana','Membrana plasmática']],c:'parede',e:'A parede celular. Núcleo e membrana existem nas duas.'}])},
+ mitose:{tempo:'5 min',titulo:'Onde a raiz cresce?',lede:'Uma raiz de cebola cresce alguns milímetros por dia.',render:abQuiz([
+   {t:'Em que região da raiz as células se dividem mais?',o:[['ponta','Perto da ponta'],['base','Perto do bulbo'],['toda','Igual em toda a raiz']],c:'ponta',e:'Perto da ponta, no meristema. Por isso a lâmina é feita com a ponta da raiz.'},
+   {t:'Num campo com 100 células, quantas você espera ver em divisão?',o:[['poucas','Poucas (menos de 20)'],['metade','Cerca de metade'],['todas','Quase todas']],c:null,e:'Guarde a sua aposta. Você vai contar e calcular o índice mitótico.'}])},
+ plantas:{tempo:'5 min',titulo:'Por onde a folha troca gases?',lede:'Uma folha absorve CO₂ e perde vapor de água.',render:abQuiz([
+   {t:'Por onde entram e saem os gases da folha?',o:[['est','Pelos estômatos'],['veia','Pelas nervuras'],['todo','Pela superfície toda, igualmente']],c:'est',e:'Pelos estômatos, poros que podem abrir e fechar.'},
+   {t:'Num dia muito seco, o que a planta tende a fazer com os estômatos?',o:[['fecha','Fechar'],['abre','Abrir mais']],c:'fecha',e:'Fechar, para perder menos água. O custo é absorver menos CO₂.'}])},
+ tecidos:{tempo:'5 min',titulo:'Muita célula ou muita matriz?',lede:'Os tecidos se organizam de formas diferentes.',render:abQuiz([
+   {t:'Qual destes tecidos tem mais material entre as células?',o:[['cart','Cartilagem'],['epit','Epitélio'],['musc','Músculo']],c:'cart',e:'A cartilagem: as células ficam isoladas em lacunas, no meio de muita matriz extracelular.'},
+   {t:'O sangue é um tecido?',o:[['sim','Sim'],['nao','Não']],c:'sim',e:'Sim, um tecido conjuntivo especial, com células em meio líquido (o plasma).'}])},
+ diversidade:{tempo:'5 min',titulo:'Do tamanho de quê?',lede:'Faça a sua aposta antes de ordenar no simulador.',render:abQuiz([
+   {t:'Qual é maior: uma bactéria ou uma hemácia?',o:[['bac','A bactéria'],['hem','A hemácia']],c:'hem',e:'A hemácia (≈ 7,5 µm) é bem maior que a maioria das bactérias (≈ 1–2 µm).'},
+   {t:'Um ser de uma só célula pode nadar e capturar alimento sozinho?',o:[['sim','Sim'],['nao','Não']],c:'sim',e:'Sim. O ciliado usa os cílios para nadar e levar alimento ao sulco oral.'}])},
+ desafio:{tempo:'3 min',titulo:'Semáforo da unidade',lede:'Marque como você se sente em cada tema: verde (sei explicar), amarelo (mais ou menos) ou vermelho (ainda não sei).',
+  render(el,api){const T=['Partes e uso do microscópio','Ampliação e campo de visão','Células animais e vegetais','Mitose','Estruturas das plantas','Tecidos animais','Microrganismos e diversidade'];const ans=api.state('ans',{});const g=h('div',{class:'stack',style:'gap:8px'});
+   T.forEach((t,i)=>{const row=h('div',{class:'ab-sem'},h('span',{},t));[['g','Verde'],['y','Amarelo'],['r','Vermelho']].forEach(([k,n])=>{const b=h('button',{class:'sem '+k,'aria-pressed':String(ans[i]===k),'aria-label':t+': '+n,title:n});b.onclick=()=>{ans[i]=k;api.setState('ans',ans);$$('.sem',row).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');};row.append(b);});g.append(row);});
+   const out=h('div',{});el.append(g,h('button',{class:'btn primary',onclick:()=>{if(T.some((_,i)=>!ans[i])){fbx(out,'no','Marque uma cor para cada tema.');return;}const n={g:'verde',y:'amarelo',r:'vermelho'};api.save(T.map((t,i)=>t+': '+n[ans[i]]).join(' | '));const red=T.filter((_,i)=>ans[i]==='r');fbx(out,'info',red.length?'Revise antes do desafio: '+red.join('; ')+'.':'Ótimo. Hora do desafio.');}},'Registrar meu semáforo'),out);}},
+};
+
+// ---------- Fichas ----------
+const SPEC=[
+ {code:'Aula 01',titulo:'Aula 1 · Conheça o microscópio',tipo:'Individual',desc:'Partes do microscópio, ampliação e campo de visão.',itens:[
+   {k:'mc',t:'Qual peça faz o ajuste fino do foco?',ch:['Parafuso macrométrico','Parafuso micrométrico','Charriot','Condensador'],key:'Parafuso micrométrico',pts:1},
+   {k:'mc',t:'Qual peça regula a quantidade de luz e o contraste?',ch:['Ocular','Diafragma do condensador','Revólver','Platina'],key:'Diafragma do condensador',pts:1},
+   {k:'num',t:'Ampliação total com ocular 10× e objetiva 40×',key:400,tol:0,pts:1},
+   {k:'num',t:'Diâmetro do campo com a objetiva de 10× (mm)',key:1.8,tol:.05,pts:1},
+   {k:'par',t:'Explique a diferença entre ampliação e resolução',man:2}]},
+ {code:'Aula 02',titulo:'Aula 2 · Primeiros passos na bancada',tipo:'Individual',desc:'Epiderme de cebola e estimativa do tamanho de uma célula.',itens:[
+   {k:'num',t:'Células contadas no diâmetro do campo',fill:()=>store.get('tam-n',null)},
+   {k:'num',t:'Tamanho estimado de uma célula (µm)',fill:()=>store.get('tam-est',null)},
+   {k:'par',t:'O que aconteceu com o número de células visíveis ao aumentar a objetiva?',man:2},
+   {k:'par',t:'Fechamento: por que se começa pela menor objetiva?',man:1}]},
+ {code:'Aula 03',titulo:'Aula 3 · Células animais e vegetais',tipo:'Individual',desc:'Cebola, mucosa bucal e elódea.',itens:[
+   {k:'par',t:'Duas semelhanças entre as células observadas',man:2},
+   {k:'par',t:'Duas diferenças entre as células observadas',man:2},
+   {k:'mc',t:'A epiderme de cebola não tem cloroplastos porque:',ch:['Não é tecido vegetal','A presença de cloroplastos depende do tipo de célula','Os cloroplastos foram destruídos pelo lugol'],key:'A presença de cloroplastos depende do tipo de célula',pts:1},
+   {k:'par',t:'Por que os cloroplastos da elódea ficam junto à parede?',man:2}]},
+ {code:'Aula 04',titulo:'Aula 4 · Células em divisão',tipo:'Individual',desc:'Meristema da raiz de cebola.',itens:[
+   {k:'num',t:'Células em interfase contadas',fill:()=>store.get('mit-c',{}).interfase},
+   {k:'num',t:'Células em divisão contadas',fill:()=>{const c=store.get('mit-c',null);return c?c.total-c.interfase:null;}},
+   {k:'num',t:'Índice mitótico (%)',fill:()=>{const c=store.get('mit-c',null);return c&&c.total?fmt((c.total-c.interfase)/c.total*100,1):null;}},
+   {k:'mc',t:'Em qual fase os cromossomos ficam alinhados no meio da célula?',ch:['Prófase','Metáfase','Anáfase','Telófase'],key:'Metáfase',pts:1},
+   {k:'par',t:'Por que a maioria das células aparece em interfase?',man:2}]},
+ {code:'Aula 05',titulo:'Aula 5 · Estrutura e função nas plantas',tipo:'Individual',desc:'Estômatos, mesofilo e pelos absorventes.',itens:[
+   {k:'mc',t:'Em qual condição o estômato tende a ficar aberto?',ch:['Luz e boa disponibilidade de água','Escuro e solo seco','Luz e solo muito seco'],key:'Luz e boa disponibilidade de água',pts:1},
+   {k:'par',t:'Como os espaços intercelulares do mesofilo favorecem as trocas gasosas?',man:2},
+   {k:'par',t:'Como o formato do pelo absorvente se relaciona à absorção?',man:2}]},
+ {code:'Aula 06',titulo:'Aula 6 · Tecidos e organização animal',tipo:'Individual',desc:'Seis tecidos e o jogo de identificação.',itens:[
+   {k:'num',t:'Acertos no jogo “Que tecido é esse?” (de 8)',fill:()=>store.get('jogo-tec',null)},
+   {k:'mc',t:'Em qual tecido há mais matriz extracelular?',ch:['Epitélio cúbico','Cartilagem hialina','Músculo estriado'],key:'Cartilagem hialina',pts:1},
+   {k:'mc',t:'Quais elementos do sangue humano não têm núcleo?',ch:['Hemácias','Neutrófilos','Linfócitos','Monócitos'],key:'Hemácias',pts:1},
+   {k:'par',t:'Escolha um tecido e relacione a forma das células à função',man:2}]},
+ {code:'Aula 07',titulo:'Aula 7 · Diversidade microscópica',tipo:'Individual',desc:'Microrganismos e a escala da vida.',itens:[
+   {k:'txt',t:'Sua ordem, do menor para o maior',fill:()=>store.get('escala-ord',null)},
+   {k:'mc',t:'A forma é suficiente para identificar uma espécie?',ch:['Sim','Não'],key:'Não',pts:1},
+   {k:'par',t:'Como os cílios ajudam o ciliado a interagir com o ambiente?',man:2},
+   {k:'par',t:'Compare a organização de uma levedura e de um fungo filamentoso',man:2}]},
+ {code:'Aula 08',titulo:'Aula 8 · Desafio final',tipo:'Individual',desc:'Desafio e síntese da unidade.',itens:[
+   {k:'num',t:'Acertos no desafio (primeira resposta, de 16)',fill:()=>{const r=store.get('qz-resp',{});return Object.entries(r).filter(([i,a])=>QZ[i]&&QZ[i][2]===a).length;}},
+   {k:'par',t:'Qual lâmina mais chamou a sua atenção? Descreva o que observou',man:2},
+   {k:'par',t:'Explique uma conexão entre dois temas da unidade',man:2},
+   {k:'par',t:'Indique um ponto que ainda precisa revisar e como vai estudar',man:1}]},
+];
+
+// ---------- Aula 1 ----------
+INIT.microscopio=root=>{
+  root.append(head('Aula 1 · Microscopia','Conheça o microscópio','Toque nas legendas para conhecer cada peça. Depois veja como o campo de visão muda a cada objetiva.'));
+  const lab=(k,pts,tx,ty,t)=>`<g class="hot" role="button" tabindex="0" data-part="${k}" aria-label="Conhecer: ${t}"><rect x="${tx-6}" y="${ty-19}" width="${t.length*10+14}" height="28" rx="6" fill="transparent"/><polyline points="${pts}" fill="none" stroke="var(--t1)" stroke-width="1.6"/><circle cx="${pts.split(' ')[0].split(',')[0]}" cy="${pts.split(' ')[0].split(',')[1]}" r="4.5" fill="var(--t1)"/><text x="${tx}" y="${ty}" font-size="17" font-weight="700" fill="var(--ink)">${t}</text></g>`;
+  const sv=s('svg',{viewBox:'0 0 680 540',class:'chart scope-map',role:'group','aria-label':'Esquema interativo de um microscópio óptico composto'});
+  sv.innerHTML=`<ellipse cx="351" cy="501" rx="154" ry="14" fill="rgba(29,107,88,.12)"/><path d="M278 471 L310 446 H434 Q458 446 467 469 L481 488 Q482 498 468 498 H241 Q228 498 234 486 L244 471Z" fill="#1d6b58" stroke="#173e33" stroke-width="3"/><path d="M402 462 C435 395 440 260 404 203 Q389 176 356 168 L348 198 Q373 204 381 235 C398 299 398 384 370 457Z" fill="#c3cfc4" stroke="#708c7e" stroke-width="3"/><path d="M342 103 L373 121 L327 207 L296 190Z" fill="#c3cfc4" stroke="#708c7e" stroke-width="3"/><path d="M347 84 L380 103 L370 126 L335 106Z" fill="#213c31" stroke="#152d24" stroke-width="3"/><path d="M348 82 L381 101" stroke="#6b8d7d" stroke-width="7"/><path d="M295 190 L330 208 L344 223 L316 246 L280 220Z" fill="#456b59" stroke="#234836" stroke-width="3"/><path d="M286 222 L299 228 L284 260 L273 255Z" fill="#a6b7aa" stroke="#557462" stroke-width="2"/><path d="M302 234 L315 239 L309 283 L295 281Z" fill="#cad4c7" stroke="#557462" stroke-width="2"/><path d="M321 234 L335 228 L352 257 L340 265Z" fill="#a6b7aa" stroke="#557462" stroke-width="2"/><path d="M297 268 L311 270" stroke="#2a6497" stroke-width="5"/><path d="M276 245 L289 250" stroke="#a3601b" stroke-width="5"/><path d="M228 301 L384 301 L406 314 L244 314Z" fill="#375244" stroke="#1b3d2a" stroke-width="3"/><path d="M244 314 V327 H406 V314" fill="#203c2d"/><path d="M270 293 L332 293 L345 299 L280 299Z" fill="#c1e4db" stroke="#5a9d89" stroke-width="1.5"/><ellipse cx="306" cy="296" rx="7" ry="2" fill="#9b6f93"/><path d="M252 300 V288 H282 M350 301 V289 H331" fill="none" stroke="#8aa493" stroke-width="4"/><path d="M383 324 L383 348" stroke="#496454" stroke-width="8"/><ellipse cx="383" cy="348" rx="13" ry="7" fill="#1d6b58"/><path d="M383 350 V365" stroke="#496454" stroke-width="6"/><ellipse cx="383" cy="365" rx="9" ry="5" fill="#294a39"/><path d="M286 333 H331 L326 352 H292Z" fill="#8fa99a" stroke="#527560" stroke-width="2"/><ellipse cx="309" cy="354" rx="20" ry="6" fill="#335944"/><path d="M325 356 L343 364" stroke="#335944" stroke-width="4"/><path d="M299 442 L309 365 L320 442" fill="rgba(231,200,102,.25)"/><ellipse cx="309" cy="445" rx="29" ry="12" fill="#d5dcd0" stroke="#63856b" stroke-width="3"/><ellipse cx="309" cy="442" rx="17" ry="6" fill="#f3dda1"/><circle cx="416" cy="300" r="28" fill="#284b39" stroke="#8aa694" stroke-width="3"/><circle cx="419" cy="300" r="15" fill="#759280" stroke="#b4c3b7" stroke-width="2"/><circle cx="419" cy="300" r="6" fill="#2a4d3b"/>`+
+   lab('ocular','360,92 452,57 494,57',502,62,'Ocular')+lab('tubo','338,149 244,102 120,102',14,107,'Tubo óptico')+lab('revolver','310,219 215,181 120,181',14,186,'Revólver')+lab('objetivas','304,269 215,244 120,244',14,249,'Objetivas')+lab('platina','269,305 177,310 140,310',14,315,'Platina e lâmina')+lab('condensador','305,345 203,375 140,375',14,380,'Condensador')+lab('iluminador','306,443 191,448 120,448',14,453,'Iluminador')+lab('braco','410,223 490,170 538,170',546,175,'Braço')+lab('foco','419,300 495,265 521,265',500,250,'Parafusos de foco')+lab('charriot','383,353 492,352 534,352',542,357,'Charriot')+lab('base','434,482 499,461 548,461',556,466,'Base');
+  const it=h('h3',{},'Microscópio óptico composto'),ip=h('p',{},'A luz atravessa a preparação, e a imagem é ampliada pela objetiva e pela ocular. Toque numa legenda.');
+  const pick=k=>{it.textContent=PARTES[k][0];ip.textContent=PARTES[k][1];$$('.hot',sv).forEach(x=>x.classList.toggle('on',x.dataset.part===k));};
+  $$('.hot',sv).forEach(g=>{g.addEventListener('click',()=>pick(g.dataset.part));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(g.dataset.part);}});});
+  root.append(h('div',{class:'cols wl'},panel(h('h3',{},'As peças'),sv,model('Esquema de um modelo de campo claro, sem proporção exata. A disposição das peças varia entre equipamentos.')),panel(h('span',{class:'eyebrow'},'Peça selecionada'),it,ip)));
+  // Simulador: campo de visão
+  let o=store.get('fov-o',4);const sv2=s('svg',{viewBox:'0 0 640 300',class:'chart',role:'img','aria-label':'Campo de visão sobre uma régua milimetrada'});const cv=h('canvas',{width:300,height:300,style:'width:100%;max-width:300px;aspect-ratio:1;display:block;margin:0 auto;border-radius:50%'});
+  const out=h('div',{class:'stats'});let curR=null;
+  const drawRuler=async(o2)=>{const mm=18/o2;const pxmm=50;const target=mm/2*pxmm;const from=curR??target;
+    await tween(curR==null?0:600,t=>{const rr=lerp(from,target,t);sv2.innerHTML='';sv2.append(s('rect',{width:640,height:300,fill:'var(--surface)'}));
+      for(let k=0;k<=12;k++){const x=20+k*50;sv2.append(s('line',{x1:x,x2:x,y1:150,y2:k%5===0?115:128,stroke:'var(--ink)','stroke-width':k%5===0?2:1.2}));if(k%1===0)sv2.append(s('text',{x,y:108,'text-anchor':'middle','font-size':12,fill:'var(--muted)'},k+' mm'));for(let q=1;q<10&&k<12;q++)sv2.append(s('line',{x1:x+q*5,x2:x+q*5,y1:150,y2:144,stroke:'var(--muted)','stroke-width':.7}));}
+      sv2.append(s('line',{x1:20,x2:620,y1:150,y2:150,stroke:'var(--ink)','stroke-width':2}));
+      sv2.append(s('circle',{cx:20+mm/2*pxmm,cy:150,r:Math.max(4,rr),fill:'rgba(163,51,107,.12)',stroke:'var(--t1)','stroke-width':3}));
+      sv2.append(s('text',{x:Math.max(80,20+mm/2*pxmm),y:290,'text-anchor':'middle','font-size':13,'font-weight':700,fill:'var(--t1)'},'campo ≈ '+fmt(mm,mm<1?2:1)+' mm'));});curR=target;};
+  const upd=()=>{drawRuler(o);renderView(cv.getContext('2d'),300,0,{obj:o});out.innerHTML='';[['Ampliação total',(o*10)+'×'],['Diâmetro do campo',fmt(18/o,18/o<1?2:1)+' mm'],['Em micrômetros',fmt(18000/o)+' µm']].forEach(([a,b])=>out.append(h('div',{class:'stat stat-box'},h('span',{class:'note'},a),h('span',{class:'big-num'},b))));};
+  root.append(sim('O campo de visão encolhe','Escolha a objetiva. O círculo mostra o tamanho do campo sobre uma régua de milímetros; ao lado, a epiderme de cebola nesse aumento.',h('div',{class:'row'},h('span',{class:'label'},'Objetiva'),seg(OBJS.map(x=>[x,x+'×']),o,v=>{o=v;store.set('fov-o',v);upd();})),h('div',{class:'cols wl',style:'align-items:center'},sv2,cv),out,
+    model('Campo = número de campo da ocular (18 mm) ÷ objetiva. Equipamentos reais variam entre 18 e 22 mm.')));upd();
+  root.append(panel(h('span',{class:'eyebrow'},'Antes de observar'),h('h3',{},'Aprender microscopia'),h('div',{class:'cards'},...APRENDER.map(([t,x],i)=>h('div',{class:'stack stat-box',style:'gap:6px'},h('span',{class:'eyebrow'},String(i+1).padStart(2,'0')),h('strong',{},t),h('p',{class:'note'},x))))));
+};
+
+// ---------- Aula 2 ----------
+INIT.passos=root=>{
+  root.append(head('Aula 2 · Microscopia','Primeiros passos na bancada','Opere o microscópio com a epiderme de cebola: foco, charriot e as três objetivas. Depois estime o tamanho de uma célula.'));
+  roteiro(root,ROT[0],'passos');const B=bancada(root,{ids:[0],key:'passos'});
+  // estimativa de tamanho
+  let o=10;const cv=h('canvas',{width:420,height:420,style:'width:100%;max-width:420px;aspect-ratio:1;display:block;margin:0 auto;border-radius:50%'});const inp=h('input',{type:'text',inputmode:'numeric',class:'num',id:'tam-n',value:store.get('tam-n','')||''});const out=h('div',{});
+  const drawC=()=>{const g=cv.getContext('2d');renderView(g,420,0,{obj:o,cx:300,cy:325});g.strokeStyle='#a3336b';g.lineWidth=3;g.setLineDash([10,6]);g.beginPath();g.moveTo(10,210);g.lineTo(410,210);g.stroke();g.setLineDash([]);};
+  root.append(sim('Quanto mede uma célula?','Conte quantas células a linha tracejada atravessa, de uma borda à outra do campo. O tamanho estimado é o diâmetro do campo dividido pelo número de células.',h('div',{class:'row'},h('span',{class:'label'},'Objetiva'),seg([[4,'4×'],[10,'10×']],o,v=>{o=v;drawC();})),cv,
+    h('div',{class:'row'},h('label',{class:'stack',style:'gap:2px'},h('span',{class:'label'},'Células na linha'),inp),h('button',{class:'btn primary',style:'align-self:flex-end',onclick:()=>{const n=parseFloat(String(inp.value).replace(',','.'));if(!(n>0)){fbx(out,'no','Digite quantas células você contou.');return;}const est=Math.round(18000/o/n);store.set('tam-n',n);store.set('tam-est',est);
+      fbx(out,est>=150&&est<=380?'ok':'info',`Campo de ${fmt(18/o,1)} mm = ${fmt(18000/o)} µm. ${fmt(18000/o)} ÷ ${n} ≈ ${est} µm por célula. `+(est>=150&&est<=380?'Faz sentido: no modelo, as células medem de 180 a 320 µm de comprimento.':'Confira a contagem: no modelo, as células medem de 180 a 320 µm de comprimento.'));}},'Calcular')),out,
+    model('Estimativa por campo de visão. Na prática, a medida precisa usa uma ocular micrométrica calibrada.')));drawC();
+  acervo(root,i=>B.select(i));
+};
+
+// ---------- Aula 3 ----------
+INIT.celulas=root=>{
+  root.append(head('Aula 3 · Biologia celular','Células animais e vegetais','Compare a epiderme de cebola, a mucosa bucal e a folha de elódea. Observe forma, contorno, núcleo e cloroplastos.'));
+  roteiro(root,ROT[1],'celulas');bancada(root,{ids:[0,1,2],key:'celulas'});
+  const IT=[['Parede celular','veg','Só nas células vegetais (e em fungos e bactérias). Dá o contorno retangular da cebola e da elódea.'],['Membrana plasmática','amb','Todas as células têm. Na bochecha é o próprio contorno; na planta, fica encostada na parede.'],['Núcleo','amb','Presente nas duas, nesses exemplos. Na elódea viva ele fica escondido entre os cloroplastos.'],['Cloroplastos','veg','Só em algumas células vegetais: aparecem na elódea, não na epiderme do bulbo.'],['Vacúolo central grande','veg','Típico das células vegetais maduras; empurra os cloroplastos para perto da parede.'],['Mitocôndrias','amb','Existem nas duas, mas são pequenas demais para ver com estas preparações.']];
+  let ans=store.get('cel-ans',{});const rows=h('div',{class:'stack',style:'gap:8px'});const out=h('div',{class:'stack',style:'gap:6px'});
+  const shots=h('div',{class:'cols three'},...[[0,'Cebola'],[1,'Mucosa bucal'],[2,'Elódea']].map(([i,n])=>h('div',{class:'stack',style:'gap:4px;align-items:center'},h('img',{src:thumbOf(i,40),alt:n,style:'width:100%;max-width:200px;border-radius:50%'}),h('strong',{},n))));
+  IT.forEach(([t])=>rows.append(h('div',{class:'row'},h('strong',{style:'min-width:12em'},t),chipsPick([['veg','Só vegetal'],['ani','Só animal'],['amb','As duas']],ans[t]||null,v=>{ans[t]=v;store.set('cel-ans',ans);}))));
+  root.append(sim('Vegetal, animal ou as duas?','Classifique cada estrutura. Use as três lâminas como evidência.',shots,rows,h('button',{class:'btn primary',onclick:()=>{if(IT.some(([t])=>!ans[t])){fbx(out,'no','Classifique todas as estruturas.');return;}out.innerHTML='';let ok=0;IT.forEach(([t,k,e])=>{const c=ans[t]===k;if(c)ok++;out.append(h('div',{class:'fb '+(c?'ok':'info')},h('strong',{},t+': '),e));});out.prepend(h('p',{class:'callout'},ok+' de '+IT.length+' corretas.'));}},'Conferir'),out));
+};
+
+// ---------- Aula 4 ----------
+function cellPhase(g,ph,W,H,seed){const r=rng(seed);const X=W/2,Y=H/2,C='#5e1748';P(g,[[0,0],[W,0],[W,H],[0,H]],'#f1dbe3','#c49aac',1.2);
+  if(ph==='interfase'){E(g,X,Y,W*.26,W*.24,0,'rgba(170,90,135,.72)','#8a4a72',.6);E(g,X+W*.06,Y-W*.04,W*.065,W*.065,0,'#4f143c');}
+  else if(ph==='prófase'){E(g,X,Y,W*.27,W*.25,0,'rgba(170,90,135,.3)','#8a4a72',.6);for(let k=0;k<10;k++){g.beginPath();const a=r()*TAU,b=r()*TAU;g.moveTo(X+Math.cos(a)*W*.2,Y+Math.sin(a)*W*.2);g.quadraticCurveTo(X+(r()-.5)*W*.25,Y+(r()-.5)*W*.25,X+Math.cos(b)*W*.18,Y+Math.sin(b)*W*.18);g.strokeStyle=C;g.lineWidth=W*.035;g.stroke();}}
+  else if(ph==='metáfase'){for(let k=0;k<12;k++){const px=X-W*.28+k*W*.05;L(g,px,Y-W*.08,px+(r()-.5)*W*.03,Y+W*.08,C,W*.04);}}
+  else if(ph==='anáfase'){[-1,1].forEach(sd=>{const yy=Y+sd*H*.26;for(let k=0;k<8;k++){const px=X-W*.24+k*W*.068;g.beginPath();g.moveTo(px-W*.035,yy-sd*W*.11);g.lineTo(px,yy);g.lineTo(px+W*.035,yy-sd*W*.11);g.strokeStyle=C;g.lineWidth=W*.036;g.stroke();}});}
+  else{[-1,1].forEach(sd=>E(g,X,Y+sd*H*.28,W*.21,W*.135,0,'#8a3a6a','#5e1748',.5));g.setLineDash([W*.05,W*.03]);L(g,W*.05,Y,W*.95,Y,'#b07a92',W*.03);g.setLineDash([]);}}
+INIT.mitose=root=>{
+  root.append(head('Aula 4 · Biologia celular','Células em divisão','Meristema da ponta da raiz de cebola, corado com orceína acética. Encontre as fases da mitose e conte as células.'));
+  roteiro(root,ROT[4],'mitose');bancada(root,{ids:[4],key:'mitose'});
+  const F=['interfase','prófase','metáfase','anáfase','telófase'];const DESC={interfase:'Núcleo redondo com nucléolo; cromossomos não visíveis.','prófase':'Cromossomos se condensam e aparecem como fios.','metáfase':'Cromossomos alinhados no meio da célula.','anáfase':'Cromátides-irmãs migram para os polos.','telófase':'Dois núcleos se formam; aparece a placa celular.'};
+  // Guia das fases
+  root.append(panel(h('h3',{},'Guia das fases'),h('div',{class:'cards'},...F.map((f,k)=>{const c=h('canvas',{width:160,height:160,style:'width:110px;height:110px'});const g=c.getContext('2d');g.setTransform(160/25,0,0,160/25,0,0);cellPhase(g,f,25,25,k+3);return h('div',{class:'stack stat-box',style:'gap:4px;align-items:center;text-align:center'},c,h('strong',{},f[0].toUpperCase()+f.slice(1)),h('span',{class:'note'},DESC[f]));}))));
+  // Jogo: identifique
+  const box=h('div',{style:'display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px'});const out=h('div',{});let cells=[],ans={};
+  const novo=()=>{const base=['prófase','metáfase','anáfase','telófase'];cells=base.concat([F[Math.floor(Math.random()*5)],F[Math.floor(Math.random()*5)],'interfase','interfase']).sort(()=>Math.random()-.5);ans={};box.innerHTML='';out.innerHTML='';
+    cells.forEach((f,i)=>{const c=h('canvas',{width:200,height:200,style:'width:120px;height:120px;border-radius:10px'});const g=c.getContext('2d');g.setTransform(200/25,0,0,200/25,0,0);cellPhase(g,f,25,25,Math.floor(Math.random()*1e6));
+      const sel=h('select',{'aria-label':'Fase da célula '+(i+1),id:'mit-s'+i},h('option',{value:''},'Qual fase?'),...F.map(x=>h('option',{value:x},x)));sel.onchange=()=>{ans[i]=sel.value;};box.append(h('div',{class:'stack stat-box',style:'gap:6px;align-items:center'},c,sel));});};
+  novo();
+  // Contagem e índice mitótico
+  const cnt=store.get('mit-c',{interfase:0,total:0});const ins={};const cOut=h('div',{});
+  const tile=tileOf(4);const real=LAMINAS[4].fases;const tot=Object.values(real).reduce((a,b)=>a+b,0);
+  root.append(sim('Identifique as fases','Oito células sorteadas do meristema. Escolha a fase de cada uma e confira.',box,h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{if(cells.some((_,i)=>!ans[i])){fbx(out,'no','Escolha a fase das oito células.');return;}const ok=cells.filter((f,i)=>ans[i]===f).length;fbx(out,ok===8?'ok':'info',`${ok} de 8 corretas. `+cells.map((f,i)=>`${i+1}: ${f}`).join(' · '));}},'Conferir'),h('button',{class:'btn',onclick:novo},'Novas células')),out));
+  const I=k=>{const i=h('input',{type:'text',inputmode:'numeric',class:'num',id:'mit-'+k,value:cnt[k]||''});ins[k]=i;return h('label',{class:'stack',style:'gap:2px'},h('span',{class:'label'},k==='total'?'Total de células no campo':'Em interfase'),i);};
+  root.append(sim('Índice mitótico','Na bancada, use a objetiva de 40× e conte, num campo, todas as células e as que estão em interfase. Índice mitótico = células em divisão ÷ total × 100.',h('div',{class:'row'},I('total'),I('interfase'),h('button',{class:'btn primary',style:'align-self:flex-end',onclick:()=>{const t=parseInt(ins.total.value,10),i=parseInt(ins.interfase.value,10);if(!(t>0)||isNaN(i)||i>t){fbx(cOut,'no','Digite o total e as células em interfase (interfase ≤ total).');return;}store.set('mit-c',{total:t,interfase:i});const im=(t-i)/t*100;
+      fbx(cOut,'info',`Índice mitótico do seu campo: (${t} − ${i}) ÷ ${t} × 100 ≈ ${fmt(im,1)}%. Em todo o mosaico do modelo há ${tot} células, ${tot-real.interfase} em divisão: ${fmt((tot-real.interfase)/tot*100,1)}%. Campos diferentes dão valores diferentes; por isso se contam vários campos.`);}},'Calcular')),cOut,
+    model('As proporções de fases foram sorteadas no modelo com base em valores típicos de meristema (a maioria em interfase).')));
+};
+
+// ---------- Aula 5 ----------
+INIT.plantas=root=>{
+  root.append(head('Aula 5 · Botânica','Estrutura e função nas plantas','Epiderme com estômatos, corte da folha e pelos absorventes: três estruturas, três funções.'));
+  roteiro(root,ROT[2],'plantas');bancada(root,{ids:[3,15,16],key:'plantas'});
+  let luz='dia',agua='boa';let ab=0;const sv=s('svg',{viewBox:'0 0 640 300',class:'chart',role:'img','aria-label':'Estômato com células-guarda que abrem e fecham'});const msg=h('p',{class:'callout'});let raf=null,parts=[];
+  function draw(open){sv.innerHTML='';sv.append(s('rect',{width:640,height:300,fill:luz==='dia'?'#eef4e2':'#d9e0e8'}));
+    const cx=320,cy=150,gap=2+open*16;[-1,1].forEach(sd=>{const x=cx+sd*(gap+26);sv.append(s('path',{d:`M${cx+sd*gap},${cy-80} C${x+sd*30},${cy-70} ${x+sd*30},${cy+70} ${cx+sd*gap},${cy+80} C${x+sd*(-6)},${cy+60} ${x+sd*(-6)},${cy-60} ${cx+sd*gap},${cy-80}Z`,fill:'#a8cd86',stroke:'#5f8a4a','stroke-width':3}));
+      for(let k=0;k<7;k++)sv.append(s('circle',{cx:cx+sd*(gap+22+(k%2)*8),cy:cy-50+k*16,r:4.5,fill:'#3f7f2a'}));});
+    sv.append(s('ellipse',{cx,cy,rx:Math.max(1,gap*.9),ry:60*open+4,fill:'#33402f'}));
+    parts.forEach(p=>sv.append(s('text',{x:p.x,y:p.y,'font-size':13,'font-weight':800,fill:p.c,opacity:p.o},p.t)));
+    sv.append(s('text',{x:20,y:30,'font-size':14,'font-weight':700,fill:'#1a1f2b'},luz==='dia'?'☀ Dia':'☾ Noite'));sv.append(s('text',{x:20,y:52,'font-size':13,fill:'#566074'},agua==='boa'?'Solo úmido':'Solo seco'));}
+  const loop=()=>{if(!sv.isConnected){raf=null;return;}if(!sv.closest('section').hidden){if(ab>.3&&Math.random()<.08)parts.push({x:320+(Math.random()-.5)*20,y:150,t:'H₂O',c:'#2c58a5',o:1,vy:-1.2,vx:(Math.random()-.5)*.6});if(ab>.3&&Math.random()<.06)parts.push({x:320+(Math.random()-.5)*60,y:20,t:'CO₂',c:'#566074',o:1,vy:1.1,vx:0});
+      parts.forEach(p=>{p.y+=p.vy;p.x+=p.vx;if(p.t==='CO₂'&&p.y>150)p.o-=.05;if(p.t==='H₂O'&&p.y<30)p.o-=.05;});parts=parts.filter(p=>p.o>0&&p.y>-10&&p.y<310);draw(ab);}raf=requestAnimationFrame(loop);};
+  async function set(){const tgt=luz==='dia'&&agua==='boa'?1:0;const from=ab;await tween(900,t=>{ab=lerp(from,tgt,t);draw(ab);});
+    msg.textContent=tgt?'Aberto: com luz e água disponível, as células-guarda ficam túrgidas, se curvam e abrem o ostíolo. Entra CO₂ para a fotossíntese e sai vapor de água.':(agua==='seca'?'Fechado: com o solo seco, as células-guarda perdem água e fecham o ostíolo. A planta economiza água, mas absorve menos CO₂.':'Fechado: no escuro, sem fotossíntese, o estômato da maioria das plantas tende a fechar.');}
+  root.append(sim('O estômato que abre e fecha','Mude a luz e a água do solo e veja as células-guarda.',h('div',{class:'row'},h('span',{class:'label'},'Luz'),seg([['dia','Dia'],['noite','Noite']],luz,v=>{luz=v;set();}),h('span',{class:'label'},'Água no solo'),seg([['boa','Úmido'],['seca','Seco']],agua,v=>{agua=v;set();})),sv,msg,
+    model('Esquema simplificado. A abertura depende da entrada e saída de água nas células-guarda, regulada por luz, CO₂ e hormônios como o ácido abscísico; plantas CAM, por exemplo, abrem à noite.')));
+  set();raf=requestAnimationFrame(loop);
+};
+
+// ---------- Aula 6 ----------
+INIT.tecidos=root=>{
+  root.append(head('Aula 6 · Histologia animal','Tecidos e organização animal','Seis tecidos com padrões diferentes de organização. No sangue, use a objetiva de 100× (imersão).'));
+  roteiro(root,ROT[3],'tecidos');bancada(root,{ids:[5,6,7,12,13,14],key:'tecidos'});
+  const OPS=[5,6,7,12,13,14];let round=0,score=0,cur=null,done=false;const img=h('img',{alt:'Campo de um tecido para identificar',style:'width:100%;max-width:320px;border-radius:50%;display:block;margin:0 auto'});const ch=h('div',{class:'chips',style:'justify-content:center'});const out=h('div',{});const sc=h('span',{class:'pill ex'});
+  function next(){if(round>=8){done=true;store.set('jogo-tec',score);fbx(out,'ok',`Fim: ${score} de 8. `+(score>=6?'Ótima leitura de lâminas!':'Volte à bancada e compare os padrões de cada tecido.'));ch.innerHTML='';return;}
+    cur=OPS[Math.floor(Math.random()*OPS.length)];const S=LAMINAS[cur];const c=document.createElement('canvas');c.width=c.height=320;renderView(c.getContext('2d'),320,cur,{obj:S.max===100?100:40,cx:Math.random()*S.T[0],cy:Math.random()*S.T[1],scale:true});img.src=c.toDataURL('image/jpeg',.85);
+    sc.textContent=`Rodada ${round+1} de 8 · ${score} acertos`;out.innerHTML='';ch.innerHTML='';OPS.forEach(i=>{const b=h('button',{class:'chip'},LAMINAS[i].nome);b.onclick=()=>{if(b.dataset.done)return;$$('.chip',ch).forEach(x=>x.dataset.done='1');const ok=i===cur;if(ok)score++;b.setAttribute('aria-pressed','true');fbx(out,ok?'ok':'no',(ok?'Certo! ':'Era: '+LAMINAS[cur].nome+'. ')+'Pista: '+LAMINAS[cur].est.map(e=>e[0]).slice(0,2).join(' e ')+'.');round++;sc.textContent=`Rodada ${Math.min(round+1,8)} de 8 · ${score} acertos`;setTimeout(next,1400);};ch.append(b);});}
+  root.append(sim('Que tecido é esse?','Oito campos sorteados de pontos diferentes das lâminas. Identifique o tecido de cada um.',sc,img,ch,out,h('button',{class:'btn',onclick:()=>{round=0;score=0;done=false;next();}},'Recomeçar o jogo')));next();
+};
+
+// ---------- Aula 7 ----------
+INIT.diversidade=root=>{
+  root.append(head('Aula 7 · Diversidade','Diversidade de formas microscópicas','Bactérias, leveduras, algas, um ciliado, fungos e pólen. Para bactérias e leveduras, use 100×.'));
+  roteiro(root,ROT[5],'diversidade');bancada(root,{ids:[8,9,10,11,17,18,19],key:'diversidade'});
+  // escala
+  const IT=[{n:'Bactéria (bacilo)',s:2,i:8},{n:'Levedura',s:6,i:9},{n:'Hemácia',s:7.5,i:5},{n:'Grão de pólen',s:35,i:18},{n:'Ciliado',s:200,i:11},{n:'Célula da epiderme de cebola',s:250,i:0}];const sh=[3,0,5,2,4,1].map(k=>IT[k]);const out=h('div',{class:'stack'});
+  const tp=tapOrder(sh,o=>{const nomes=o.map(k=>sh[k].n);store.set('escala-ord',nomes.join(' < '));const certo=sh.map((_,k)=>k).sort((a,b)=>sh[a].s-sh[b].s);const ok=o.filter((v,k)=>v===certo[k]).length;
+    const sv=s('svg',{viewBox:'0 0 640 260',class:'chart',role:'img','aria-label':'Tamanhos em escala logarítmica'});sv.append(s('rect',{width:640,height:260,fill:'var(--surface)'}));const X=v=>40+Math.log10(v)/Math.log10(1000)*400;
+    [1,10,100,1000].forEach(v=>{sv.append(s('line',{x1:X(v),x2:X(v),y1:20,y2:225,stroke:'var(--line)'}));sv.append(s('text',{x:X(v),y:245,'text-anchor':'middle','font-size':12,fill:'var(--muted)'},v+' µm'));});
+    certo.forEach((k,j)=>{const it=sh[k];const y=30+j*32;sv.append(s('line',{x1:X(1),x2:X(it.s),y1:y,y2:y,stroke:'var(--t5)','stroke-width':14,'stroke-linecap':'round'}));sv.append(s('text',{x:X(it.s)+12,y:y+5,'font-size':13,'font-weight':700,fill:'var(--ink)'},it.n+' · '+fmt(it.s,it.s<10?1:0)+' µm'));});
+    out.innerHTML='';out.append(h('div',{class:'fb '+(ok===6?'ok':'info')},`${ok} de 6 na posição certa. A escala abaixo é logarítmica: cada linha vale 10 vezes a anterior.`),sv);},{render:x=>h('span',{class:'row',style:'flex-wrap:nowrap;gap:6px'},h('img',{src:thumbOf(x.i),alt:'',style:'width:34px;height:34px;border-radius:50%'}),x.n)});
+  root.append(sim('A escala da vida','Toque nos seres do MENOR para o MAIOR. Depois veja os tamanhos numa mesma escala.',tp,h('button',{class:'btn ghost sm',onclick:()=>{tp.reset();out.innerHTML='';}},'Recomeçar'),out,model('Tamanhos típicos e aproximados. Cada grupo varia bastante.')));
+  // ciliado animado
+  const cv=mkCanvas(640,320);let t0=0,raf=null;const P0={x:120,y:160,a:0};
+  const frame=ts=>{if(!cv.isConnected){raf=null;return;}if(cv.offsetParent){const t=ts/1000;const g=cv.g;g.setTransform(1,0,0,1,0,0);const dpr=cv.width/640;g.scale(dpr,dpr);g.fillStyle='#edf1e8';g.fillRect(0,0,640,320);
+      for(let k=0;k<40;k++){const bx=(k*97+t*6)%660-10,by=(k*53)%320;g.fillStyle='rgba(150,140,110,.35)';g.beginPath();g.arc(bx,by,1.5,0,TAU);g.fill();}
+      const path=t*.35;const x=320+Math.cos(path)*170,y=165+Math.sin(path*2)*55;const dx=-Math.sin(path)*170,dy=Math.cos(path*2)*110;const a=Math.atan2(dy,dx);
+      g.save();g.translate(x,y);g.rotate(a+Math.sin(t*3)*.06);g.scale(.95,.95);
+      const top=[],bot=[];for(let k=0;k<=60;k++){const u=-100+k*200/60;const w=31*Math.sqrt(Math.max(0,1-(u/100)**2))*(u<0?.88:1);top.push([-u,-w]);const dent=(u>-45&&u<25)?11*Math.sin((u+45)/70*Math.PI):0;bot.push([-u,w-dent]);}
+      const out=top.concat(bot.reverse());for(let k=0;k<out.length;k++){const p=out[k],q=out[(k+1)%out.length];const nx=-(q[1]-p[1]),ny=q[0]-p[0],nl=Math.hypot(nx,ny)||1;const beat=Math.sin(t*14-k*.45)*.7;g.strokeStyle='rgba(110,130,100,.7)';g.lineWidth=1.2;g.beginPath();g.moveTo(p[0],p[1]);g.lineTo(p[0]-nx/nl*9+ (q[0]-p[0])*beat,p[1]-ny/nl*9+(q[1]-p[1])*beat);g.stroke();}
+      P(g,out,'rgba(196,212,184,.95)','#7d9270',2.2);E(g,-6,-2,22,12,.1,'#9aa89a','#6a786a',1);E(g,-24,-9,3,3,0,'#6a786a');
+      [[-62,0],[62,1]].forEach(([cx,ph])=>{const fill=(Math.sin(t*2.2+ph*Math.PI)+1)/2;for(let k=0;k<7;k++){const aa=k*TAU/7;L(g,cx+Math.cos(aa)*5,-6+Math.sin(aa)*5,cx+Math.cos(aa)*(6+fill*8),-6+Math.sin(aa)*(6+fill*7),'rgba(110,140,180,.8)',2);}E(g,cx,-6,2+fill*5,2+fill*5,0,'#eef6ff','#8aa0b8',1);});
+      [[-30,8,'#d6c08a'],[20,6,'#c9a7a0'],[45,-10,'#b9c99a'],[-50,10,'#d6c08a']].forEach(([fx,fy,fc],k)=>E(g,fx+Math.sin(t+k)*3,fy,4.5,4.5,0,fc,'rgba(90,100,80,.5)',.8));g.restore();
+      g.fillStyle='#1a1f2b';g.font='bold 13px sans-serif';g.fillText('Ciliado de água doce (esquema animado, fora de escala)',14,22);}
+    raf=requestAnimationFrame(frame);};
+  root.append(sim('Ciliado em movimento','Os cílios batem em ondas e empurram a célula. Os dois vacúolos contráteis enchem e esvaziam, eliminando o excesso de água que entra por osmose.',cv,model('Animação esquemática: velocidade, batimento e trajeto foram simplificados.')));raf=requestAnimationFrame(frame);
+};
+
+// ---------- Aula 8 ----------
+INIT.desafio=root=>{
+  root.append(head('Aula 8 · Revisão','Desafio final e caderno','Dezesseis questões sobre microscopia e as lâminas, com explicação após cada resposta. Vale a primeira resposta.'));
+  let qi=0,resp=store.get('qz-resp',{});const card=panel();const stats=h('div',{class:'stats'});
+  function draw(){const [t,o,c,e]=QZ[qi];const done=Object.prototype.hasOwnProperty.call(resp,qi);card.innerHTML='';
+    card.append(h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'eyebrow'},`Questão ${qi+1} de ${QZ.length}`),h('span',{class:'pill'+(done?' ok':'')},done?'Respondida':'Não respondida')),h('h3',{style:'font-size:1.35rem'},t));
+    const og=h('div',{style:'display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px'});o.forEach((a,i)=>{const b=h('button',{class:'tool-card',style:`min-height:0;flex-direction:row;align-items:center;gap:12px;font-size:1.05rem;${done&&i===c?'border-color:var(--good);background:var(--good-soft)':''}${done&&i===resp[qi]&&i!==c?'border-color:var(--bad);background:var(--bad-soft)':''}`,disabled:done},h('span',{class:'mono',style:'font-weight:700;color:var(--tema)'},'ABCD'[i]),h('span',{},a));b.onclick=()=>{resp[qi]=i;store.set('qz-resp',resp);draw();};og.append(b);});card.append(og);
+    if(done)card.append(h('div',{class:'fb '+(resp[qi]===c?'ok':'info')},h('strong',{},resp[qi]===c?'Resposta correta. ':'Vamos revisar. '),e));
+    card.append(h('div',{class:'row',style:'justify-content:space-between'},h('button',{class:'btn',disabled:qi===0,onclick:()=>{qi--;draw();}},'← Anterior'),h('button',{class:'btn primary',disabled:qi===QZ.length-1,onclick:()=>{qi++;draw();}},'Próxima →')));
+    const n=Object.keys(resp).length,ok=Object.entries(resp).filter(([i,a])=>QZ[i][2]===a).length;stats.innerHTML='';[['Respondidas',n+'/'+QZ.length],['Acertos na 1ª',String(ok)]].forEach(([a,b])=>stats.append(h('div',{class:'stat stat-box'},h('span',{class:'note'},a),h('span',{class:'big-num'},b))));}
+  root.append(h('div',{class:'cols wl'},card,panel(h('h3',{},'Seu percurso'),stats,h('button',{class:'btn ghost sm',onclick:()=>{resp={};store.set('qz-resp',resp);qi=0;draw();}},'Recomeçar o desafio'),h('p',{class:'note'},'As perguntas avaliam a interpretação dos modelos. Identificar estruturas em amostras reais exige prática e material de referência.'))));draw();
+  // caderno
+  const cad=panel(h('span',{class:'eyebrow'},'Diário de laboratório'),h('h3',{},'Meu caderno'));root.append(cad);
+  const fill=()=>{cad.querySelectorAll('.cad').forEach(x=>x.remove());const vis=store.get('visitadas',[]);const notes=LAMINAS.map((S,i)=>({S,i,t:store.get('nota-'+i,'')})).filter(x=>x.t.trim());
+    cad.append(h('div',{class:'stats cad'},h('div',{class:'stat stat-box'},h('span',{class:'note'},'Lâminas abertas'),h('span',{class:'big-num'},vis.length+'/20')),h('div',{class:'stat stat-box'},h('span',{class:'note'},'Registros escritos'),h('span',{class:'big-num'},String(notes.length)))));
+    if(!notes.length)cad.append(h('p',{class:'note cad'},'Ainda não há registros. Escreva no “Caderno desta lâmina”, embaixo de qualquer bancada.'));
+    else cad.append(h('div',{class:'cards cad'},...notes.map(n=>h('div',{class:'stack stat-box',style:'gap:6px'},h('img',{src:thumbOf(n.i),alt:'',style:'width:64px;height:64px;border-radius:50%'}),h('span',{class:'eyebrow'},n.S.area),h('strong',{},n.S.nome),h('p',{class:'note',style:'white-space:pre-wrap;overflow-wrap:anywhere'},n.t)))));
+    const txt='MICROCOSMO · CADERNO DE LABORATÓRIO\n\n'+(notes.map(n=>n.S.nome+'\n'+n.t).join('\n\n')||'Nenhuma observação.');const ta=h('textarea',{class:'cad',rows:3,readonly:true,'aria-label':'Texto do caderno para copiar'});ta.value=txt;
+    cad.append(h('div',{class:'row cad'},h('button',{class:'btn',onclick:async e=>{try{await navigator.clipboard.writeText(txt);e.target.textContent='Copiado!';}catch(err){ta.hidden=false;ta.select();e.target.textContent='Selecione e copie o texto abaixo';}}},'Copiar o caderno'),h('button',{class:'btn ghost sm',onclick:fill},'Atualizar')),ta);ta.hidden=true;};
+  fill();
+};
+
+// ================= Início =================
+buildNav();
+go((location.hash||'#inicio').slice(1));
+</script>
+
+</body></html>

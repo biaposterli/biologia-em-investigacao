@@ -1,0 +1,217 @@
+<title>Biologia em Investigação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/*__PORTAL_CSS__*/
+/* Página inicial */
+.hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:44px 30px}
+@media (max-width:900px){.hero{grid-template-columns:minmax(0,1fr);gap:26px;padding-block:28px 18px}}
+.hero h1{font-size:clamp(2.7rem,7.4vw,5.6rem);font-weight:800;letter-spacing:-.04em;line-height:.92}
+.hero h1 span{display:block;font-weight:500;letter-spacing:-.03em}
+.hero h1 span b{font-weight:500}
+.hero h1 .c1{color:var(--cel)}.hero h1 .c2{color:var(--mic)}.hero h1 .c3{color:var(--eco)}.hero h1 .c4{color:var(--gen)}
+.facts{display:flex;gap:28px;flex-wrap:wrap}
+.facts div{display:flex;flex-direction:column}
+.facts b{font-family:var(--f-display);font-size:2.1rem;font-weight:800;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.facts span{font-size:.82rem;color:var(--muted)}
+.turma-card{display:flex;flex-direction:column;gap:14px;border:2px solid var(--line);background:var(--surface);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+.turma-card.on{border-color:color-mix(in srgb,var(--good) 55%,var(--line))}
+.turma-card h2{font-size:1.45rem}
+.turma-who{display:flex;gap:12px;align-items:center}
+.turma-who .av{width:46px;height:46px;border-radius:14px;background:var(--good-soft);color:var(--good);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.3rem;flex:none}
+.turma-who b{font-size:1.15rem;display:block;line-height:1.2}
+.tlist{display:flex;flex-wrap:wrap;gap:6px}
+.tlist span{font-family:var(--f-mono);font-size:.8rem;font-weight:600;background:var(--surface-2);border-radius:6px;padding:2px 8px}
+
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:30px 16px}
+.sites{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:760px){.sites{grid-template-columns:minmax(0,1fr)}}
+.site{display:flex;flex-direction:column;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:var(--surface);box-shadow:var(--shadow);text-decoration:none;color:var(--ink);transition:transform .18s,border-color .18s}
+.site:hover{transform:translateY(-3px);border-color:var(--tema)}
+.site-page{position:relative;height:150px;background-color:var(--tema-soft);display:flex;align-items:flex-end;justify-content:space-between;padding:18px 20px;border-bottom:1px solid color-mix(in srgb,var(--tema) 25%,transparent)}
+.site-page.dots{background-image:radial-gradient(color-mix(in srgb,var(--tema) 28%,transparent) 1.2px,transparent 1.4px);background-size:18px 18px}
+.site-page.grid{background-image:linear-gradient(color-mix(in srgb,var(--tema) 18%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--tema) 18%,transparent) 1px,transparent 1px);background-size:20px 20px}
+.site-page svg{color:var(--tema);width:76px;height:76px}
+.site-n{font-family:var(--f-display);font-weight:800;font-size:3rem;line-height:.9;color:var(--tema);letter-spacing:-.04em;text-align:right}
+.site-n small{display:block;font-family:var(--f-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.site-body{display:flex;flex-direction:column;gap:8px;padding:18px 20px 20px;flex:1}
+.site-body h3{font-size:1.45rem;font-weight:800;letter-spacing:-.01em}
+.site-body p{color:var(--muted);font-size:.95rem}
+.site-go{margin-top:auto;padding-top:6px;font-weight:700;color:var(--tema)}
+
+.prof{margin-top:40px;border-radius:24px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.prof-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:32px;padding:30px}
+@media (max-width:900px){.prof-in{grid-template-columns:minmax(0,1fr);padding:22px;gap:22px}}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:st}
+.steps li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;align-items:start;counter-increment:st}
+.steps li::before{content:counter(st);width:44px;height:44px;border-radius:12px;background:var(--accent);color:var(--surface);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.3rem}
+.steps h3{font-size:1.08rem;margin-bottom:2px}
+.steps p{color:var(--muted);font-size:.93rem}
+.privacy{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px}
+
+/* Temas do livro e sites em construção */
+.mapa{display:flex;flex-direction:column;gap:10px}
+.uni{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:14px;align-items:center}
+@media (max-width:700px){.uni{grid-template-columns:minmax(0,1fr);gap:6px}}
+.uni-t{display:flex;flex-direction:column;line-height:1.25}
+.uni-t b{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.uni-t span{font-weight:700;font-size:.95rem}
+.temas{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.tm{position:relative;min-height:54px;border-radius:10px;padding:6px 8px;display:flex;flex-direction:column;justify-content:space-between;gap:2px;border:1px solid var(--line);background:var(--surface);min-width:0}
+.tm b{font-family:var(--f-display);font-weight:800;font-size:1.05rem;line-height:1;font-variant-numeric:tabular-nums}
+.tm span{font-size:.72rem;line-height:1.2;color:var(--muted);overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.tm.ok{background:var(--tema);border-color:var(--tema)}
+.tm.ok b,.tm.ok span{color:var(--surface)}
+.tm.obra{border-style:dashed;background-image:repeating-linear-gradient(135deg,transparent 0 7px,color-mix(in srgb,var(--muted) 10%,transparent) 7px 8px)}
+@media (max-width:560px){.tm span{display:none}.tm{min-height:40px;align-items:center;justify-content:center}}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.84rem;color:var(--muted);align-items:center;padding-top:6px}
+.legend i{display:inline-block;width:16px;height:16px;border-radius:5px;vertical-align:-3px;margin-right:6px;border:1px solid var(--line)}
+.obras{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;padding-top:22px}
+.obra-c{display:flex;flex-direction:column;gap:8px;padding:18px;border-radius:18px;border:1.5px dashed color-mix(in srgb,var(--muted) 45%,var(--line));background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.obra-c h3{font-size:1.2rem;font-weight:800}
+.obra-c p{color:var(--muted);font-size:.9rem}
+.obra-c .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:4px}
+.obra-c .tags span{font-family:var(--f-mono);font-size:.72rem;font-weight:600;background:var(--surface-2);border-radius:6px;padding:2px 7px}
+.pill-obra{align-self:flex-start;font-family:var(--f-mono);font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:999px;color:var(--warn);background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 35%,transparent)}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 4.5A9.5 9.5 0 0 0 4.5 14H14z" fill="var(--cel)"/><path d="M14 4.5A9.5 9.5 0 0 1 23.5 14H14z" fill="var(--mic)"/><path d="M4.5 14A9.5 9.5 0 0 0 14 23.5V14z" fill="var(--eco)"/><path d="M23.5 14A9.5 9.5 0 0 1 14 23.5V14z" fill="var(--gen)"/></svg>Biologia em Investigação</a>
+    <nav aria-label="Seções">
+      <a href="#sites">Sites</a>
+      <a href="professor.html">Área do professor</a>
+      <a href="painel.html">Painel de avaliação</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="stack" style="gap:20px">
+      <span class="eyebrow" style="color:var(--muted)">Biologia · Ensino Médio · 1º ao 3º ano</span>
+      <h1>Biologia em <span><b class="c1">in</b><b class="c2">ves</b><b class="c3">tiga</b><b class="c4">ção</b></span></h1>
+      <p class="lede">Quatro sites com simuladores, jogos, laboratórios virtuais e fichas de aula. O estudante investiga no projetor ou no celular e envia a ficha, que chega na planilha do professor da turma.</p>
+      <div class="facts">
+        <div><b class="mono">4</b><span>sites</span></div>
+        <div><b class="mono">56</b><span>aulas</span></div>
+        <div><b class="mono">52</b><span>fichas com correção</span></div>
+        <div><b class="mono">11/36</b><span>temas do livro</span></div>
+      </div>
+    </div>
+    <aside class="turma-card" id="turmaCard" aria-live="polite"></aside>
+  </section>
+
+  <div class="sec-head" id="sites">
+    <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">A coleção</span><h2>Escolha o site da aula</h2></div>
+    <p class="note" style="max-width:46ch">Os temas seguem o livro <i>360° Biologia</i> (FTD, 2024). Cada aula traz a pergunta para começar, a ferramenta e a ficha.</p>
+  </div>
+  <div class="sites" id="siteGrid"></div>
+
+  <section id="construcao" aria-labelledby="obraT">
+    <div class="sec-head">
+      <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">Os 36 temas do livro</span><h2 id="obraT">O que já existe e o que vem aí</h2></div>
+      <p class="note" style="max-width:48ch">A coleção vai cobrir todos os temas do livro <i>360° Biologia</i>. Os sites marcados como em construção ainda estão sendo planejados. O Microcosmo atende vários temas como laboratório de microscopia.</p>
+    </div>
+    <div class="mapa" id="mapa"></div>
+    <div class="legend"><span><i style="background:var(--eco);border-color:var(--eco)"></i>Tema com site pronto (na cor do site)</span><span><i style="background-image:repeating-linear-gradient(135deg,transparent 0 4px,var(--line) 4px 5px);border-style:dashed"></i>Em construção</span></div>
+    <div class="obras" id="obras"></div>
+  </section>
+
+  <section class="prof" id="professores" aria-labelledby="profT">
+    <div class="prof-in">
+      <div class="stack" style="gap:14px">
+        <span class="eyebrow">Para professores</span>
+        <h2 id="profT">Use com as suas turmas</h2>
+        <p class="lede" style="font-size:1rem">Qualquer professor pode usar o portal com turmas de 1º, 2º e 3º ano. As fichas dos seus estudantes chegam numa planilha sua no Google, e o painel corrige as questões objetivas sozinho.</p>
+        <div class="row"><a class="btn primary big" href="professor.html">Abrir a área do professor</a><a class="btn big" href="painel.html">Painel de avaliação</a></div>
+        <p class="privacy"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="flex:none;margin-top:2px"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>As respostas dos estudantes vão direto para a planilha do professor da turma. O portal não guarda as fichas em nenhum outro lugar.</span></p>
+      </div>
+      <ol class="steps">
+        <li><div><h3>Configure a sua turma</h3><p>Informe o seu nome, marque as turmas (por exemplo 1ºA, 2ºC, 3ºB) e crie o receptor da sua planilha seguindo o passo a passo. Leva uns 5 minutos.</p></div></li>
+        <li><div><h3>Compartilhe o link</h3><p>O portal gera um link e um QR code da sua turma. Quem abrir já entra com o seu nome e as suas turmas na ficha.</p></div></li>
+        <li><div><h3>Corrija no painel</h3><p>As objetivas são corrigidas sozinhas. Você dá os pontos das respostas abertas, deixa um comentário e a nota fica na planilha.</p></div></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="note">Temas conforme GODOY, L. P.; LOURENÇO, G. C. <i>360° Biologia: ensino médio, volume único</i>. 1. ed. São Paulo: FTD, 2024. Atividades, ilustrações e dados simulados: elaboração didática autoral.</p>
+    <p class="note">Funciona sem login. O que o estudante digita fica salvo no próprio aparelho até ser enviado.</p>
+  </div>
+</footer>
+
+<script src="portal.js"></script>
+<script>
+(function(){
+  const P=window.PORTAL,el=P.el;
+  const ICON={
+    cel:'<ellipse cx="38" cy="38" rx="31" ry="25" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="34" cy="36" r="9.5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="34" cy="36" r="3" fill="currentColor"/><path d="M50 26c4 1 7 4 7 8M52 48c3-1 5-3 6-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
+    mic:'<path d="M24 10l12 12-8 8-12-12z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M32 26l10 10" stroke="currentColor" stroke-width="3"/><path d="M12 66h48" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M42 66a19 19 0 0 0 6-32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M26 66v-9h15" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>',
+    eco:'<path d="M38 66V38" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M38 40c-13 0-20-8-20-22 13 0 20 8 20 22z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M38 34c0-11 7-19 22-19 0 12-8 19-22 19z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M14 66h48" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
+    gen:'<path d="M24 8c0 20 28 20 28 30S24 48 24 68" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M52 8c0 20-28 20-28 30s28 10 28 30" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M28 18h20M31 38h14M28 58h20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>'
+  };
+  const INFO={
+    cel:{tema:'Temas 2, 3 e 4',aulas:16,papel:'dots',desc:'Como as células se organizam, se dividem e obtêm energia: membrana e osmose, mitose e meiose, fotossíntese, respiração e fermentação.'},
+    mic:{tema:'Laboratório virtual de microscopia',aulas:8,papel:'grid',desc:'Um microscópio com foco, charriot e quatro objetivas para investigar 20 lâminas de células, tecidos e microrganismos.'},
+    eco:{tema:'Temas 20 a 24',aulas:14,papel:'dots',desc:'Relações ecológicas, populações, sucessão, ciclos da matéria, solo e água, parasitismo e Saúde Única.'},
+    gen:{tema:'Temas 28 a 30',aulas:18,papel:'grid',desc:'De Mendel ao DNA: probabilidade, heredogramas, grupos sanguíneos, interações gênicas, replicação, síntese de proteínas e mutações.'}
+  };
+  const grid=document.getElementById('siteGrid');
+  P.ORDER.forEach(k=>{const s=P.SITES[k],i=INFO[k];
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 76 76');svg.setAttribute('aria-hidden','true');svg.innerHTML=ICON[k];
+    grid.append(el('a',{class:'site',href:s.file,'data-s':k},
+      el('div',{class:'site-page '+i.papel},svg,el('div',{class:'site-n'},el('small',{},'aulas'),String(i.aulas))),
+      el('div',{class:'site-body'},el('span',{class:'eyebrow'},i.tema),el('h3',{},s.nome),el('p',{},i.desc),el('span',{class:'site-go'},'Abrir o site →'))));
+  });
+
+  const card=document.getElementById('turmaCard');
+  function draw(){
+    const c=P.turma();card.innerHTML='';card.className='turma-card'+(c?' on':'');
+    if(c){
+      card.append(el('span',{class:'eyebrow',style:'color:var(--good)'},'Sua turma'),
+        el('div',{class:'turma-who'},el('span',{class:'av','aria-hidden':'true'},(c.n.replace(/^(prof\.?ª?|prof(essora|essor)?)\s+/i,'')[0]||'P').toUpperCase()),el('div',{},el('b',{},c.n),c.e?el('span',{class:'note'},c.e):null)),
+        el('p',{},'As fichas que você enviar vão para a planilha de '+c.n+'. Escolha um site abaixo e responda a ficha no fim de cada aula.'),
+        c.t.length?el('div',{class:'stack',style:'gap:6px'},el('span',{class:'label'},'Turmas'),el('div',{class:'tlist'},c.t.map(t=>el('span',{},t)))):null,
+        el('div',{class:'row'},el('button',{type:'button',class:'btn sm',onclick:troca},'Trocar de turma'),el('button',{type:'button',class:'btn sm ghost',onclick:()=>{P.sairDaTurma();draw();}},'Sair da turma')));
+    }else{
+      card.append(el('span',{class:'eyebrow',style:'color:var(--muted)'},'Para estudantes'),el('h2',{},'Entre na sua turma'),
+        el('p',{class:'note'},'Abra o link que o seu professor compartilhou ou cole aqui o código da turma. Sem turma, você usa todos os sites normalmente; só o envio das fichas fica desligado.'),
+        P.caixaCodigo(()=>setTimeout(draw,700)));
+    }
+  }
+  function troca(){card.innerHTML='';card.append(el('span',{class:'eyebrow',style:'color:var(--muted)'},'Trocar de turma'),el('p',{class:'note'},'Cole o link ou o código da nova turma.'),P.caixaCodigo(()=>setTimeout(draw,700)),el('button',{type:'button',class:'btn sm ghost',onclick:draw,style:'align-self:flex-start'},'Cancelar'));}
+
+  // ---------- Temas do livro e sites em construção ----------
+  const UNI=['Citologia e origem da vida','Hormônios, reprodução humana e saúde','Seres vivos','Ecologia, impactos e conservação ambiental','Corpo humano e Genética','Evolução, sociedade e Biotecnologia'];
+  const TEMA=['A construção dos conhecimentos científicos','Células','Núcleo e divisões celulares','Metabolismo celular','O Universo e as condições para a vida','Origem da vida na Terra',
+    'Regulação hormonal','Sistema genital e puberdade','Gestação e parto','Contracepção e prevenção de ISTs','Sexualidade','A juventude e seus desafios',
+    'Nomenclatura e classificação dos seres vivos','Bactérias, arqueias, protozoários, algas e fungos','Animais invertebrados','Cordados','Plantas','Fisiologia vegetal',
+    'Relações alimentares','Relações ecológicas','Dinâmica de populações e sucessão ecológica','Ciclos biogeoquímicos','Impactos ambientais','Conservação, preservação e sustentabilidade',
+    'Sistemas digestório e respiratório','Sistema cardiovascular, imunidade e sistema urinário','Sistema nervoso','Genética mendeliana','Interações gênicas e herança quantitativa','Genética molecular',
+    'Ideias evolucionistas','Teoria sintética da evolução','Especiação','Evolução humana','Sociedade, ambiente e saúde','Biotecnologia'];
+  const PRONTO={};[[2,'cel'],[3,'cel'],[4,'cel'],[20,'eco'],[21,'eco'],[22,'eco'],[23,'eco'],[24,'eco'],[28,'gen'],[29,'gen'],[30,'gen']].forEach(([t,k])=>PRONTO[t]=k);
+  const OBRAS=[
+    {nome:'Origens em Investigação',temas:[1,5,6],desc:'Como a ciência constrói conhecimento, o Universo e as condições para a vida, e a origem da vida: Redi, Pasteur, Oparin e Haldane e a evolução das células.'},
+    {nome:'Corpo em Transformação',temas:[7,8,9,10,11,12],desc:'Hormônios, sistema genital e puberdade, gestação e parto, contracepção e prevenção de ISTs, sexualidade e os desafios da juventude, como nutrição e dependências.'},
+    {nome:'Diversidade em Investigação',temas:[13,14,15,16],desc:'Espécie, nomenclatura e classificação; bactérias, arqueias, protozoários, algas e fungos; invertebrados e cordados, com respiração, circulação e reprodução dos vertebrados.'},
+    {nome:'Plantas em Ação',temas:[17,18],desc:'Briófitas, pteridófitas, gimnospermas e angiospermas, flores, frutos e sementes, e a fisiologia vegetal: água, seivas, transpiração e hormônios vegetais.'},
+    {nome:'Teias Alimentares',temas:[19],desc:'Ampliação de Ecologia em Investigação: cadeias e teias alimentares, níveis tróficos, fluxo de energia e pirâmides ecológicas.'},
+    {nome:'Corpo Humano em Ação',temas:[25,26,27],desc:'Tecidos, sistemas digestório e respiratório, sistema cardiovascular, imunidade, vacinas e soros, sistema urinário e sistema nervoso.'},
+    {nome:'Evolução em Investigação',temas:[31,32,33,34],desc:'Ideias evolucionistas de Lamarck, Darwin e Wallace, teoria sintética da evolução, especiação e evolução humana.'},
+    {nome:'Biotecnologia e Sociedade',temas:[35,36],desc:'Matrizes energéticas, bioenergia e saneamento básico; engenharia genética, OGMs, vacinas, terapia gênica, clonagem e biologia sintética.'}];
+  const grupoDe={};OBRAS.forEach(o=>o.temas.forEach(t=>grupoDe[t]=o.nome));
+  const mapa=document.getElementById('mapa');
+  UNI.forEach((u,i)=>{const row=el('div',{class:'temas'});
+    for(let k=1;k<=6;k++){const t=i*6+k,s=PRONTO[t];
+      row.append(el('div',{class:'tm '+(s?'ok':'obra'),'data-s':s||null,title:'Tema '+t+' · '+TEMA[t-1]+(s?' · '+P.SITES[s].nome:' · em construção: '+grupoDe[t])},el('b',{},String(t)),el('span',{},TEMA[t-1])));}
+    mapa.append(el('div',{class:'uni'},el('div',{class:'uni-t'},el('b',{},'Unidade '+(i+1)),el('span',{},u)),row));});
+  const obras=document.getElementById('obras');
+  OBRAS.forEach(o=>obras.append(el('article',{class:'obra-c'},el('span',{class:'pill-obra'},'Em construção'),el('span',{class:'eyebrow',style:'color:var(--muted)'},o.temas.length>1?'Temas '+o.temas.join(', ').replace(/, (\d+)$/,' e $1'):'Tema '+o.temas[0]),el('h3',{},o.nome),el('p',{},o.desc),el('div',{class:'tags'},o.temas.map(t=>el('span',{title:TEMA[t-1]},'T'+t+' · '+TEMA[t-1]))))));
+  draw();
+})();
+</script>

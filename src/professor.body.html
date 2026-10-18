@@ -1,0 +1,224 @@
+<title>Área do Professor · Biologia em Investigação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+/*__PORTAL_CSS__*/
+.page-head{display:flex;flex-direction:column;gap:10px;padding-block:34px 22px}
+.page-head h1{font-size:clamp(2.2rem,5.4vw,3.6rem);font-weight:800;letter-spacing:-.03em}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+@media (max-width:980px){.layout{grid-template-columns:minmax(0,1fr)}}
+.steps-col{display:flex;flex-direction:column;gap:18px;min-width:0}
+.step{display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:560px){.step{grid-template-columns:minmax(0,1fr)}.step-n{width:40px;height:40px;font-size:1.15rem}}
+.step-n{width:48px;height:48px;border-radius:14px;background:var(--surface-2);color:var(--muted);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.35rem}
+.step.done .step-n{background:var(--good);color:var(--surface)}
+.step .panel{display:flex;flex-direction:column;gap:16px}
+.step h2{font-size:1.4rem}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+@media (max-width:640px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.serie{display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;align-items:center;padding-block:8px;border-bottom:1px solid var(--line)}
+.serie:last-of-type{border-bottom:0}
+.serie b{font-family:var(--f-display);font-size:1.1rem}
+@media (max-width:480px){.serie{grid-template-columns:minmax(0,1fr)}}
+ol.howto{margin:0;padding-left:1.35em;display:flex;flex-direction:column;gap:9px}
+ol.howto li::marker{font-family:var(--f-mono);font-weight:700;color:var(--accent)}
+kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:0 5px}
+.senha{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.senha code{font-family:var(--f-mono);font-size:1.15rem;font-weight:600;letter-spacing:.06em;background:var(--surface-2);border-radius:8px;padding:4px 10px}
+.status{display:flex;gap:8px;align-items:flex-start;font-size:.92rem}
+.status i{width:10px;height:10px;border-radius:50%;flex:none;margin-top:6px;background:var(--muted)}
+.status.ok i{background:var(--good)} .status.no i{background:var(--bad)} .status.wait i{background:var(--warn)}
+.side{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px);display:flex;flex-direction:column;gap:14px}
+@media (max-width:980px){.side{position:static}}
+.check{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.check li{display:flex;gap:10px;align-items:center;font-size:.94rem}
+.check li::before{content:"";width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none}
+.check li.ok::before{background:var(--good);border-color:var(--good);box-shadow:inset 0 0 0 3px var(--surface)}
+.out{display:flex;flex-direction:column;gap:12px}
+.msgbox{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:.9rem;overflow-wrap:anywhere}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 4.5A9.5 9.5 0 0 0 4.5 14H14z" fill="var(--cel)"/><path d="M14 4.5A9.5 9.5 0 0 1 23.5 14H14z" fill="var(--mic)"/><path d="M4.5 14A9.5 9.5 0 0 0 14 23.5V14z" fill="var(--eco)"/><path d="M23.5 14A9.5 9.5 0 0 1 14 23.5V14z" fill="var(--gen)"/></svg>Biologia em Investigação</a>
+    <nav aria-label="Seções">
+      <a href="index.html#sites">Sites</a>
+      <a href="professor.html" aria-current="page">Área do professor</a>
+      <a href="painel.html">Painel de avaliação</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="page-head">
+    <span class="eyebrow">Para professores</span>
+    <h1>Área do professor</h1>
+    <p class="lede">Configure as suas turmas e ligue as fichas a uma planilha sua no Google. Depois é só compartilhar o link da turma com os estudantes. O que você preencher aqui fica salvo só neste navegador.</p>
+  </div>
+
+  <div class="layout">
+    <div class="steps-col">
+      <section class="step" id="s1"><span class="step-n">1</span>
+        <div class="panel">
+          <div class="stack" style="gap:4px"><h2>Seu nome</h2><p class="note">É o nome que aparece na ficha, no botão “Enviar para…” e na confirmação do envio.</p></div>
+          <div class="grid2">
+            <label class="field"><span class="label">Como os estudantes chamam você</span><input type="text" id="pNome" maxlength="60" placeholder="Prof.ª Ana Souza" autocomplete="name"></label>
+            <label class="field"><span class="label">Escola (opcional)</span><input type="text" id="pEscola" maxlength="80" placeholder="EE Professor João Lima"></label>
+          </div>
+        </div>
+      </section>
+
+      <section class="step" id="s2"><span class="step-n">2</span>
+        <div class="panel">
+          <div class="stack" style="gap:4px"><h2>Suas turmas</h2><p class="note">Marque as turmas de cada ano. O estudante escolhe a turma dele na ficha.</p></div>
+          <div id="series"></div>
+          <div class="grid2">
+            <label class="field"><span class="label">Outras turmas (separe por vírgula)</span><input type="text" id="pOutras" maxlength="200" placeholder="2º Técnico, EJA 3"></label>
+            <label class="field"><span class="label">Grupos por turma</span><input type="number" id="pGrupos" min="1" max="20" value="8" inputmode="numeric"></label>
+          </div>
+        </div>
+      </section>
+
+      <section class="step" id="s3"><span class="step-n">3</span>
+        <div class="panel">
+          <div class="stack" style="gap:4px"><h2>Sua planilha e o receptor</h2><p class="note">O receptor é um pequeno programa na sua conta Google que grava cada ficha na sua planilha, uma aba por aula. Você faz isso uma vez só.</p></div>
+          <div class="callout stack" style="gap:6px">
+            <span class="label">Senha do painel</span>
+            <div class="senha"><code id="senha">—</code><button type="button" class="btn sm ghost" id="novaSenha">Gerar outra senha</button></div>
+            <p class="note">Ela já vai dentro do código abaixo e protege o painel de avaliação. Anote: ela também fica visível no código, dentro do Apps Script.</p>
+          </div>
+          <ol class="howto">
+            <li>Crie uma planilha nova no Google Planilhas (<a href="https://sheets.new" target="_blank" rel="noopener">sheets.new</a>) e dê um nome, por exemplo “Fichas · Biologia em Investigação”.</li>
+            <li>Na planilha, abra o menu <b>Extensões → Apps Script</b>.</li>
+            <li>Apague o que estiver no editor, cole o código (botão <b>Copiar código</b>) e clique em <b>Salvar</b>.</li>
+            <li>No topo do editor, escolha a função <kbd>autorizar</kbd> e clique em <b>Executar</b>. Autorize com a sua conta. Se aparecer “O Google não verificou este app”, clique em <b>Avançado</b> e depois em <b>Acessar</b>: o aviso aparece porque o programa é seu e não passou por revisão do Google.</li>
+            <li>Clique em <b>Implantar → Nova implantação</b>, na engrenagem escolha <b>App da Web</b>. Em “Executar como”, escolha <b>Eu</b>; em “Quem pode acessar”, <b>Qualquer pessoa</b>. Clique em <b>Implantar</b>.</li>
+            <li>Copie o URL do app da Web (termina em <span class="mono">/exec</span>) e cole no campo abaixo.</li>
+          </ol>
+          <div class="row"><button type="button" class="btn primary" id="copiaCodigo">Copiar código</button><span class="note" id="codigoInfo"></span></div>
+          <pre class="code" id="codigo" tabindex="0" aria-label="Código do receptor"></pre>
+          <label class="field"><span class="label">URL do app da Web</span><input type="url" id="pReceptor" placeholder="https://script.google.com/macros/s/…/exec" spellcheck="false" autocomplete="off"></label>
+          <div class="row"><button type="button" class="btn" id="testar">Testar o receptor</button><a class="btn ghost" id="abrirReceptor" target="_blank" rel="noopener" hidden>Abrir o receptor em outra aba</a></div>
+          <div class="status" id="recStatus" role="status"><i></i><span>Cole o URL para ligar as fichas à sua planilha.</span></div>
+          <p class="note">Mudou o seu nome ou gerou outra senha depois de implantar? Cole o código de novo no Apps Script e atualize em <b>Implantar → Gerenciar implantações → Editar → Nova versão</b>. O endereço continua o mesmo.</p>
+        </div>
+      </section>
+
+      <section class="step" id="s4"><span class="step-n">4</span>
+        <div class="panel">
+          <div class="stack" style="gap:4px"><h2>Link da turma</h2><p class="note">Compartilhe com os estudantes por mensagem, no mural da turma ou projetando o QR code. Ao abrir, o celular do estudante entra na sua turma.</p></div>
+          <label class="field" id="baseField" hidden><span class="label">Endereço do portal publicado</span><input type="url" id="pBase" placeholder="https://biologia-investigacao.pages.dev/" spellcheck="false" autocomplete="off"><span class="note">Você está vendo o portal dentro do Claude. Informe o endereço em que ele está publicado para que o link funcione nos celulares dos estudantes.</span></label>
+          <div class="out" id="saida"></div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <div class="panel stack" style="gap:12px">
+        <span class="label">Situação</span>
+        <ul class="check" id="check"></ul>
+        <a class="btn primary" href="painel.html">Abrir o painel de avaliação</a>
+      </div>
+      <div class="panel stack" style="gap:8px">
+        <span class="label">Como fica para o estudante</span>
+        <p class="note">No fim de cada aula, a ficha mostra para quem ela vai, a escolha da turma e do grupo, e o botão de envio.</p>
+        <div id="previa"></div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer><div class="wrap"><p class="note">As fichas dos estudantes ficam somente na sua planilha. Nome, turmas e senha ficam salvos apenas neste navegador.</p></div></footer>
+
+<script type="text/plain" id="tpl">/*__RECEPTOR__*/</script>
+<script src="portal.js"></script>
+<script>
+(function(){
+  const P=window.PORTAL,el=P.el,$=s=>document.querySelector(s);
+  const SERIES=['1º','2º','3º'],LETRAS=['A','B','C','D','E','F','G','H'];
+  function novaSenha(){const a='abcdefghjkmnpqrstuvwxyz23456789';const r=new Uint32Array(10);crypto.getRandomValues(r);return Array.from(r,x=>a[x%a.length]).join('');}
+  let C=Object.assign({nome:'',escola:'',sel:[],outras:'',grupos:8,r:'',senha:'',base:''},P.prof()||{});
+  if(!C.senha)C.senha=novaSenha();
+  const turmasDe=c=>c.sel.slice().sort((a,b)=>SERIES.indexOf(a.slice(0,2))-SERIES.indexOf(b.slice(0,2))||a.localeCompare(b,'pt-BR')).concat(String(c.outras||'').split(',').map(s=>s.trim()).filter(Boolean)).filter((t,i,arr)=>arr.indexOf(t)===i).slice(0,40);
+  function save(){C.turmas=turmasDe(C);P.salvarProf(C);update();}
+
+  // 1. nome
+  $('#pNome').value=C.nome;$('#pEscola').value=C.escola;
+  $('#pNome').oninput=e=>{C.nome=e.target.value;save();};$('#pEscola').oninput=e=>{C.escola=e.target.value;save();};
+  // 2. turmas
+  const series=$('#series');
+  SERIES.forEach(sr=>{const chips=el('div',{class:'chips',role:'group','aria-label':sr+' ano'});
+    LETRAS.forEach(l=>{const t=sr+l;const b=el('button',{type:'button',class:'chip','aria-pressed':String(C.sel.includes(t))},l);b.onclick=()=>{const on=C.sel.includes(t);C.sel=on?C.sel.filter(x=>x!==t):C.sel.concat(t);b.setAttribute('aria-pressed',String(!on));save();};chips.append(b);});
+    series.append(el('div',{class:'serie'},el('b',{},sr+' ano'),chips));});
+  $('#pOutras').value=C.outras;$('#pOutras').oninput=e=>{C.outras=e.target.value;save();};
+  $('#pGrupos').value=C.grupos;$('#pGrupos').oninput=e=>{const n=parseInt(e.target.value,10);C.grupos=isNaN(n)?8:Math.max(1,Math.min(20,n));save();};
+  // 3. receptor
+  const TPL=$('#tpl').textContent;
+  const codigo=()=>TPL.replace('__PROFESSOR__',()=>JSON.stringify((C.nome||'').trim()||'o professor')).replace('__SENHA__',()=>JSON.stringify(C.senha));
+  $('#novaSenha').onclick=()=>{C.senha=novaSenha();save();$('#codigoInfo').textContent='Senha nova. Se o receptor já estava implantado, cole o código de novo no Apps Script.';};
+  $('#copiaCodigo').onclick=e=>copiar(codigo(),e.currentTarget,$('#codigo'));
+  const rec=$('#pReceptor');if(C.r)rec.value=P.urlDoReceptor(C.r);
+  let teste=null;
+  rec.oninput=()=>{C.r=P.idDoReceptor(rec.value);teste=null;save();};
+  $('#testar').onclick=async()=>{
+    if(!C.r){teste={st:'no',t:'Esse endereço não parece o URL de um app da Web do Apps Script. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'};update();return;}
+    if(!P.standalone()){teste={st:'wait',t:'Dentro do Claude o portal não consegue falar com o Google. Toque em “Abrir o receptor em outra aba”: se aparecer “Receptor ativo”, está tudo certo.'};update();return;}
+    teste={st:'wait',t:'Testando…'};update();
+    try{const r=await fetch(P.urlDoReceptor(C.r)+'?acao=teste');const j=await r.json();teste=j&&j.ok?{st:'ok',t:'Receptor funcionando. As fichas vão para a planilha de '+j.professor+'.'}:{st:'no',t:'O endereço respondeu, mas não é este receptor. Confira o código colado no Apps Script.'};}
+    catch(err){teste={st:'no',t:'Não consegui falar com o receptor. Confira se a implantação está como “Qualquer pessoa” e se o URL termina em /exec.'};}
+    update();};
+  // 4. link
+  if(!P.standalone())$('#baseField').hidden=false;
+  $('#pBase').value=C.base||'';$('#pBase').oninput=e=>{C.base=e.target.value.trim();save();};
+
+  function qrSvg(text){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true});}catch(e){return '';}}
+  function copiar(text,btn,alvo){const done=()=>{const t=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=t,1600);};
+    const sel=()=>{if(!alvo)return;const r=document.createRange();r.selectNodeContents(alvo);const s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selecionado: use Ctrl+C';setTimeout(()=>btn.textContent='Copiar',2400);};
+    try{navigator.clipboard.writeText(text).then(done).catch(sel);}catch(e){sel();}}
+  function projetar(link){const o=el('div',{class:'overlay',role:'dialog','aria-label':'QR code da turma'},el('h2',{},'Turma de '+((C.nome||'').trim()||'professor')),el('div',{class:'qr'}),el('span',{class:'link'},link),el('button',{type:'button',class:'btn',onclick:()=>o.remove()},'Fechar'));o.querySelector('.qr').innerHTML=qrSvg(link);o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
+
+  function update(){
+    C.turmas=turmasDe(C);
+    const okNome=!!(C.nome||'').trim(),okT=C.turmas.length>0,okR=!!C.r;
+    $('#s1').classList.toggle('done',okNome);$('#s2').classList.toggle('done',okT);$('#s3').classList.toggle('done',okR);
+    $('#senha').textContent=C.senha;$('#codigo').textContent=codigo();
+    const ab=$('#abrirReceptor');ab.hidden=!okR;if(okR)ab.href=P.urlDoReceptor(C.r);
+    const st=$('#recStatus');const T=teste||(okR?{st:'ok',t:'Endereço reconhecido. Use “Testar o receptor” para conferir.'}:(rec.value.trim()?{st:'no',t:'Esse endereço não parece o URL de um app da Web. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'}:{st:'',t:'Cole o URL para ligar as fichas à sua planilha.'}));
+    st.className='status '+T.st;st.lastChild.textContent=T.t;
+    // saída
+    const out=$('#saida');out.innerHTML='';
+    const pronto=okNome&&okT&&okR;$('#s4').classList.toggle('done',pronto);
+    if(!pronto){out.append(el('p',{class:'fb warn'},'Complete '+[!okNome&&'o seu nome',!okT&&'as turmas',!okR&&'o URL do receptor'].filter(Boolean).join(', ')+' para gerar o link da turma.'));}
+    else{
+      const cod=P.codigoDaTurma({n:C.nome,e:C.escola,r:C.r,t:C.turmas,g:C.grupos});const link=P.linkDaTurma(C);
+      if(link){
+        const linkEl=el('span',{class:'link'},link);
+        out.append(el('div',{class:'row',style:'align-items:flex-start;gap:18px'},el('div',{class:'qr'}),el('div',{class:'stack',style:'gap:10px;flex:1 1 240px;min-width:0'},el('span',{class:'label'},'Link da turma'),linkEl,
+          el('div',{class:'row'},el('button',{type:'button',class:'btn primary sm',onclick:e=>copiar(link,e.currentTarget,linkEl)},'Copiar link'),el('button',{type:'button',class:'btn sm',onclick:()=>projetar(link)},'Projetar QR code'),el('a',{class:'btn sm ghost',href:link,target:'_blank',rel:'noopener'},'Abrir como estudante')))));
+        out.querySelector('.qr').innerHTML=qrSvg(link);
+        const msg='Turma, para usar os sites de Biologia e enviar as fichas para mim, abram este link no celular:\n'+link;
+        const mEl=el('div',{class:'msgbox'},msg);
+        out.append(el('div',{class:'stack',style:'gap:6px'},el('span',{class:'label'},'Mensagem pronta para enviar'),mEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(msg,e.currentTarget,mEl)},'Copiar mensagem'))));
+      }else{
+        out.append(el('p',{class:'fb warn'},'Informe o endereço do portal publicado (acima) para gerar o link e o QR code. Enquanto isso, os estudantes podem entrar com o código da turma.'));
+      }
+      const cEl=el('div',{class:'msgbox mono',style:'font-size:.78rem'},cod);
+      out.append(el('details',{},el('summary',{style:'cursor:pointer;font-weight:700'},'Código da turma (para colar no site)'),el('div',{class:'stack',style:'gap:8px;margin-top:8px'},el('p',{class:'note'},'Quem não conseguir abrir o link pode colar este código no quadro “Entre na sua turma”, na página inicial, ou no topo de qualquer ficha.'),cEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(cod,e.currentTarget,cEl)},'Copiar código')))));
+    }
+    // situação
+    const ck=$('#check');ck.innerHTML='';
+    [['Nome',okNome],['Turmas'+(okT?' ('+C.turmas.length+')':''),okT],['Receptor da planilha',okR],['Link da turma',pronto]].forEach(([t,ok])=>ck.append(el('li',{class:ok?'ok':''},t)));
+    // prévia
+    const pv=$('#previa');pv.innerHTML='';
+    pv.append(el('div',{class:'panel stack',style:'gap:10px;padding:14px;box-shadow:none;background:var(--bg)'},
+      el('span',{class:'note'},'Esta ficha vai para ',el('strong',{},(C.nome||'').trim()||'(seu nome)')),
+      el('span',{class:'label'},'Turma'),el('div',{class:'chips'},(C.turmas.length?C.turmas:['—']).slice(0,9).map(t=>el('span',{class:'chip',style:'cursor:default'},t)),C.turmas.length>9?el('span',{class:'note'},'+'+(C.turmas.length-9)):null),
+      el('span',{class:'label'},'Grupo'),el('span',{class:'note'},'1 a '+C.grupos+' ou “Sem grupo”'),
+      el('span',{class:'btn primary',style:'pointer-events:none;align-self:flex-start'},'Enviar para '+((C.nome||'').trim()||'…'))));
+  }
+  save();
+})();
+</script>

@@ -1,0 +1,465 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="icons/favicon.ico" sizes="any"><link rel="icon" href="icons/portal.svg" type="image/svg+xml"><link rel="icon" href="icons/portal-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="icons/portal-180.png"></head><body>
+<title>Painel de Avaliação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<style>
+/* Layout: mesa da professora — cabeçalho com estado da conexão, abas (visão geral, correção, por aluno, formulários) e conteúdo em largura total */
+:root{
+  --bg:#eef0e9; --surface:#fcfcf9; --surface-2:#e4e9e1; --ink:#17231d; --muted:#556459; --line:#d3dbd0;
+  --accent:#1d6b58; --accent-soft:#d6e9e1; --ochre:#a3601b; --ochre-soft:#f3e3cd; --sky:#2a6497; --sky-soft:#dae7f2; --berry:#8a3560; --berry-soft:#f1dde7;
+  --good:#2b7a4b; --good-soft:#dbefe1; --mid:#9a6a0c; --mid-soft:#f6ead0; --bad:#b03c35; --bad-soft:#f7e0dd;
+  --shadow:0 1px 0 rgba(23,35,29,.04), 0 10px 28px -18px rgba(23,35,29,.3);
+  --f-display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1512; --surface:#161f1a; --surface-2:#202b25; --ink:#e3ebe5; --muted:#9aab9f; --line:#2a3731;
+  --accent:#4cb596; --accent-soft:#183329; --ochre:#e2a25a; --ochre-soft:#33261a; --sky:#77acdb; --sky-soft:#18293a; --berry:#e08ab3; --berry-soft:#33192a;
+  --good:#5cc08a; --good-soft:#163222; --mid:#e2b456; --mid-soft:#33290f; --bad:#ec7d72; --bad-soft:#3a1d1a;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 30px -18px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1512; --surface:#161f1a; --surface-2:#202b25; --ink:#e3ebe5; --muted:#9aab9f; --line:#2a3731;
+  --accent:#4cb596; --accent-soft:#183329; --ochre:#e2a25a; --ochre-soft:#33261a; --sky:#77acdb; --sky-soft:#18293a; --berry:#e08ab3; --berry-soft:#33192a;
+  --good:#5cc08a; --good-soft:#163222; --mid:#e2b456; --mid-soft:#33290f; --bad:#ec7d72; --bad-soft:#3a1d1a;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 30px -18px rgba(0,0,0,.7); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.15;text-wrap:balance}
+h1{font-size:1.6rem;font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.35rem;font-weight:800;letter-spacing:-.01em}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1360px;margin:0 auto;padding-inline:16px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:14px 8px}
+.top-row .sub{color:var(--muted);font-size:.86rem}
+.top-actions{margin-left:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.conn{display:inline-flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted)}
+.conn i{width:9px;height:9px;border-radius:50%;background:var(--muted);display:inline-block}
+.conn.ok i{background:var(--good)} .conn.err i{background:var(--bad)} .conn.load i{background:var(--mid)}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:10px}
+nav.tabs button{flex:none;border:1px solid transparent;background:none;padding:6px 14px;border-radius:999px;cursor:pointer;color:var(--muted);font-weight:700}
+nav.tabs button:hover{background:var(--surface);color:var(--ink)}
+nav.tabs button[aria-current="true"]{background:var(--accent-soft);color:var(--ink);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+main{padding-block:22px 64px;display:flex;flex-direction:column;gap:18px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:7px 14px;border-radius:10px;cursor:pointer;font-weight:700;font-size:.9rem;text-decoration:none;color:var(--ink)}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.btn.sm{padding:4px 10px;font-size:.8rem;border-radius:8px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);min-width:0}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:10px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:860px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.label{font-size:.74rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.note{font-size:.85rem;color:var(--muted)}
+.pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:.75rem;font-weight:700;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.pill.ok{background:var(--good-soft);color:var(--good)} .pill.mid{background:var(--mid-soft);color:var(--mid)} .pill.bad{background:var(--bad-soft);color:var(--bad)} .pill.info{background:var(--sky-soft);color:var(--sky)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:5px 12px;cursor:pointer;font-weight:700;border-right:1px solid var(--line);min-width:2.4em}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--surface)}
+input[type=text],input[type=search],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:6px 9px;min-width:0}
+textarea{width:100%;resize:vertical}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;box-shadow:var(--shadow)}
+.stat b{font-family:var(--f-display);font-size:1.9rem;font-weight:800;line-height:1.05;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{font-size:.8rem;color:var(--muted)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--surface);position:sticky;top:0}
+td.c,th.c{text-align:center}
+tr:last-child td{border-bottom:0}
+.cell{display:inline-flex;align-items:center;justify-content:center;min-width:44px;padding:3px 6px;border-radius:7px;font-family:var(--f-mono);font-weight:600;font-size:.85rem;cursor:pointer;border:1px solid transparent}
+.cell.none{color:var(--muted);cursor:default}
+.cell.g{background:var(--good-soft);color:var(--good)} .cell.m{background:var(--mid-soft);color:var(--mid)} .cell.b{background:var(--bad-soft);color:var(--bad)}
+.cell.pend{border-style:dashed;border-color:currentColor}
+.cell:hover:not(.none){filter:brightness(.95)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.86rem;display:inline-flex;gap:6px;align-items:center}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface);font-weight:700}
+.chip small{font-family:var(--f-mono);opacity:.8}
+.resp{display:flex;flex-direction:column;gap:12px}
+.resp-head{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.resp-head .who{display:flex;flex-direction:column}
+.resp-head .who b{font-size:1.05rem}
+.nota{margin-left:auto;text-align:right}
+.nota b{font-family:var(--f-display);font-size:2rem;font-weight:800;line-height:1}
+.obj{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;font-size:.88rem}
+.obj .ok{color:var(--good);font-weight:800} .obj .no{color:var(--bad);font-weight:800}
+.open-q{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.open-q blockquote{margin:0;padding:8px 12px;background:var(--bg);border-left:3px solid var(--sky);border-radius:0 8px 8px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.bar{height:10px;background:var(--surface-2);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.qrow{display:grid;grid-template-columns:minmax(0,1fr) 140px 46px;gap:10px;align-items:center;font-size:.86rem}
+.forms{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.fcard{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.qr{background:#fff;border-radius:10px;padding:8px;line-height:0}
+.qr svg{width:150px;height:150px}
+.link{font-family:var(--f-mono);font-size:.8rem;overflow-wrap:anywhere;color:var(--sky)}
+.overlay{position:fixed;inset:0;background:rgba(10,15,12,.88);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;color:#fff;text-align:center}
+.overlay .qr svg{width:min(70vmin,560px);height:min(70vmin,560px)}
+.overlay h2{color:#fff;font-size:clamp(1.4rem,3.5vw,2.6rem)}
+.overlay .link{color:#cfe3ef;font-size:1.2rem}
+.empty{border:2px dashed var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;background:var(--surface)}
+ol.steps{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:8px}
+pre.code{max-height:220px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;font-size:.75rem;font-family:var(--f-mono);white-space:pre}
+.err{background:var(--bad-soft);border:1px solid color-mix(in srgb,var(--bad) 50%,transparent);border-radius:10px;padding:10px 14px}
+.warn{background:var(--mid-soft);border:1px solid color-mix(in srgb,var(--mid) 50%,transparent);border-radius:10px;padding:10px 14px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.8rem;color:var(--muted);align-items:center}
+.legend .cell{cursor:default;min-width:34px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<header class="top">
+  <div class="wrap">
+    <div class="top-row">
+      <div class="stack" style="gap:0">
+        <h1>Painel de Avaliação</h1>
+        <span class="sub" id="sub">Biologia em Investigação · fichas enviadas pelos estudantes</span>
+      </div>
+      <div class="top-actions">
+        <a class="btn sm" href="index.html">← Portal</a><span class="conn load" id="conn"><i></i><span>Conectando…</span></span>
+        <a class="btn sm" id="sheetLink" href="#" target="_blank" rel="noopener" hidden>Planilha</a><button class="btn sm" id="btnConn" type="button">Conexão</button>
+        <button class="btn sm primary" id="btnRefresh">Atualizar</button>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="Seções">
+      <button data-v="geral">Visão geral</button>
+      <button data-v="correcao">Correção</button>
+      <button data-v="aluno">Por estudante</button>
+      <button data-v="forms">Envios</button>
+    </nav>
+  </div>
+</header>
+<div class="wrap"><div class="warn" id="unsaved" hidden style="margin-top:14px">Há correções não salvas. Salve antes de atualizar, ou <button class="btn sm" onclick="dirty.clear();this.parentNode.hidden=true;loadAll();">atualizar mesmo assim</button></div></div>
+<main class="wrap" id="main"></main>
+<script src="portal.js"></script>
+<script src="specs.js"></script>
+<script>
+// Fichas dos quatro sites (specs.js). O código de cada ficha leva o nome do site: "Ecologia · Aula 01".
+const P=window.PORTAL;
+const SITES={};P.ORDER.forEach(k=>SITES[k]=P.SITES[k].nome);
+const ALL=[];
+P.ORDER.forEach(k=>(window.SPECS[k]||[]).forEach(f=>{const g=Object.assign({},f);g.site=k;g.raw=f.code;g.code=P.codeFor(k,f.code);
+  const m=String(f.titulo).match(/^Aulas?\s+(\d+)(?:\s*e\s*(\d+))?/);g.short=m?(m[2]?m[1]+'–'+m[2]:m[1]):g.code.slice(-2);ALL.push(g);}));
+let SITE=(()=>{try{return localStorage.getItem('bi-painel-site')||'cel'}catch(e){return 'cel'}})();if(!SITES[SITE])SITE='cel';
+let SPEC=ALL.filter(f=>f.site===SITE);
+function setSite(v){SITE=v;try{localStorage.setItem('bi-painel-site',v)}catch(e){}SPEC=ALL.filter(f=>f.site===SITE);UI.ativ=SPEC[0].code;UI.aluno=null;UI.focus=null;render();}
+const SHORT=Object.fromEntries(ALL.map(f=>[f.code,f.short]));
+let SHEET_URL='';
+
+// ================= Utilidades =================
+const $=(q,r=document)=>r.querySelector(q);
+const $$=(q,r=document)=>[...r.querySelectorAll(q)];
+function h(tag,attrs={},...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs||{})){if(v==null||v===false)continue;if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(k==='html')e.innerHTML=v;else e.setAttribute(k,v===true?'':v);}for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+const norm=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+const fmt=(n,d=1)=>Number(n).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+function num(v){if(v==null)return NaN;let s=String(v).trim().replace(/\s/g,'');if(!s)return NaN;
+  if(/^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(s))s=s.replace(/\./g,'').replace(',','.');
+  else s=s.replace(',','.');s=s.replace(/[^0-9.\-]/g,'');return parseFloat(s);}
+const sheetRange=(tab,rng)=>"'"+tab.replace(/'/g,"''")+"'!"+rng;
+function seg(opts,val,on){const w=h('div',{class:'seg'});opts.forEach(([v,t])=>{const b=h('button',{type:'button','aria-pressed':String(v===val)},t);b.onclick=()=>{$$('button',w).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');on(v);};w.append(b);});return w;}
+function notaClass(n){return n==null?'none':n>=7?'g':n>=5?'m':'b';}
+
+// ================= Estado =================
+const S={tabs:[],forms:[],resp:{},aval:{},avalRows:0,alunos:[],errors:{},loadedAt:null,loading:false};
+const UI={view:'geral',turma:'todas',ativ:SPEC[0].code,status:'todos',busca:'',aluno:null,focus:null,conn:false};
+let CONN=null,DEMO=false;
+const dirty=new Set();
+
+// ================= Conexão com o receptor do professor =================
+function connCfg(){const p=P.prof()||{};const c=P.lsGet('bi-painel-conn',null)||{};return {r:c.r||p.r||'',senha:c.senha||p.senha||''};}
+function errMsg(e){
+  if(e&&e.code==='senha')return 'A senha não confere. Ela está na Área do professor e também no código do Apps Script (SENHA_PAINEL).';
+  if(e&&e.code==='rede')return P.standalone()?'Não consegui falar com o receptor. Confira a internet e se a implantação está como “Qualquer pessoa”.':'Dentro do Claude o painel não consegue falar com o Google. Abra o painel pelo portal publicado (por exemplo, no Cloudflare) ou veja como ele funciona com dados de exemplo.';
+  return (e&&e.message)||'Não foi possível ler a planilha.';}
+function setConn(state,text){const c=$('#conn');c.className='conn '+state;c.lastChild.textContent=text;}
+async function apiGet(params){let r;try{r=await fetch(P.urlDoReceptor(CONN.r)+'?'+new URLSearchParams(params),{cache:'no-store'});}catch(e){throw {code:'rede'};}
+  let j;try{j=await r.json();}catch(e){throw {code:'rede'};}if(!j||!j.ok)throw {code:(j&&j.erro)||'erro',message:j&&j.texto};return j;}
+async function saveRow(row){if(DEMO)return;let r;try{r=await fetch(P.urlDoReceptor(CONN.r),{method:'POST',body:JSON.stringify({acao:'nota',senha:CONN.senha,linha:row})});}catch(e){throw {code:'rede'};}
+  let j;try{j=await r.json();}catch(e){throw {code:'rede'};}if(!j||!j.ok)throw {code:(j&&j.erro)||'erro',message:j&&j.texto};}
+function applyData(abas){
+  S.tabs=Object.keys(abas||{});S.forms=[];S.resp={};S.aval={};S.alunos=[];
+  const al=abas['Alunos']||[];S.alunos=al.slice(1).filter(r=>r[0]&&String(r[0]).trim()).map(r=>({nome:String(r[0]).trim(),turma:String(r[1]||'').trim(),grupo:String(r[2]||'').trim()}));
+  const av=abas['Avaliação']||[];av.slice(1).forEach((r,i)=>{if(!r[0])return;let man={};try{man=JSON.parse(r[7]||'{}')}catch(e){}S.aval[r[0]]={row:i+2,man,nota:r[8]===''||r[8]==null?null:num(r[8]),coment:r[9]||'',quando:r[10]||''};});S.avalRows=av.length;
+  ALL.forEach(f=>{S.resp[f.code]=abas[f.code]?parseResp(f,abas[f.code]):[];});
+}
+async function loadAll(){
+  if(S.loading)return;
+  if(!DEMO&&!(CONN&&CONN.r&&CONN.senha)){setConn('err','Não conectado');render();return;}
+  S.loading=true;S.errors={};$('#btnRefresh').disabled=true;setConn('load',DEMO?'Montando exemplo…':'Lendo a planilha…');
+  try{
+    if(DEMO){applyData(S.demo||(S.demo=demoData()));SHEET_URL='';}
+    else{const j=await apiGet({acao:'dados',senha:CONN.senha});SHEET_URL=j.planilha||'';$('#sub').textContent='Biologia em Investigação · fichas de '+(j.professor||'professor');applyData(j.abas);}
+    S.loadedAt=new Date();
+    setConn(DEMO?'load':'ok',DEMO?'Dados de exemplo':'Atualizado às '+S.loadedAt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}));
+  }catch(e){S.errors.page=e&&e.code?e:{code:'rede'};S.loadedAt=null;setConn('err','Sem conexão');}
+  const sl=$('#sheetLink');sl.hidden=!SHEET_URL;if(SHEET_URL)sl.href=SHEET_URL;
+  S.loading=false;$('#btnRefresh').disabled=false;render();
+}
+
+// ================= Leitura e correção =================
+function parseResp(f,values){
+  if(!values||values.length<2)return[];
+  const hdr=values[0].map(x=>String(x).trim());const ix=t=>hdr.indexOf(t);
+  const iN=ix('Nome completo'),iT=ix('Turma'),iG=ix('Grupo');
+  return values.slice(1).map((r,i)=>{if(!r.some(c=>String(c).trim()))return null;const a={};hdr.forEach((t,j)=>a[t]=r[j]!=null?String(r[j]):'');
+    const nome=String(r[iN]||'').trim();const ts=String(r[0]||'');
+    return {code:f.code,f,row:i+2,ts,nome,nk:norm(nome),turma:String(r[iT]||'').trim(),grupo:String(r[iG]||'').trim(),a,key:f.code+'|'+ts+'|'+norm(nome)};}).filter(Boolean);
+}
+function auto(r){
+  const f=r.f;const items=[];let pts=0,max=0;
+  const val=t=>r.a[t]!=null?r.a[t]:'';
+  let quad=null;
+  if(f.site==='eco'&&f.raw==='Aula 04'){const cs=[1,2,3,4].map(i=>num(val('Contagem do quadrante '+i)));const ok=cs.every(x=>!isNaN(x));const m=ok?cs.reduce((a,b)=>a+b,0)/4:NaN;
+    const dens=num(val('Densidade estimada (sementes por cm²)')),tot=num(val('Total estimado na bandeja')),real=num(val('Total real contado')),erro=num(val('Diferença |estimativa − total real|'));
+    quad={m,dens,tot,real,erro,cs};}
+  f.itens.forEach(it=>{
+    if(!it.pts)return;max+=it.pts;const given=val(it.t);let ok=false,expect='';
+    if(it.k==='mc'){ok=given===it.key;expect=it.key;}
+    else if(it.k==='num'&&it.key!=null){const n=num(given);ok=!isNaN(n)&&Math.abs(n-it.key)<=(it.tol||0)+1e-9;expect=String(it.key).replace('.',',');}
+    else if(it.calc&&typeof it.calc==='object'&&it.calc.type==='pctmean'){const ps=it.calc.pairs.map(([a,b])=>{const x=num(val(a)),y=num(val(b));return x>0&&!isNaN(y)?(y-x)/x*100:NaN;}).filter(x=>!isNaN(x));const e=ps.length?ps.reduce((a,b)=>a+b,0)/ps.length:NaN;const n=num(given);ok=!isNaN(n)&&!isNaN(e)&&Math.abs(n-e)<=(it.calc.tol||.5);expect=isNaN(e)?'sem massas para conferir':'média das variações das réplicas = '+fmt(e,1)+'%';}
+    else if(it.calc&&quad){const q=quad;
+      if(it.calc==='dens'){const e=q.m/100;ok=!isNaN(q.dens)&&!isNaN(e)&&Math.abs(q.dens-e)<=Math.max(.0006,e*.03);expect='média ÷ 100 = '+(isNaN(e)?'?':fmt(e,3));}
+      if(it.calc==='total'){const e1=q.dens*1600,e2=q.m*16;ok=!isNaN(q.tot)&&((!isNaN(e1)&&Math.abs(q.tot-e1)<=Math.max(1.5,e1*.03))||(!isNaN(e2)&&Math.abs(q.tot-e2)<=Math.max(1.5,e2*.03)));expect='densidade × 1.600 ≈ '+(isNaN(e1)?'?':fmt(e1,0));}
+      if(it.calc==='erro'){const e=Math.abs(q.tot-q.real);ok=!isNaN(q.erro)&&!isNaN(e)&&Math.abs(q.erro-e)<=1.01;expect='|'+(isNaN(q.tot)?'?':fmt(q.tot,0))+' − '+(isNaN(q.real)?'?':fmt(q.real,0))+'| = '+(isNaN(e)?'?':fmt(e,0));}}
+    if(ok)pts+=it.pts;items.push({t:it.t,given,ok,expect,pts:it.pts});
+  });
+  return {pts,max,items};
+}
+const manItems=f=>f.itens.filter(it=>it.k==='par'&&it.man);
+const manMax=f=>manItems(f).reduce((a,it)=>a+it.man,0);
+function grade(r){
+  const A=auto(r);const ev=S.aval[r.key];const mi=manItems(r.f);const man=(ev&&ev.man)||{};
+  const scored=mi.filter(it=>man[it.t]!=null&&man[it.t]!=='');const mpts=scored.reduce((a,it)=>a+Number(man[it.t]),0);
+  const total=A.max+manMax(r.f);if(!total)return {A,man,mpts:0,total:0,done:true,nota:null,prov:null,semNota:true,coment:(ev&&ev.coment)||'',ev};const done=scored.length===mi.length&&!!ev;
+  const nota=total?((A.pts+mpts)/total)*10:null;
+  const prov=total?((A.pts+mpts)/(A.max+scored.reduce((a,it)=>a+it.man,0)||1))*10:null;
+  return {A,man,mpts,total,done,nota:done?nota:null,prov:(A.max+scored.reduce((a,it)=>a+it.man,0))?prov:null,coment:(ev&&ev.coment)||'',ev};
+}
+function latestBy(list,keyFn){const m=new Map();list.forEach(r=>m.set(keyFn(r),r));return m;}
+
+// ================= Estudantes =================
+function students(){
+  const map=new Map();
+  S.alunos.forEach(a=>map.set(norm(a.nome),{nk:norm(a.nome),nome:a.nome,turma:a.turma,grupo:a.grupo,roster:true}));
+  SPEC.forEach(f=>(S.resp[f.code]||[]).forEach(r=>{if(!r.nk)return;const s=map.get(r.nk);if(s){if(!s.roster){s.nome=r.nome;s.turma=r.turma||s.turma;}}else map.set(r.nk,{nk:r.nk,nome:r.nome,turma:r.turma,grupo:r.grupo,roster:false});}));
+  return [...map.values()].sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+}
+const turmaOk=t=>UI.turma==='todas'||String(t).trim()===UI.turma;
+
+// ================= Renderização =================
+function render(){
+  $$('nav.tabs button').forEach(b=>b.setAttribute('aria-current',String(b.dataset.v===UI.view)));
+  const m=$('#main');m.innerHTML='';
+  if(DEMO)m.append(h('div',{class:'warn row',style:'justify-content:space-between'},h('span',{},h('strong',{},'Dados de exemplo. '),'Estudantes e respostas inventados para mostrar o painel. As correções não são gravadas.'),h('button',{class:'btn sm',onclick:()=>{DEMO=false;UI.conn=true;S.loadedAt=null;render();}},'Conectar à minha planilha')));
+  if(UI.conn||(!DEMO&&!(CONN&&CONN.r&&CONN.senha))){m.append(connect());return;}
+  if(S.errors.page){m.append(h('div',{class:'err'},h('strong',{},'Não consegui abrir a planilha. '),errMsg(S.errors.page)));m.append(connect());return;}
+  if(!S.loadedAt){m.append(h('p',{class:'note'},'Lendo a planilha…'));return;}
+  ['forms','alunos','aval'].concat(ALL.map(f=>f.code)).forEach(k=>{if(S.errors[k])m.append(h('div',{class:'warn'},h('strong',{},(k==='forms'?'Aba Formulários':k==='alunos'?'Aba Alunos':k==='aval'?'Aba Avaliação':k)+': '),errMsg(S.errors[k])));});
+  ({geral:viewGeral,correcao:viewCorrecao,aluno:viewAluno,forms:viewForms})[UI.view](m);
+}
+function turmasAll(){const t=new Set();S.alunos.forEach(a=>a.turma&&t.add(a.turma));ALL.forEach(f=>(S.resp[f.code]||[]).forEach(r=>r.turma&&t.add(r.turma)));return [...t].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}));}
+function turmaFilter(){const ts=turmasAll();if(UI.turma!=='todas'&&!ts.includes(UI.turma))UI.turma='todas';
+  const ss=h('select',{'aria-label':'Site',id:'fSite'},Object.entries(SITES).map(([k,n])=>h('option',{value:k,selected:k===SITE},n)));ss.onchange=()=>setSite(ss.value);
+  const st=h('select',{'aria-label':'Turma',id:'fTurma'},[['todas','Todas as turmas']].concat(ts.map(t=>[t,t])).map(([v,n])=>h('option',{value:v,selected:v===UI.turma},n)));st.onchange=()=>{UI.turma=st.value;render();};
+  return h('div',{class:'row'},h('span',{class:'label'},'Site'),ss,h('span',{class:'label'},'Turma'),st);}
+
+function viewGeral(m){
+  const st=students().filter(s=>turmaOk(s.turma));
+  const subs=SPEC.flatMap(f=>S.resp[f.code]||[]).filter(r=>turmaOk(r.turma));
+  const pend=subs.filter(r=>!grade(r).done).length;
+  m.append(h('div',{class:'row',style:'justify-content:space-between'},h('h2',{},'Visão geral'),turmaFilter()));
+  m.append(h('div',{class:'stats'},
+    h('div',{class:'stat'},h('b',{},st.length),h('span',{},'estudantes')),
+    h('div',{class:'stat'},h('b',{},subs.length),h('span',{},'envios recebidos')),
+    h('div',{class:'stat'},h('b',{},pend),h('span',{},'envios aguardando correção')),
+    h('div',{class:'stat'},h('b',{},SPEC.filter(f=>(S.resp[f.code]||[]).some(r=>turmaOk(r.turma))).length+'/'+SPEC.length),h('span',{},'atividades com envios'))));
+  m.append(h('div',{class:'legend'},h('span',{class:'cell g'},'8,5'),'nota final (0 a 10)',h('span',{class:'cell m pend'},'6,0'),'parcial: falta corrigir as respostas abertas',h('span',{class:'cell none'},'—'),'sem envio'));
+  if(!st.length){m.append(h('div',{class:'empty'},h('h3',{},'Nenhum envio ainda'),h('p',{},'Assim que os estudantes enviarem as fichas deste site, cada um aparece aqui numa linha. Para ver também quem ainda não enviou, crie na sua planilha uma aba “Alunos” com a lista da turma (coluna A nome, B turma, C grupo).'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener'},'Abrir a planilha'):null));return;}
+  const t=h('table');const hr=h('tr',{},h('th',{},'Estudante'),h('th',{},'Turma'),h('th',{},'Grupo'));SPEC.forEach(f=>hr.append(h('th',{class:'c',title:f.titulo},SHORT[f.code])));hr.append(h('th',{class:'c'},'Média'));t.append(h('thead',{},hr));
+  const tb=h('tbody');
+  const latest={};SPEC.forEach(f=>latest[f.code]=latestBy(S.resp[f.code]||[],r=>r.nk));
+  st.forEach(s=>{const tr=h('tr',{},h('td',{},h('button',{class:'btn sm',style:'border:0;background:none;padding:0;font-weight:700',onclick:()=>{UI.view='aluno';UI.aluno=s.nk;render();}},s.nome),s.roster?null:h('span',{class:'note'},' ')),h('td',{},s.turma||'—'),h('td',{},s.grupo||'—'));
+    const ns=[];
+    SPEC.forEach(f=>{const r=latest[f.code].get(s.nk);if(!r){tr.append(h('td',{class:'c'},h('span',{class:'cell none'},'—')));return;}
+      const g=grade(r);const v=g.done?g.nota:g.prov;if(g.done&&g.nota!=null)ns.push(g.nota);
+      tr.append(h('td',{class:'c'},h('span',{class:'cell '+notaClass(v)+(g.done?'':' pend'),title:g.semNota?'Enviado (sem nota)':g.done?'Corrigido':'Falta corrigir as respostas abertas',onclick:()=>{UI.view='correcao';UI.ativ=f.code;UI.focus=r.key;UI.status='todos';UI.busca='';render();}},g.semNota?'✓':v==null?'abrir':fmt(v))));});
+    const avg=ns.length?ns.reduce((a,b)=>a+b,0)/ns.length:null;
+    tr.append(h('td',{class:'c'},h('span',{class:'cell '+notaClass(avg),style:'cursor:default'},avg==null?'—':fmt(avg))));
+    tb.append(tr);});
+  t.append(tb);m.append(h('div',{class:'tbl'},t));
+  m.append(h('p',{class:'note'},'A média considera só as atividades já corrigidas. Clique numa nota para abrir a correção daquele envio.'));
+}
+
+function viewCorrecao(m){
+  const f=SPEC.find(x=>x.code===UI.ativ)||SPEC[0];
+  m.append(h('div',{class:'row',style:'justify-content:space-between'},h('h2',{},'Correção'),turmaFilter()));
+  const chips=h('div',{class:'chips'});
+  SPEC.forEach(x=>{const rs=(S.resp[x.code]||[]).filter(r=>turmaOk(r.turma));const p=rs.filter(r=>!grade(r).done).length;
+    chips.append(h('button',{class:'chip','aria-pressed':String(x.code===f.code),onclick:()=>{UI.ativ=x.code;UI.focus=null;render();}},'Aula '+SHORT[x.code],h('small',{},rs.length?(p?p+' pend.':'✓ '+rs.length):'0')));});
+  m.append(chips);
+  m.append(h('div',{class:'row'},h('h3',{},f.titulo),h('span',{class:'pill info'},f.tipo),h('span',{class:'pill'},'Automático: '+f.itens.reduce((a,it)=>a+(it.pts||0),0)+' pt'),h('span',{class:'pill'},'Professor: '+manMax(f)+' pt')));
+  let rs=(S.resp[f.code]||[]).filter(r=>turmaOk(r.turma));
+  if(!S.tabs.includes(f.code)){m.append(h('div',{class:'empty'},h('p',{},'Ainda não chegou nenhum envio desta atividade. A aba “'+f.code+'” aparece na sua planilha no primeiro envio.')));return;}
+  if(!rs.length){m.append(h('div',{class:'empty'},h('p',{},'Ainda não há envios para esta atividade'+(UI.turma!=='todas'?' na turma '+UI.turma:'')+'.')));return;}
+  // Diagnóstico por questão
+  const A0=rs.map(r=>auto(r));const objs=f.itens.filter(it=>it.pts);
+  if(objs.length){const p=h('div',{class:'panel stack'},h('h3',{},'Acertos por questão objetiva'),h('p',{class:'note'},'Ajuda a decidir o que retomar com a turma. Considera todos os envios filtrados.'));
+    objs.forEach(it=>{const n=A0.filter(a=>a.items.find(x=>x.t===it.t&&x.ok)).length;const pc=n/rs.length*100;p.append(h('div',{class:'qrow'},h('span',{},it.t),h('div',{class:'bar'},h('i',{style:`width:${pc}%;background:${pc>=70?'var(--good)':pc>=50?'var(--mid)':'var(--bad)'}`})),h('span',{class:'mono'},Math.round(pc)+'%')));});
+    m.append(p);}
+  const livres=f.itens.filter(it=>it.k==='mc'&&!it.pts);
+  if(livres.length){const lat=[...latestBy(rs,r=>r.nk).values()];const p=h('div',{class:'panel stack'},h('h3',{},'Respostas da turma (sem correção)'),h('p',{class:'note'},'Distribuição das escolhas, usando o envio mais recente de cada estudante.'));
+    livres.forEach(it=>{p.append(h('strong',{style:'font-size:.9rem'},it.t));it.ch.forEach(c=>{const n=lat.filter(r=>r.a[it.t]===c).length;const pc=lat.length?n/lat.length*100:0;p.append(h('div',{class:'qrow'},h('span',{},c),h('div',{class:'bar'},h('i',{style:`width:${pc}%`})),h('span',{class:'mono'},n)));});});m.append(p);}
+  if(f.site==='eco'&&f.raw==='Aula 10')m.append(expSummary(rs));
+  // Filtros
+  const bus=h('input',{type:'search',placeholder:'Buscar estudante',value:UI.busca,'aria-label':'Buscar estudante'});bus.oninput=()=>{UI.busca=bus.value;drawList();};
+  m.append(h('div',{class:'row'},h('span',{class:'label'},'Mostrar'),seg([['todos','Todos'],['pend','Pendentes'],['ok','Corrigidos']],UI.status,v=>{UI.status=v;drawList();}),bus));
+  const list=h('div',{class:'stack'});m.append(list);
+  const latestKeys=new Set([...latestBy(rs,r=>r.nk).values()].map(r=>r.key));
+  function drawList(){list.innerHTML='';let L=rs.slice().reverse();
+    if(UI.status!=='todos')L=L.filter(r=>grade(r).done===(UI.status==='ok'));
+    if(UI.busca)L=L.filter(r=>r.nk.includes(norm(UI.busca)));
+    if(UI.focus)L.sort((a,b)=>(b.key===UI.focus)-(a.key===UI.focus));
+    if(!L.length)list.append(h('p',{class:'note'},'Nenhum envio com esse filtro.'));
+    L.forEach(r=>list.append(respCard(r,!latestKeys.has(r.key))));
+    if(UI.focus){const el=list.firstChild;if(el&&el.scrollIntoView)setTimeout(()=>el.scrollIntoView({block:'start'}),50);UI.focus=null;}}
+  drawList();
+}
+function expSummary(rs){
+  const TR=['Sem cobertura','Cobertura morta','Cobertura viva'];
+  const p=h('div',{class:'panel stack'},h('h3',{},'Resultados por grupo (médias das réplicas, em mL)'));
+  const groups=latestBy(rs,r=>r.turma+'|'+r.grupo);
+  const hr=h('tr',{},h('th',{},'Turma'),h('th',{},'Grupo'),h('th',{class:'c'},'Aplicado'));TR.forEach(n=>{hr.append(h('th',{class:'c'},n+' · fundo'),h('th',{class:'c'},n+' · superfície'));});hr.append(h('th',{},'Conferência'));
+  const t=h('table');t.append(h('thead',{},hr));const tb=h('tbody');
+  [...groups.values()].sort((a,b)=>(a.turma+a.grupo).localeCompare(b.turma+b.grupo)).forEach(r=>{
+    const ap=num(r.a['Volume aplicado em cada réplica (mL)']);
+    const g=(tr,kind)=>{const v=[1,2,3].map(i=>num(r.a[tr+' '+i+' · '+kind+' (mL)'])).filter(x=>!isNaN(x));return v.length?v.reduce((a,b)=>a+b,0)/v.length:NaN;};
+    const over=[1,2,3].some(i=>TR.some(tr=>num(r.a[tr+' '+i+' · fundo (mL)'])+num(r.a[tr+' '+i+' · superfície (mL)'])>ap+0.5));
+    const pc=v=>isNaN(v)?'—':fmt(v,0)+(isNaN(ap)?'':' ('+fmt(v/ap*100,0)+'%)');
+    const row=h('tr',{},h('td',{},r.turma),h('td',{},r.grupo),h('td',{class:'c mono'},isNaN(ap)?'—':fmt(ap,0)));
+    TR.forEach(tr=>row.append(h('td',{class:'c mono'},pc(g(tr,'fundo'))),h('td',{class:'c mono'},pc(g(tr,'superfície')))));
+    row.append(h('td',{},over?h('span',{class:'pill bad'},'fundo + superfície > aplicado'):h('span',{class:'pill ok'},'coerente')));tb.append(row);});
+  t.append(tb);p.append(h('div',{class:'tbl'},t),h('p',{class:'note'},'Usa o envio mais recente de cada grupo.'));return p;
+}
+function respCard(r,old){
+  const g=grade(r);const f=r.f;const man=Object.assign({},g.man);let coment=g.coment;
+  const card=h('div',{class:'panel resp'});
+  const notaEl=h('b',{});const stEl=h('span',{});const notaLbl=h('span',{class:'label'},'Nota');
+  function upd(){if(g.semNota){notaEl.textContent='—';notaLbl.textContent='Sem nota';stEl.innerHTML='';stEl.append(h('span',{class:'pill info'},'Autoavaliação'));return;}const mi=manItems(f);const sc=mi.filter(it=>man[it.t]!=null&&man[it.t]!=='');const mp=sc.reduce((a,it)=>a+Number(man[it.t]),0);const tot=g.A.max+manMax(f);const n=tot?((g.A.pts+mp)/tot)*10:0;
+    notaEl.textContent=fmt(n);notaEl.style.color=`var(--${notaClass(n)==='g'?'good':notaClass(n)==='m'?'mid':'bad'})`;
+    notaLbl.textContent=sc.length===mi.length?'Nota':'Nota parcial (abertas sem nota contam 0)';stEl.innerHTML='';stEl.append(sc.length===mi.length?h('span',{class:'pill ok'},'Todas as abertas avaliadas'):h('span',{class:'pill mid'},(mi.length-sc.length)+' aberta(s) sem nota'));}
+  card.append(h('div',{class:'resp-head'},h('div',{class:'who'},h('b',{},r.nome||'(sem nome)'),h('span',{class:'note'},'Turma '+(r.turma||'—')+' · Grupo '+(r.grupo||'—')+' · '+r.ts)),
+    h('div',{class:'row'},g.done?h('span',{class:'pill ok'},'Corrigido'):h('span',{class:'pill mid'},'Pendente'),old?h('span',{class:'pill'},'Envio anterior (há um mais recente)'):null,stEl),
+    h('div',{class:'nota'},notaLbl,h('br'),notaEl,h('span',{class:'note'},' / 10'))));
+  if(g.A.items.length){const o=h('div',{class:'obj'});o.append(h('span',{class:'label',style:'grid-column:1/-1'},'Objetivas: '+g.A.pts+' de '+g.A.max));
+    g.A.items.forEach(it=>{o.append(h('span',{class:it.ok?'ok':'no'},it.ok?'✓':'✗'),h('span',{},h('strong',{},it.t+': '),it.given||'(em branco)',it.ok?'':h('span',{class:'note'},' · esperado: '+it.expect)));});card.append(o);}
+  if(r.a['Previsão inicial'])card.append(h('div',{class:'open-q'},h('span',{class:'label'},'Previsão inicial (Para começar)'),h('blockquote',{style:'border-left-color:var(--ochre)'},r.a['Previsão inicial'])));
+  const extra=f.itens.filter(it=>!it.pts&&!(it.k==='par'&&it.man)&&it.k!=='hdr');
+  if(extra.length){const o=h('div',{class:'obj'});o.append(h('span',{class:'label',style:'grid-column:1/-1'},'Outras respostas'));extra.forEach(it=>o.append(h('span',{},'·'),h('span',{},h('strong',{},it.t+': '),r.a[it.t]||'(em branco)')));card.append(o);}
+  manItems(f).forEach(it=>{const opts=[];for(let i=0;i<=it.man;i++)opts.push([i,String(i)]);
+    const sg=seg(opts,man[it.t]!=null?Number(man[it.t]):null,v=>{man[it.t]=v;dirty.add(r.key);upd();saveBtn.disabled=false;saveBtn.textContent='Salvar correção';});
+    card.append(h('div',{class:'open-q'},h('strong',{},it.t),h('blockquote',{},r.a[it.t]||'(em branco)'),h('div',{class:'row'},h('span',{class:'label'},'Pontos (0 a '+it.man+')'),sg)));});
+  const ta=h('textarea',{rows:2,placeholder:'Comentário para o estudante (opcional)','aria-label':'Comentário'});ta.value=coment;ta.oninput=()=>{coment=ta.value;dirty.add(r.key);saveBtn.disabled=false;saveBtn.textContent='Salvar correção';};
+  const msg=h('span',{class:'note'});
+  const saveBtn=h('button',{class:'btn primary',disabled:true},'Salvar correção');
+  saveBtn.onclick=async()=>{saveBtn.disabled=true;saveBtn.textContent='Salvando…';msg.textContent='';
+    const mi=manItems(f);const mp=mi.reduce((a,it)=>a+(man[it.t]!=null?Number(man[it.t]):0),0);const tot=g.A.max+manMax(f);const done=mi.every(it=>man[it.t]!=null);
+    const nota=done&&tot?Math.round(((g.A.pts+mp)/tot)*100)/10:'';
+    const row=[r.key,f.code,r.turma,r.nome,r.grupo,g.A.pts,g.A.max,JSON.stringify(man),nota,coment,new Date().toLocaleString('pt-BR')];
+    try{await saveRow(row);S.aval[r.key]=S.aval[r.key]||{};
+      Object.assign(S.aval[r.key],{man:Object.assign({},man),nota:nota===''?null:nota,coment,quando:row[10]});
+      dirty.delete(r.key);saveBtn.textContent='Salvo';msg.textContent=done?'Nota registrada na aba Avaliação.':'Salvo como parcial: ainda há respostas abertas sem nota.';
+    }catch(e){saveBtn.disabled=false;saveBtn.textContent='Tentar salvar de novo';msg.textContent=errMsg(e);msg.style.color='var(--bad)';}};
+  card.append(h('div',{class:'stack',style:'gap:6px'},h('span',{class:'label'},'Comentário'),ta),h('div',{class:'row'},saveBtn,msg));
+  upd();return card;
+}
+
+function viewAluno(m){
+  const st=students().filter(s=>turmaOk(s.turma));
+  m.append(h('div',{class:'row',style:'justify-content:space-between'},h('h2',{},'Por estudante'),turmaFilter()));
+  if(!st.length){m.append(h('p',{class:'note'},'Nenhum estudante ainda.'));return;}
+  const sel=h('select',{'aria-label':'Estudante'},st.map(s=>h('option',{value:s.nk,selected:s.nk===UI.aluno},s.nome+(s.turma?' · '+s.turma:''))));
+  sel.onchange=()=>{UI.aluno=sel.value;render();};if(!st.some(s=>s.nk===UI.aluno))UI.aluno=st[0].nk;
+  m.append(h('div',{class:'row'},h('span',{class:'label'},'Estudante'),sel));
+  const s=st.find(x=>x.nk===UI.aluno);
+  const rows=SPEC.map(f=>{const r=latestBy(S.resp[f.code]||[],x=>x.nk).get(s.nk);return {f,r,g:r?grade(r):null};});
+  const done=rows.filter(x=>x.g&&x.g.done&&x.g.nota!=null);const avg=done.length?done.reduce((a,x)=>a+x.g.nota,0)/done.length:null;
+  m.append(h('div',{class:'stats'},h('div',{class:'stat'},h('b',{},avg==null?'—':fmt(avg)),h('span',{},'média das atividades corrigidas')),h('div',{class:'stat'},h('b',{},rows.filter(x=>x.r).length+'/'+SPEC.length),h('span',{},'atividades enviadas')),h('div',{class:'stat'},h('b',{},rows.filter(x=>x.r&&!x.g.done).length),h('span',{},'aguardando correção'))));
+  const t=h('table');t.append(h('thead',{},h('tr',{},h('th',{},'Aula'),h('th',{},'Atividade'),h('th',{class:'c'},'Objetivas'),h('th',{class:'c'},'Nota'),h('th',{},'Comentário'))));
+  const tb=h('tbody');rows.forEach(({f,r,g})=>{tb.append(h('tr',{},h('td',{},SHORT[f.code]),h('td',{},f.titulo.replace(/^Aulas? [\d e]+ · /,'')),h('td',{class:'c mono'},g?g.A.pts+'/'+g.A.max:'—'),
+    h('td',{class:'c'},r?h('span',{class:'cell '+notaClass(g.done?g.nota:g.prov)+(g.done?'':' pend'),onclick:()=>{UI.view='correcao';UI.ativ=f.code;UI.focus=r.key;render();}},g.semNota?'✓':g.done?fmt(g.nota):(g.prov==null?'abrir':fmt(g.prov))):h('span',{class:'cell none'},'—')),
+    h('td',{style:'white-space:normal;min-width:200px'},g&&g.coment?g.coment:'')));});
+  t.append(tb);m.append(h('div',{class:'tbl'},t));
+}
+
+function viewForms(m){
+  m.append(h('div',{class:'row',style:'justify-content:space-between'},h('h2',{},'Envios'),turmaFilter()));
+  m.append(h('div',{class:'grid2'},
+    h('div',{class:'panel stack'},h('h3',{},'Envios por atividade · '+SITES[SITE]),...SPEC.map(f=>{const rs=(S.resp[f.code]||[]).filter(r=>turmaOk(r.turma));const n=rs.length;const al=new Set(rs.map(r=>r.nk)).size;return h('div',{class:'qrow',style:'grid-template-columns:minmax(0,1fr) auto'},h('span',{},f.titulo),h('span',{class:'mono',style:'text-align:right'},n?al+' estudante'+(al>1?'s':'')+(n>al?' · '+n+' envios':''):'—'));})),
+    h('div',{class:'panel stack'},h('h3',{},'Link da turma e QR code'),h('p',{class:'note'},'O link, o QR code e o código da turma ficam na Área do professor. Quem entra pelo link já envia as fichas para a sua planilha.'),h('a',{class:'btn primary',href:'professor.html',style:'align-self:flex-start'},'Abrir a Área do professor'),
+      h('h3',{style:'margin-top:8px'},'Lista da turma'),h('p',{class:'note'},'Para ver no painel quem ainda não enviou, crie na planilha uma aba chamada “Alunos”: coluna A nome completo, B turma (igual à do link, por exemplo 2ºA) e C grupo.'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener',style:'align-self:flex-start'},'Abrir a planilha'):null)));
+}
+function project(f,link){const o=h('div',{class:'overlay',role:'dialog','aria-label':'QR code em tela cheia'},h('h2',{},f.titulo),h('div',{class:'qr',html:qrSvg(link)}),h('span',{class:'link'},link),h('button',{class:'btn',onclick:()=>o.remove()},'Fechar'));o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
+function copy(text,btn){const done=()=>{const t=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=t,1500);};try{navigator.clipboard.writeText(text).then(done).catch(()=>sel());}catch(e){sel();}function sel(){const r=document.createRange();const el=btn.closest('.panel,.empty').querySelector('.link,pre');if(el){r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);}}}
+
+function connect(){
+  const c=CONN||connCfg();
+  const url=h('input',{type:'text',id:'cUrl',placeholder:'https://script.google.com/macros/s/…/exec',value:c.r?P.urlDoReceptor(c.r):'',spellcheck:'false',autocomplete:'off',style:'width:100%'});
+  const pw=h('input',{type:'text',id:'cSenha',placeholder:'senha do painel',value:c.senha||'',spellcheck:'false',autocomplete:'off',style:'width:100%;font-family:var(--f-mono)'});
+  const msg=h('p',{class:'note',role:'status'});
+  const go=h('button',{class:'btn primary',type:'button'},'Conectar');
+  go.onclick=()=>{const r=P.idDoReceptor(url.value);const sn=pw.value.trim();if(!r){msg.textContent='Esse endereço não parece o URL do receptor. Ele começa com https://script.google.com/macros/s/ e termina em /exec.';msg.style.color='var(--bad)';return;}if(sn.length<6){msg.textContent='Digite a senha do painel.';msg.style.color='var(--bad)';return;}
+    CONN={r,senha:sn};P.lsSet('bi-painel-conn',CONN);DEMO=false;UI.conn=false;S.loadedAt=null;loadAll();};
+  const demo=h('button',{class:'btn',type:'button'},'Ver com dados de exemplo');demo.onclick=()=>{DEMO=true;UI.conn=false;S.demo=null;loadAll();};
+  const box=h('div',{class:'empty',style:'max-width:760px'},
+    h('h2',{},'Conectar o painel à sua planilha'),
+    h('p',{},'O painel lê as fichas na sua planilha pelo receptor que você criou na Área do professor. Informe o endereço do receptor e a senha do painel.'),
+    !P.standalone()?h('div',{class:'warn'},'Você está vendo o painel dentro do Claude, onde ele não consegue falar com o Google. Para corrigir as fichas, abra o portal publicado. Aqui dá para ver como o painel funciona com dados de exemplo.'):null,
+    h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'URL do receptor'),url),
+    h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Senha do painel'),pw),
+    h('div',{class:'row'},go,demo,CONN&&CONN.r&&UI.conn?h('button',{class:'btn ghost',type:'button',onclick:()=>{UI.conn=false;render();}},'Cancelar'):null),msg,
+    h('p',{class:'note'},'Ainda não tem receptor? ',h('a',{href:'professor.html'},'Configure na Área do professor'),'. Se você configurou neste navegador, o endereço e a senha já aparecem preenchidos.'));
+  return box;
+}
+function demoData(){
+  const NOMES=['Ana Clara Souza','Bruno Lima','Camila Rocha','Davi Nascimento','Eduarda Alves','Felipe Moura','Gabriela Freitas','Heitor Santos','Isabela Costa','João Pedro Melo','Larissa Dias','Mateus Pereira'];
+  const TUR=['1ºA','1ºB','2ºA','3ºC'];const rnd=(()=>{let x=7;return()=>{x=(x*16807)%2147483647;return (x-1)/2147483646;};})();
+  const pick=a=>a[Math.floor(rnd()*a.length)];
+  const TXT=['Porque a célula realiza todas as funções vitais e se origina de outra célula.','Os dados mostram que o tratamento com cobertura reteve mais água do que o controle.','Observei a parede celular e o núcleo; não consegui distinguir as mitocôndrias.','A hipótese se confirmou em parte: as réplicas variaram, mas a tendência se manteve.','Faltam dados de mais réplicas para afirmar com segurança.'];
+  const abas={},av=[['Chave','Atividade','Turma','Nome','Grupo','Pontos automáticos','Máximo automático','Pontos das abertas','Nota','Comentário','Atualizado em']];
+  const alunos=[['Nome completo','Turma','Grupo']];NOMES.forEach((n,i)=>alunos.push([n,TUR[i%TUR.length],String(1+i%4)]));abas['Alunos']=alunos;
+  ALL.forEach((f,fi)=>{const it=f.itens.filter(x=>x.k!=='hdr');const cab=['Carimbo de data/hora','Nome completo','Turma','Grupo'].concat(it.map(x=>x.t)).concat(['ID do envio']);const rows=[cab];
+    NOMES.forEach((n,i)=>{if(rnd()<.3)return;const d=new Date(2026,9,1+(fi%20),7+i%5,10+i*3);const ts=('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':00';
+      const r=[ts,n,TUR[i%TUR.length],String(1+i%4)];
+      it.forEach(x=>{let v='';if(x.k==='mc')v=x.key&&rnd()<.72?x.key:pick(x.ch);else if(x.k==='num')v=x.key!=null&&rnd()<.7?String(x.key).replace('.',','):String(Math.round(rnd()*40));else if(x.k==='par')v=pick(TXT);else v='Exemplo de resposta curta';r.push(v);});
+      r.push('demo'+fi+'-'+i);rows.push(r);});
+    abas[f.code]=rows;});
+  abas['Avaliação']=av;return abas;
+}
+// ================= Início =================
+function boot(){
+  $$('nav.tabs button').forEach(b=>b.onclick=()=>{UI.view=b.dataset.v;UI.conn=false;render();});
+  $('#btnRefresh').onclick=()=>{if(dirty.size&&!confirmInline())return;loadAll();};
+  $('#btnConn').onclick=()=>{UI.conn=true;render();};
+  CONN=connCfg();
+  render();
+  loadAll();
+  setInterval(()=>{if(!DEMO&&CONN&&CONN.r&&CONN.senha&&!dirty.size&&document.visibilityState==='visible'&&UI.view!=='correcao')loadAll();},120000);
+}
+function confirmInline(){const w=$('#unsaved');w.hidden=false;return false;}
+boot();
+
+</script>
+
+
+</body></html>
