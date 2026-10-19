@@ -117,6 +117,10 @@ footer .wrap{padding-block:22px 40px;display:flex;flex-direction:column;gap:6px}
 .serie{display:grid;grid-template-columns:86px minmax(0,1fr);gap:12px;align-items:center;padding-block:8px;border-bottom:1px solid var(--line)}
 .serie:last-of-type{border-bottom:0}
 .serie b{font-family:var(--f-display);font-size:1.1rem}
+.escola-box{border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.escola-top{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap}.escola-top .field{flex:1 1 240px}
+.link-escola{border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.link-escola h3{margin:0;font-family:var(--f-display);font-size:1.15rem}
 @media (max-width:480px){.serie{grid-template-columns:minmax(0,1fr)}}
 ol.howto{margin:0;padding-left:1.35em;display:flex;flex-direction:column;gap:9px}
 ol.howto li::marker{font-family:var(--f-mono);font-weight:700;color:var(--accent)}
@@ -159,21 +163,16 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
       <section class="step" id="s1"><span class="step-n">1</span>
         <div class="panel">
           <div class="stack" style="gap:4px"><h2>Seu nome</h2><p class="note">É o nome que aparece na ficha, no botão “Enviar para…” e na confirmação do envio.</p></div>
-          <div class="grid2">
-            <label class="field"><span class="label">Como os estudantes chamam você</span><input type="text" id="pNome" maxlength="60" placeholder="Prof.ª Ana Souza" autocomplete="name"></label>
-            <label class="field"><span class="label">Escola (opcional)</span><input type="text" id="pEscola" maxlength="80" placeholder="EE Professor João Lima"></label>
-          </div>
+          <label class="field" style="max-width:420px"><span class="label">Como os estudantes chamam você</span><input type="text" id="pNome" maxlength="60" placeholder="Prof.ª Ana Souza" autocomplete="name"></label>
         </div>
       </section>
 
       <section class="step" id="s2"><span class="step-n">2</span>
         <div class="panel">
-          <div class="stack" style="gap:4px"><h2>Suas turmas</h2><p class="note">Marque as turmas de cada ano. O estudante escolhe a turma dele na ficha.</p></div>
-          <div id="series"></div>
-          <div class="grid2">
-            <label class="field"><span class="label">Outras turmas (separe por vírgula)</span><input type="text" id="pOutras" maxlength="200" placeholder="2º Técnico, EJA 3"></label>
-            <label class="field"><span class="label">Grupos por turma</span><input type="number" id="pGrupos" min="1" max="20" value="8" inputmode="numeric"></label>
-          </div>
+          <div class="stack" style="gap:4px"><h2>Suas escolas e turmas</h2><p class="note">Marque as turmas de cada ano. O estudante escolhe a turma dele na ficha. Dá aula em mais de uma escola? Adicione cada uma: cada escola ganha o seu próprio link e QR code, e as fichas de todas chegam na mesma planilha, com a coluna “Escola”. No painel, você filtra por escola e turma.</p></div>
+          <div id="escolas" class="stack" style="gap:16px"></div>
+          <div class="row"><button type="button" class="btn" id="addEscola">+ Adicionar outra escola</button></div>
+          <label class="field" style="max-width:220px"><span class="label">Grupos por turma</span><input type="number" id="pGrupos" min="1" max="20" value="8" inputmode="numeric"></label>
         </div>
       </section>
 
@@ -198,7 +197,7 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
           <label class="field"><span class="label">URL do app da Web</span><input type="url" id="pReceptor" placeholder="https://script.google.com/macros/s/…/exec" spellcheck="false" autocomplete="off"></label>
           <div class="row"><button type="button" class="btn" id="testar">Testar o receptor</button><a class="btn ghost" id="abrirReceptor" target="_blank" rel="noopener" hidden>Abrir o receptor em outra aba</a></div>
           <div class="status" id="recStatus" role="status"><i></i><span>Cole o URL para ligar as fichas à sua planilha.</span></div>
-          <p class="note">Mudou o seu nome ou gerou outra senha depois de implantar? Cole o código de novo no Apps Script e atualize em <b>Implantar → Gerenciar implantações → Editar → Nova versão</b>. O endereço continua o mesmo.</p>
+          <p class="note">Mudou o seu nome, gerou outra senha ou passou a usar mais de uma escola depois de implantar? Cole o código de novo no Apps Script e atualize em <b>Implantar → Gerenciar implantações → Editar → Nova versão</b>. O endereço continua o mesmo.</p>
         </div>
       </section>
 
@@ -244,7 +243,7 @@ const SENHA_PAINEL = __SENHA__;
 const SITES = ['Ecologia', 'Células', 'Genética', 'Microcosmo'];
 const MAX_TEXTO = 1200;
 const MAX_PERGUNTAS = 80;
-const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Turma', 'Grupo'];
+const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Escola', 'Turma', 'Grupo'];
 const ABA_AVAL = 'Avaliação';
 const CAB_AVAL = ['Chave', 'Atividade', 'Turma', 'Nome', 'Grupo', 'Pontos automáticos', 'Máximo automático',
   'Pontos das abertas', 'Nota', 'Comentário', 'Atualizado em'];
@@ -309,7 +308,9 @@ function salvar(dados) {
       aba.setFrozenRows(1);
     }
     let cab = aba.getRange(1, 1, 1, Math.max(aba.getLastColumn(), 1)).getValues()[0].map(String);
-    const faltam = Object.keys(resp).concat(['ID do envio']).filter(function (t) { return cab.indexOf(t) < 0; });
+    const escola = limpar(dados.escola, 80).trim();
+    const extras = (escola ? ['Escola'] : []).concat(Object.keys(resp)).concat(['ID do envio']);
+    const faltam = extras.filter(function (t) { return cab.indexOf(t) < 0; });
     if (faltam.length) {
       if (aba.getMaxColumns() < cab.length + faltam.length) aba.insertColumnsAfter(aba.getMaxColumns(), cab.length + faltam.length - aba.getMaxColumns());
       aba.getRange(1, cab.length + 1, 1, faltam.length).setValues([faltam]).setFontWeight('bold');
@@ -323,7 +324,7 @@ function salvar(dados) {
     }
     const fixo = {
       'Carimbo de data/hora': Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm:ss'),
-      'Nome completo': nome, 'Turma': limpar(dados.turma, 20), 'Grupo': limpar(dados.grupo, 20), 'ID do envio': idEnvio
+      'Nome completo': nome, 'Escola': escola, 'Turma': limpar(dados.turma, 20), 'Grupo': limpar(dados.grupo, 20), 'ID do envio': idEnvio
     };
     const linha = cab.map(function (t) { return t in fixo ? fixo[t] : (t in resp ? resp[t] : ''); });
     aba.appendRow(linha.map(seguro));
@@ -395,20 +396,33 @@ function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetAp
   const P=window.PORTAL,el=P.el,$=s=>document.querySelector(s);
   const SERIES=['1º','2º','3º'],LETRAS=['A','B','C','D','E','F','G','H'];
   function novaSenha(){const a='abcdefghjkmnpqrstuvwxyz23456789';const r=new Uint32Array(10);crypto.getRandomValues(r);return Array.from(r,x=>a[x%a.length]).join('');}
-  let C=Object.assign({nome:'',escola:'',sel:[],outras:'',grupos:8,r:'',senha:'',base:''},P.prof()||{});
+  let C=Object.assign({nome:'',escolas:null,grupos:8,r:'',senha:'',base:''},P.prof()||{});
+  // Configuração antiga (uma escola só) vira a primeira escola da lista
+  if(!Array.isArray(C.escolas)||!C.escolas.length)C.escolas=[{nome:C.escola||'',sel:Array.isArray(C.sel)?C.sel:[],outras:C.outras||''}];
+  delete C.escola;delete C.sel;delete C.outras;
   if(!C.senha)C.senha=novaSenha();
-  const turmasDe=c=>c.sel.slice().sort((a,b)=>SERIES.indexOf(a.slice(0,2))-SERIES.indexOf(b.slice(0,2))||a.localeCompare(b,'pt-BR')).concat(String(c.outras||'').split(',').map(s=>s.trim()).filter(Boolean)).filter((t,i,arr)=>arr.indexOf(t)===i).slice(0,40);
-  function save(){C.turmas=turmasDe(C);P.salvarProf(C);update();}
+  const turmasDe=c=>(c.sel||[]).slice().sort((a,b)=>SERIES.indexOf(a.slice(0,2))-SERIES.indexOf(b.slice(0,2))||a.localeCompare(b,'pt-BR')).concat(String(c.outras||'').split(',').map(s=>s.trim()).filter(Boolean)).filter((t,i,arr)=>arr.indexOf(t)===i).slice(0,40);
+  function save(){C.escolas.forEach(e=>e.turmas=turmasDe(e));C.turmas=C.escolas[0].turmas;C.escola=C.escolas[0].nome;P.salvarProf(C);update();}
 
   // 1. nome
-  $('#pNome').value=C.nome;$('#pEscola').value=C.escola;
-  $('#pNome').oninput=e=>{C.nome=e.target.value;save();};$('#pEscola').oninput=e=>{C.escola=e.target.value;save();};
-  // 2. turmas
-  const series=$('#series');
-  SERIES.forEach(sr=>{const chips=el('div',{class:'chips',role:'group','aria-label':sr+' ano'});
-    LETRAS.forEach(l=>{const t=sr+l;const b=el('button',{type:'button',class:'chip','aria-pressed':String(C.sel.includes(t))},l);b.onclick=()=>{const on=C.sel.includes(t);C.sel=on?C.sel.filter(x=>x!==t):C.sel.concat(t);b.setAttribute('aria-pressed',String(!on));save();};chips.append(b);});
-    series.append(el('div',{class:'serie'},el('b',{},sr+' ano'),chips));});
-  $('#pOutras').value=C.outras;$('#pOutras').oninput=e=>{C.outras=e.target.value;save();};
+  $('#pNome').value=C.nome;
+  $('#pNome').oninput=e=>{C.nome=e.target.value;save();};
+  // 2. escolas e turmas
+  const escBox=$('#escolas');
+  function drawEscolas(){escBox.innerHTML='';const multi=C.escolas.length>1;
+    C.escolas.forEach((E,ix)=>{const box=el('div',{class:'escola-box'});
+      const nm=el('input',{type:'text',maxlength:'80',placeholder:'EE Professor João Lima','aria-label':'Nome da escola '+(ix+1)});nm.value=E.nome||'';nm.oninput=e=>{E.nome=e.target.value;save();};
+      const top=el('div',{class:'escola-top'},el('label',{class:'field'},el('span',{class:'label'},multi?'Escola '+(ix+1):'Escola'+(multi?'':' (opcional se for só uma)')),nm));
+      if(multi)top.append(el('button',{type:'button',class:'btn ghost sm',onclick:()=>{if(!confirm('Remover '+(E.nome||'esta escola')+' da lista? O link dela deixa de aparecer aqui, mas quem já entrou continua enviando para a sua planilha.'))return;C.escolas.splice(ix,1);drawEscolas();save();}},'Remover escola'));
+      box.append(top);
+      SERIES.forEach(sr=>{const chips=el('div',{class:'chips',role:'group','aria-label':sr+' ano, escola '+(ix+1)});
+        LETRAS.forEach(l=>{const t=sr+l;const b=el('button',{type:'button',class:'chip','aria-pressed':String((E.sel||[]).includes(t))},l);b.onclick=()=>{E.sel=E.sel||[];const on=E.sel.includes(t);E.sel=on?E.sel.filter(x=>x!==t):E.sel.concat(t);b.setAttribute('aria-pressed',String(!on));save();};chips.append(b);});
+        box.append(el('div',{class:'serie'},el('b',{},sr+' ano'),chips));});
+      const ou=el('input',{type:'text',maxlength:'200',placeholder:'2º Técnico, EJA 3'});ou.value=E.outras||'';ou.oninput=e=>{E.outras=e.target.value;save();};
+      box.append(el('label',{class:'field'},el('span',{class:'label'},'Outras turmas (separe por vírgula)'),ou));
+      escBox.append(box);});}
+  $('#addEscola').onclick=()=>{C.escolas.push({nome:'',sel:[],outras:''});drawEscolas();save();const ins=escBox.querySelectorAll('input[type=text]');const last=escBox.lastElementChild&&escBox.lastElementChild.querySelector('input');if(last)last.focus();};
+  drawEscolas();
   $('#pGrupos').value=C.grupos;$('#pGrupos').oninput=e=>{const n=parseInt(e.target.value,10);C.grupos=isNaN(n)?8:Math.max(1,Math.min(20,n));save();};
   // 3. receptor
   const TPL=$('#tpl').textContent;
@@ -433,11 +447,13 @@ function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetAp
   function copiar(text,btn,alvo){const done=()=>{const t=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=t,1600);};
     const sel=()=>{if(!alvo)return;const r=document.createRange();r.selectNodeContents(alvo);const s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selecionado: use Ctrl+C';setTimeout(()=>btn.textContent='Copiar',2400);};
     try{navigator.clipboard.writeText(text).then(done).catch(sel);}catch(e){sel();}}
-  function projetar(link){const o=el('div',{class:'overlay',role:'dialog','aria-label':'QR code da turma'},el('h2',{},'Turma de '+((C.nome||'').trim()||'professor')),el('div',{class:'qr'}),el('span',{class:'link'},link),el('button',{type:'button',class:'btn',onclick:()=>o.remove()},'Fechar'));o.querySelector('.qr').innerHTML=qrSvg(link);o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
+  function projetar(link,esc){const o=el('div',{class:'overlay',role:'dialog','aria-label':'QR code da turma'},el('h2',{},'Turma de '+((C.nome||'').trim()||'professor')+(esc?' · '+esc:'')),el('div',{class:'qr'}),el('span',{class:'link'},link),el('button',{type:'button',class:'btn',onclick:()=>o.remove()},'Fechar'));o.querySelector('.qr').innerHTML=qrSvg(link);o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
 
   function update(){
-    C.turmas=turmasDe(C);
-    const okNome=!!(C.nome||'').trim(),okT=C.turmas.length>0,okR=!!C.r;
+    C.escolas.forEach(e=>e.turmas=turmasDe(e));
+    const multi=C.escolas.length>1;
+    const okNome=!!(C.nome||'').trim(),okT=C.escolas.every(e=>e.turmas.length>0)&&(!multi||C.escolas.every(e=>(e.nome||'').trim())),okR=!!C.r;
+    const nT=C.escolas.reduce((a,e)=>a+e.turmas.length,0);
     $('#s1').classList.toggle('done',okNome);$('#s2').classList.toggle('done',okT);$('#s3').classList.toggle('done',okR);
     $('#senha').textContent=C.senha;$('#codigo').textContent=codigo();
     const ab=$('#abrirReceptor');ab.hidden=!okR;if(okR)ab.href=P.urlDoReceptor(C.r);
@@ -446,31 +462,33 @@ function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetAp
     // saída
     const out=$('#saida');out.innerHTML='';
     const pronto=okNome&&okT&&okR;$('#s4').classList.toggle('done',pronto);
-    if(!pronto){out.append(el('p',{class:'fb warn'},'Complete '+[!okNome&&'o seu nome',!okT&&'as turmas',!okR&&'o URL do receptor'].filter(Boolean).join(', ')+' para gerar o link da turma.'));}
-    else{
-      const cod=P.codigoDaTurma({n:C.nome,e:C.escola,r:C.r,t:C.turmas,g:C.grupos});const link=P.linkDaTurma(C);
+    if(!pronto){out.append(el('p',{class:'fb warn'},'Complete '+[!okNome&&'o seu nome',!okT&&(multi?'o nome e as turmas de cada escola':'as turmas'),!okR&&'o URL do receptor'].filter(Boolean).join(', ')+' para gerar o link da turma.'));}
+    else C.escolas.forEach(E=>{
+      const blk=multi?el('div',{class:'link-escola'},el('h3',{},E.nome)):out;if(multi)out.append(blk);
+      const PE={nome:C.nome,escola:E.nome,r:C.r,turmas:E.turmas,grupos:C.grupos,base:C.base};
+      const cod=P.codigoDaTurma({n:C.nome,e:E.nome,r:C.r,t:E.turmas,g:C.grupos});const link=P.linkDaTurma(PE);
       if(link){
         const linkEl=el('span',{class:'link'},link);
-        out.append(el('div',{class:'row',style:'align-items:flex-start;gap:18px'},el('div',{class:'qr'}),el('div',{class:'stack',style:'gap:10px;flex:1 1 240px;min-width:0'},el('span',{class:'label'},'Link da turma'),linkEl,
-          el('div',{class:'row'},el('button',{type:'button',class:'btn primary sm',onclick:e=>copiar(link,e.currentTarget,linkEl)},'Copiar link'),el('button',{type:'button',class:'btn sm',onclick:()=>projetar(link)},'Projetar QR code'),el('a',{class:'btn sm ghost',href:link,target:'_blank',rel:'noopener'},'Abrir como estudante')))));
-        out.querySelector('.qr').innerHTML=qrSvg(link);
-        const msg='Turma, para usar os sites de Biologia e enviar as fichas para mim, abram este link no celular:\n'+link;
+        blk.append(el('div',{class:'row',style:'align-items:flex-start;gap:18px'},el('div',{class:'qr'}),el('div',{class:'stack',style:'gap:10px;flex:1 1 240px;min-width:0'},el('span',{class:'label'},'Link da turma'),linkEl,
+          el('div',{class:'row'},el('button',{type:'button',class:'btn primary sm',onclick:e=>copiar(link,e.currentTarget,linkEl)},'Copiar link'),el('button',{type:'button',class:'btn sm',onclick:()=>projetar(link,E.nome)},'Projetar QR code'),el('a',{class:'btn sm ghost',href:link,target:'_blank',rel:'noopener'},'Abrir como estudante')))));
+        blk.querySelector('.qr').innerHTML=qrSvg(link);
+        const msg=(multi?E.nome+'\n':'')+'Turma, para usar os sites de Biologia e enviar as fichas para mim, abram este link no celular:\n'+link;
         const mEl=el('div',{class:'msgbox'},msg);
-        out.append(el('div',{class:'stack',style:'gap:6px'},el('span',{class:'label'},'Mensagem pronta para enviar'),mEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(msg,e.currentTarget,mEl)},'Copiar mensagem'))));
+        blk.append(el('div',{class:'stack',style:'gap:6px'},el('span',{class:'label'},'Mensagem pronta para enviar'),mEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(msg,e.currentTarget,mEl)},'Copiar mensagem'))));
       }else{
-        out.append(el('p',{class:'fb warn'},'Informe o endereço do portal publicado (acima) para gerar o link e o QR code. Enquanto isso, os estudantes podem entrar com o código da turma.'));
+        blk.append(el('p',{class:'fb warn'},'Informe o endereço do portal publicado (acima) para gerar o link e o QR code. Enquanto isso, os estudantes podem entrar com o código da turma.'));
       }
       const cEl=el('div',{class:'msgbox mono',style:'font-size:.78rem'},cod);
-      out.append(el('details',{},el('summary',{style:'cursor:pointer;font-weight:700'},'Código da turma (para colar no site)'),el('div',{class:'stack',style:'gap:8px;margin-top:8px'},el('p',{class:'note'},'Quem não conseguir abrir o link pode colar este código no quadro “Entre na sua turma”, na página inicial, ou no topo de qualquer ficha.'),cEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(cod,e.currentTarget,cEl)},'Copiar código')))));
-    }
+      blk.append(el('details',{},el('summary',{style:'cursor:pointer;font-weight:700'},'Código da turma (para colar no site)'),el('div',{class:'stack',style:'gap:8px;margin-top:8px'},el('p',{class:'note'},'Quem não conseguir abrir o link pode colar este código no quadro “Entre na sua turma”, na página inicial, ou no topo de qualquer ficha.'),cEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(cod,e.currentTarget,cEl)},'Copiar código')))));
+    });
     // situação
     const ck=$('#check');ck.innerHTML='';
-    [['Nome',okNome],['Turmas'+(okT?' ('+C.turmas.length+')':''),okT],['Receptor da planilha',okR],['Link da turma',pronto]].forEach(([t,ok])=>ck.append(el('li',{class:ok?'ok':''},t)));
+    [['Nome',okNome],[(multi?'Escolas e turmas ('+C.escolas.length+' escolas, '+nT+' turmas)':'Turmas'+(okT?' ('+nT+')':'')),okT],['Receptor da planilha',okR],['Link da turma',pronto]].forEach(([t,ok])=>ck.append(el('li',{class:ok?'ok':''},t)));
     // prévia
     const pv=$('#previa');pv.innerHTML='';
     pv.append(el('div',{class:'panel stack',style:'gap:10px;padding:14px;box-shadow:none;background:var(--bg)'},
-      el('span',{class:'note'},'Esta ficha vai para ',el('strong',{},(C.nome||'').trim()||'(seu nome)')),
-      el('span',{class:'label'},'Turma'),el('div',{class:'chips'},(C.turmas.length?C.turmas:['—']).slice(0,9).map(t=>el('span',{class:'chip',style:'cursor:default'},t)),C.turmas.length>9?el('span',{class:'note'},'+'+(C.turmas.length-9)):null),
+      el('span',{class:'note'},'Esta ficha vai para ',el('strong',{},(C.nome||'').trim()||'(seu nome)'),(C.escolas[0].nome||'').trim()?' · '+C.escolas[0].nome.trim():''),
+      el('span',{class:'label'},'Turma'),el('div',{class:'chips'},(C.escolas[0].turmas.length?C.escolas[0].turmas:['—']).slice(0,9).map(t=>el('span',{class:'chip',style:'cursor:default'},t)),C.escolas[0].turmas.length>9?el('span',{class:'note'},'+'+(C.escolas[0].turmas.length-9)):null),
       el('span',{class:'label'},'Grupo'),el('span',{class:'note'},'1 a '+C.grupos+' ou “Sem grupo”'),
       el('span',{class:'btn primary',style:'pointer-events:none;align-self:flex-start'},'Enviar para '+((C.nome||'').trim()||'…'))));
   }

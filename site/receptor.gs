@@ -14,7 +14,7 @@ const SENHA_PAINEL = __SENHA__;
 const SITES = ['Ecologia', 'Células', 'Genética', 'Microcosmo'];
 const MAX_TEXTO = 1200;
 const MAX_PERGUNTAS = 80;
-const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Turma', 'Grupo'];
+const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Escola', 'Turma', 'Grupo'];
 const ABA_AVAL = 'Avaliação';
 const CAB_AVAL = ['Chave', 'Atividade', 'Turma', 'Nome', 'Grupo', 'Pontos automáticos', 'Máximo automático',
   'Pontos das abertas', 'Nota', 'Comentário', 'Atualizado em'];
@@ -79,7 +79,9 @@ function salvar(dados) {
       aba.setFrozenRows(1);
     }
     let cab = aba.getRange(1, 1, 1, Math.max(aba.getLastColumn(), 1)).getValues()[0].map(String);
-    const faltam = Object.keys(resp).concat(['ID do envio']).filter(function (t) { return cab.indexOf(t) < 0; });
+    const escola = limpar(dados.escola, 80).trim();
+    const extras = (escola ? ['Escola'] : []).concat(Object.keys(resp)).concat(['ID do envio']);
+    const faltam = extras.filter(function (t) { return cab.indexOf(t) < 0; });
     if (faltam.length) {
       if (aba.getMaxColumns() < cab.length + faltam.length) aba.insertColumnsAfter(aba.getMaxColumns(), cab.length + faltam.length - aba.getMaxColumns());
       aba.getRange(1, cab.length + 1, 1, faltam.length).setValues([faltam]).setFontWeight('bold');
@@ -93,7 +95,7 @@ function salvar(dados) {
     }
     const fixo = {
       'Carimbo de data/hora': Utilities.formatDate(new Date(), 'America/Sao_Paulo', 'dd/MM/yyyy HH:mm:ss'),
-      'Nome completo': nome, 'Turma': limpar(dados.turma, 20), 'Grupo': limpar(dados.grupo, 20), 'ID do envio': idEnvio
+      'Nome completo': nome, 'Escola': escola, 'Turma': limpar(dados.turma, 20), 'Grupo': limpar(dados.grupo, 20), 'ID do envio': idEnvio
     };
     const linha = cab.map(function (t) { return t in fixo ? fixo[t] : (t in resp ? resp[t] : ''); });
     aba.appendRow(linha.map(seguro));

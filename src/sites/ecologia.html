@@ -1403,7 +1403,7 @@ function attachFicha(secId){
   function payload(){if(!sendId){sendId=Date.now().toString(36)+Math.random().toString(36).slice(2,8);store.set('sid-'+code,sendId);}
     const ans={};f.itens.forEach(it=>{if(it.k!=='hdr')ans[it.t]=String(draft[it.t]||'').slice(0,MAXTXT);});
     const pv=store.get('prev-'+secId,null);if(pv)ans['Previsão inicial']=String(pv.text).slice(0,MAXTXT);
-    return {code:PORTAL.code(code),nome:ident.nome.trim(),turma:ident.turma,grupo:ident.grupo,id:sendId,ans};}
+    return {code:PORTAL.code(code),nome:ident.nome.trim(),escola:(PORTAL.escola?PORTAL.escola():''),turma:ident.turma,grupo:ident.grupo,id:sendId,ans};}
   const url=()=>RECEIVER+'?d='+encodeURIComponent(b64url(JSON.stringify(payload())));
   const quando=()=>new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
   let busy=false;

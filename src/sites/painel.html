@@ -189,7 +189,7 @@ async function saveRow(row){if(DEMO)return;let r;try{r=await fetch(P.urlDoRecept
   let j;try{j=await r.json();}catch(e){throw {code:'rede'};}if(!j||!j.ok)throw {code:(j&&j.erro)||'erro',message:j&&j.texto};}
 function applyData(abas){
   S.tabs=Object.keys(abas||{});S.forms=[];S.resp={};S.aval={};S.alunos=[];
-  const al=abas['Alunos']||[];S.alunos=al.slice(1).filter(r=>r[0]&&String(r[0]).trim()).map(r=>({nome:String(r[0]).trim(),turma:String(r[1]||'').trim(),grupo:String(r[2]||'').trim()}));
+  const al=abas['Alunos']||[];S.alunos=al.slice(1).filter(r=>r[0]&&String(r[0]).trim()).map(r=>({nome:String(r[0]).trim(),turma:P.rotuloTurma(r[3],r[1]),grupo:String(r[2]||'').trim()}));
   const av=abas['Avaliação']||[];av.slice(1).forEach((r,i)=>{if(!r[0])return;let man={};try{man=JSON.parse(r[7]||'{}')}catch(e){}S.aval[r[0]]={row:i+2,man,nota:r[8]===''||r[8]==null?null:num(r[8]),coment:r[9]||'',quando:r[10]||''};});S.avalRows=av.length;
   ALL.forEach(f=>{S.resp[f.code]=abas[f.code]?parseResp(f,abas[f.code]):[];});
 }
@@ -211,10 +211,10 @@ async function loadAll(){
 function parseResp(f,values){
   if(!values||values.length<2)return[];
   const hdr=values[0].map(x=>String(x).trim());const ix=t=>hdr.indexOf(t);
-  const iN=ix('Nome completo'),iT=ix('Turma'),iG=ix('Grupo');
+  const iN=ix('Nome completo'),iT=ix('Turma'),iG=ix('Grupo'),iE=ix('Escola');
   return values.slice(1).map((r,i)=>{if(!r.some(c=>String(c).trim()))return null;const a={};hdr.forEach((t,j)=>a[t]=r[j]!=null?String(r[j]):'');
     const nome=String(r[iN]||'').trim();const ts=String(r[0]||'');
-    return {code:f.code,f,row:i+2,ts,nome,nk:norm(nome),turma:String(r[iT]||'').trim(),grupo:String(r[iG]||'').trim(),a,key:f.code+'|'+ts+'|'+norm(nome)};}).filter(Boolean);
+    return {code:f.code,f,row:i+2,ts,nome,nk:norm(nome),turma:P.rotuloTurma(iE>=0?r[iE]:'',r[iT]),grupo:String(r[iG]||'').trim(),a,key:f.code+'|'+ts+'|'+norm(nome)};}).filter(Boolean);
 }
 function auto(r){
   const f=r.f;const items=[];let pts=0,max=0;
@@ -407,7 +407,7 @@ function viewForms(m){
   m.append(h('div',{class:'grid2'},
     h('div',{class:'panel stack'},h('h3',{},'Envios por atividade · '+SITES[SITE]),...SPEC.map(f=>{const rs=(S.resp[f.code]||[]).filter(r=>turmaOk(r.turma));const n=rs.length;const al=new Set(rs.map(r=>r.nk)).size;return h('div',{class:'qrow',style:'grid-template-columns:minmax(0,1fr) auto'},h('span',{},f.titulo),h('span',{class:'mono',style:'text-align:right'},n?al+' estudante'+(al>1?'s':'')+(n>al?' · '+n+' envios':''):'—'));})),
     h('div',{class:'panel stack'},h('h3',{},'Link da turma e QR code'),h('p',{class:'note'},'O link, o QR code e o código da turma ficam na Área do professor. Quem entra pelo link já envia as fichas para a sua planilha.'),h('a',{class:'btn primary',href:'professor.html',style:'align-self:flex-start'},'Abrir a Área do professor'),
-      h('h3',{style:'margin-top:8px'},'Lista da turma'),h('p',{class:'note'},'Para ver no painel quem ainda não enviou, crie na planilha uma aba chamada “Alunos”: coluna A nome completo, B turma (igual à do link, por exemplo 2ºA) e C grupo.'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener',style:'align-self:flex-start'},'Abrir a planilha'):null)));
+      h('h3',{style:'margin-top:8px'},'Lista da turma'),h('p',{class:'note'},'Para ver no painel quem ainda não enviou, crie na planilha uma aba chamada “Alunos”: coluna A nome completo, B turma (igual à do link, por exemplo 2ºA) e C grupo. Se você dá aula em mais de uma escola, use a coluna D para o nome da escola, igual ao da Área do professor.'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener',style:'align-self:flex-start'},'Abrir a planilha'):null)));
 }
 function project(f,link){const o=h('div',{class:'overlay',role:'dialog','aria-label':'QR code em tela cheia'},h('h2',{},f.titulo),h('div',{class:'qr',html:qrSvg(link)}),h('span',{class:'link'},link),h('button',{class:'btn',onclick:()=>o.remove()},'Fechar'));o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
 function copy(text,btn){const done=()=>{const t=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=t,1500);};try{navigator.clipboard.writeText(text).then(done).catch(()=>sel());}catch(e){sel();}function sel(){const r=document.createRange();const el=btn.closest('.panel,.empty').querySelector('.link,pre');if(el){r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);}}}

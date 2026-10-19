@@ -65,6 +65,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   function saveIdent(i){lsSet(K_ID,{nome:i.nome||'',turma:i.turma||'',grupo:i.grupo||''});}
   function grupos(){var c=turma();var n=c&&c.g?c.g:8;var a=[];for(var k=1;k<=n;k++)a.push(String(k));a.push('Sem grupo');return a;}
   function turmas(){var c=turma();return c?c.t.slice():[];}
+  function escola(){var c=turma();return c&&c.e?c.e:'';}
 
   // ---------- Fichas ----------
   function site(){return SITES[window.PORTAL_SITE]||null;}
@@ -119,6 +120,8 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     var b=(p&&p.base)||PORTAL_URL||'';if(b&&!/\/$/.test(b))b+='/';return b;
   }
   function linkDaTurma(p){var b=baseUrl(p);var cod=codigoDaTurma({n:p.nome,e:p.escola,r:p.r,t:p.turmas,g:p.grupos});return b&&cod?b+'?turma='+cod:'';}
+  // Rótulo da turma no painel: com a escola na frente quando houver mais de uma
+  function rotuloTurma(escola,turma){escola=String(escola||'').trim();turma=String(turma||'').trim();return escola&&turma?escola+' · '+turma:turma;}
 
   // ---------- Faixa de navegação entre os sites ----------
   var CSS='.bi-strip{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;font-size:.8rem;margin:-2px 0 0;padding:0 0 2px}'+
@@ -155,7 +158,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 
-  window.PORTAL={SITES:SITES,ORDER:ORDER,el:el,lsGet:lsGet,lsSet:lsSet,
+  window.PORTAL={SITES:SITES,ORDER:ORDER,escola:escola,rotuloTurma:rotuloTurma,el:el,lsGet:lsGet,lsSet:lsSet,
     turma:turma,definirTurma:definirTurma,sairDaTurma:sairDaTurma,lerCodigo:lerCodigo,codigoDaTurma:codigoDaTurma,caixaCodigo:caixaCodigo,
     ident:ident,saveIdent:saveIdent,grupos:grupos,turmas:turmas,turmaCtl:turmaCtl,fichaBanner:fichaBanner,
     site:site,code:code,codeFor:codeFor,receiver:receiver,sendLabel:sendLabel,offText:offText,
