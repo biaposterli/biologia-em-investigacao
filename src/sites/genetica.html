@@ -428,9 +428,9 @@ const TEMAS={her:'Tema 28 · Genética mendeliana',int:'Tema 29 · Interações 
 const TOOLS=[
   {id:'mendel',n:1,t:'her',ap:1,pg:'324–328',title:'O arquivo de Mendel',desc:'Ordene os registros, veja as gerações P, F1 e F2 e teste três hipóteses contra os dados.'},
   {id:'loteria',n:2,t:'her',ap:2,pg:'326–330',title:'A loteria dos alelos',desc:'Dois sacos virtuais, uma ficha A e uma a em cada. Sorteie com reposição e compare a amostra com a previsão.'},
-  {id:'agencia',n:3,t:'her',ap:2,pg:'331–334',title:'Agência de previsões',desc:'Monte previsões com “e” (produto) e “ou” (soma) e teste se o passado muda o próximo sorteio.'},
-  {id:'heredo',n:4,t:'her',ap:3,pg:'334–335',title:'Detetives de heredogramas',desc:'Um pedigree fictício para separar o que é certo, o que é possível e o que não se sustenta.'},
-  {id:'galeria',n:5,t:'her',ap:4,pg:'330–331',title:'Galeria das dominâncias',desc:'Dominância completa, incompleta e codominância lado a lado, da F1 até a F2.'},
+  {id:'galeria',n:3,t:'her',ap:4,pg:'330–331',title:'Galeria das dominâncias',desc:'Dominância completa, incompleta e codominância lado a lado, da F1 até a F2.'},
+  {id:'agencia',n:4,t:'her',ap:2,pg:'331–334',title:'Agência de previsões',desc:'Monte previsões com “e” (produto) e “ou” (soma) e teste se o passado muda o próximo sorteio.'},
+  {id:'heredo',n:5,t:'her',ap:3,pg:'334–335',title:'Detetives de heredogramas',desc:'Um pedigree fictício para separar o que é certo, o que é possível e o que não se sustenta.'},
   {id:'diibr',n:6,t:'her',ap:5,pg:'336–338',title:'Duas características em uma semente',desc:'Quatro gametas, um quadro 4 × 4 e o que acontece quando os loci estão muito próximos.'},
   {id:'abo',n:7,t:'her',ap:4,pg:'338–340',title:'Catálogo ABO',desc:'Três alelos na população, dois em cada pessoa. Monte genótipos, veja os antígenos e cruze.'},
   {id:'cristas',n:8,t:'int',ap:6,pg:'341–343',title:'Oficina das cristas',desc:'Dois genes, um mesmo caráter: as cristas noz, rosa, ervilha e simples.'},
@@ -716,7 +716,7 @@ INIT.loteria=root=>{
       h('p',{class:'note'},'Quatro combinações igualmente prováveis: 1/4 AA, 1/2 Aa (Aa e aA são o mesmo genótipo), 1/4 aa. Cor das sementes só para ilustrar o fenótipo dominante e o recessivo.'),model('Sorteio computacional com probabilidade 1/2 para cada ficha, como num sorteio com sacos e fichas.'))));
 };
 
-// ================= Aula 3: Agência de previsões =================
+// ================= Aula 4: Agência de previsões =================
 // Ilustrações: família fictícia com albinismo (A = produz melanina; a = albinismo, recessivo)
 const pessoaSv=(x,y,r,alb)=>{const sk=alb?'#f6e1d3':'#9a6040',hr=alb?'#f7f1df':'#2a1b12',hs=alb?'#bfae8c':'#2a1b12';
   return `<path d="M${x-r*.82},${y+r} Q${x-r*.82},${y+r*.22} ${x},${y+r*.22} Q${x+r*.82},${y+r*.22} ${x+r*.82},${y+r}Z" fill="#6b7f99"/>`+
@@ -764,7 +764,7 @@ INIT.agencia=root=>{
 .ag-sieve div{display:flex;gap:2px;justify-content:center;padding:4px 2px;border-radius:8px;border:1px solid transparent;opacity:.28}
 .ag-sieve div.on{opacity:1;border-color:var(--her);background:var(--her-soft)}
 `;document.head.append(st);}
-  root.append(head('Aula 3 · Livro p. 331–334','Agência de previsões genéticas','Cada pedido vira uma previsão com cálculo e condição de validade. “E” entre eventos independentes: multiplique. “Ou” entre alternativas que não podem acontecer juntas: some.'));
+  root.append(head('Aula 4 · Livro p. 331–334','Agência de previsões genéticas','Cada pedido vira uma previsão com cálculo e condição de validade. “E” entre eventos independentes: multiplique. “Ou” entre alternativas que não podem acontecer juntas: some.'));
   root.append(panel(h('h3',{},'Pedidos que chegaram à agência'),h('p',{class:'note'},'Modelo: gene autossômico com alelos A e a, dominância completa, gametas com a mesma probabilidade. Genitores Aa × Aa.'),
     h('div',{class:'row',style:'gap:14px;align-items:center'},h('span',{class:'row',style:'gap:6px'},svgOf(pessoaSv(14,15,13,false),'0 0 28 28','ag-ico'),h('span',{},h('b',{},'AA'),' ou ',h('b',{},'Aa'),': produz melanina')),h('span',{class:'row',style:'gap:6px'},svgOf(pessoaSv(14,15,13,true),'0 0 28 28','ag-ico'),h('span',{},h('b',{},'aa'),': albinismo'))),
     h('p',{class:'note',style:'margin:0'},'Família fictícia. No albinismo oculocutâneo tipo 1, a herança é autossômica recessiva: a pessoa aa produz pouca ou nenhuma melanina, o pigmento da pele, dos cabelos e dos olhos. Quem é Aa produz melanina normalmente, mas pode passar o alelo a para os filhos.'),
@@ -833,9 +833,9 @@ INIT.agencia=root=>{
   root.append(panel(h('h3',{},'Auditoria da agência'),h('p',{},'Estagiários da agência entregaram estas respostas. Para cada uma, decida: pode ir para o cliente ou precisa ser corrigida? Confira o cálculo, a operação (produto ou soma) e a justificativa.'),audBox));
 };
 
-// ================= Aula 4: Detetives de heredogramas =================
+// ================= Aula 5: Detetives de heredogramas =================
 INIT.heredo=root=>{
-  root.append(head('Aula 4 · Livro p. 334–335','Detetives de heredogramas','Família fictícia. Um locus, dois alelos, penetrância completa, sem mutações novas. Quadrado e círculo são só convenções do exercício; não indicam identidade de gênero. Não use dados de famílias reais.'));
+  root.append(head('Aula 5 · Livro p. 334–335','Detetives de heredogramas','Família fictícia. Um locus, dois alelos, penetrância completa, sem mutações novas. Quadrado e círculo são só convenções do exercício; não indicam identidade de gênero. Não use dados de famílias reais.'));
   const P=[{id:'I-1',g:1,sh:'q',x:180,af:false,key:'Aa'},{id:'I-2',g:1,sh:'c',x:400,af:false,key:'Aa'},{id:'II-1',g:2,sh:'c',x:150,af:true,key:'aa'},{id:'II-2',g:2,sh:'q',x:290,af:false,key:'AA ou Aa'},{id:'II-3',g:2,sh:'q',x:430,af:false,key:'AA ou Aa'}];
   let shown=store.get('her-shown',false),ans=store.get('her-ans',{}),sel=null,hip=store.get('her-hip','rec');
   const grid=h('div',{class:'cols wl'});root.append(grid);
@@ -868,7 +868,7 @@ INIT.heredo=root=>{
     h('p',{class:'note'},'Um exercício escolar não permite diagnosticar condição clínica de ninguém. Heredogramas reais exigem dados confirmados e profissionais de genética.')));
 };
 
-// ================= Aula 5: Galeria das dominâncias =================
+// ================= Aula 3: Galeria das dominâncias =================
 // Gado Shorthorn (modelo escolar de codominância): CᵛCᵛ vermelho, CᴮCᴮ branco, CᵛCᴮ ruão (pelos vermelhos e brancos misturados)
 const COW={red:'#9c3b22',white:'#f5f0e6'};
 function cowSv(f){const base=f==='vermelho'?COW.red:COW.white,ol='#4a3a30';let hairs='';
@@ -891,7 +891,7 @@ const GAL=[
   {k:2,nome:'Modelo 2',a:['V','B'],tipo:'Dominância incompleta',fen:g=>g[0].join('')==='VV'?'vermelho':g[0].join('')==='BB'?'branco':'rosa',draw:f=>flowerSv(19,14,.55,f==='vermelho'?'#c8343b':f==='branco'?'#f6f3ea':'#ee9ab4',f==='vermelho'?'':f==='branco'?'lines':'dots'),leg:'VV vermelho; BB branco; VB rosa (intermediário).',gr:'1 VV : 2 VB : 1 BB',fr:'1 vermelho : 2 rosa : 1 branco'},
   {k:3,nome:'Modelo 3',a:['CV','CB'],tipo:'Codominância',fen:g=>{const z=g[0].join('');return z==='CVCV'?'vermelho':z==='CBCB'?'branco':'ruão';},draw:cowSv,leg:'Gado Shorthorn: CᵛCᵛ tem pelagem vermelha; CᴮCᴮ, branca; CᵛCᴮ é ruão: tem pelos vermelhos E pelos brancos misturados, lado a lado.',gr:'1 CᵛCᵛ : 2 CᵛCᴮ : 1 CᴮCᴮ',fr:'1 vermelho : 2 ruão : 1 branco'}];
 INIT.galeria=root=>{
-  root.append(head('Aula 5 · Livro p. 330–331','Galeria das dominâncias','Três modelos didáticos de um locus. As letras representam alelos de um gene, não substâncias que se diluem. Os modelos 2 e 3 usam símbolos próprios; não são três genes. O Modelo 3 usa a pelagem do gado Shorthorn, exemplo clássico de codominância.'));
+  root.append(head('Aula 3 · Livro p. 330–331','Galeria das dominâncias','Três modelos didáticos de um locus. As letras representam alelos de um gene, não substâncias que se diluem. Os modelos 2 e 3 usam símbolos próprios; não são três genes. O Modelo 3 usa a pelagem do gado Shorthorn, exemplo clássico de codominância.'));
   let m=store.get('gal-m',1),showAl=false;
   const top=h('div',{class:'row'});root.append(top);
   top.append(seg(GAL.map(x=>[x.k,x.nome]),m,v=>{m=v;store.set('gal-m',v);draw();}),h('label',{class:'row',style:'margin-left:8px'},(()=>{const c=h('input',{type:'checkbox',id:'gal-al'});c.onchange=()=>{showAl=c.checked;draw();};return c;})(),'Mostrar os alelos dentro de cada indivíduo'));
@@ -1395,7 +1395,7 @@ const QZ=[
 ];
 INIT.museu=root=>{
   root.append(head('Aula 17 · Livro p. 324–361','Museu dos modelos genéticos','Quatro estações de revisão reúnem os modelos das aulas. Escolha uma estação, reabra as ferramentas e prepare uma explicação com um modelo ou dado e um limite. Depois, faça o quiz da unidade.'));
-  const ST=[['her','1 · Herança e probabilidade','Por que Aa × Aa não garante exatamente um aa em quatro filhos?',['mendel','loteria','agencia','heredo','galeria','diibr','abo']],['int','2 · Interações e ambiente','Como dois genes, ou genes e ambiente, produzem um fenótipo?',['cristas','pigmento','jardim','redacao']],['dna','3 · Estrutura e replicação do DNA','Como uma molécula se copia mantendo a sequência?',['dna','copia']],['exp','4 · Transcrição, tradução e mutações','Como uma sequência de bases vira uma sequência de aminoácidos?',['correio','fabrica','mutacao']]];
+  const ST=[['her','1 · Herança e probabilidade','Por que Aa × Aa não garante exatamente um aa em quatro filhos?',['mendel','loteria','galeria','agencia','heredo','diibr','abo']],['int','2 · Interações e ambiente','Como dois genes, ou genes e ambiente, produzem um fenótipo?',['cristas','pigmento','jardim','redacao']],['dna','3 · Estrutura e replicação do DNA','Como uma molécula se copia mantendo a sequência?',['dna','copia']],['exp','4 · Transcrição, tradução e mutações','Como uma sequência de bases vira uma sequência de aminoácidos?',['correio','fabrica','mutacao']]];
   root.append(h('div',{class:'cards'},...ST.map(([t,n,q,ids])=>h('div',{class:'panel stack','data-tema':t,style:'border-top:5px solid var(--tema)'},h('span',{class:'eyebrow'},'Estação'),h('h3',{},n),h('p',{},h('strong',{},'Pergunta central: '),q),h('span',{class:'label'},'Ferramentas para reusar'),h('div',{class:'chips'},...ids.map(id=>h('button',{class:'chip','data-go':id},TOOLS.find(x=>x.id===id).title)))))));
   root.append(h('p',{class:'callout'},'Na ficha, registre a estação escolhida, a pergunta central, o modelo ou dado usado, a explicação e um limite do modelo.'));
   // Quiz individual
@@ -1525,14 +1525,18 @@ const SPEC=[
    {k:'mc',t:'3 · O que a reposição representa?',ch:['Que cada gameta tem sempre a mesma chance de levar A ou a','Que o genitor perde um alelo a cada filho','Que os resultados anteriores mudam o próximo sorteio'],key:'Que cada gameta tem sempre a mesma chance de levar A ou a',pts:1},
    {k:'par',t:'4 · O que muda ao reunir uma amostra maior?',man:2},
    {k:'par',t:'Fechamento: por que uma amostra que se afasta de 3:1 não refuta sozinha o modelo?',man:2}]},
- {code:'Aula 03',titulo:'Aula 3 · Agência de previsões',tipo:'Individual',desc:'Pedidos A, B e C da agência, com cálculo e condição de validade.',itens:[
+ {code:'Aula 03',titulo:'Aula 3 · Galeria das dominâncias',tipo:'Individual',desc:'Três modelos didáticos de um locus.',itens:[
+   ...[1,2,3].flatMap(n=>[{k:'mc',t:`Modelo ${n} · genótipos em F2`,ch:['1 : 2 : 1','3 : 1','1 : 1'],key:'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · fenótipos em F2`,ch:['3 : 1','1 : 2 : 1','1 : 1'],key:n===1?'3 : 1':'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · relação de dominância`,ch:['Dominância completa','Dominância incompleta','Codominância'],key:['Dominância completa','Dominância incompleta','Codominância'][n-1],pts:1}]),
+   {k:'par',t:'Nos três modelos, o indivíduo da F1 é heterozigoto: tem um alelo de cada tipo. O que acontece com esses dois alelos quando ele forma os gametas? Por que isso faz os fenótipos da geração P reaparecerem na F2?',man:2},
+   {k:'par',t:'Fechamento: no Modelo 2, toda a F1 é rosa (VB). Na F2, voltam a nascer flores vermelhas e flores brancas, iguais às da geração P. Por que isso mostra que os alelos V e B não se misturaram nem se diluíram na flor rosa?',man:2}]},
+ {code:'Aula 04',titulo:'Aula 4 · Agência de previsões',tipo:'Individual',desc:'Pedidos A, B e C da agência, com cálculo e condição de validade.',itens:[
    {k:'mc',t:'Pedido A · Em Aa × Aa, P(fenótipo recessivo no próximo descendente)',ch:['1/2','1/4','3/4','1/16'],key:'1/4',pts:1},
    {k:'mc',t:'Pedido B · P(dois descendentes aa), eventos independentes',ch:['1/4','1/8','1/16','1/2'],key:'1/16',pts:1},
    {k:'mc',t:'Pedido C · P(um descendente ser AA ou Aa)',ch:['1/2','1/4','3/4','1'],key:'3/4',pts:1},
    {k:'par',t:'Cálculo e condição de validade de cada pedido',man:3},
    {k:'par',t:'Por que as alternativas do pedido C são mutuamente exclusivas?',man:1},
    {k:'par',t:'Fechamento: em Aa × Aa, qual é a probabilidade de aa no próximo descendente, mesmo após dois aa anteriores? Justifique',man:2}]},
- {code:'Aula 04',titulo:'Aula 4 · Detetives de heredogramas',tipo:'Individual',desc:'Família fictícia desta aula. Modelo: um locus, dois alelos, penetrância completa, sem mutações novas.',itens:[
+ {code:'Aula 05',titulo:'Aula 5 · Detetives de heredogramas',tipo:'Individual',desc:'Família fictícia desta aula. Modelo: um locus, dois alelos, penetrância completa, sem mutações novas.',itens:[
    {k:'hdr',t:'Genótipos sob o modelo'},
    {k:'mc',t:'Genótipo de I-1',ch:GEN3,key:'Aa',pts:1},{k:'mc',t:'Genótipo de I-2',ch:GEN3,key:'Aa',pts:1},{k:'mc',t:'Genótipo de II-1',ch:GEN3,key:'aa',pts:1},{k:'mc',t:'Genótipo de II-2',ch:GEN3,key:'AA ou Aa',pts:1},{k:'mc',t:'Genótipo de II-3',ch:GEN3,key:'AA ou Aa',pts:1},
    {k:'hdr',t:'Necessária, possível ou não sustentada?'},
@@ -1551,10 +1555,6 @@ const SPEC=[
    {k:'mc',t:'III-2 (Aa) e III-3 (Aa) já tiveram um filho aa. Qual a chance de a próxima gestação ser aa?',ch:['0','1/4','1/2','3/4'],key:'1/4',pts:1},
    {k:'par',t:'Por que o heredograma nem sempre permite determinar sozinho o padrão de herança? Cite pelo menos dois motivos.',man:2},
    {k:'par',t:'Fechamento: indique um genótipo certo e um que permaneça indeterminado no caso',man:2}]},
- {code:'Aula 05',titulo:'Aula 5 · Galeria das dominâncias',tipo:'Individual',desc:'Três modelos didáticos de um locus.',itens:[
-   ...[1,2,3].flatMap(n=>[{k:'mc',t:`Modelo ${n} · genótipos em F2`,ch:['1 : 2 : 1','3 : 1','1 : 1'],key:'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · fenótipos em F2`,ch:['3 : 1','1 : 2 : 1','1 : 1'],key:n===1?'3 : 1':'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · relação de dominância`,ch:['Dominância completa','Dominância incompleta','Codominância'],key:['Dominância completa','Dominância incompleta','Codominância'][n-1],pts:1}]),
-   {k:'par',t:'Nos três modelos, o indivíduo da F1 é heterozigoto: tem um alelo de cada tipo. O que acontece com esses dois alelos quando ele forma os gametas? Por que isso faz os fenótipos da geração P reaparecerem na F2?',man:2},
-   {k:'par',t:'Fechamento: no Modelo 2, toda a F1 é rosa (VB). Na F2, voltam a nascer flores vermelhas e flores brancas, iguais às da geração P. Por que isso mostra que os alelos V e B não se misturaram nem se diluíram na flor rosa?',man:2}]},
  {code:'Aula 06',titulo:'Aula 6 · Duas características em uma semente',tipo:'Individual',desc:'AaBb × AaBb com dois loci em cromossomos diferentes.',itens:[
    {k:'mc',t:'Gametas de AaBb e suas probabilidades',ch:['AB e ab, 1/2 cada','AB, Ab, aB e ab, 1/4 cada','Aa e Bb, 1/2 cada'],key:'AB, Ab, aB e ab, 1/4 cada',pts:1},
    {k:'mc',t:'P(aabb) pelo quadro',ch:['1/4','1/8','1/16','9/16'],key:'1/16',pts:1},
@@ -1822,7 +1822,7 @@ extend('loteria',root=>{
     model('Cada semente é sorteada com probabilidade 1/4 de ser aa, como na loteria dos sacos. Isso é a lei dos grandes números: quanto maior a amostra, mais perto da probabilidade esperada.')));
 });
 
-// ---------- Aula 3: Maternidade virtual ----------
+// ---------- Aula 4: Maternidade virtual ----------
 extend('agencia',root=>{
   let k=store.get('mat-k',4),F=store.get('mat-F',100);const fam=h('div',{class:'stack',style:'gap:4px'});const ch=s('svg',{class:'chart',role:'img','aria-label':'Número de filhos aa por família'});const out=h('div',{});
   const run=h('button',{class:'btn primary'},'Gerar famílias');
@@ -1839,7 +1839,7 @@ extend('agencia',root=>{
     h('div',{class:'cols'},fam,ch),out,model('Cada filho é sorteado de forma independente, com 1/4 de chance de ser aa.')));
 });
 
-// ---------- Aula 4: Guia completo do heredograma ----------
+// ---------- Aula 5: Guia completo do heredograma ----------
 // Notação compacta: cada geração é uma linha de pessoas "sexo+x+marcas" (m homem, f mulher, u não informado;
 // a afetado, c portador, d falecido, p probando, q genótipo sem manifestação, n mutação nova).
 // Uniões: "I1+I2>II2,II3" (união comum) ou "III2=III3>IV1" (união consanguínea).
@@ -2137,7 +2137,7 @@ extend('heredo',root=>{
   show();
 });
 
-// ---------- Aula 4: Gerador de heredogramas ----------
+// ---------- Aula 5: Gerador de heredogramas ----------
 extend('heredo',root=>{
   // I-1 × I-2 → II-1, II-2, II-3; II-2 × II-4 (de fora) → III-1, III-2, III-3
   const IDS=['I-1','I-2','II-1','II-2','II-3','II-4','III-1','III-2','III-3'];const PAR={'II-1':['I-1','I-2'],'II-2':['I-1','I-2'],'II-3':['I-1','I-2'],'III-1':['II-2','II-4'],'III-2':['II-2','II-4'],'III-3':['II-2','II-4']};
@@ -2178,7 +2178,7 @@ extend('heredo',root=>{
   root.append(sim('Gerador de heredogramas','Casos fictícios novos a cada toque, gerados por sorteio de alelos. Um locus, dois alelos, penetrância completa, sem mutações novas. II-4 vem de outra família.',sv,qBox,h('div',{class:'row'},check,nova),out,model('O site testa todas as combinações de genótipos possíveis para decidir se um modelo é compatível.')));
 });
 
-// ---------- Aula 5: Canteiro da F2 ----------
+// ---------- Aula 3: Descendentes da F2 ----------
 extend('galeria',root=>{
   const box=h('div',{style:'display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;max-width:520px;margin:0 auto;width:100%'});const out=h('div',{});
   const b=h('button',{class:'btn primary'},'Gerar 64 descendentes da F2');

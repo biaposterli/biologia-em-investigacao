@@ -284,14 +284,18 @@ const SPEC=[
    {k:'mc',t:'3 · O que a reposição representa?',ch:['Que cada gameta tem sempre a mesma chance de levar A ou a','Que o genitor perde um alelo a cada filho','Que os resultados anteriores mudam o próximo sorteio'],key:'Que cada gameta tem sempre a mesma chance de levar A ou a',pts:1},
    {k:'par',t:'4 · O que muda ao reunir uma amostra maior?',man:2},
    {k:'par',t:'Fechamento: por que uma amostra que se afasta de 3:1 não refuta sozinha o modelo?',man:2}]},
- {code:'Aula 03',titulo:'Aula 3 · Agência de previsões',tipo:'Individual',desc:'Pedidos A, B e C da agência, com cálculo e condição de validade.',itens:[
+ {code:'Aula 03',titulo:'Aula 3 · Galeria das dominâncias',tipo:'Individual',desc:'Três modelos didáticos de um locus.',itens:[
+   ...[1,2,3].flatMap(n=>[{k:'mc',t:`Modelo ${n} · genótipos em F2`,ch:['1 : 2 : 1','3 : 1','1 : 1'],key:'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · fenótipos em F2`,ch:['3 : 1','1 : 2 : 1','1 : 1'],key:n===1?'3 : 1':'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · relação de dominância`,ch:['Dominância completa','Dominância incompleta','Codominância'],key:['Dominância completa','Dominância incompleta','Codominância'][n-1],pts:1}]),
+   {k:'par',t:'Nos três modelos, o indivíduo da F1 é heterozigoto: tem um alelo de cada tipo. O que acontece com esses dois alelos quando ele forma os gametas? Por que isso faz os fenótipos da geração P reaparecerem na F2?',man:2},
+   {k:'par',t:'Fechamento: no Modelo 2, toda a F1 é rosa (VB). Na F2, voltam a nascer flores vermelhas e flores brancas, iguais às da geração P. Por que isso mostra que os alelos V e B não se misturaram nem se diluíram na flor rosa?',man:2}]},
+ {code:'Aula 04',titulo:'Aula 4 · Agência de previsões',tipo:'Individual',desc:'Pedidos A, B e C da agência, com cálculo e condição de validade.',itens:[
    {k:'mc',t:'Pedido A · Em Aa × Aa, P(fenótipo recessivo no próximo descendente)',ch:['1/2','1/4','3/4','1/16'],key:'1/4',pts:1},
    {k:'mc',t:'Pedido B · P(dois descendentes aa), eventos independentes',ch:['1/4','1/8','1/16','1/2'],key:'1/16',pts:1},
    {k:'mc',t:'Pedido C · P(um descendente ser AA ou Aa)',ch:['1/2','1/4','3/4','1'],key:'3/4',pts:1},
    {k:'par',t:'Cálculo e condição de validade de cada pedido',man:3},
    {k:'par',t:'Por que as alternativas do pedido C são mutuamente exclusivas?',man:1},
    {k:'par',t:'Fechamento: em Aa × Aa, qual é a probabilidade de aa no próximo descendente, mesmo após dois aa anteriores? Justifique',man:2}]},
- {code:'Aula 04',titulo:'Aula 4 · Detetives de heredogramas',tipo:'Individual',desc:'Família fictícia desta aula. Modelo: um locus, dois alelos, penetrância completa, sem mutações novas.',itens:[
+ {code:'Aula 05',titulo:'Aula 5 · Detetives de heredogramas',tipo:'Individual',desc:'Família fictícia desta aula. Modelo: um locus, dois alelos, penetrância completa, sem mutações novas.',itens:[
    {k:'hdr',t:'Genótipos sob o modelo'},
    {k:'mc',t:'Genótipo de I-1',ch:GEN3,key:'Aa',pts:1},{k:'mc',t:'Genótipo de I-2',ch:GEN3,key:'Aa',pts:1},{k:'mc',t:'Genótipo de II-1',ch:GEN3,key:'aa',pts:1},{k:'mc',t:'Genótipo de II-2',ch:GEN3,key:'AA ou Aa',pts:1},{k:'mc',t:'Genótipo de II-3',ch:GEN3,key:'AA ou Aa',pts:1},
    {k:'hdr',t:'Necessária, possível ou não sustentada?'},
@@ -310,10 +314,6 @@ const SPEC=[
    {k:'mc',t:'III-2 (Aa) e III-3 (Aa) já tiveram um filho aa. Qual a chance de a próxima gestação ser aa?',ch:['0','1/4','1/2','3/4'],key:'1/4',pts:1},
    {k:'par',t:'Por que o heredograma nem sempre permite determinar sozinho o padrão de herança? Cite pelo menos dois motivos.',man:2},
    {k:'par',t:'Fechamento: indique um genótipo certo e um que permaneça indeterminado no caso',man:2}]},
- {code:'Aula 05',titulo:'Aula 5 · Galeria das dominâncias',tipo:'Individual',desc:'Três modelos didáticos de um locus.',itens:[
-   ...[1,2,3].flatMap(n=>[{k:'mc',t:`Modelo ${n} · genótipos em F2`,ch:['1 : 2 : 1','3 : 1','1 : 1'],key:'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · fenótipos em F2`,ch:['3 : 1','1 : 2 : 1','1 : 1'],key:n===1?'3 : 1':'1 : 2 : 1',pts:1},{k:'mc',t:`Modelo ${n} · relação de dominância`,ch:['Dominância completa','Dominância incompleta','Codominância'],key:['Dominância completa','Dominância incompleta','Codominância'][n-1],pts:1}]),
-   {k:'par',t:'Nos três modelos, o indivíduo da F1 é heterozigoto: tem um alelo de cada tipo. O que acontece com esses dois alelos quando ele forma os gametas? Por que isso faz os fenótipos da geração P reaparecerem na F2?',man:2},
-   {k:'par',t:'Fechamento: no Modelo 2, toda a F1 é rosa (VB). Na F2, voltam a nascer flores vermelhas e flores brancas, iguais às da geração P. Por que isso mostra que os alelos V e B não se misturaram nem se diluíram na flor rosa?',man:2}]},
  {code:'Aula 06',titulo:'Aula 6 · Duas características em uma semente',tipo:'Individual',desc:'AaBb × AaBb com dois loci em cromossomos diferentes.',itens:[
    {k:'mc',t:'Gametas de AaBb e suas probabilidades',ch:['AB e ab, 1/2 cada','AB, Ab, aB e ab, 1/4 cada','Aa e Bb, 1/2 cada'],key:'AB, Ab, aB e ab, 1/4 cada',pts:1},
    {k:'mc',t:'P(aabb) pelo quadro',ch:['1/4','1/8','1/16','9/16'],key:'1/16',pts:1},
