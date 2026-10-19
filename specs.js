@@ -310,7 +310,7 @@ const SPEC=[
    {k:'mc',t:'Uma pessoa Aa que não manifesta uma condição recessiva é',ch:['Homozigota e afetada','Heterozigota e portadora','Homozigota e portadora','Heterozigota e afetada'],key:'Heterozigota e portadora',pts:1},
    {k:'mc',t:'Só homens afetados, e todo pai afetado passa a característica para todos os filhos homens. Qual o padrão?',ch:['Autossômica dominante','Ligada ao X recessiva','Ligada ao Y','Mitocondrial'],key:'Ligada ao Y',pts:1},
    {k:'mc',t:'Pai afetado, todas as filhas afetadas e nenhum filho homem afetado. Qual o padrão mais provável?',ch:['Ligada ao X dominante','Ligada ao X recessiva','Autossômica recessiva','Mitocondrial'],key:'Ligada ao X dominante',pts:1},
-   {k:'mc',t:'Parentes com o mesmo genótipo manifestam a condição com intensidades diferentes. Isso é',ch:['Penetrância incompleta','Expressividade variável','Polialelia','Mutação nova'],key:'Expressividade variável',pts:1},
+   {k:'mc',t:'Parentes com o mesmo genótipo manifestam a condição com intensidades diferentes. Isso é',ch:['Penetrância incompleta','Expressividade variável','Codominância','Mutação nova'],key:'Expressividade variável',pts:1},
    {k:'mc',t:'III-2 (Aa) e III-3 (Aa) já tiveram um filho aa. Qual a chance de a próxima gestação ser aa?',ch:['0','1/4','1/2','3/4'],key:'1/4',pts:1},
    {k:'par',t:'Por que o heredograma nem sempre permite determinar sozinho o padrão de herança? Cite pelo menos dois motivos.',man:2},
    {k:'par',t:'Fechamento: indique um genótipo certo e um que permaneça indeterminado no caso',man:2}]},
@@ -324,6 +324,7 @@ const SPEC=[
  {code:'Aula 07',titulo:'Aula 7 · Catálogo ABO',tipo:'Individual',desc:'Laboratório fictício do sistema ABO: sem testes nem inferências de parentesco real.',itens:[
    {k:'hdr',t:'Fenótipo de cada genótipo'},
    ...[['IᴬIᴬ','A'],['Iᴬi','A'],['IᴮIᴮ','B'],['Iᴮi','B'],['IᴬIᴮ','AB'],['ii','O']].map(([g,f])=>({k:'mc',t:'Fenótipo de '+g,ch:['A','B','AB','O'],key:f,pts:1})),
+   {k:'mc',t:'Polialelia: com os 3 alelos do sistema ABO na população, quantos genótipos diferentes são possíveis?',ch:['3','4','6','9'],key:'6',pts:1},
    {k:'mc',t:'Iᴬi × Iᴮi: fenótipos e probabilidades',ch:['Só AB','A e B, 1/2 cada','A, B, AB e O, 1/4 cada','A, B e AB, 1/3 cada'],key:'A, B, AB e O, 1/4 cada',pts:1},
    {k:'par',t:'Audite a frase: “O fenótipo A revela exatamente o genótipo”',man:2},
    {k:'par',t:'Fechamento: por que conhecer apenas o fenótipo A pode ser insuficiente para determinar o genótipo?',man:2}]},

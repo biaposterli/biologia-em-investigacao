@@ -991,6 +991,33 @@ const ABO_G=[['IA','IA'],['IA','i'],['IB','IB'],['IB','i'],['IA','IB'],['i','i']
 const aboFen=l=>has(l,'IA')&&has(l,'IB')?'AB':has(l,'IA')?'A':has(l,'IB')?'B':'O';
 INIT.abo=root=>{
   root.append(head('Aula 7 · Livro p. 338–340','Catálogo ABO','No modelo escolar, Iᴬ e Iᴮ são codominantes entre si e ambos dominam i. Há três alelos na população, mas cada pessoa diploide tem dois. Laboratório fictício: não fazer testes nem inferências de parentesco real.'));
+  // Polialelia: três alelos na população, dois em cada pessoa
+  (()=>{const COR={IA:'#d9534f',IB:'#3d8bd8',i:'#8d99a8'},TX={IA:'Iᴬ',IB:'Iᴮ',i:'i'};
+    const tok=(x,y,a,r=14)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${COR[a]}" stroke="rgba(0,0,0,.2)"/><text x="${x}" y="${y+r*.36}" text-anchor="middle" font-size="${r*.92}" font-weight="800" fill="#fff">${TX[a]}</text>`;
+    const rr=seeded(21);const pool=[];const P=['IA','IA','IA','IA','IB','IB','IB','i','i','i','i','i','i','i','i','i'];
+    P.forEach((a,k)=>{pool.push(tok(28+(k%8)*31+rr()*2,32+Math.floor(k/8)*44+rr()*6,a));});
+    const popSv=svgOf(`<rect width="270" height="110" rx="14" fill="var(--surface-2)"/>${pool.join('')}`,'0 0 270 110','hg-pool');
+    const pess=(x,a1,a2)=>`<g transform="translate(${x} 0)">${pessoaSv(30,26,22,false)}<rect x="10" y="56" width="16" height="44" rx="8" fill="#c6cfdf" stroke="#566074"/><rect x="34" y="56" width="16" height="44" rx="8" fill="#c6cfdf" stroke="#566074"/>${tok(18,78,a1,10)}${tok(42,78,a2,10)}</g>`;
+    const pesSv=svgOf(pess(0,'IA','IB')+pess(80,'IA','i')+pess(160,'i','i'),'0 0 220 104','hg-pool');
+    const fen=(x,y)=>{const s=[x,y];return s.includes('IA')&&s.includes('IB')?'AB':s.includes('IA')?'A':s.includes('IB')?'B':'O';};
+    const ord=a=>a==='IA'?0:a==='IB'?1:2;const gk=(x,y)=>[x,y].sort((p,q)=>ord(p)-ord(q)).join('');
+    const ALL=['IAIA','IAIB','IAi','IBIB','IBi','ii'];let achou=store.get('abo-achou',[]);let ult=null;
+    const out=h('div',{});const lista=h('div',{class:'chips'});
+    function draw(){lista.innerHTML='';ALL.forEach(g=>{const al=g.match(/IA|IB|i/g);lista.append(h('span',{class:'chip','aria-pressed':String(achou.includes(g)),html:achou.includes(g)?al.map(alHTML).join('')+' · grupo '+fen(al[0],al[1]):'?'}));});
+      out.innerHTML='';if(ult){const al=ult.match(/IA|IB|i/g);out.append(h('div',{class:'fb info'},h('b',{html:'Pessoa sorteada: '+al.map(alHTML).join('')}),` · grupo ${fen(al[0],al[1])}. Ela recebeu um alelo de cada genitor: só dois, mesmo existindo três na população.`));}
+      if(achou.length===6)out.append(h('div',{class:'fb ok'},h('strong',{},'Você encontrou os 6 genótipos! '),'Com 2 alelos de um gene existem 3 genótipos (AA, Aa, aa). Com 3 alelos, 6. Quanto mais alelos na população, mais combinações possíveis: com 4 alelos (como na cor da pelagem de coelhos), são 10.'));
+      else out.append(h('p',{class:'note',style:'margin:0'},`Genótipos encontrados: ${achou.length} de 6. Continue sorteando.`));}
+    const b=h('button',{class:'btn primary'},'🎲 Sortear uma pessoa da população');
+    b.onclick=()=>{const x=P[Math.floor(Math.random()*P.length)],y=P[Math.floor(Math.random()*P.length)];ult=gk(x,y);if(!achou.includes(ult)){achou.push(ult);store.set('abo-achou',achou);}draw();};
+    const r0=h('button',{class:'btn ghost sm',onclick:()=>{achou=[];ult=null;store.set('abo-achou',achou);draw();}},'Recomeçar');
+    if(!document.getElementById('pool-css')){const st=document.createElement('style');st.id='pool-css';st.textContent='.hg-pool{width:100%;max-width:300px;height:auto}';document.head.append(st);}
+    root.append(panel(h('span',{class:'eyebrow'},'Antes do catálogo'),h('h3',{},'Polialelia: três alelos na população, dois em cada pessoa'),
+      h('p',{},h('b',{},'Polialelia'),' (ou alelos múltiplos) é a existência de ',h('b',{},'três ou mais alelos'),' de um mesmo gene ',h('b',{},'na população'),'. O gene do sistema ABO é um exemplo: existem os alelos Iᴬ, Iᴮ e i.'),
+      h('div',{class:'cols',style:'align-items:center'},h('div',{class:'stack',style:'gap:6px;align-items:center'},h('b',{},'Na população: 3 alelos'),popSv,h('span',{class:'note',style:'text-align:center'},'Cada bolinha é uma cópia do gene em alguma pessoa.')),
+        h('div',{class:'stack',style:'gap:6px;align-items:center'},h('b',{},'Em cada pessoa: só 2'),pesSv,h('span',{class:'note',style:'text-align:center'},'Um alelo em cada cromossomo do par (um veio de cada genitor), iguais ou diferentes.'))),
+      h('div',{class:'callout'},h('strong',{},'Atenção: '),'polialelia é sobre a ',h('b',{},'população'),'. Nenhuma pessoa tem três alelos do mesmo gene: o que muda é a variedade de combinações possíveis.'),
+      h('span',{class:'label'},'Descubra todos os genótipos possíveis'),h('div',{class:'row'},b,r0),lista,out));
+    draw();})();
   const grid=h('div',{class:'cols'});root.append(grid);
   const L=panel(h('h3',{},'Monte um genótipo'));const R=panel(h('h3',{},'Cruzamento'));grid.append(L,R);
   let a1=store.get('abo-a1','IA'),a2=store.get('abo-a2','i');const res=h('div',{class:'stack',style:'align-items:center'});
@@ -1568,7 +1595,7 @@ const SPEC=[
    {k:'mc',t:'Uma pessoa Aa que não manifesta uma condição recessiva é',ch:['Homozigota e afetada','Heterozigota e portadora','Homozigota e portadora','Heterozigota e afetada'],key:'Heterozigota e portadora',pts:1},
    {k:'mc',t:'Só homens afetados, e todo pai afetado passa a característica para todos os filhos homens. Qual o padrão?',ch:['Autossômica dominante','Ligada ao X recessiva','Ligada ao Y','Mitocondrial'],key:'Ligada ao Y',pts:1},
    {k:'mc',t:'Pai afetado, todas as filhas afetadas e nenhum filho homem afetado. Qual o padrão mais provável?',ch:['Ligada ao X dominante','Ligada ao X recessiva','Autossômica recessiva','Mitocondrial'],key:'Ligada ao X dominante',pts:1},
-   {k:'mc',t:'Parentes com o mesmo genótipo manifestam a condição com intensidades diferentes. Isso é',ch:['Penetrância incompleta','Expressividade variável','Polialelia','Mutação nova'],key:'Expressividade variável',pts:1},
+   {k:'mc',t:'Parentes com o mesmo genótipo manifestam a condição com intensidades diferentes. Isso é',ch:['Penetrância incompleta','Expressividade variável','Codominância','Mutação nova'],key:'Expressividade variável',pts:1},
    {k:'mc',t:'III-2 (Aa) e III-3 (Aa) já tiveram um filho aa. Qual a chance de a próxima gestação ser aa?',ch:['0','1/4','1/2','3/4'],key:'1/4',pts:1},
    {k:'par',t:'Por que o heredograma nem sempre permite determinar sozinho o padrão de herança? Cite pelo menos dois motivos.',man:2},
    {k:'par',t:'Fechamento: indique um genótipo certo e um que permaneça indeterminado no caso',man:2}]},
@@ -1582,6 +1609,7 @@ const SPEC=[
  {code:'Aula 07',titulo:'Aula 7 · Catálogo ABO',tipo:'Individual',desc:'Laboratório fictício do sistema ABO: sem testes nem inferências de parentesco real.',itens:[
    {k:'hdr',t:'Fenótipo de cada genótipo'},
    ...[['IᴬIᴬ','A'],['Iᴬi','A'],['IᴮIᴮ','B'],['Iᴮi','B'],['IᴬIᴮ','AB'],['ii','O']].map(([g,f])=>({k:'mc',t:'Fenótipo de '+g,ch:['A','B','AB','O'],key:f,pts:1})),
+   {k:'mc',t:'Polialelia: com os 3 alelos do sistema ABO na população, quantos genótipos diferentes são possíveis?',ch:['3','4','6','9'],key:'6',pts:1},
    {k:'mc',t:'Iᴬi × Iᴮi: fenótipos e probabilidades',ch:['Só AB','A e B, 1/2 cada','A, B, AB e O, 1/4 cada','A, B e AB, 1/3 cada'],key:'A, B, AB e O, 1/4 cada',pts:1},
    {k:'par',t:'Audite a frase: “O fenótipo A revela exatamente o genótipo”',man:2},
    {k:'par',t:'Fechamento: por que conhecer apenas o fenótipo A pode ser insuficiente para determinar o genótipo?',man:2}]},
@@ -2046,10 +2074,7 @@ extend('heredo',root=>{
         h('tr',{},h('th',{},'Portador?'),h('td',{},g==='Aa'?h('span',{},h('b',{},'Sim. '),'Tem o alelo recessivo, mas geralmente não manifesta a condição. Pode passá-lo aos filhos.'):g==='aa'?'Manifesta a condição (não é chamado de portador, e sim de afetado).':'Não: não tem o alelo a.'))));}
     box.append(h('div',{class:'hg-grid2'},h('div',{class:'stack',style:'gap:8px'},h('span',{class:'label'},'Monte o par: alelo no cromossomo do pai'),pick(a1,v=>{a1=v;store.set('hg-a1',v);upd();}),h('span',{class:'label'},'Alelo no cromossomo da mãe'),pick(a2,v=>{a2=v;store.set('hg-a2',v);upd();}),chr),out));
     upd();
-    box.append(h('div',{class:'hg-card'},h('h4',{},'Polialelia: mais de dois alelos na população'),
-      h('div',{class:'row',style:'gap:14px;align-items:center'},svgOf(`<rect width="240" height="110" rx="12" fill="var(--surface-2)"/>${[[30,30,'Iᴬ','#d9534f'],[75,55,'Iᴮ','#3d8bd8'],[120,28,'i','#8d99a8'],[165,60,'Iᴬ','#d9534f'],[205,32,'i','#8d99a8'],[50,82,'i','#8d99a8'],[100,88,'Iᴮ','#3d8bd8'],[150,92,'i','#8d99a8'],[200,85,'Iᴬ','#d9534f']].map(([x,y,t,c])=>`<circle cx="${x}" cy="${y}" r="15" fill="${c}"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">${t}</text>`).join('')}`,'0 0 240 110','hg-chr'),
-        h('p',{style:'margin:0;flex:1;min-width:200px'},'O gene do sistema ABO tem ',h('b',{},'três alelos'),' na população: Iᴬ, Iᴮ e i. Isso é ',h('b',{},'polialelia'),' (alelos múltiplos). Mas cada pessoa tem só ',h('b',{},'dois'),', um em cada cromossomo do par: por exemplo, IᴬIᴮ ou Iᴮi. Veja mais na aula 7.'))));
-    box.append(h('div',{class:'hg-gloss'},...[['Gene','sequência de DNA com informações para produzir um produto funcional.'],['Alelo','uma das versões de um gene.'],['Polialelia','três ou mais alelos de um mesmo gene na população.'],['Genótipo','constituição genética: AA, Aa ou aa.'],['Fenótipo','característica observável (o que aparece no símbolo).'],['Homozigose','dois alelos iguais para um gene (AA ou aa).'],['Heterozigose','dois alelos diferentes para um gene (Aa).'],['Dominância e recessividade','relação entre alelos: o dominante se manifesta com uma cópia; o recessivo só sem o dominante.'],['Portador','tem o alelo recessivo, mas geralmente não manifesta a condição.']].map(([a,b])=>h('div',{},h('b',{},a+': '),b))));}
+    box.append(h('div',{class:'hg-gloss'},...[['Gene','sequência de DNA com informações para produzir um produto funcional.'],['Alelo','uma das versões de um gene.'],['Genótipo','constituição genética: AA, Aa ou aa.'],['Fenótipo','característica observável (o que aparece no símbolo).'],['Homozigose','dois alelos iguais para um gene (AA ou aa).'],['Heterozigose','dois alelos diferentes para um gene (Aa).'],['Dominância e recessividade','relação entre alelos: o dominante se manifesta com uma cópia; o recessivo só sem o dominante.'],['Portador','tem o alelo recessivo, mas geralmente não manifesta a condição.']].map(([a,b])=>h('div',{},h('b',{},a+': '),b))));}
 
   // ===== Estação 3: padrões =====
   function e3(){
