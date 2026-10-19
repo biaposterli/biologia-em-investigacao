@@ -2,11 +2,11 @@ import subprocess, pathlib, shutil, json
 R = pathlib.Path(__file__).resolve().parent; SRC = R / 'src'; OUT = R / 'out'
 OUT.mkdir(exist_ok=True)
 # Cada site agora é editado direto em src/sites/<site>.html (fonte única de cada site).
-for f in ['ecologia', 'celulas', 'genetica', 'microcosmo', 'painel']:
+for f in ['ciencia', 'ecologia', 'celulas', 'genetica', 'microcosmo', 'painel']:
     shutil.copy(SRC / 'sites' / f'{f}.html', OUT / f'{f}.html')
 # Fichas para o painel: extraídas dos próprios sites a cada build
 specs = {}
-for sid, f, start in [('eco', 'ecologia', "const REL_OPTS="), ('cel', 'celulas', "const C1='1º ano · Aula ';"), ('gen', 'genetica', "const GEN3="), ('mic', 'microcosmo', "const SPEC=[")]:
+for sid, f, start in [('eco', 'ecologia', "const REL_OPTS="), ('cel', 'celulas', "const C1='1º ano · Aula ';"), ('gen', 'genetica', "const GEN3="), ('mic', 'microcosmo', "const SPEC=["), ('cie', 'ciencia', "const SPEC=[")]:
     t = (OUT / f'{f}.html').read_text(encoding='utf-8')
     i0 = t.index(start); j = t.index('const SPEC=[', i0); k = t.index('\n];', j) + 3
     specs[sid] = t[i0:k]
@@ -36,7 +36,7 @@ idx = icons('portal', True) + '\n' + page('index'); prof = icons('portal') + '\n
 (OUT / 'index.body.html').write_text(idx)            # página principal do artefato (o Claude coloca o esqueleto)
 (OUT / 'professor.html').write_text(SKEL.replace('</head>', icons('portal') + '</head>') + page('professor') + '\n</body></html>')
 shutil.copy(SRC / 'portal.js', OUT / 'portal.js')
-for f, n in [('ecologia.html','ecologia'),('celulas.html','celulas'),('genetica.html','genetica'),('microcosmo.html','microcosmo'),('painel.html','portal')]:
+for f, n in [('ciencia.html','ciencia'),('ecologia.html','ecologia'),('celulas.html','celulas'),('genetica.html','genetica'),('microcosmo.html','microcosmo'),('painel.html','portal')]:
     t = (OUT / f).read_text()
     if 'rel="icon"' not in t:
         assert t.count('</head>') >= 1
@@ -51,7 +51,7 @@ shutil.copytree(SRC / 'icons', OUT / 'icons')
 SITE = R / 'site'
 if SITE.exists(): shutil.rmtree(SITE)
 SITE.mkdir()
-for f in ['ecologia.html', 'celulas.html', 'genetica.html', 'microcosmo.html', 'painel.html', 'professor.html', 'portal.js', 'specs.js', 'site.webmanifest']:
+for f in ['ciencia.html', 'ecologia.html', 'celulas.html', 'genetica.html', 'microcosmo.html', 'painel.html', 'professor.html', 'portal.js', 'specs.js', 'site.webmanifest']:
     shutil.copy(OUT / f, SITE / f)
 shutil.copytree(OUT / 'icons', SITE / 'icons')
 (SITE / 'index.html').write_text(SKEL.replace('</head>', icons('portal', True) + '</head>') + page('index') + '\n</body></html>')

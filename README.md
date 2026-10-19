@@ -2,6 +2,7 @@
 
 Portal com sites didáticos interativos de Biologia para o Ensino Médio (1º ao 3º ano), baseados no livro *360° Biologia* (GODOY; LOURENÇO, FTD, 2024).
 
+- **Ciência em Investigação** (Tema 1)
 - **Células em Ação** (Temas 2 a 4)
 - **Microcosmo** (laboratório virtual de microscopia)
 - **Ecologia em Investigação** (Temas 20 a 24)

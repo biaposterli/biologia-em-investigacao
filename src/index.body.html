@@ -93,12 +93,12 @@
     <div class="stack" style="gap:20px">
       <span class="eyebrow" style="color:var(--muted)">Biologia · Ensino Médio · 1º ao 3º ano</span>
       <h1>Biologia em <span><b class="c1">in</b><b class="c2">ves</b><b class="c3">tiga</b><b class="c4">ção</b></span></h1>
-      <p class="lede">Quatro sites com simuladores, jogos, laboratórios virtuais e fichas de aula. O estudante faz tudo no celular ou no computador e envia a ficha, que chega na planilha do professor da turma.</p>
+      <p class="lede">Cinco sites com simuladores, jogos, laboratórios virtuais e fichas de aula. O estudante faz tudo no celular ou no computador e envia a ficha, que chega na planilha do professor da turma.</p>
       <div class="facts">
-        <div><b class="mono">4</b><span>sites</span></div>
-        <div><b class="mono">56</b><span>aulas</span></div>
-        <div><b class="mono">52</b><span>fichas com correção</span></div>
-        <div><b class="mono">11/36</b><span>temas do livro</span></div>
+        <div><b class="mono">5</b><span>sites</span></div>
+        <div><b class="mono">65</b><span>aulas</span></div>
+        <div><b class="mono">60</b><span>fichas com correção</span></div>
+        <div><b class="mono">12/36</b><span>temas do livro</span></div>
       </div>
     </div>
     <aside class="turma-card" id="turmaCard" aria-live="polite"></aside>
@@ -150,12 +150,14 @@
 (function(){
   const P=window.PORTAL,el=P.el;
   const ICON={
+    cie:'<circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-width="3"/><path d="M47 47l16 16" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M25.5 26a6.8 6.8 0 1 1 9.3 6.3c-1.6.6-2.6 2-2.6 3.7v1.4" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="32.2" cy="43" r="2" fill="currentColor"/>',
     cel:'<ellipse cx="38" cy="38" rx="31" ry="25" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="34" cy="36" r="9.5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="34" cy="36" r="3" fill="currentColor"/><path d="M50 26c4 1 7 4 7 8M52 48c3-1 5-3 6-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
     mic:'<path d="M24 10l12 12-8 8-12-12z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M32 26l10 10" stroke="currentColor" stroke-width="3"/><path d="M12 66h48" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M42 66a19 19 0 0 0 6-32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M26 66v-9h15" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>',
     eco:'<path d="M38 66V38" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M38 40c-13 0-20-8-20-22 13 0 20 8 20 22z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M38 34c0-11 7-19 22-19 0 12-8 19-22 19z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M14 66h48" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>',
     gen:'<path d="M24 8c0 20 28 20 28 30S24 48 24 68" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M52 8c0 20-28 20-28 30s28 10 28 30" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M28 18h20M31 38h14M28 58h20" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>'
   };
   const INFO={
+    cie:{tema:'Tema 1',aulas:9,papel:'dots',desc:'Como a ciência constrói conhecimento: observação e inferência, hipóteses, experimentos com controle, análise de dados, correlação e causa, checagem de notícias e revisão por pares.'},
     cel:{tema:'Temas 2, 3 e 4',aulas:16,papel:'dots',desc:'Como as células se organizam, se dividem e obtêm energia: membrana e osmose, mitose e meiose, fotossíntese, respiração e fermentação.'},
     mic:{tema:'Laboratório virtual de microscopia',aulas:8,papel:'grid',desc:'Um microscópio com foco, charriot e quatro objetivas para investigar 20 lâminas de células, tecidos e microrganismos.'},
     eco:{tema:'Temas 20 a 24',aulas:14,papel:'dots',desc:'Relações ecológicas, populações, sucessão, ciclos da matéria, solo e água, parasitismo e Saúde Única.'},
@@ -194,9 +196,9 @@
     'Relações alimentares','Relações ecológicas','Dinâmica de populações e sucessão ecológica','Ciclos biogeoquímicos','Impactos ambientais','Conservação, preservação e sustentabilidade',
     'Sistemas digestório e respiratório','Sistema cardiovascular, imunidade e sistema urinário','Sistema nervoso','Genética mendeliana','Interações gênicas e herança quantitativa','Genética molecular',
     'Ideias evolucionistas','Teoria sintética da evolução','Especiação','Evolução humana','Sociedade, ambiente e saúde','Biotecnologia'];
-  const PRONTO={};[[2,'cel'],[3,'cel'],[4,'cel'],[20,'eco'],[21,'eco'],[22,'eco'],[23,'eco'],[24,'eco'],[28,'gen'],[29,'gen'],[30,'gen']].forEach(([t,k])=>PRONTO[t]=k);
+  const PRONTO={};[[1,'cie'],[2,'cel'],[3,'cel'],[4,'cel'],[20,'eco'],[21,'eco'],[22,'eco'],[23,'eco'],[24,'eco'],[28,'gen'],[29,'gen'],[30,'gen']].forEach(([t,k])=>PRONTO[t]=k);
   const OBRAS=[
-    {nome:'Origens em Investigação',temas:[1,5,6],desc:'Como a ciência constrói conhecimento, o Universo e as condições para a vida, e a origem da vida: Redi, Pasteur, Oparin e Haldane e a evolução das células.'},
+    {nome:'Origens em Investigação',temas:[5,6],desc:'O Universo e as condições para a vida, e a origem da vida: Redi, Pasteur, Oparin e Haldane e a evolução das células.'},
     {nome:'Corpo em Transformação',temas:[7,8,9,10,11,12],desc:'Hormônios, sistema genital e puberdade, gestação e parto, contracepção e prevenção de ISTs, sexualidade e os desafios da juventude, como nutrição e dependências.'},
     {nome:'Diversidade em Investigação',temas:[13,14,15,16],desc:'Espécie, nomenclatura e classificação; bactérias, arqueias, protozoários, algas e fungos; invertebrados e cordados, com respiração, circulação e reprodução dos vertebrados.'},
     {nome:'Plantas em Ação',temas:[17,18],desc:'Briófitas, pteridófitas, gimnospermas e angiospermas, flores, frutos e sementes, e a fisiologia vegetal: água, seivas, transpiração e hormônios vegetais.'},

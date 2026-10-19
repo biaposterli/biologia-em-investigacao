@@ -11,7 +11,6 @@
 const PROFESSOR = __PROFESSOR__;
 const SENHA_PAINEL = __SENHA__;
 
-const SITES = ['Ecologia', 'Células', 'Genética', 'Microcosmo'];
 const MAX_TEXTO = 1200;
 const MAX_PERGUNTAS = 80;
 const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Escola', 'Turma', 'Grupo'];
@@ -20,7 +19,8 @@ const CAB_AVAL = ['Chave', 'Atividade', 'Turma', 'Nome', 'Grupo', 'Pontos autom�
   'Pontos das abertas', 'Nota', 'Comentário', 'Atualizado em'];
 
 function codigoValido(c) {
-  return typeof c === 'string' && new RegExp('^(' + SITES.join('|') + ') · Aula \\d{2}$').test(c);
+  // Aceita qualquer site da coleção ("Ecologia · Aula 01", "Ciência · Aula 03"…), inclusive os que ainda vão surgir
+  return typeof c === 'string' && /^[A-Za-zÀ-ÿ ]{2,40} · Aula \d{2}$/.test(c);
 }
 
 // Envio pelo site aberto dentro do Claude: abre uma aba de confirmação.

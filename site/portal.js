@@ -9,12 +9,13 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   var PORTAL_URL='';
 
   var SITES={
+    cie:{id:'cie',nome:'Ciência em Investigação',curto:'Ciência',file:'ciencia.html',cor:'#5b45a3'},
     eco:{id:'eco',nome:'Ecologia em Investigação',curto:'Ecologia',file:'ecologia.html',cor:'#1d6b58'},
     cel:{id:'cel',nome:'Células em Ação',curto:'Células',file:'celulas.html',cor:'#a3601b'},
     gen:{id:'gen',nome:'Genética em Investigação',curto:'Genética',file:'genetica.html',cor:'#a3336b'},
     mic:{id:'mic',nome:'Microcosmo',curto:'Microcosmo',file:'microcosmo.html',cor:'#2c58a5'}
   };
-  var ORDER=['mic','cel','eco','gen'];
+  var ORDER=['cie','mic','cel','eco','gen'];
   var K_TURMA='bi-turma',K_ID='bi-ident',K_PROF='bi-prof';
 
   function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}

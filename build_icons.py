@@ -14,6 +14,9 @@ ICONS = {
      '<path d="M32 13A19 19 0 0 1 51 32H32z" fill="#3d6fc4"/>'
      '<path d="M13 32A19 19 0 0 0 32 51V32z" fill="#2a8a6f"/>'
      '<path d="M51 32A19 19 0 0 1 32 51V32z" fill="#c2457f"/>'),
+  'ciencia': frame('#5b45a3',
+     f'<circle cx="28" cy="28" r="14" {W}/><path d="M38 38l13 13" {W}/>'
+     '<path d="M23.5 24a4.6 4.6 0 1 1 6.3 4.3c-1.1.4-1.8 1.4-1.8 2.5v.8" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/><circle cx="28" cy="36.4" r="2" fill="#fff"/>'),
   'celulas': frame('#a3601b',
      f'<path d="M14 30c0-11 10-18 21-17s16 9 15 18-7 19-19 20-17-9-17-21z" {W}/><circle cx="27" cy="29" r="7" fill="#fff"/><ellipse cx="40" cy="40" rx="5" ry="2.6" transform="rotate(-30 40 40)" fill="#fff"/><circle cx="41" cy="23" r="2.4" fill="#fff"/>'),
   'microcosmo': frame('#2c58a5',
@@ -35,7 +38,7 @@ for name, svg in ICONS.items():
 big = Image.open(io.BytesIO(cairosvg.svg2png(bytestring=ICONS['portal'].encode(), output_width=256, output_height=256)))
 big.save(OUT / 'favicon.ico', sizes=[(16, 16), (32, 32), (48, 48)])
 # prévia
-prev = Image.new('RGBA', (5 * 180 + 6 * 20, 220 + 60), (238, 240, 236, 255))
+prev = Image.new('RGBA', (len(ICONS) * 200 + 20, 220 + 60), (238, 240, 236, 255))
 for i, n in enumerate(ICONS):
     im = Image.open(OUT / f'{n}-180.png'); prev.paste(im, (20 + i * 200, 20), im)
     sm = Image.open(OUT / f'{n}-32.png').resize((32, 32)); prev.paste(sm, (20 + i * 200 + 74, 220), sm)

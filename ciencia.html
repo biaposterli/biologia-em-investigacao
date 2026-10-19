@@ -1,0 +1,1259 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="icons/ciencia.svg" type="image/svg+xml"><link rel="icon" href="icons/ciencia-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="icons/ciencia-180.png"></head><body>
+<script>window.PORTAL_SITE='cie';</script><script src="portal.js"></script>
+<title>Ciência em Investigação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: caderno de laboratório pontilhado; cada etapa da investigação tem sua cor (observar ocre, experimentar violeta, evidências azul, ciência coletiva ameixa) */
+:root{
+  --bg:#eef0e9; --dot:#d5dbd0; --surface:#fcfcf9; --surface-2:#e4e9e1; --ink:#17231d; --muted:#556459; --line:#d3dbd0;
+  --accent:#5b45a3; --accent-soft:#e6e0f4; --accent-ink:#ffffff;
+  --ochre:#a3601b; --ochre-soft:#f3e3cd; --sky:#2a6497; --sky-soft:#dae7f2; --berry:#8a3560; --berry-soft:#f1dde7;
+  --good:#2b7a4b; --good-soft:#dbefe1; --bad:#b03c35; --bad-soft:#f7e0dd; --warn:#94650c;
+  --shadow:0 1px 0 rgba(23,35,29,.04), 0 10px 30px -18px rgba(23,35,29,.28);
+  --f-display:"Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --r:14px; --tema:var(--accent); --tema-soft:var(--accent-soft);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1512; --dot:#1c2621; --surface:#161f1a; --surface-2:#202b25; --ink:#e3ebe5; --muted:#9aab9f; --line:#2a3731;
+  --accent:#b4a2ec; --accent-soft:#241d3a; --accent-ink:#0b1712;
+  --ochre:#e2a25a; --ochre-soft:#33261a; --sky:#77acdb; --sky-soft:#18293a; --berry:#e08ab3; --berry-soft:#33192a;
+  --good:#5cc08a; --good-soft:#163222; --bad:#ec7d72; --bad-soft:#3a1d1a; --warn:#e2b456;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 30px -18px rgba(0,0,0,.7);
+  color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f1512; --dot:#1c2621; --surface:#161f1a; --surface-2:#202b25; --ink:#e3ebe5; --muted:#9aab9f; --line:#2a3731;
+  --accent:#b4a2ec; --accent-soft:#241d3a; --accent-ink:#0b1712;
+  --ochre:#e2a25a; --ochre-soft:#33261a; --sky:#77acdb; --sky-soft:#18293a; --berry:#e08ab3; --berry-soft:#33192a;
+  --good:#5cc08a; --good-soft:#163222; --bad:#ec7d72; --bad-soft:#3a1d1a; --warn:#e2b456;
+  --shadow:0 1px 0 rgba(0,0,0,.3), 0 12px 30px -18px rgba(0,0,0,.7);
+  color-scheme:dark }
+[data-tema="obs"]{--tema:var(--ochre);--tema-soft:var(--ochre-soft)}
+[data-tema="exp"]{--tema:var(--accent);--tema-soft:var(--accent-soft)}
+[data-tema="evi"]{--tema:var(--sky);--tema-soft:var(--sky-soft)}
+[data-tema="col"]{--tema:var(--berry);--tema-soft:var(--berry-soft)}
+html{font-size:16px}
+html.proj{font-size:20px}
+body{background-color:var(--bg);background-image:radial-gradient(var(--dot) 1.1px,transparent 1.3px);background-size:22px 22px;color:var(--ink);font-family:var(--f-body);font-size:1rem;line-height:1.5}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.12;text-wrap:balance;margin:0}
+h2{font-size:clamp(1.7rem,3.6vw,2.6rem);font-weight:800;letter-spacing:-.015em}
+h3{font-size:1.18rem;font-weight:700;letter-spacing:-.005em}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--tema);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+
+/* Cabeçalho */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top-in{max-width:1280px;margin:0 auto;padding:12px 16px 10px;display:flex;flex-direction:column;gap:10px}
+.brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand-name{display:flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:800;font-size:1.2rem;letter-spacing:-.01em;cursor:pointer;background:none;border:0;padding:0}
+.brand-mark{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 42% 40%,#f6efd7 0 52%,#cbbd92 70%,#1a211d 72%);box-shadow:inset 0 0 0 1px rgba(0,0,0,.2);position:relative;flex:none}
+.brand-mark::after{content:"";position:absolute;left:9px;top:11px;width:12px;height:7px;border-radius:50%;background:#b98a45;transform:rotate(-20deg)}
+.brand-meta{color:var(--muted);font-size:.85rem}
+.brand-tools{margin-left:auto;display:flex;gap:6px}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none;border:1px solid transparent;background:none;padding:6px 12px;border-radius:999px;cursor:pointer;color:var(--muted);font-size:.9rem;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
+nav.tabs button b{font-family:var(--f-mono);font-weight:600;font-size:.74rem;color:var(--tema)}
+nav.tabs button:hover{color:var(--ink);background:var(--surface)}
+nav.tabs button[aria-current="true"]{color:var(--ink);background:var(--tema-soft);border-color:color-mix(in srgb,var(--tema) 35%,transparent);font-weight:700}
+
+main{max-width:1280px;margin:0 auto;padding:28px 16px 72px}
+section.aula{display:flex;flex-direction:column;gap:22px}
+
+/* Faixa de abertura de cada aula */
+.aula-head{position:relative;overflow:hidden;display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto auto;column-gap:22px;row-gap:6px;align-items:start;padding:24px 26px;background:var(--tema-soft);border-radius:20px;border:1px solid color-mix(in srgb,var(--tema) 22%,transparent)}
+.aula-head>*{grid-column:2;position:relative;z-index:1;max-width:72ch}
+.aula-badge{grid-column:1!important;grid-row:1/4;align-self:center;width:88px;height:88px;border-radius:18px;background:var(--tema);color:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.aula-badge-k{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.85}
+.aula-badge-n{font-family:var(--f-display);font-weight:800;font-size:1.9rem;letter-spacing:-.02em;margin-top:4px}
+.aula-wm{position:absolute!important;right:-18px;bottom:-34px;color:var(--tema);opacity:.13;z-index:0!important;grid-column:auto!important;pointer-events:none}
+@media (max-width:640px){.aula-head{grid-template-columns:minmax(0,1fr);padding:20px}.aula-head>*{grid-column:1}.aula-badge{grid-row:auto;width:auto;height:auto;flex-direction:row;gap:8px;padding:6px 12px;justify-self:start;border-radius:10px}.aula-badge-n{font-size:1.2rem;margin:0}}
+.eyebrow{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--tema);font-weight:600}
+.lede{color:var(--muted);font-size:1.05rem}
+.aula-head .lede{color:var(--ink);opacity:.82}
+
+/* Componentes */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:8px 15px;border-radius:10px;cursor:pointer;font-weight:700;font-size:.92rem;line-height:1.2;transition:border-color .15s,transform .15s,background .15s}
+.btn:hover{border-color:var(--tema)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--tema);border-color:var(--tema);color:var(--surface)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent}
+.btn.sm{padding:5px 10px;font-size:.82rem;border-radius:8px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:12px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px;min-width:0;box-shadow:var(--shadow)}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+.cols.wide-left{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}
+.cols.wide-right{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
+@media (max-width:860px){.cols,.cols.wide-left,.cols.wide-right{grid-template-columns:minmax(0,1fr)}}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;flex-wrap:wrap;background:var(--surface)}
+.seg button{border:0;background:transparent;padding:7px 13px;cursor:pointer;font-weight:700;border-right:1px solid var(--line);min-width:2.6em}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--tema);color:var(--surface)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 13px;cursor:pointer;font-size:.9rem;transition:border-color .15s}
+.chip:hover{border-color:var(--tema)}
+.chip[aria-pressed="true"]{background:var(--tema);border-color:var(--tema);color:var(--surface);font-weight:700}
+.label{font-size:.76rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.note{font-size:.86rem;color:var(--muted)}
+.callout{border-left:4px solid var(--tema);background:var(--tema-soft);padding:11px 15px;border-radius:0 10px 10px 0}
+.fb{padding:10px 14px;border-radius:10px;font-size:.95rem}
+.fb.ok{background:var(--good-soft);color:var(--ink);border:1px solid color-mix(in srgb,var(--good) 55%,transparent)}
+.fb.no{background:var(--bad-soft);color:var(--ink);border:1px solid color-mix(in srgb,var(--bad) 55%,transparent)}
+.fb.info{background:var(--sky-soft);border:1px solid color-mix(in srgb,var(--sky) 45%,transparent)}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.78rem;font-weight:700;background:var(--surface-2);color:var(--muted)}
+.pill.ok{background:var(--good-soft);color:var(--good)} .pill.no{background:var(--bad-soft);color:var(--bad)} .pill.ex{background:var(--tema-soft);color:var(--tema)}
+input[type=number],input[type=text],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 9px;min-width:0}
+input[type=number]{width:5.5em;font-family:var(--f-mono)}
+input[type=range]{accent-color:var(--tema);width:100%}
+input[type=checkbox]{accent-color:var(--tema);width:1.05em;height:1.05em}
+.tbl-wrap{overflow-x:auto}
+table.data{border-collapse:collapse;width:100%;font-size:.92rem}
+table.data th,table.data td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left}
+table.data th{font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+table.data td.n,table.data th.n{text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.big-num{font-family:var(--f-display);font-weight:800;font-size:2rem;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat{display:flex;flex-direction:column;gap:4px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+svg text{font-family:var(--f-body)}
+.chart{width:100%;height:auto;display:block}
+.slider-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;align-items:center}
+.slider-row output{font-family:var(--f-mono);font-weight:600}
+.tabs-in{display:flex;gap:6px;flex-wrap:wrap}
+.tool-card{text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:var(--r);padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:150px;box-shadow:var(--shadow);transition:transform .18s,border-color .18s}
+.tool-card:hover{border-color:var(--tema);transform:translateY(-2px)}
+.tool-card .num{font-family:var(--f-mono);font-size:.74rem;color:var(--tema);letter-spacing:.08em;font-weight:600}
+
+/* Início */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:36px;align-items:center;padding:12px 0 18px}
+@media (max-width:860px){.hero{grid-template-columns:minmax(0,1fr)}}
+.hero h1{font-size:clamp(2.6rem,7vw,5.2rem);font-weight:800;letter-spacing:-.035em;line-height:.95}
+.hero h1 span{display:block;color:var(--accent);font-weight:500;font-style:normal}
+.hero .lede{font-size:1.12rem;max-width:52ch}
+.hero-facts{display:flex;gap:26px;flex-wrap:wrap;padding-top:6px}
+.hero-facts div{display:flex;flex-direction:column}
+.hero-facts b{font-family:var(--f-display);font-size:2rem;font-weight:800;line-height:1;letter-spacing:-.02em}
+.hero-facts span{font-size:.82rem;color:var(--muted)}
+.book-src{font-size:.88rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--ochre);border-radius:0 10px 10px 0;padding:10px 14px;max-width:60ch}
+.hero-art{display:flex;flex-direction:column;align-items:center;gap:10px}
+.hero-svg{width:100%;max-width:500px;height:auto;filter:drop-shadow(0 18px 30px rgba(0,0,0,.18))}
+.hero-cap{font-size:.82rem;color:var(--muted);text-align:center}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.cards-group{grid-column:1/-1;display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tema);font-weight:600;padding-top:14px}
+.cards-group::after{content:"";flex:1;height:1px;background:color-mix(in srgb,var(--tema) 30%,transparent)}
+.cards-dot{width:10px;height:10px;border-radius:50%;background:var(--tema)}
+.tool-card[data-tema]{gap:10px;padding:18px;min-height:190px}
+.tc-top{display:flex;align-items:flex-start;justify-content:space-between}
+.tc-ic{width:48px;height:48px;border-radius:14px;background:var(--tema-soft);color:var(--tema);display:grid;place-items:center}
+.tc-n{font-family:var(--f-display);font-weight:800;font-size:2rem;line-height:1;color:var(--tema);letter-spacing:-.03em;display:flex;flex-direction:column;align-items:flex-end}
+.tc-n small{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--muted)}
+.tool-card[data-tema] h3{font-size:1.22rem}
+.tool-card[data-tema] p{color:var(--muted);font-size:.9rem}
+.tc-go{margin-top:auto;font-weight:700;font-size:.86rem;color:var(--tema)}
+
+/* Microscópio */
+.scope{align-items:center;background:linear-gradient(180deg,var(--surface) 0%,var(--surface-2) 100%)}
+.scope-view{position:relative;width:100%;max-width:440px}
+.scope-svg{width:100%;height:auto;display:block;filter:drop-shadow(0 16px 28px rgba(0,0,0,.28))}
+.scope-prep{position:absolute;left:4px;bottom:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:.76rem;font-weight:700;color:var(--muted)}
+.scope-read{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%}
+@media (max-width:520px){.scope-read{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.scope-read .stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.scope-read .stat .mono{font-size:1.2rem;font-weight:600}
+.scope-read .stat.hi{background:var(--tema);border-color:var(--tema)}
+.scope-read .stat.hi *{color:var(--surface)}
+.slide-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.slide{display:flex;align-items:center;gap:10px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:6px 10px 6px 6px;cursor:pointer;transition:border-color .15s}
+.slide:hover{border-color:var(--tema)}
+.slide[aria-pressed="true"]{border-color:var(--tema);box-shadow:0 0 0 2px var(--tema) inset;background:var(--tema-soft)}
+.slide-th{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;flex:none;box-shadow:inset 0 0 0 2px rgba(0,0,0,.12)}
+.slide-tx{display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.slide-tx i{font-weight:700;font-size:.9rem}
+.slide-tx small{color:var(--muted);font-size:.78rem}
+.sp-name{font-size:1.35rem}
+.sp-name span{font-weight:500;color:var(--muted)}
+ul.struct{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+ul.struct li{position:relative;padding-left:20px}
+ul.struct li::before{content:"";position:absolute;left:3px;top:.55em;width:8px;height:8px;border-radius:50%;border:2px solid var(--tema)}
+.qv{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+@media (max-width:420px){.qv{grid-template-columns:minmax(0,1fr)}}
+.qv-item{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg)}
+
+/* Ficha de respostas */
+.ficha{display:flex;flex-direction:column;gap:16px;background:var(--surface);border:2px solid var(--tema);border-radius:20px;padding:24px;box-shadow:var(--shadow);scroll-margin-top:130px}
+.ficha-head{display:flex;flex-direction:column;gap:4px}
+.ficha-id{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;padding:14px;background:var(--tema-soft);border-radius:12px}
+.ficha-id input[type=text]{width:100%}
+.ficha-itens{display:flex;flex-direction:column;gap:14px}
+.ficha-item{display:flex;flex-direction:column;gap:6px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.ficha-item:last-child{border-bottom:0}
+.ficha-item input[type=text]{max-width:280px}
+.ficha-item textarea{width:100%;resize:vertical}
+.ficha-q{font-weight:700}
+.ficha-q b{color:var(--tema);margin-right:2px}
+.ficha-send{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn.big{padding:12px 22px;font-size:1.05rem;text-decoration:none}
+.btn[aria-disabled="true"]{opacity:.5}
+.ficha-jump{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ficha-status p{margin:0}
+@media (max-width:640px){.ficha{padding:16px}}
+
+/* Menu que se esconde ao rolar para baixo e volta ao rolar para cima */
+.top{transition:transform .25s ease}
+.top.escondido{transform:translateY(-110%)}
+@media (max-width:640px){
+  .brand-meta,.brand-tools{display:none}
+  .top-in{padding:8px 12px 6px;gap:6px}
+  .brand-name{font-size:1.05rem}
+  nav.tabs button{padding:5px 10px;font-size:.85rem}
+}
+
+
+/* Ilustrações */
+.ilu{width:100%;height:auto;display:block;border-radius:12px;background:var(--surface-2);aspect-ratio:4/3}
+.ilu-wide{aspect-ratio:auto;max-height:150px;object-fit:cover}
+.ilu-banner{aspect-ratio:auto;height:150px}
+.ilu-tall{height:200px}
+.ilu-card{width:100%;max-width:200px;aspect-ratio:4/3;margin:0 auto;border-radius:9px}
+.det-hero{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:16px;align-items:center}
+@media (max-width:520px){.det-hero{grid-template-columns:minmax(0,1fr)}.det-hero .ilu{max-width:260px}}
+.quiz-q{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:20px;align-items:center}
+@media (max-width:640px){.quiz-q{grid-template-columns:minmax(0,1fr)}.quiz-q .ilu{max-width:240px}}
+
+/* Para começar */
+.abertura{display:flex;flex-direction:column;gap:14px;background:linear-gradient(135deg,var(--tema-soft),var(--surface) 70%);border:1px dashed color-mix(in srgb,var(--tema) 55%,transparent);border-radius:20px;padding:22px}
+.ab-head{display:flex;flex-direction:column;gap:4px}
+.ab-tag{align-self:flex-start;background:var(--tema);color:var(--surface);font-family:var(--f-mono);font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px}
+.ab-body{display:flex;flex-direction:column;gap:12px}
+.ab-body>.btn{align-self:flex-start}
+.ab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.ab-card{display:flex;flex-direction:column;align-items:stretch;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px}
+.ab-pool,.ab-lane{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;margin:0;padding:8px;border-radius:12px;background:var(--surface);border:1px solid var(--line);list-style:none}
+.ab-lane{counter-reset:ab;background:var(--tema-soft)}
+.ab-lane li{counter-increment:ab;display:flex;align-items:center;gap:4px}
+.ab-lane li::before{content:counter(ab);font-family:var(--f-mono);font-weight:700;color:var(--tema);font-size:.8rem}
+.ab-item{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 12px;cursor:pointer;font-weight:700;font-size:.9rem}
+.ab-item.on{border-color:var(--tema)}
+.ab-pic{display:flex;flex-direction:column;align-items:center;gap:4px;width:110px}
+.ab-pic .ilu{max-height:70px}
+.ab-choices{display:grid;gap:12px}
+.ab-choices.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ab-choices.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ab-choice{display:flex;flex-direction:column;gap:6px;align-items:center;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:8px;cursor:pointer;font-weight:700}
+.ab-choice[aria-pressed="true"]{border-color:var(--tema);background:var(--tema-soft)}
+.ab-choice .ilu{max-width:220px}
+.ab-sky{border-radius:12px;max-width:760px}
+.ab-sit{display:flex;flex-direction:column;gap:6px;padding:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.ab-sem{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;padding:6px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.sem{width:30px;height:30px;border-radius:50%;border:3px solid transparent;cursor:pointer;opacity:.35}
+.sem.g{background:#2b7a4b}.sem.y{background:#d9a21b}.sem.r{background:#b03c35}
+.sem[aria-pressed="true"]{opacity:1;border-color:var(--ink)}
+.ab-recap{border-left:4px solid var(--tema);background:var(--tema-soft);border-radius:0 12px 12px 0;padding:10px 14px;display:flex;flex-direction:column;gap:4px}
+@media (max-width:520px){.ab-choices.three{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.ab-choice{padding:4px;font-size:.8rem}.abertura{padding:16px}}
+.ab-row{display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}
+.ab-row .seg{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}
+.ab-pic .ilu-card{max-width:110px}
+/* Bancada virtual */
+.bancada .clock{font-size:.9rem;color:var(--muted)}
+/* Botão flutuante que traz o menu de volta */
+.menu-flutuante{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:10px 16px;font-weight:700;box-shadow:var(--shadow);cursor:pointer;opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .2s,transform .2s}
+.menu-flutuante.visivel{opacity:1;pointer-events:auto;transform:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.fade{animation:fade .28s ease}
+@keyframes fade{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:none}}
+/* Ciência em Investigação: componentes próprios */
+.model{font-size:.84rem;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
+.passo-h{display:flex;gap:12px;align-items:center}
+.passo-n{width:36px;height:36px;border-radius:10px;background:var(--tema);color:var(--surface);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.15rem;flex:none}
+.cx-stage{display:flex;justify-content:center;padding:6px 0}
+.cx-box{width:100%;max-width:240px;height:auto;transform-origin:50% 70%}
+.anim-inclinar{animation:cxTilt .45s ease}.anim-sacudir{animation:cxShake .45s linear}.anim-pesar{animation:cxDrop .45s ease}.anim-ima{animation:cxPull .45s ease}
+@keyframes cxTilt{25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+@keyframes cxShake{20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+@keyframes cxDrop{40%{transform:translateY(10px)}}
+@keyframes cxPull{50%{transform:translateX(16px)}}
+.cx-obs{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.cx-obs .pill{flex:none}
+.cx-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
+.cx-cand{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 6px;cursor:pointer;font-weight:700;font-size:.82rem;text-align:center;line-height:1.2}
+.cx-cand svg{width:42px;height:42px}
+.cx-cand small{font-weight:400;color:var(--good);font-size:.72rem}
+.cx-cand.off{opacity:.5;background:var(--surface-2)}.cx-cand.off span{text-decoration:line-through}.cx-cand.off small{color:var(--bad)}
+.cx-peek{width:48px;height:48px;flex:none}
+.cx-oi{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+@media (max-width:600px){.cx-oi{grid-template-columns:minmax(0,1fr)}.cx-oi .seg{justify-self:start}}
+.crit{border:1px dashed color-mix(in srgb,var(--tema) 50%,transparent);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.crit ul{margin:0;padding-left:1.2em}
+.af-frase{font-family:var(--f-display);font-size:1.2rem;font-weight:700;background:var(--tema-soft);border-radius:12px;padding:12px 16px;line-height:1.35}
+.mf-sacos{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.mf-saco{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--bg);min-width:0}
+.mf-saco .seg button{padding:6px 10px;font-size:.84rem}
+.mf-add{border:2px dashed var(--line);border-radius:14px;background:transparent;cursor:pointer;font-weight:700;color:var(--muted);min-height:120px}
+.mf-add:hover{border-color:var(--tema);color:var(--ink)}
+.mf-bench{display:flex;flex-direction:column;gap:8px}
+.mf-row{display:grid;grid-template-columns:minmax(0,210px) minmax(0,1fr);gap:12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+@media (max-width:600px){.mf-row{grid-template-columns:minmax(0,1fr)}}
+.mf-fatias{width:100%;max-width:320px;height:auto}
+.sm-hip{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--surface)}
+.sm-hip.done{border-color:color-mix(in srgb,var(--tema) 45%,var(--line))}
+.sm-n{font-family:var(--f-mono);font-weight:700;background:var(--tema);color:var(--surface);border-radius:8px;padding:2px 8px;flex:none}
+.sm-pistas{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:14px;background:var(--tema-soft)}
+.sm-pistas details{background:var(--surface);border-radius:10px;padding:8px 12px;border:1px solid var(--line)}
+.sm-pistas summary{cursor:pointer;font-weight:700}
+.sm-pistas details p{margin-top:6px}
+.ck-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+@media (max-width:420px){.ck-grid{grid-template-columns:minmax(0,1fr)}}
+.ck-card{display:flex;flex-direction:column;gap:8px;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--surface);min-width:0}
+.ck-card h3{font-size:1.15rem}
+.ck-src{display:flex;justify-content:space-between;gap:8px;font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ck-card .chip{font-size:.8rem;padding:4px 10px}
+.ck-list{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+.rp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+.rp-lab{display:flex;flex-direction:column;align-items:center;border:1px solid var(--line);border-radius:10px;padding:6px 4px;background:var(--surface);font-size:.78rem;text-align:center;line-height:1.25}
+.rp-lab b{font-family:var(--f-mono);font-size:1.05rem}
+.rp-lab small{color:var(--muted);font-size:.68rem}
+.rp-lab.pos{background:var(--good-soft);border-color:color-mix(in srgb,var(--good) 50%,transparent)}
+.rp-lab.gaveta{opacity:.28}
+.pal-def{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.pal-def>div{display:flex;flex-direction:column;gap:2px;background:var(--tema-soft);border-radius:10px;padding:8px 10px;font-size:.9rem}
+.zap{align-self:flex-start;max-width:440px;background:#dcf8c6;color:#1b2a1e;border-radius:4px 14px 14px 14px;padding:10px 12px 20px;position:relative;box-shadow:0 1px 1px rgba(0,0,0,.15);display:flex;flex-direction:column;gap:4px}
+.zap-enc{font-size:.74rem;font-style:italic;color:#5c6b5f}
+.zap-h{position:absolute;right:10px;bottom:4px;font-size:.7rem;color:#5c6b5f}
+.coin{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.72rem;background:#c9ccd1;color:#3a3f45;border:2px solid #9aa0a7}
+.coin.cara{background:#e7c14a;border-color:#a8862a;color:#5d4630}
+
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <button class="brand-name" data-go="inicio">Ciência em Investigação</button>
+      <span class="brand-meta">Biologia · Ensino Médio · Tema 1</span>
+      <div class="brand-tools">
+        <button class="btn sm ghost" id="btnProj" aria-pressed="false" title="Aumenta o texto para leitura no projetor">Modo projetor</button>
+        <button class="btn sm ghost" id="btnFull">Tela cheia</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="Aulas"></nav>
+  </div>
+</header>
+
+<button class="menu-flutuante" id="btnMenu" type="button" aria-label="Mostrar o menu das aulas">☰ Aulas</button>
+<main id="main">
+  <section class="aula" id="inicio">
+    <div class="hero">
+      <div class="stack" style="gap:18px">
+        <span class="eyebrow" style="color:var(--ochre)">Tema 1 · A construção dos conhecimentos científicos</span>
+        <h1>Ciência em <span>investigação</span></h1>
+        <p class="lede">Como a ciência sabe o que sabe? Em cada aula você investiga de verdade: observa, pergunta, levanta hipóteses, testa, analisa dados e decide o que as evidências permitem afirmar. Tudo no celular ou no computador, com a ficha de respostas no fim.</p>
+        <div class="hero-facts">
+          <div><b>9</b><span>aulas</span></div>
+          <div><b>8</b><span>investigações</span></div>
+          <div><b>1</b><span>caso histórico com dados reais</span></div>
+        </div>
+        <p class="book-src"><strong>Sobre a numeração do tema.</strong> O Tema 1 segue a organização do livro didático adotado: GODOY, L. P.; LOURENÇO, G. C. <i>360° Biologia: ensino médio, volume único</i>. 1. ed. São Paulo: FTD, 2024.</p>
+        <p class="note">Funciona sem login; o que é digitado fica salvo só neste navegador.</p>
+      </div>
+      <div class="hero-art" id="heroArt"></div>
+    </div>
+    <div class="cards" id="cards"></div>
+    <p class="note" style="padding-top:8px">Atividades, ilustrações e dados simulados: elaboração didática autoral. Dados das maternidades de Viena: registros publicados por I. Semmelweis (1861).</p>
+  </section>
+  <section class="aula" id="caixa" hidden></section>
+  <section class="aula" id="perguntas" hidden></section>
+  <section class="aula" id="mofo" hidden></section>
+  <section class="aula" id="semmelweis" hidden></section>
+  <section class="aula" id="correlacao" hidden></section>
+  <section class="aula" id="checagem" hidden></section>
+  <section class="aula" id="replicacao" hidden></section>
+  <section class="aula" id="quiz" hidden></section>
+</main>
+
+<script>
+// ================= Núcleo =================
+const $=(q,r=document)=>r.querySelector(q);
+const $$=(q,r=document)=>[...r.querySelectorAll(q)];
+function h(tag,attrs={},...kids){const e=document.createElement(tag);for(const[k,v]of Object.entries(attrs||{})){if(v==null||v===false)continue;if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);else if(k==='html')e.innerHTML=v;else e.setAttribute(k,v===true?'':v);}for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+const NS='http://www.w3.org/2000/svg';
+function s(tag,attrs={},...kids){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs||{})){if(v==null)continue;e.setAttribute(k,v);}for(const c of kids.flat()){if(c==null)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
+const store={get(k,d){try{const v=localStorage.getItem('cie-'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('cie-'+k,JSON.stringify(v))}catch(e){}}};
+// Registro de quais chaves cada aula usa, para o botão “Recomeçar esta aula”
+const RST={cur:null,glob:new Set()};(function(){const g=store.get,st=store.set;const note=k=>{k=String(k);if(k.startsWith('__'))return;if(!RST.cur){RST.glob.add(k);return;}if(RST.glob.has(k))return;const K='__keys-'+RST.cur;const L=g.call(store,K,[]);if(!L.includes(k)){L.push(k);st.call(store,K,L);}};store.get=function(k,d){note(k);return g.call(store,k,d);};store.set=function(k,v){note(k);st.call(store,k,v);};store.del=function(k){try{localStorage.removeItem('cie-'+k)}catch(e){}};})();
+function addReset(id){const sec=document.getElementById(id);const hd=sec&&sec.querySelector('.aula-head');if(!hd||hd.querySelector('.btn-reset'))return;const b=h('button',{class:'btn ghost sm btn-reset',type:'button',style:'margin-top:12px;width:auto;max-width:max-content;display:inline-flex;align-self:flex-start;justify-self:start'},'↺ Recomeçar esta aula');b.onclick=()=>{if(!confirm('Apagar as respostas e os resultados desta aula neste aparelho e começar de novo?\n\nFichas que você já enviou ao professor continuam na planilha dele.'))return;const L=store.get('__keys-'+id,[]);L.forEach(k=>store.del(k));store.del('__keys-'+id);sec.innerHTML='';inited[id]=false;go(id);};const tx=hd.querySelector('.lede')||hd.lastElementChild;tx.after(b);}
+
+const fmt=(n,d=0)=>Number(n).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const ri=(a,b)=>Math.floor(rnd(a,b+1));
+function gauss(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function seeded(seed){return()=>{seed=(seed*16807)%2147483647;return(seed-1)/2147483646;};}
+function head(eyebrow,title,lede){return h('div',{class:'aula-head'},h('span',{class:'eyebrow'},eyebrow),h('h2',{},title),lede?h('p',{class:'lede'},lede):null);}
+function seg(options,value,onChange,{label}={}){const w=h('div',{class:'seg',role:'group','aria-label':label||''});options.forEach(o=>{const[v,t]=Array.isArray(o)?o:[o,o];const b=h('button',{type:'button','aria-pressed':String(v===value)},t);b.onclick=()=>{$$('button',w).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');onChange(v);};w.append(b);});w.set=v=>{$$('button',w).forEach((x,i)=>{const ov=Array.isArray(options[i])?options[i][0]:options[i];x.setAttribute('aria-pressed',String(ov===v));});};return w;}
+function css(name){return getComputedStyle(document.documentElement).getPropertyValue(name).trim();}
+function niceStep(max,target=5){const raw=max/target;const p=Math.pow(10,Math.floor(Math.log10(raw)));const m=raw/p;return (m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*p;}
+
+// Gráfico de linhas genérico (SVG)
+function lineChart(svg,{series,xMax,yMax,xLabel,yLabel,xStep,height=340,legend=true}){
+  const W=640,H=height,ml=56,mr=18,mt=legend?34:16,mb=48;
+  svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const yS=niceStep(yMax);const yTop=Math.ceil(yMax/yS)*yS||1;
+  const xs=v=>ml+(v/xMax)*(W-ml-mr), ys=v=>H-mb-(v/yTop)*(H-mt-mb);
+  const g=s('g');svg.append(g);
+  for(let v=0;v<=yTop+1e-9;v+=yS){g.append(s('line',{x1:ml,x2:W-mr,y1:ys(v),y2:ys(v),stroke:'var(--line)','stroke-width':1}));g.append(s('text',{x:ml-8,y:ys(v)+4,'text-anchor':'end','font-size':12,fill:'var(--muted)'},fmt(v,yS<1?1:0)));}
+  const xSt=xStep||niceStep(xMax,10);
+  for(let v=0;v<=xMax+1e-9;v+=xSt){g.append(s('text',{x:xs(v),y:H-mb+18,'text-anchor':'middle','font-size':12,fill:'var(--muted)'},fmt(v)));}
+  g.append(s('line',{x1:ml,x2:W-mr,y1:H-mb,y2:H-mb,stroke:'var(--muted)','stroke-width':1.2}));
+  g.append(s('text',{x:(ml+W-mr)/2,y:H-8,'text-anchor':'middle','font-size':13,fill:'var(--ink)','font-weight':700},xLabel));
+  g.append(s('text',{x:14,y:(mt+H-mb)/2,'text-anchor':'middle','font-size':13,fill:'var(--ink)','font-weight':700,transform:`rotate(-90 14 ${(mt+H-mb)/2})`},yLabel));
+  let lx=ml;
+  series.forEach(se=>{
+    const pts=se.points.filter(p=>p[1]!=null);
+    if(se.area){const d=`M${xs(pts[0][0])},${ys(0)} `+pts.map(p=>`L${xs(p[0])},${ys(Math.min(p[1],yTop))}`).join(' ')+` L${xs(pts[pts.length-1][0])},${ys(0)} Z`;g.append(s('path',{d,fill:se.color,opacity:.08}));}
+    if(!se.dotsOnly)g.append(s('path',{d:pts.map((p,i)=>`${i?'L':'M'}${xs(p[0])},${ys(Math.min(p[1],yTop))}`).join(' '),fill:'none',stroke:se.color,'stroke-width':se.width||2.6,'stroke-dasharray':se.dash||null,'stroke-linejoin':'round'}));
+    if(se.dots||se.dotsOnly)pts.forEach(p=>g.append(s('circle',{cx:xs(p[0]),cy:ys(Math.min(p[1],yTop)),r:4.5,fill:'var(--surface)',stroke:se.color,'stroke-width':2.4})));
+    else{const p=pts[pts.length-1];g.append(s('circle',{cx:xs(p[0]),cy:ys(Math.min(p[1],yTop)),r:4,fill:se.color}));}
+    if(legend){g.append(s('line',{x1:lx,x2:lx+22,y1:14,y2:14,stroke:se.color,'stroke-width':3,'stroke-dasharray':se.dash||null}));const t=s('text',{x:lx+28,y:18,'font-size':13,fill:'var(--ink)'},se.name);g.append(t);lx+=36+se.name.length*7.2;}
+  });
+  if(series.hline){}
+  return {xs,ys};
+}
+
+function ilu(key,cls='ilu'){const f=IL[key];const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox','0 0 120 90');e.setAttribute('class',cls);e.setAttribute('aria-hidden','true');if(/ilu-wide/.test(cls))e.setAttribute('preserveAspectRatio','xMidYMid slice');if(f)e.innerHTML=f();return e;}
+// ================= Ajudas =================
+function chipsPick(options,value,onChange,{multi=false}={}){const w=h('div',{class:'chips'});let cur=multi?new Set(value||[]):value;options.forEach(o=>{const[v,t]=Array.isArray(o)?o:[o,o];const on=multi?cur.has(v):cur===v;const b=h('button',{type:'button',class:'chip','aria-pressed':String(on)},t);b.onclick=()=>{if(multi){cur.has(v)?cur.delete(v):cur.add(v);b.setAttribute('aria-pressed',String(cur.has(v)));onChange([...cur]);}else{cur=v;$$('.chip',w).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');onChange(v);}};w.append(b);});return w;}
+function panel(...kids){return h('div',{class:'panel stack'},...kids);}
+function model(t){return h('p',{class:'model'},h('span',{'aria-hidden':'true'},'ⓘ'),h('span',{},t));}
+function fbx(el,cls,...kids){el.innerHTML='';el.append(h('div',{class:'fb '+cls},...kids));}
+function sim(title,sub,...kids){return h('div',{class:'panel stack'},h('span',{class:'eyebrow'},'Laboratório virtual'),h('h3',{},title),sub?h('p',{class:'note'},sub):null,...kids);}
+function passo(n,title,...kids){return h('div',{class:'panel stack passo'},h('div',{class:'passo-h'},h('span',{class:'passo-n'},String(n)),h('h3',{},title)),...kids);}
+function svgOf(str,vb,cls){const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox',vb);if(cls)e.setAttribute('class',cls);e.setAttribute('aria-hidden','true');e.innerHTML=str;return e;}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const reduced=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
+const pct=(v,d=0)=>fmt(v*100,d)+'%';
+const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:NaN;
+function corr(xs,ys){const mx=mean(xs),my=mean(ys);let a=0,b=0,c=0;xs.forEach((x,i)=>{a+=(x-mx)*(ys[i]-my);b+=(x-mx)**2;c+=(ys[i]-my)**2;});return b&&c?a/Math.sqrt(b*c):0;}
+function barChart(svg,{cats,series,yMax,yLabel,xLabel,height=260,fmtY=v=>fmt(v)}){
+  const W=640,H=height,ml=52,mr=14,mt=series.length>1?30:14,mb=xLabel?52:34;svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const step=(()=>{const raw=yMax/5;const p=Math.pow(10,Math.floor(Math.log10(raw||1)));const m=raw/p;return(m<=1?1:m<=2?2:m<=2.5?2.5:m<=5?5:10)*p;})();
+  const top=Math.max(step,Math.ceil(yMax/step)*step);const ys=v=>H-mb-(v/top)*(H-mt-mb);
+  for(let v=0;v<=top+1e-9;v+=step){svg.append(s('line',{x1:ml,x2:W-mr,y1:ys(v),y2:ys(v),stroke:'var(--line)'}));svg.append(s('text',{x:ml-8,y:ys(v)+4,'text-anchor':'end','font-size':12,fill:'var(--muted)'},fmtY(v)));}
+  const bw=(W-ml-mr)/cats.length;const inner=Math.min(46,(bw-14)/series.length);
+  cats.forEach((c,i)=>{const x0=ml+i*bw+(bw-inner*series.length)/2;
+    series.forEach((se,j)=>{const v=se.values[i];if(v==null)return;const x=x0+j*inner;
+      svg.append(s('rect',{x:x+2,y:ys(v),width:inner-4,height:Math.max(0,ys(0)-ys(v)),rx:3,fill:se.color}));
+      if(se.labels)svg.append(s('text',{x:x+inner/2,y:ys(v)-5,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'var(--ink)'},se.labels(v)));});
+    svg.append(s('text',{x:ml+i*bw+bw/2,y:H-mb+18,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:'var(--ink)'},c));});
+  svg.append(s('line',{x1:ml,x2:W-mr,y1:ys(0),y2:ys(0),stroke:'var(--muted)'}));
+  if(xLabel)svg.append(s('text',{x:(ml+W-mr)/2,y:H-8,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:'var(--ink)'},xLabel));
+  if(yLabel)svg.append(s('text',{x:14,y:(mt+H-mb)/2,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:'var(--ink)',transform:`rotate(-90 14 ${(mt+H-mb)/2})`},yLabel));
+  if(series.length>1){let lx=ml;series.forEach(se=>{svg.append(s('rect',{x:lx,y:8,width:16,height:12,rx:2,fill:se.color}));svg.append(s('text',{x:lx+22,y:18,'font-size':12.5,fill:'var(--ink)'},se.name));lx+=34+se.name.length*7;});}
+}
+// Gráfico de dispersão (SVG)
+function scatter(svg,{pts,xLabel,yLabel,xMin=0,xMax,yMin=0,yMax,height=320,dim=null}){
+  const W=640,H=height,ml=56,mr=16,mt=14,mb=48;svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  const xs=v=>ml+(v-xMin)/(xMax-xMin)*(W-ml-mr),ys=v=>H-mb-(v-yMin)/(yMax-yMin)*(H-mt-mb);
+  const xSt=niceStep(xMax-xMin,6),ySt=niceStep(yMax-yMin,5);
+  for(let v=Math.ceil(yMin/ySt)*ySt;v<=yMax+1e-9;v+=ySt){svg.append(s('line',{x1:ml,x2:W-mr,y1:ys(v),y2:ys(v),stroke:'var(--line)'}));svg.append(s('text',{x:ml-8,y:ys(v)+4,'text-anchor':'end','font-size':12,fill:'var(--muted)'},fmt(v)));}
+  for(let v=Math.ceil(xMin/xSt)*xSt;v<=xMax+1e-9;v+=xSt)svg.append(s('text',{x:xs(v),y:H-mb+18,'text-anchor':'middle','font-size':12,fill:'var(--muted)'},fmt(v)));
+  svg.append(s('line',{x1:ml,x2:W-mr,y1:H-mb,y2:H-mb,stroke:'var(--muted)'}));svg.append(s('line',{x1:ml,x2:ml,y1:mt,y2:H-mb,stroke:'var(--muted)'}));
+  svg.append(s('text',{x:(ml+W-mr)/2,y:H-8,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:'var(--ink)'},xLabel));
+  svg.append(s('text',{x:14,y:(mt+H-mb)/2,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:'var(--ink)',transform:`rotate(-90 14 ${(mt+H-mb)/2})`},yLabel));
+  pts.forEach(p=>{const off=dim&&!dim(p);svg.append(s('circle',{cx:xs(p.x),cy:ys(p.y),r:off?3.5:5,fill:p.c||'var(--tema)',opacity:off?.18:.85,stroke:off?'none':'var(--surface)','stroke-width':1}));});
+  return {xs,ys};
+}
+// Cor de temperatura (frio → quente)
+function tempCor(t,a=18,b=34){const k=Math.max(0,Math.min(1,(t-a)/(b-a)));const c1=[42,100,151],c2=[217,160,40],c3=[176,60,53];const m=k<.5?[c1,c2,k*2]:[c2,c3,(k-.5)*2];const [p,q,f]=m;return `rgb(${p.map((v,i)=>Math.round(v+(q[i]-v)*f)).join(',')})`;}
+
+// ================= Ilustrações (SVG, viewBox 0 0 120 90) =================
+const IL={};
+const sky=(c1='#dcecf5',c2='#f4f0e2')=>`<rect width="120" height="90" fill="${c1}"/><rect y="40" width="120" height="50" fill="${c2}" opacity=".7"/>`;
+const ground=(c='#a87b4f')=>`<path d="M0,74 q30,-4 60,0 t60,0 v16 h-120z" fill="${c}"/>`;
+const sun=(x,y,r=9)=>`<g transform="translate(${x} ${y})"><circle r="${r}" fill="#f2b640"/>${[...Array(8)].map((_,k)=>`<path d="M0,${-r-3} v-5" stroke="#f2b640" stroke-width="2.4" stroke-linecap="round" transform="rotate(${k*45})"/>`).join('')}</g>`;
+const fatia=(x,y,sc=1,mofo=0,seed=1)=>{const r=seeded(seed);let m='';const n=Math.round(mofo*26);for(let i=0;i<n;i++){const a=r()*6.28,q=Math.sqrt(r())*13;m+=`<circle cx="${(Math.cos(a)*q).toFixed(1)}" cy="${(Math.sin(a)*q*.9+2).toFixed(1)}" r="${(1.6+r()*3.2).toFixed(1)}" fill="${['#5f8d45','#7d9a6a','#4c7d40','#9fb0a4'][i%4]}" opacity=".9"/>`;}
+  return `<g transform="translate(${x} ${y}) scale(${sc})"><path d="M-18,20 v-22 q-6,-2 -6,-9 q0,-12 24,-12 q24,0 24,12 q0,7 -6,9 v22z" fill="#c98a4b"/><path d="M-15,18 v-21 q-5,-3 -5,-8 q0,-9 20,-9 q20,0 20,9 q0,5 -5,8 v21z" fill="#f2dfb8"/>${m}</g>`;};
+IL.rua=()=>`<rect width="120" height="90" fill="#cfd6db"/><rect x="0" y="50" width="120" height="40" fill="#5b6066"/><path d="M8,70 h20 M44,70 h20 M80,70 h20" stroke="#e7e2c8" stroke-width="3"/><ellipse cx="40" cy="60" rx="26" ry="5" fill="#7fb0d6" opacity=".9"/><ellipse cx="90" cy="80" rx="22" ry="4" fill="#7fb0d6" opacity=".9"/><rect x="6" y="22" width="22" height="28" fill="#c8b59a"/><rect x="88" y="16" width="26" height="34" fill="#b9a284"/><ellipse cx="60" cy="14" rx="30" ry="9" fill="#9aa3aa"/><ellipse cx="40" cy="18" rx="16" ry="7" fill="#aab2b8"/>`;
+IL.formigas=()=>`<rect width="120" height="90" fill="#efe6d4"/><path d="M-4,70 C30,40 60,80 124,30" stroke="#d9c7a3" stroke-width="10" fill="none"/>`+[...Array(9)].map((_,i)=>{const t=i/8,x=-2+t*124,y=70-t*40+Math.sin(t*6)*8;return `<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${-20})"><circle cx="-4" r="2" fill="#3a2414"/><circle r="2.4" fill="#3a2414"/><ellipse cx="5" rx="3.4" ry="2.6" fill="#3a2414"/></g>`;}).join('')+`<path d="M86,74 h24 v8 h-24z" fill="#f4f0e2" stroke="#b9a988"/><circle cx="98" cy="70" r="5" fill="#fff" stroke="#c9b28a"/>`;
+IL.planta=()=>`<rect width="120" height="90" fill="#eef3f6"/><rect x="84" y="8" width="32" height="56" fill="#cfe7f3" stroke="#8a98a0" stroke-width="2"/><path d="M100,8 v56 M84,36 h32" stroke="#8a98a0" stroke-width="1.5"/>`+sun(100,22,5)+`<path d="M40,70 q2,-26 34,-44" stroke="#4e8a3a" stroke-width="3" fill="none"/><path d="M60,44 q8,-12 20,-10 q-6,10 -20,10z" fill="#6db352"/><path d="M50,56 q-14,-6 -18,-16 q12,0 18,12z" fill="#5fa046"/><path d="M28,70 h26 l-3,14 h-20z" fill="#b5673f"/>`;
+IL.pao=()=>`<rect width="120" height="90" fill="#f4efe2"/>`+fatia(40,46,1.2,0,3)+fatia(82,46,1.2,.55,7);
+IL.sapo=()=>`<rect width="120" height="90" fill="#1f2d3d"/><circle cx="96" cy="16" r="8" fill="#f4ecc8"/>${[...Array(14)].map((_,i)=>`<path d="M${6+i*8},${4+(i%3)*6} l-2,7" stroke="#7fb0d6" stroke-width="1.4"/>`).join('')}<ellipse cx="60" cy="80" rx="60" ry="12" fill="#2f5a4a"/><g transform="translate(56 64)"><ellipse rx="18" ry="11" fill="#6aa04a"/><circle cx="-9" cy="-10" r="5" fill="#6aa04a"/><circle cx="9" cy="-10" r="5" fill="#6aa04a"/><circle cx="-9" cy="-11" r="2.2" fill="#1a1a1a"/><circle cx="9" cy="-11" r="2.2" fill="#1a1a1a"/><ellipse cy="6" rx="9" ry="6" fill="#d9e6a0"/></g><path d="M80,48 q6,-6 0,-12 M86,52 q10,-10 0,-20" stroke="#f4ecc8" stroke-width="2" fill="none"/>`;
+IL.pgel=()=>`<rect width="120" height="90" fill="#e8f1f6"/><rect x="30" y="6" width="60" height="80" rx="6" fill="#fff" stroke="#8a98a0" stroke-width="2"/><path d="M30,36 h60" stroke="#8a98a0" stroke-width="2"/><rect x="82" y="16" width="3" height="12" rx="1.5" fill="#8a98a0"/><rect x="82" y="44" width="3" height="16" rx="1.5" fill="#8a98a0"/>`+fatia(60,62,.85,0,2)+`<text x="60" y="26" text-anchor="middle" font-size="9" font-weight="700" fill="#2a6497">5 °C</text>`;
+IL.parm=()=>`<rect width="120" height="90" fill="#f1e7d6"/><rect x="18" y="10" width="84" height="74" fill="#c9a77d" stroke="#8a6a45" stroke-width="2"/><path d="M18,46 h84" stroke="#8a6a45" stroke-width="2"/>`+fatia(60,66,.85,0,4)+`<text x="60" y="34" text-anchor="middle" font-size="9" font-weight="700" fill="#5d4630">seco · 25 °C</text>`;
+IL.pumi=()=>`<rect width="120" height="90" fill="#e7eef0"/><rect x="18" y="10" width="84" height="74" fill="#c9a77d" stroke="#8a6a45" stroke-width="2"/><path d="M18,46 h84" stroke="#8a6a45" stroke-width="2"/>`+fatia(60,66,.85,0,5)+[[40,52],[78,58],[50,74],[72,78]].map(([x,y])=>`<path transform="translate(${x} ${y}) scale(.4)" d="M0,-10 C5,-3 7,1 7,4 a7,7 0 0 1 -14,0 C-7,1 -5,-3 0,-10z" fill="#3f86c6"/>`).join('')+`<text x="60" y="34" text-anchor="middle" font-size="9" font-weight="700" fill="#5d4630">úmido · 25 °C</text>`;
+IL.hospital=()=>`<rect width="120" height="90" fill="#e9e4da"/><rect x="10" y="22" width="100" height="58" fill="#d8cbb4" stroke="#8a7a5e" stroke-width="2"/><path d="M6,24 L60,6 L114,24z" fill="#9b8d72"/>${[0,1,2,3,4,5].map(i=>`<rect x="${18+i*15}" y="34" width="9" height="14" fill="#6b7f99"/><rect x="${18+i*15}" y="56" width="9" height="14" fill="#6b7f99"/>`).join('')}<rect x="54" y="62" width="12" height="18" fill="#6f5a40"/><text x="34" y="20" font-size="8" font-weight="800" fill="#5d4630">1</text><text x="82" y="20" font-size="8" font-weight="800" fill="#5d4630">2</text>`;
+
+// ================= Navegação =================
+const ICONS={
+  caixa:'<path d="M3.5 8l8.5-4.5L20.5 8v9L12 21.5 3.5 17z"/><path d="M3.5 8L12 12.5 20.5 8M12 12.5v9"/><path d="M10.2 9.4a1.9 1.9 0 1 1 2.6 1.8c-.5.2-.8.6-.8 1.1"/>',
+  perguntas:'<path d="M9.2 9a2.9 2.9 0 1 1 3.9 2.7c-.7.3-1.1.9-1.1 1.6v.7"/><circle cx="12" cy="17.6" r=".7" fill="currentColor"/><circle cx="12" cy="12" r="9.2"/>',
+  mofo:'<path d="M5 20v-9.5a4.5 4.5 0 0 1-1-2.8C4 4.8 7.6 3 12 3s8 1.8 8 4.7a4.5 4.5 0 0 1-1 2.8V20z"/><circle cx="10" cy="11" r="1.8"/><circle cx="14.6" cy="15.2" r="1.3"/><circle cx="9.6" cy="16" r=".9"/>',
+  semmelweis:'<path d="M4 21V9l8-5 8 5v12"/><path d="M9 21v-5h6v5"/><path d="M12 8.4v4M10 10.4h4"/>',
+  correlacao:'<path d="M4 3.5V20h16.5"/><circle cx="8" cy="15.5" r="1.1"/><circle cx="11" cy="12.5" r="1.1"/><circle cx="14" cy="11" r="1.1"/><circle cx="17" cy="7.5" r="1.1"/><path d="M6.5 17.5L19 5.5" stroke-dasharray="1.6 2"/>',
+  checagem:'<rect x="4" y="3" width="13" height="18" rx="1.5"/><path d="M7.5 7.5h6M7.5 11h6M7.5 14.5h3"/><circle cx="16.8" cy="16.6" r="3.4"/><path d="M19.2 19l2.3 2.3"/>',
+  replicacao:'<rect x="3" y="4" width="5" height="5" rx="1"/><rect x="9.5" y="4" width="5" height="5" rx="1"/><rect x="16" y="4" width="5" height="5" rx="1"/><rect x="3" y="15" width="5" height="5" rx="1"/><rect x="9.5" y="15" width="5" height="5" rx="1"/><rect x="16" y="15" width="5" height="5" rx="1"/><path d="M12 9v6"/>',
+  quiz:'<path d="M4 4.5h16v11.5H9.5L4 20.5z"/><path d="M10 8.6a2.1 2.1 0 1 1 2.8 2c-.6.2-.8.6-.8 1.2"/><circle cx="12" cy="13.7" r=".6" fill="currentColor"/>',
+};
+const icon=(id,size=24)=>{const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('width',size);e.setAttribute('height',size);e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','1.7');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.setAttribute('aria-hidden','true');e.innerHTML=ICONS[id]||'';return e;};
+const TEMAS={obs:'Observar e perguntar',exp:'Hipóteses e experimentos',evi:'Evidências e dados',col:'A ciência como construção coletiva'};
+const TOOLS=[
+  {id:'caixa',n:'1',t:'obs',short:'A1',title:'O mistério da caixa-preta',desc:'Três caixas lacradas. Incline, sacuda, pese e use um ímã para descobrir o que há dentro, sem abrir.'},
+  {id:'perguntas',n:'2',t:'obs',short:'A2',title:'Fábrica de perguntas',desc:'Separe as perguntas que a ciência consegue investigar e afine uma curiosidade até ela virar pergunta de pesquisa.'},
+  {id:'mofo',n:'3–4',t:'exp',short:'A3–4',title:'Laboratório do pão',desc:'Formule uma hipótese, monte sacos de pão com controle e réplicas, acompanhe o mofo por 10 dias e analise os dados.'},
+  {id:'semmelweis',n:'5',t:'evi',short:'A5',title:'O caso das duas maternidades',desc:'Viena, 1846: uma maternidade tinha muito mais mortes que a outra. Teste as hipóteses da época com os dados reais.'},
+  {id:'correlacao',n:'6',t:'evi',short:'A6',title:'Correlação ou causa?',desc:'Sorvete, afogamentos e cegonhas: encontre a variável escondida e veja como um sorteio separa causa de coincidência.'},
+  {id:'checagem',n:'7',t:'col',short:'A7',title:'Agência de checagem',desc:'Seis notícias sobre saúde. Use a lista de checagem e decida: confiável, exagerada ou enganosa.'},
+  {id:'replicacao',n:'8',t:'col',short:'A8',title:'Vinte laboratórios',desc:'Vinte laboratórios testam dois suplementos. Qual funciona de verdade? Descubra o peso da amostra e da repetição.'},
+  {id:'quiz',n:'9',t:'col',short:'A9',title:'Palavras da ciência e quiz',desc:'Observação, hipótese, lei e teoria: organize os conceitos e revise o tema com a explicação de cada resposta.'},
+];
+// Arte da página inicial: o ciclo da investigação, que vai e volta
+function heroArt(){
+  const box=$('#heroArt');if(!box)return;
+  const W=480,H=430,cx=240,cy=208,R=150;
+  const sv=s('svg',{viewBox:`0 0 ${W} ${H}`,class:'hero-svg',role:'img','aria-label':'O ciclo da investigação científica: observar, perguntar, formular hipótese, testar, analisar os dados e comunicar, com setas que voltam para etapas anteriores'});
+  const defs=s('defs');const cp=s('clipPath',{id:'hclip'});cp.append(s('rect',{width:W,height:H,rx:28}));defs.append(cp);
+  const ar=s('marker',{id:'har',viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:7,markerHeight:7,orient:'auto'});ar.append(s('path',{d:'M0,0L10,5L0,10z',fill:'#5b45a3'}));defs.append(ar);
+  const ar2=s('marker',{id:'har2',viewBox:'0 0 10 10',refX:8,refY:5,markerWidth:6,markerHeight:6,orient:'auto'});ar2.append(s('path',{d:'M0,0L10,5L0,10z',fill:'#a3601b'}));defs.append(ar2);
+  sv.append(defs);const g=s('g',{'clip-path':'url(#hclip)'});sv.append(g);
+  g.append(s('rect',{width:W,height:H,fill:'#efeaf6'}));
+  for(let i=0;i<40;i++){const r=seeded(i+3);g.append(s('circle',{cx:r()*W,cy:r()*H,r:1+r()*2,fill:'#5b45a3',opacity:.12}));}
+  const ST=[['Observar','#a3601b'],['Perguntar','#a3601b'],['Hipótese','#5b45a3'],['Testar','#5b45a3'],['Analisar','#2a6497'],['Comunicar','#8a3560']];
+  const pos=ST.map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/ST.length;return [cx+R*Math.cos(a),cy+R*Math.sin(a)];});
+  pos.forEach((p,i)=>{const q=pos[(i+1)%pos.length];const a1=Math.atan2(p[1]-cy,p[0]-cx)+.28,a2=Math.atan2(q[1]-cy,q[0]-cx)-.28;
+    g.append(s('path',{d:`M${cx+R*Math.cos(a1)},${cy+R*Math.sin(a1)} A${R},${R} 0 0 1 ${cx+R*Math.cos(a2)},${cy+R*Math.sin(a2)}`,fill:'none',stroke:'#5b45a3','stroke-width':3,'marker-end':'url(#har)',opacity:.7}));});
+  // setas de volta: a investigação não é uma linha reta
+  g.append(s('path',{d:`M${pos[4][0]-30},${pos[4][1]-18} Q${cx},${cy+10} ${pos[2][0]-28},${pos[2][1]+24}`,fill:'none',stroke:'#a3601b','stroke-width':2.4,'stroke-dasharray':'6 5','marker-end':'url(#har2)'}));
+  g.append(s('path',{d:`M${pos[5][0]+30},${pos[5][1]-22} Q${cx-10},${cy-40} ${pos[1][0]-18},${pos[1][1]+30}`,fill:'none',stroke:'#a3601b','stroke-width':2.4,'stroke-dasharray':'6 5','marker-end':'url(#har2)'}));
+  // lupa central
+  g.append(s('circle',{cx,cy:cy-4,r:44,fill:'#fff',stroke:'#2a2116','stroke-width':7}));g.append(s('line',{x1:cx+32,y1:cy+28,x2:cx+60,y2:cy+56,stroke:'#2a2116','stroke-width':11,'stroke-linecap':'round'}));
+  g.append(s('text',{x:cx,y:cy+16,'text-anchor':'middle','font-size':58,'font-weight':800,fill:'#5b45a3','font-family':'Bricolage Grotesque, sans-serif'},'?'));
+  const IC=[`<circle r="9" fill="none" stroke="#fff" stroke-width="3"/><circle r="3.5" fill="#fff"/>`,`<text y="8" text-anchor="middle" font-size="24" font-weight="800" fill="#fff">?</text>`,`<path d="M-6,6 a8,8 0 1 1 12,0 v4 h-12z" fill="#fff"/><rect x="-5" y="12" width="10" height="3" fill="#fff"/>`,`<path d="M-4,-10 h8 M-3,-10 v8 l-7,13 h20 l-7,-13 v-8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/>`,`<path d="M-11,9 h22 M-8,9 v-8 M-1,9 v-15 M6,9 v-11" stroke="#fff" stroke-width="3.4"/>`,`<path d="M-11,-7 h22 v13 h-12 l-6,6 v-6 h-4z" fill="#fff"/>`];
+  pos.forEach((p,i)=>{g.append(s('circle',{cx:p[0],cy:p[1],r:34,fill:ST[i][1]}));const ic=s('g',{transform:`translate(${p[0]} ${p[1]-6})`});ic.innerHTML=IC[i];g.append(ic);
+    g.append(s('text',{x:p[0],y:p[1]+22,'text-anchor':'middle','font-size':9.5,'font-weight':800,fill:'#fff'},ST[i][0]));});
+  g.append(s('text',{x:cx,y:H-12,'text-anchor':'middle','font-size':12,fill:'#5d5470'},'Setas tracejadas: um resultado inesperado gera novas perguntas.'));
+  box.append(sv,h('p',{class:'hero-cap'},'O ciclo da investigação: as etapas se repetem e se corrigem.'));
+}
+
+const inited={};
+const INIT={};
+function decorateHead(id){
+  const t=TOOLS.find(x=>x.id===id);const hd=$('#'+id+' .aula-head');if(!t||!hd||hd.dataset.dec)return;hd.dataset.dec='1';
+  hd.prepend(h('div',{class:'aula-badge'},h('span',{class:'aula-badge-k'},'Aula'),h('span',{class:'aula-badge-n'},t.n)));
+  const wm=icon(id,180);wm.classList.add('aula-wm');hd.append(wm);
+}
+function go(id){
+  if(!document.getElementById(id))id='inicio';
+  RST.cur=(typeof INIT!=='undefined'&&INIT[id])?id:null;
+  $$('section.aula').forEach(sc=>sc.hidden=sc.id!==id);
+  $$('#tabs button').forEach(b=>b.setAttribute('aria-current',String(b.dataset.go===id)));
+  if(!inited[id]&&INIT[id]){inited[id]=true;INIT[id]($('#'+id));decorateHead(id);if(typeof attachFicha==='function')attachFicha(id);if(typeof abertura==='function')abertura(id);addReset(id);}
+  const sec=$('#'+id);sec.classList.remove('fade');void sec.offsetWidth;sec.classList.add('fade');
+  try{history.replaceState(null,'','#'+id);}catch(e){}
+  const tb=$(`#tabs button[data-go="${id}"]`);if(tb)tb.scrollIntoView({block:'nearest',inline:'nearest'});
+  window.scrollTo({top:0});const tp=document.querySelector('.top');if(tp)tp.classList.remove('escondido');const bm=document.getElementById('btnMenu');if(bm)bm.classList.remove('visivel');
+}
+function buildNav(){
+  const nav=$('#tabs');
+  nav.append(h('button',{'data-go':'inicio'},'Início'));
+  TOOLS.forEach(t=>{nav.append(h('button',{'data-go':t.id,'data-tema':t.t},h('b',{},t.short),t.title));const sec=document.getElementById(t.id);if(sec)sec.dataset.tema=t.t;});
+  const cards=$('#cards');let last=null;
+  TOOLS.forEach(t=>{
+    if(t.t!==last){cards.append(h('div',{class:'cards-group','data-tema':t.t},h('span',{class:'cards-dot'}),TEMAS[t.t]));last=t.t;}
+    cards.append(h('button',{class:'tool-card','data-go':t.id,'data-tema':t.t},
+      h('div',{class:'tc-top'},h('span',{class:'tc-ic'},icon(t.id,26)),h('span',{class:'tc-n'},h('small',{},'aula'),t.n)),
+      h('h3',{},t.title),h('p',{},t.desc),h('span',{class:'tc-go'},'Abrir →')));
+  });
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){go(b.dataset.go);}});
+  const bp=$('#btnProj');
+  if(store.get('proj',false)){document.documentElement.classList.add('proj');bp.setAttribute('aria-pressed','true');}
+  bp.onclick=()=>{const on=document.documentElement.classList.toggle('proj');bp.setAttribute('aria-pressed',String(on));bp.textContent=on?'Sair do modo projetor':'Modo projetor';store.set('proj',on);};
+  if(document.documentElement.classList.contains('proj'))bp.textContent='Sair do modo projetor';
+  $('#btnFull').onclick=()=>{try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(()=>{});}catch(e){}};
+  heroArt();
+  // Esconde o menu ao rolar para baixo; mostra ao rolar para cima ou ao chegar no topo
+  const top=document.querySelector('.top'),btnMenu=document.getElementById('btnMenu');let lastY=window.scrollY,ticking=false;
+  const mostrar=()=>{top.classList.remove('escondido');if(btnMenu)btnMenu.classList.remove('visivel');};
+  const esconder=()=>{if(top.contains(document.activeElement))return;top.classList.add('escondido');if(btnMenu)btnMenu.classList.add('visivel');};
+  window.addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const y=window.scrollY;const dy=y-lastY;
+    if(y<60||dy<-6)mostrar();else if(dy>6)esconder();
+    lastY=y;ticking=false;});},{passive:true});
+  top.addEventListener('focusin',mostrar);
+  if(btnMenu)btnMenu.onclick=mostrar;
+}
+// ================= Aula 1: O mistério da caixa-preta =================
+const OBJ={
+  gude:{n:'Bolinha de gude',mov:'rola',som:'vidro',m:5,ima:false,sv:`<circle cx="20" cy="20" r="11" fill="#7fc3d8" stroke="#3d7f95" stroke-width="1.5"/><path d="M14,18 q6,-8 12,2" stroke="#e0f3f8" stroke-width="2.4" fill="none"/>`},
+  ping:{n:'Bola de pingue-pongue',mov:'rola',som:'oco',m:3,ima:false,sv:`<circle cx="20" cy="20" r="12" fill="#fbf8f1" stroke="#b8ad98" stroke-width="1.5"/><path d="M10,22 q10,4 20,-2" stroke="#d9cfbd" stroke-width="1.2" fill="none"/>`},
+  aco:{n:'Esfera de aço',mov:'rola',som:'metal',m:16,ima:true,sv:`<circle cx="20" cy="20" r="10" fill="#9aa3ad" stroke="#5c646d" stroke-width="1.5"/><circle cx="16" cy="16" r="3" fill="#e9edf0"/>`},
+  dado:{n:'Dado de madeira',mov:'tomba',som:'seco',m:4,ima:false,sv:`<rect x="9" y="9" width="22" height="22" rx="3" fill="#d9b27a" stroke="#8a6a45" stroke-width="1.5"/>${[[14,14],[20,20],[26,26]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.8" fill="#5d4630"/>`).join('')}`},
+  cubo:{n:'Cubo de plástico',mov:'tomba',som:'seco',m:4,ima:false,sv:`<rect x="9" y="9" width="22" height="22" rx="3" fill="#e36d5b" stroke="#9c3b2c" stroke-width="1.5"/><rect x="12" y="12" width="7" height="7" rx="1.5" fill="#f19b8c"/>`},
+  moeda:{n:'Moeda de cobre',mov:'desliza',som:'metal',m:7,ima:false,sv:`<ellipse cx="20" cy="22" rx="12" ry="5" fill="#a85f2e"/><ellipse cx="20" cy="19" rx="12" ry="5" fill="#d08a4f" stroke="#8a4a20" stroke-width="1.2"/>`},
+  clipe:{n:'Clipe de aço',mov:'desliza',som:'fino',m:1,ima:true,sv:`<path d="M13,28 V12 a4,4 0 0 1 8,0 V26 a3,3 0 0 1 -6,0 V14" stroke="#7e8790" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M21,12 a4,4 0 0 1 8,0 V28" stroke="#7e8790" stroke-width="2.2" fill="none" stroke-linecap="round"/>`},
+  borracha:{n:'Borracha',mov:'desliza',som:'abafado',m:9,ima:false,sv:`<rect x="7" y="13" width="26" height="14" rx="3" fill="#f2f0e9" stroke="#a9a49a" stroke-width="1.5"/><rect x="7" y="13" width="10" height="14" rx="3" fill="#4f86c6"/>`},
+};
+const CAIXAS={A:'gude',B:'clipe',C:'dado'};
+const TESTES=[
+  {id:'inclinar',n:'Inclinar',ic:'↻',txt:o=>({rola:'Algo rola de um lado ao outro, sem parar no meio, e bate na parede.',tomba:'Algo vira aos trancos, como se tivesse faces: toc… toc… toc.',desliza:'Algo escorrega de uma vez e bate na parede com um só golpe.'})[o.mov],ok:(o,ref)=>o.mov===ref.mov},
+  {id:'sacudir',n:'Sacudir',ic:'≋',txt:o=>({vidro:'Tilintar agudo e “limpo”, como vidro batendo na caixa.',oco:'Som oco e muito leve, quase um “pim”.',metal:'Som metálico e pesado.',seco:'Batidas secas e curtas, como madeira ou plástico duro.',fino:'Um raspar metálico fino, de algo muito leve.',abafado:'Som abafado, quase não se ouve.'})[o.som],ok:(o,ref)=>o.som===ref.som},
+  {id:'pesar',n:'Pesar',ic:'⚖',txt:o=>`A balança marca ${50+o.m} g. Uma caixa vazia, igual a esta, tem 50 g.`,ok:(o,ref)=>o.m===ref.m},
+  {id:'ima',n:'Aproximar um ímã',ic:'∩',txt:o=>o.ima?'A caixa é puxada de leve na direção do ímã. Algo lá dentro é atraído.':'Nada acontece. Nada lá dentro é atraído pelo ímã.',ok:(o,ref)=>o.ima===ref.ima},
+];
+function caixaSv(letra,cls=''){return svgOf(`<ellipse cx="80" cy="128" rx="62" ry="7" fill="rgba(0,0,0,.14)"/><path d="M22,52 L80,30 L138,52 L80,74z" fill="#d9b27a" stroke="#8a6a45" stroke-width="2"/><path d="M22,52 V112 L80,134 V74z" fill="#c49660" stroke="#8a6a45" stroke-width="2"/><path d="M138,52 V112 L80,134 V74z" fill="#b5864f" stroke="#8a6a45" stroke-width="2"/><path d="M51,41 L109,63 M58,38 L116,60" stroke="#e9d9b0" stroke-width="6" opacity=".9"/><text x="110" y="104" text-anchor="middle" font-size="30" font-weight="800" fill="#5d4630" font-family="Bricolage Grotesque, sans-serif">${letra}</text><text x="50" y="104" text-anchor="middle" font-size="22" font-weight="800" fill="#7a5634" font-family="Bricolage Grotesque, sans-serif">?</text>`,'0 0 160 140','cx-box '+cls);}
+INIT.caixa=root=>{
+  root.append(head('Aula 1 · Observação e inferência','O mistério da caixa-preta','Cada caixa lacrada tem um objeto dentro. Você não pode abrir. Como descobrir o que é? É assim que a ciência estuda o que não dá para ver diretamente: o interior da Terra, um átomo, um gene.'));
+  let cx=store.get('cx-cur','A');const obs=store.get('cx-obs',{A:[],B:[],C:[]});const elim=store.get('cx-elim',{A:{},B:{},C:{}});const concl=store.get('cx-concl',{});
+  const stage=h('div',{class:'cx-stage'});const log=h('div',{class:'stack',style:'gap:6px'});const board=h('div',{class:'cx-board'});const bmsg=h('div',{});const cBox=h('div',{class:'stack',style:'gap:10px'});
+  const tbtns=h('div',{class:'row'});
+  const save=()=>{store.set('cx-obs',obs);store.set('cx-elim',elim);store.set('cx-concl',concl);};
+  const compat=k=>Object.keys(OBJ).filter(id=>obs[k].every(t=>TESTES.find(x=>x.id===t).ok(OBJ[id],OBJ[CAIXAS[k]])));
+  async function testar(t){const o=OBJ[CAIXAS[cx]];const bx=stage.querySelector('.cx-box');
+    if(bx&&!reduced()){bx.classList.remove('anim-inclinar','anim-sacudir','anim-pesar','anim-ima');void bx.getBBox;bx.classList.add('anim-'+t.id);}
+    if(!obs[cx].includes(t.id))obs[cx].push(t.id);save();await sleep(reduced()?0:450);draw();}
+  function draw(){
+    stage.innerHTML='';stage.append(caixaSv(cx));
+    tbtns.innerHTML='';TESTES.forEach(t=>tbtns.append(h('button',{class:'btn'+(obs[cx].includes(t.id)?'':' primary'),type:'button',onclick:()=>testar(t)},h('span',{'aria-hidden':'true'},t.ic),t.n)));
+    log.innerHTML='';if(!obs[cx].length)log.append(h('p',{class:'note'},'Ainda nenhum teste. Escolha um teste acima: cada um gera uma observação.'));
+    obs[cx].forEach(id=>{const t=TESTES.find(x=>x.id===id);log.append(h('div',{class:'cx-obs'},h('span',{class:'pill ex'},t.n),h('span',{},t.txt(OBJ[CAIXAS[cx]]))));});
+    board.innerHTML='';Object.entries(OBJ).forEach(([id,o])=>{const off=!!elim[cx][id];const b=h('button',{type:'button',class:'cx-cand'+(off?' off':''),'aria-pressed':String(off),title:off?'Descartado: toque para voltar':'Possível: toque para descartar'},svgOf(o.sv,'0 0 40 40'),h('span',{},o.n),h('small',{},off?'descartado':'possível'));
+      b.onclick=()=>{elim[cx][id]=!elim[cx][id];save();draw();};board.append(b);});
+    bmsg.innerHTML='';
+    cBox.innerHTML='';const c=concl[cx]||{};
+    const opts=Object.entries(OBJ).map(([id,o])=>[id,o.n]).concat([['indef','Não dá para decidir com estes testes']]);
+    cBox.append(h('span',{class:'label'},'Minha conclusão para a caixa '+cx),chipsPick(opts,c.obj||null,v=>{concl[cx]=Object.assign(concl[cx]||{},{obj:v,ok:false});save();}),
+      h('span',{class:'label'},'Quanta confiança?'),seg([['certeza','Tenho certeza'],['provavel','É o mais provável'],['palpite','É só um palpite']],c.conf||null,v=>{concl[cx]=Object.assign(concl[cx]||{},{conf:v});save();},{label:'Confiança'}));
+    const out=h('div',{});
+    cBox.append(h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{const c=concl[cx]||{};if(!c.obj){fbx(out,'no','Escolha uma conclusão.');return;}if(obs[cx].length<2){fbx(out,'no','Faça pelo menos dois testes antes de concluir.');return;}
+      const poss=compat(cx);let msg,cls;
+      if(poss.length>1){if(c.obj==='indef'){cls='ok';msg=`Boa conclusão. Os testes feitos ainda deixam ${poss.length} objetos possíveis (${poss.map(p=>OBJ[p].n).join(', ')}). ${obs[cx].length<4?'Faça os outros testes. ':''}Dizer “os dados não decidem” é honestidade científica.`;}
+        else{cls='no';msg=`Cuidado: os testes feitos ainda são compatíveis com ${poss.map(p=>OBJ[p].n).join(' e ')}. Sua conclusão foi além das evidências.`;}}
+      else{const certo=poss[0];if(c.obj===certo){cls='ok';msg=`Todas as observações apontam para ${OBJ[certo].n.toLowerCase()}: é o único objeto da lista compatível com tudo o que você observou.`;}
+        else if(c.obj==='indef'){cls='info';msg='Olhe de novo o quadro: depois dos testes, sobrou só um objeto compatível com todas as observações.';}
+        else{cls='no';msg=`${OBJ[c.obj].n} não combina com alguma das observações. Confira o caderno de observações.`;}}
+      concl[cx].ok=true;save();fbx(out,cls,msg);peek.hidden=false;}},'Registrar conclusão'),peek),out);
+    peek.hidden=!(concl[cx]&&concl[cx].ok);peekOut.innerHTML='';
+  }
+  const peekOut=h('div',{});
+  const peek=h('button',{class:'btn ghost',type:'button',onclick:()=>{const o=OBJ[CAIXAS[cx]];peekOut.innerHTML='';
+    peekOut.append(h('div',{class:'fb info row',style:'gap:12px;align-items:center'},svgOf(o.sv,'0 0 40 40','cx-peek'),h('span',{},h('strong',{},'Dentro da caixa '+cx+': '+o.n.toLowerCase()+'. '),cx==='C'?'Se você escolheu entre dado e cubo, acertou por sorte: nenhum dos quatro testes diferencia os dois. Na ciência de verdade, quase nunca dá para “espiar”: é preciso inventar um teste novo.':'Na ciência de verdade, quase nunca dá para abrir a caixa. Por isso as conclusões se apoiam nas evidências e ficam abertas a novos testes.')));}},'Espiar dentro da caixa');
+  const chk=h('button',{class:'btn sm',type:'button',onclick:()=>{const poss=compat(cx);const marcados=Object.keys(OBJ).filter(id=>!elim[cx][id]);
+    const errados=marcados.filter(id=>!poss.includes(id)),injustos=poss.filter(id=>elim[cx][id]);
+    if(!obs[cx].length){fbx(bmsg,'info','Faça um teste antes de descartar objetos.');return;}
+    if(!errados.length&&!injustos.length)fbx(bmsg,'ok',`Quadro coerente com as observações. Ainda possíveis: ${poss.map(p=>OBJ[p].n).join(', ')}.`);
+    else fbx(bmsg,'no',[errados.length?`Ainda marcados como possíveis, mas contrariam alguma observação: ${errados.map(p=>OBJ[p].n).join(', ')}. `:'',injustos.length?`Descartados sem motivo (combinam com tudo o que você observou): ${injustos.map(p=>OBJ[p].n).join(', ')}.`:''].join(''));}},'Conferir o meu quadro');
+  const sel=seg([['A','Caixa A'],['B','Caixa B'],['C','Caixa C']],cx,v=>{cx=v;store.set('cx-cur',v);draw();},{label:'Caixa'});
+  root.append(h('div',{class:'cols wide-right'},
+    panel(h('span',{class:'label'},'Escolha a caixa'),sel,stage,h('span',{class:'label'},'Testes'),tbtns,model('A massa de cada caixa vazia é 50 g. Os testes e os sons são simulados.')),
+    panel(h('h3',{},'Caderno de observações'),log,h('h3',{},'Quadro de suspeitos'),h('p',{class:'note'},'Toque num objeto para descartá-lo quando uma observação não combinar com ele.'),board,h('div',{class:'row'},chk),bmsg)));
+  root.append(panel(h('h3',{},'Conclusão'),h('p',{class:'note'},'Use só o que as observações permitem afirmar. Às vezes a resposta mais honesta é “ainda não dá para saber”.'),cBox,peekOut));
+  // Observação ou inferência?
+  const OI=[['A balança marcou 51 g.','obs','Você leu um número no instrumento: é observação (uma medida).'],['Há um objeto de metal dentro da caixa B.','inf','Ninguém viu o metal. Você concluiu isso a partir do ímã e do som: é inferência.'],['Quando inclinei a caixa A, ouvi algo rolando.','obs','Você ouviu: é observação pelos sentidos.'],['O objeto da caixa A é redondo.','inf','Você deduziu a forma pelo som de rolar: é inferência.'],['A caixa B se mexeu quando aproximei o ímã.','obs','Você viu a caixa se mexer: observação.'],['A caixa C tem um dado de madeira.','inf','É uma conclusão (e nem é a única possível): inferência.']];
+  const oi=store.get('cx-oi',{});const oiBox=h('div',{class:'stack',style:'gap:8px'});
+  OI.forEach(([t,k,ex],i)=>{const fb=h('div',{});const show=()=>{fb.innerHTML='';if(oi[i]==null)return;fb.append(h('p',{class:'fb '+(oi[i]===k?'ok':'no')},h('strong',{},oi[i]===k?'Isso. ':'Repense. '),ex));};
+    oiBox.append(h('div',{class:'cx-oi'},h('span',{},t),seg([['obs','Observação'],['inf','Inferência']],oi[i]??null,v=>{oi[i]=v;store.set('cx-oi',oi);show();},{label:t})),fb);show();});
+  root.append(panel(h('span',{class:'eyebrow'},'Para fixar'),h('h3',{},'Observação ou inferência?'),h('p',{},h('b',{},'Observação'),' é o que percebemos com os sentidos ou medimos com instrumentos. ',h('b',{},'Inferência'),' é uma conclusão que tiramos a partir das observações. As inferências podem estar erradas; por isso são testadas.'),oiBox));
+  draw();
+};
+
+// ================= Aula 2: Fábrica de perguntas =================
+const FEN=[
+  {id:'formigas',nome:'Formigas andando em fila',qs:[
+    ['As formigas seguem a trilha mesmo depois que eu passo o dedo no caminho?',true,'Dá para testar: passe o dedo (ou um pano) na trilha e observe o que as formigas fazem.'],
+    ['Por que as formigas são tão incríveis?',false,'“Incrível” é opinião. Não há o que medir ou comparar.'],
+    ['O número de formigas na trilha muda conforme a hora do dia?',true,'Dá para contar as formigas em horários diferentes e comparar.'],
+    ['Devemos acabar com as formigas da cozinha?',false,'É uma pergunta de decisão e valores. A ciência ajuda (que espécie é, se causa algum dano), mas não decide sozinha o que “devemos” fazer.']]},
+  {id:'planta',nome:'A planta da janela cresce torta',qs:[
+    ['O caule cresce na direção de onde vem a luz?',true,'Dá para girar o vaso ou mudar a posição da luz e medir o ângulo do caule.'],
+    ['A planta está triste por ficar sozinha?',false,'Sentimentos humanos atribuídos à planta não podem ser medidos.'],
+    ['Uma planta que cresce no escuro total também fica torta?',true,'Dá para comparar plantas no escuro com plantas iluminadas de um lado só.'],
+    ['Qual é a planta mais bonita para a janela?',false,'Beleza é gosto pessoal.']]},
+  {id:'pao',nome:'O pão mofa mais rápido em alguns dias',qs:[
+    ['O pão mofa mais rápido quando o tempo está úmido?',true,'Dá para guardar pães em lugares com umidade diferente e comparar os dias até o mofo aparecer.'],
+    ['O mofo aparece por azar?',false,'“Azar” não é uma explicação que dê para testar. É melhor perguntar que condições favorecem o mofo.'],
+    ['O pão guardado na geladeira demora mais para mofar?',true,'Dá para comparar pães dentro e fora da geladeira.'],
+    ['Comer pão é pecado?',false,'É uma pergunta de crença e valores, fora do alcance de um experimento.']]},
+  {id:'sapo',nome:'Os sapos cantam mais depois da chuva',qs:[
+    ['Os sapos cantam mais nas noites depois da chuva do que nas noites secas?',true,'Dá para gravar ou contar os cantos em noites com e sem chuva.'],
+    ['Os sapos cantam porque estão felizes?',false,'Não dá para medir a felicidade de um sapo. Dá para perguntar para que serve o canto, por exemplo, se atrai fêmeas, e testar.'],
+    ['Os sapos são o melhor animal do mundo?',false,'Opinião.'],
+    ['A temperatura da noite muda o número de cantos?',true,'Dá para medir a temperatura e contar os cantos.']]}];
+INIT.perguntas=root=>{
+  root.append(head('Aula 2 · A pergunta científica','Fábrica de perguntas','Toda investigação começa com uma curiosidade. Mas nem toda pergunta pode ser respondida por observação ou experimento. Descubra quais podem e transforme uma curiosidade vaga numa pergunta de pesquisa.'));
+  let fi=store.get('pg-fen',0);const ans=store.get('pg-ans',{});const area=h('div',{class:'stack'});const tabs=h('div',{class:'row'});const score=h('span',{class:'pill ex'});
+  const drawTabs=()=>{tabs.innerHTML='';FEN.forEach((f,i)=>tabs.append(h('button',{type:'button',class:'btn sm'+(i===fi?' primary':''),onclick:()=>{fi=i;store.set('pg-fen',i);drawTabs();drawFen();}},f.nome)));};
+  function drawFen(){const f=FEN[fi];area.innerHTML='';
+    area.append(h('div',{class:'det-hero'},ilu(f.id==='pao'?'pao':f.id,'ilu'),h('div',{class:'stack',style:'gap:6px'},h('span',{class:'eyebrow'},'Observação curiosa'),h('h3',{style:'font-size:1.4rem'},f.nome),h('p',{class:'note'},'Para cada pergunta: dá para responder com observação, medida ou experimento?'))));
+    f.qs.forEach(([q,ok,ex],j)=>{const k=f.id+j;const fb=h('div',{});const show=()=>{fb.innerHTML='';if(ans[k]==null)return;const acertou=ans[k]===ok;fb.append(h('p',{class:'fb '+(acertou?'ok':'no')},h('strong',{},acertou?'Isso. ':'Pense de novo. '),ex));};
+      area.append(h('div',{class:'cx-oi'},h('span',{style:'font-weight:700'},q),seg([[true,'Dá para investigar'],[false,'Não dá']],ans[k]??null,v=>{ans[k]=v;store.set('pg-ans',ans);show();upd();},{label:q})),fb);show();});}
+  function upd(){let n=0,ok=0;FEN.forEach(f=>f.qs.forEach(([,c],j)=>{const k=f.id+j;if(ans[k]!=null){n++;if(ans[k]===c)ok++;}}));score.textContent=`${ok} de ${n} certas · ${n}/16 respondidas`;}
+  root.append(panel(h('div',{class:'row',style:'justify-content:space-between'},h('h3',{},'Dá para investigar?'),score),tabs,area,
+    h('div',{class:'crit'},h('span',{class:'label'},'Uma pergunta investigável'),h('ul',{},h('li',{},'fala de algo que dá para ',h('b',{},'observar, contar ou medir'),';'),h('li',{},'é ',h('b',{},'específica'),': diz o que muda e o que se observa;'),h('li',{},'não depende de ',h('b',{},'gosto, opinião, valores ou crença'),'.')),h('p',{class:'note'},'Perguntas de valores (“devemos…?”, “é certo…?”) são importantes, mas a ciência sozinha não as responde: ela oferece dados para a decisão.'))));
+  drawTabs();drawFen();upd();
+  // Afinador de perguntas
+  const AF={muda:[['luz','a quantidade de luz',true],['agua','a quantidade de água',true],['vaso','a cor do vaso',true],['amor','o carinho do dono',false]],
+    mede:[['alt','a altura do caule, em centímetros',true],['folhas','o número de folhas',true],['feliz','se a planta parece feliz',false],['bonita','a beleza da planta',false]],
+    comp:[['igual','plantas da mesma espécie e idade, com tudo igual menos o que eu mudei',true],['dif','plantas de espécies diferentes',false],['nada','nenhuma comparação: observo uma planta só',false]]};
+  const af=store.get('pg-af',{});const fr=h('p',{class:'af-frase'});const afb=h('div',{class:'stack',style:'gap:6px'});
+  function updAf(){const m=AF.muda.find(x=>x[0]===af.muda),d=AF.mede.find(x=>x[0]===af.mede),c=AF.comp.find(x=>x[0]===af.comp);
+    fr.textContent=`“Mudar ${m?m[1]:'…'} altera ${d?d[1]:'…'}, comparando ${c?c[1]:'…'}?”`;afb.innerHTML='';
+    if(m&&!m[2])afb.append(h('p',{class:'fb no'},'“Carinho” não tem uma medida combinada. Escolha algo que dê para controlar e repetir.'));
+    if(d&&!d[2])afb.append(h('p',{class:'fb no'},'“Feliz” e “bonita” dependem de quem olha. Escolha algo que dê para contar ou medir.'));
+    if(c&&!c[2])afb.append(h('p',{class:'fb no'},c[0]==='dif'?'Com espécies diferentes, você não sabe se a diferença veio do que mudou ou da espécie.':'Sem comparação, não há como saber se a mudança fez diferença.'));
+    if(m&&d&&c&&m[2]&&d[2]&&c[2])afb.append(h('p',{class:'fb ok'},h('strong',{},'Pergunta de pesquisa pronta. '),'Ela tem algo que muda (a variável independente), algo que se mede (a variável dependente) e uma comparação justa. Na Aula 3 você vai montar um experimento assim.'));}
+  const pick=(k,lab)=>h('div',{class:'stack',style:'gap:6px'},h('span',{class:'label'},lab),chipsPick(AF[k].map(x=>[x[0],x[1]]),af[k]||null,v=>{af[k]=v;store.set('pg-af',af);updAf();}));
+  root.append(panel(h('span',{class:'eyebrow'},'Afinador de perguntas'),h('h3',{},'De “por que as plantas crescem?” a uma pergunta de pesquisa'),h('p',{class:'note'},'Uma curiosidade vaga vira investigação quando dizemos o que vamos mudar, o que vamos medir e com o que vamos comparar.'),
+    pick('muda','1. O que eu vou mudar?'),pick('mede','2. O que eu vou medir?'),pick('comp','3. Com o que eu comparo?'),h('span',{class:'label'},'Sua pergunta'),fr,afb));
+  updAf();
+};
+
+// ================= Aulas 3–4: Laboratório do pão =================
+const VAR={
+  umid:{n:'Umidade',ops:[['seco','Seco'],['umido','Borrifado com água']]},
+  temp:{n:'Temperatura',ops:[['5','Geladeira · 5 °C'],['25','Armário · 25 °C'],['32','Lugar quente · 32 °C']]},
+  luz:{n:'Luz',ops:[['claro','Claro'],['escuro','Escuro']]},
+  cons:{n:'Conservante',ops:[['nao','Sem conservante'],['sim','Com conservante']]}};
+const VK=['umid','temp','luz','cons'];
+const SACO0={umid:'seco',temp:'25',luz:'claro',cons:'nao'};
+const COND={umido:{v:'umid',a:'seco',b:'umido',t:'ficar úmido'},gel:{v:'temp',a:'25',b:'5',t:'ficar na geladeira'},calor:{v:'temp',a:'25',b:'32',t:'ficar num lugar quente'},escuro:{v:'luz',a:'claro',b:'escuro',t:'ficar no escuro'},cons:{v:'cons',a:'nao',b:'sim',t:'ter conservante'}};
+const DIRS={mais:'mofar mais rápido',menos:'mofar mais devagar',igual:'mofar no mesmo ritmo'};
+const opN=(k,v)=>VAR[k].ops.find(o=>o[0]===v)[1];
+const sacoTxt=sc=>VK.map(k=>opN(k,sc[k]).replace(/ · .*/,'')).join(', ');
+// Modelo do mofo: tempo até aparecer (dias) e velocidade de espalhamento
+function mofoCurva(sc,seed){const r=seeded(seed);const g=()=>{let u=r()||1e-9,v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*v);};
+  const fU=sc.umid==='umido'?.55:1.35,fT={'5':4.2,'25':1,'32':.82}[sc.temp],fC=sc.cons==='sim'?2.3:1,fL=sc.luz==='escuro'?.98:1;
+  const L=2.6*fU*fT*fC*fL*Math.exp(.2*g());const k=.42*(sc.umid==='umido'?1.25:.8)/(sc.temp==='5'?3.2:1)*Math.exp(.12*g());
+  return d=>d<=L?0:Math.min(100,Math.round(100*(1-Math.exp(-k*(d-L)))));}
+INIT.mofo=root=>{
+  root.append(head('Aulas 3 e 4 · Hipóteses e experimentos','Laboratório do pão','Em que condições o pão mofa mais rápido? Você vai formular uma hipótese, planejar um teste justo, acompanhar o pão por 10 dias e decidir o que os dados dizem.'));
+  const hip=store.get('mf-hip',{cond:null,dir:null,porque:''});let sacos=store.get('mf-sacos',[Object.assign({},SACO0),Object.assign({},SACO0,{umid:'umido'})]);
+  let rep=store.get('mf-rep',3),dia=store.get('mf-dia',0),seed=store.get('mf-seed',1),concl=store.get('mf-concl',null);
+  const save=()=>{store.set('mf-hip',hip);store.set('mf-sacos',sacos);store.set('mf-rep',rep);store.set('mf-dia',dia);store.set('mf-seed',seed);store.set('mf-concl',concl);publish();};
+  const curvas=()=>sacos.map((sc,i)=>[...Array(rep)].map((_,j)=>mofoCurva(sc,seed*1009+i*97+j*13+VK.map(k=>sc[k]).join('').length)));
+  // 1. Hipótese
+  const hipTxt=h('p',{class:'af-frase'});const hipFb=h('div',{});
+  const porque=h('input',{type:'text',maxlength:140,placeholder:'porque… (o que você acha que explica isso)',value:hip.porque,style:'width:100%'});porque.oninput=()=>{hip.porque=porque.value;save();updHip();};
+  function updHip(){const c=COND[hip.cond];hipTxt.textContent=`“Se o pão ${c?c.t:'…'}, então ele vai ${hip.dir?DIRS[hip.dir]:'…'} do que o pão ${c?'que não '+c.t.replace('ficar ','fica ').replace('ter ','tem '):'…'}${hip.porque.trim()?', porque '+hip.porque.trim().replace(/^porque\s+/i,''):''}.”`;
+    hipFb.innerHTML='';if(c&&hip.dir)hipFb.append(h('p',{class:'note'},`Para testar: compare dois sacos que diferem SÓ na ${VAR[c.v].n.toLowerCase()}: ${opN(c.v,c.a)} × ${opN(c.v,c.b)}. Todo o resto igual.`));}
+  root.append(passo(1,'Sua hipótese',h('p',{class:'note'},'Uma hipótese é uma explicação provisória que pode ser testada. Ela leva a uma previsão: “se… então…”.'),
+    h('span',{class:'label'},'Se o pão…'),chipsPick(Object.entries(COND).map(([k,c])=>[k,c.t]),hip.cond,v=>{hip.cond=v;save();updHip();}),
+    h('span',{class:'label'},'então ele vai…'),chipsPick(Object.entries(DIRS),hip.dir,v=>{hip.dir=v;save();updHip();}),porque,hipTxt,hipFb));updHip();
+  // 2. Montagem
+  const montBox=h('div',{class:'mf-sacos'});const fair=h('div',{class:'stack',style:'gap:6px'});
+  function drawMont(){montBox.innerHTML='';
+    sacos.forEach((sc,i)=>{const card=h('div',{class:'mf-saco'},h('div',{class:'row',style:'justify-content:space-between'},h('b',{},'Saco '+(i+1)+(i===0?' · referência':'')),sacos.length>2?h('button',{class:'btn ghost sm',type:'button',onclick:()=>{sacos.splice(i,1);dia=0;save();drawAll();}},'Remover'):null));
+      VK.forEach(k=>card.append(h('span',{class:'label'},VAR[k].n),seg(VAR[k].ops,sc[k],v=>{sc[k]=v;dia=0;save();drawAll();},{label:VAR[k].n+' do saco '+(i+1)})));montBox.append(card);});
+    if(sacos.length<4)montBox.append(h('button',{class:'mf-add',type:'button',onclick:()=>{sacos.push(Object.assign({},sacos[0]));dia=0;save();drawAll();}},'+ Adicionar saco'));
+    fair.innerHTML='';const msgs=[];
+    const vari=VK.filter(k=>sacos.some(sc=>sc[k]!==sacos[0][k]));
+    sacos.slice(1).forEach((sc,i)=>{const d=VK.filter(k=>sc[k]!==sacos[0][k]);if(d.length>1)msgs.push(['no',`O saco ${i+2} muda ${d.length} coisas em relação ao saco 1 (${d.map(k=>VAR[k].n.toLowerCase()).join(' e ')}). Se ele mofar diferente, não dá para saber qual delas causou a diferença.`]);
+      if(d.length===0)msgs.push(['info',`O saco ${i+2} é igual ao saco 1. Ele funciona como mais uma réplica, não como um tratamento novo.`]);});
+    if(!vari.length)msgs.push(['no','Todos os sacos estão iguais: nada está sendo testado. Mude uma condição em um dos sacos.']);
+    else if(!msgs.some(m=>m[0]==='no'))msgs.push(['ok',`Teste justo: cada saco muda só uma condição em relação ao saco 1, que é a sua referência (o controle). Variável independente: ${vari.map(k=>VAR[k].n.toLowerCase()).join(' e ')}.`]);
+    if(rep===1)msgs.push(['no','Com uma fatia só por saco, você não sabe se o resultado foi acaso. Use réplicas.']);
+    const c=COND[hip.cond];if(c&&!sacos.slice(1).some(sc=>VK.every(k=>k===c.v?(sc[k]===c.b&&sacos[0][k]===c.a):sc[k]===sacos[0][k])))msgs.push(['info',`Sua hipótese fala de ${VAR[c.v].n.toLowerCase()}. Para testá-la, monte um saco igual ao saco 1, mudando só para “${opN(c.v,c.b)}” (saco 1 com “${opN(c.v,c.a)}”).`]);
+    msgs.forEach(([cl,t])=>fair.append(h('p',{class:'fb '+cl},t)));}
+  root.append(passo(2,'Monte o experimento',h('p',{class:'note'},'Todas as fatias são do mesmo pão, do mesmo tamanho e ficam em sacos fechados iguais. O saco 1 é a condição de referência. Mude o mínimo possível nos outros sacos.'),montBox,
+    h('div',{class:'row'},h('span',{class:'label'},'Réplicas (fatias por saco)'),seg([[1,'1'],[3,'3'],[5,'5']],rep,v=>{rep=v;dia=0;save();drawAll();},{label:'Réplicas'})),h('span',{class:'label'},'Verificação do teste justo'),fair));
+  // 3. Observação
+  const bench=h('div',{class:'mf-bench'});const dOut=h('output',{class:'big-num'});
+  const sl=h('input',{type:'range',min:0,max:10,step:1,value:dia,'aria-label':'Dia do experimento'});sl.oninput=()=>{dia=+sl.value;save();drawObs();drawRes();};
+  const play=h('button',{class:'btn primary',type:'button'},'▶ Passar os dias');
+  play.onclick=async()=>{play.disabled=true;for(let d=dia>=10?0:dia;d<=10;d++){dia=d;sl.value=d;drawObs();drawRes();await sleep(reduced()?0:420);}save();play.disabled=false;};
+  function drawObs(){const C=curvas();dOut.textContent='Dia '+dia;bench.innerHTML='';
+    sacos.forEach((sc,i)=>{const sv=C[i].map((f,j)=>{const v=f(dia);return `<g>${fatia(28+j*48,34,1,v/100,seed*31+i*7+j)}<text x="${28+j*48}" y="70" text-anchor="middle" font-size="10" font-weight="700" fill="var(--muted)">${v}%</text></g>`;}).join('');
+      bench.append(h('div',{class:'mf-row'},h('div',{class:'stack',style:'gap:2px'},h('b',{},'Saco '+(i+1)),h('span',{class:'note'},sacoTxt(sc))),svgOf(sv,`0 0 ${Math.max(150,rep*48+8)} 76`,'mf-fatias')));});}
+  root.append(passo(3,'Observe e meça',h('p',{class:'note'},'Cada dia, a cobertura de mofo de cada fatia é medida em porcentagem da área (0% = sem mofo; 100% = toda coberta).'),
+    h('div',{class:'row',style:'gap:14px'},play,dOut,h('div',{style:'flex:1;min-width:180px'},sl)),bench,
+    h('div',{class:'row'},h('button',{class:'btn ghost sm',type:'button',onclick:()=>{seed++;dia=0;sl.value=0;save();drawAll();}},'Repetir o experimento com pães novos'),h('span',{class:'note'},'Os números mudam um pouco a cada repetição: pão e mofo variam.')),
+    model('Modelo simulado com base em fatores conhecidos para fungos de pão (umidade, temperatura, conservantes). Valores ilustrativos, não medidas reais.')));
+  // 4. Análise
+  const tbl=h('div',{class:'tbl-wrap'});const ch=s('svg',{class:'chart',role:'img','aria-label':'Cobertura média de mofo ao longo dos dias, por saco'});const cOut=h('div',{});
+  const CORES=['#5b45a3','#a3601b','#2a6497','#8a3560'];
+  function drawRes(){const C=curvas();const D=dia;
+    const t=h('table',{class:'data'},h('tr',{},h('th',{},'Saco'),...[...Array(rep)].map((_,j)=>h('th',{class:'n'},'Fatia '+(j+1))),h('th',{class:'n'},'Média'),h('th',{class:'n'},'Menor–maior')));
+    sacos.forEach((sc,i)=>{const v=C[i].map(f=>f(D));t.append(h('tr',{},h('td',{},h('b',{style:`color:${CORES[i]}`},'Saco '+(i+1)),h('br'),h('span',{class:'note'},sacoTxt(sc))),...v.map(x=>h('td',{class:'n'},x+'%')),h('td',{class:'n'},h('b',{},fmt(mean(v),0)+'%')),h('td',{class:'n'},Math.min(...v)+'–'+Math.max(...v)+'%')));});
+    tbl.innerHTML='';tbl.append(h('p',{class:'label'},'Dados do dia '+D),t);
+    lineChart(ch,{series:sacos.map((sc,i)=>({name:'Saco '+(i+1),color:CORES[i],points:[...Array(11)].map((_,d)=>[d,d<=Math.max(D,0)?mean(C[i].map(f=>f(d))):null]).filter(p=>p[1]!=null),dots:true})),xMax:10,yMax:100,xLabel:'Dias',yLabel:'Cobertura média de mofo (%)',xStep:1,height:300});}
+  const cSeg=h('div',{});
+  function drawConcl(){cSeg.innerHTML='';cSeg.append(seg([['apoia','Os dados apoiam a minha hipótese'],['refuta','Os dados refutam a minha hipótese'],['inconc','Os dados são inconclusivos']],concl,v=>{concl=v;save();avaliar();},{label:'Conclusão'}));}
+  function avaliar(){cOut.innerHTML='';if(!concl)return;const c=COND[hip.cond];
+    if(!c||!hip.dir){fbx(cOut,'info','Volte ao passo 1 e escolha a sua hipótese.');return;}
+    if(dia<7){fbx(cOut,'info','Acompanhe o pão até pelo menos o dia 7 antes de concluir.');return;}
+    const i=sacos.findIndex((sc,ix)=>ix>0&&VK.every(k=>k===c.v?(sc[k]===c.b&&sacos[0][k]===c.a):sc[k]===sacos[0][k]));
+    if(i<0){fbx(cOut,'no','Nenhum saco testa a sua hipótese sozinha: falta um saco igual ao saco 1, mudando só a condição da hipótese. Com esse arranjo, a conclusão mais honesta é “inconclusivo”.');return;}
+    const C=curvas();const a=C[0].map(f=>f(dia)),b=C[i].map(f=>f(dia));const ma=mean(a),mb=mean(b);
+    const sobre=Math.max(...a)>=Math.min(...b)&&Math.max(...b)>=Math.min(...a);
+    const real=Math.abs(mb-ma)<8?'igual':mb>ma?'mais':'menos';const certo=real===hip.dir?'apoia':(rep===1||(sobre&&Math.abs(mb-ma)<15))?'inconc':'refuta';
+    const txt=`No dia ${dia}, o saco 1 teve média de ${fmt(ma,0)}% e o saco ${i+1} (${opN(c.v,c.b)}), ${fmt(mb,0)}%. `+(real==='igual'?'As médias são parecidas. ':`O saco ${i+1} mofou ${real==='mais'?'mais':'menos'}. `)+(sobre?'As réplicas dos dois sacos se sobrepõem, então a diferença pode ser acaso. ':'As réplicas não se sobrepõem: a diferença se repete em todas as fatias. ');
+    const ok=concl===certo;
+    fbx(cOut,ok?'ok':'no',h('strong',{},ok?'Conclusão coerente com os dados. ':'Releia os dados. '),txt,certo==='refuta'?'Uma hipótese refutada também é um resultado científico: você aprendeu algo e pode formular uma hipótese nova.':certo==='apoia'?'“Apoiar” não é “provar”: outro experimento, com mais pães, pode mostrar algo novo.':'');}
+  root.append(passo(4,'Analise e conclua',tbl,ch,h('span',{class:'label'},'O que os dados dizem sobre a sua hipótese?'),cSeg,cOut));
+  function publish(){const C=curvas();window.__mofo={hip:hipTxt.textContent.replace(/[“”]/g,''),vi:VK.filter(k=>sacos.some(sc=>sc[k]!==sacos[0][k])).map(k=>VAR[k].n.toLowerCase()).join(' e '),
+    ctrl:'Saco 1 ('+sacoTxt(sacos[0])+')',res:sacos.map((sc,i)=>`Saco ${i+1} (${sacoTxt(sc)}): média ${fmt(mean(C[i].map(f=>f(7))),0)}% no dia 7`).join('; '),rep,
+    iguais:VK.filter(k=>sacos.every(sc=>sc[k]===sacos[0][k])).map(k=>VAR[k].n.toLowerCase()).concat(['tipo e tamanho da fatia','tipo de saco']).join(', '),concl};}
+  function drawAll(){sl.value=dia;drawMont();drawObs();drawRes();drawConcl();avaliar();publish();}
+  drawAll();
+};
+
+// ================= Aula 5: O caso das duas maternidades =================
+// Dados publicados por Semmelweis (1861), como reproduzidos em fontes históricas
+const SEM=[[1841,3036,237,2442,86],[1842,3287,518,2659,202],[1843,3060,274,2739,164],[1844,3157,260,2956,68],[1845,3492,241,3241,66],[1846,4010,459,3754,105]];
+const SEM47=[['abr','Abril',18.3],['jun','Junho',2.2],['jul','Julho',1.2],['ago','Agosto',1.9]];
+const HIP=[
+  {id:'ar',t:'“Miasmas”: um ar ruim, que vem da cidade, provoca a febre.',prev:['As duas clínicas teriam taxas parecidas: ficam no mesmo hospital e recebem o mesmo ar da cidade','A Clínica 1 teria taxas bem maiores que a Clínica 2'],ev:'As duas clínicas ficam no mesmo hospital, lado a lado. Mesmo assim, a Clínica 1 tem, ano após ano, uma taxa várias vezes maior.',res:'refuta'},
+  {id:'lot',t:'Superlotação: a clínica mais cheia adoece mais.',prev:['A clínica mais cheia teria mais mortes','A clínica mais vazia teria mais mortes'],ev:'A Clínica 2 era a mais cheia: as mulheres pediam para ser levadas para lá, porque sabiam da fama da Clínica 1. Mesmo cheia, ela tinha menos mortes.',res:'refuta'},
+  {id:'pos',t:'A posição do parto: na Clínica 1 as mulheres davam à luz deitadas de costas; na Clínica 2, de lado.',prev:['Se a Clínica 1 passar a usar a posição de lado, as mortes caem','Mudar a posição não muda nada'],ev:'Semmelweis passou a usar a posição de lado também na Clínica 1. As mortes continuaram altas.',res:'refuta'},
+  {id:'padre',t:'O medo: o padre atravessava a Clínica 1, tocando um sino, para levar a extrema-unção aos doentes.',prev:['Se o padre usar outro caminho, sem o sino, as mortes caem','Mudar o caminho do padre não muda nada'],ev:'O padre passou a entrar por outro caminho, sem tocar o sino. As mortes continuaram altas.',res:'refuta'},
+  {id:'maos',t:'“Partículas de cadáver”: médicos e estudantes saíam das autópsias e iam direto examinar as mulheres da Clínica 1. As parteiras da Clínica 2 não faziam autópsias.',prev:['Se todos lavarem as mãos com uma solução de cloro antes de examinar, as mortes da Clínica 1 caem','Lavar as mãos não muda nada'],ev:'A partir de meados de maio de 1847, lavar as mãos com solução de cal clorada virou obrigatório na Clínica 1. Veja o que aconteceu com a taxa de mortes:',res:'apoia'}];
+INIT.semmelweis=root=>{
+  root.append(head('Aula 5 · Hipóteses e evidências','O caso das duas maternidades','Viena, 1846. No Hospital Geral, duas clínicas de parto funcionam lado a lado. Numa delas, muito mais mulheres morrem de febre depois do parto. Por quê? Use os dados reais da época para testar as explicações que circulavam.'));
+  root.append(h('div',{class:'cols wide-right'},ilu('hospital','ilu'),panel(h('span',{class:'eyebrow'},'O caso'),
+    h('p',{},'A ',h('b',{},'febre puerperal'),' era uma infecção grave que atingia mulheres logo depois do parto. Na ',h('b',{},'Clínica 1'),', o atendimento era feito por médicos e estudantes de medicina. Na ',h('b',{},'Clínica 2'),', por parteiras e suas alunas. As mulheres eram internadas numa ou noutra em dias alternados, conforme o dia em que chegavam.'),
+    h('p',{},'O médico húngaro ',h('b',{},'Ignaz Semmelweis'),' trabalhava na Clínica 1 e decidiu investigar. Na época, ninguém sabia que bactérias causam infecções.'))));
+  // Dados
+  const inp1=h('input',{type:'text',inputmode:'decimal',placeholder:'%','aria-label':'Taxa da Clínica 1 em 1846'}),inp2=h('input',{type:'text',inputmode:'decimal',placeholder:'%','aria-label':'Taxa da Clínica 2 em 1846'});
+  const tx=store.get('sm-tx',{});inp1.value=tx.a||'';inp2.value=tx.b||'';const txOut=h('div',{});const ch=s('svg',{class:'chart',role:'img','aria-label':'Taxa de mortalidade por ano nas duas clínicas, 1841 a 1846'});const chWrap=h('div',{class:'stack'});
+  const num=v=>parseFloat(String(v).replace(',','.'));
+  function showChart(){chWrap.innerHTML='';barChart(ch,{cats:SEM.map(r=>String(r[0])),series:[{name:'Clínica 1 (médicos)',color:'#8a3560',values:SEM.map(r=>r[2]/r[1]*100),labels:v=>fmt(v,1)},{name:'Clínica 2 (parteiras)',color:'#2a6497',values:SEM.map(r=>r[4]/r[3]*100),labels:v=>fmt(v,1)}],yMax:17,yLabel:'Mortes por 100 partos (%)',height:290,fmtY:v=>fmt(v)+'%'});chWrap.append(ch,h('p',{class:'note'},'Em todos os anos, a Clínica 1 teve taxa maior. Em 1846, foi cerca de quatro vezes a da Clínica 2.'));}
+  const conf=()=>{tx.a=inp1.value;tx.b=inp2.value;store.set('sm-tx',tx);const a=num(inp1.value),b=num(inp2.value);const ra=459/4010*100,rb=105/3754*100;
+    const okA=Math.abs(a-ra)<=.2,okB=Math.abs(b-rb)<=.2;
+    if(okA&&okB){fbx(txOut,'ok',h('strong',{},'Isso. '),`Clínica 1: 459 ÷ 4.010 × 100 ≈ ${fmt(ra,1)}%. Clínica 2: 105 ÷ 3.754 × 100 ≈ ${fmt(rb,1)}%. Usamos a taxa (e não o número de mortes) porque as clínicas tiveram números de partos diferentes.`);showChart();}
+    else fbx(txOut,'no',`Taxa = mortes ÷ partos × 100. ${!okA?'Confira a Clínica 1. ':''}${!okB?'Confira a Clínica 2.':''}`);};
+  const t=h('table',{class:'data'},h('tr',{},h('th',{},'Ano'),h('th',{class:'n'},'Clínica 1 · partos'),h('th',{class:'n'},'Clínica 1 · mortes'),h('th',{class:'n'},'Clínica 2 · partos'),h('th',{class:'n'},'Clínica 2 · mortes')),
+    ...SEM.map(r=>h('tr',{},h('td',{},String(r[0])),h('td',{class:'n'},fmt(r[1])),h('td',{class:'n'},fmt(r[2])),h('td',{class:'n'},fmt(r[3])),h('td',{class:'n'},fmt(r[4])))));
+  root.append(passo(1,'Os dados',h('p',{class:'note'},'Registros oficiais do hospital. Em 1846, a Clínica 1 teve 459 mortes e a Clínica 2, 105. Dá para comparar só esses números?'),h('div',{class:'tbl-wrap'},t),
+    h('div',{class:'row'},h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Taxa da Clínica 1 em 1846'),inp1),h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Taxa da Clínica 2 em 1846'),inp2),h('button',{class:'btn primary',type:'button',style:'align-self:flex-end',onclick:conf},'Conferir')),txOut,chWrap,
+    model('Fonte dos números: relatório publicado por Semmelweis em 1861, reproduzido em textos de história da medicina.')));
+  if(tx.a&&tx.b)conf();
+  // Hipóteses
+  const st=store.get('sm-hip',{});const hBox=h('div',{class:'stack'});
+  function drawHip(){hBox.innerHTML='';
+    HIP.forEach((H,i)=>{const S=st[H.id]||{};const card=h('div',{class:'sm-hip'+(S.jud?' done':'')},h('div',{class:'row',style:'gap:10px'},h('span',{class:'sm-n'},'H'+(i+1)),h('b',{style:'flex:1;min-width:200px'},H.t)));
+      card.append(h('span',{class:'label'},'Se essa hipótese estiver certa, o que esperamos observar?'),chipsPick(H.prev.map((p,j)=>[j,p]),S.prev??null,v=>{st[H.id]=Object.assign(st[H.id]||{},{prev:v});store.set('sm-hip',st);drawHip();}));
+      if(S.prev!=null){
+        if(!S.ver)card.append(h('button',{class:'btn primary',type:'button',style:'align-self:flex-start',onclick:()=>{st[H.id].ver=true;store.set('sm-hip',st);drawHip();}},'Ver o que aconteceu'));
+        else{card.append(h('p',{class:'callout'},h('strong',{},'Evidência: '),H.ev));
+          if(H.id==='maos'){const c2=s('svg',{class:'chart',role:'img','aria-label':'Taxa de mortes da Clínica 1 em 1847, antes e depois da lavagem das mãos'});barChart(c2,{cats:SEM47.map(m=>m[1]+(m[0]==='abr'?' (antes)':'')),series:[{name:'Clínica 1, 1847',color:'#8a3560',values:SEM47.map(m=>m[2]),labels:v=>fmt(v,1)+'%'}],yMax:20,yLabel:'Mortes por 100 partos (%)',height:240,fmtY:v=>fmt(v)+'%'});card.append(c2,h('p',{class:'note'},'Maio de 1847: começa a lavagem obrigatória das mãos. Fonte: dados mensais de Semmelweis.'));}
+          card.append(h('span',{class:'label'},'Essa evidência…'),chipsPick([['apoia','apoia a hipótese'],['refuta','refuta a hipótese']],S.jud||null,v=>{st[H.id].jud=v;store.set('sm-hip',st);drawHip();}));
+          if(S.jud){const ok=S.jud===H.res;card.append(h('p',{class:'fb '+(ok?'ok':'no')},h('strong',{},ok?'Isso. ':'Repense. '),H.res==='refuta'?'A previsão não se confirmou, então a hipótese foi descartada. Repare: Semmelweis mudou uma coisa de cada vez e observou o resultado.':'A previsão se confirmou: a taxa despencou depois da lavagem. Isso apoia a hipótese, mas não explica o mecanismo: que “partículas” seriam essas? A resposta só veio décadas depois, com a microbiologia.'));}}}
+      if(i===4&&!(st.ar&&st.ar.jud&&st.lot&&st.lot.jud&&st.pos&&st.pos.jud&&st.padre&&st.padre.jud)){hBox.append(h('p',{class:'note'},'Teste as hipóteses H1 a H4 para liberar a H5.'));return;}
+      if(i===4)hBox.append(pistas);
+      hBox.append(card);});}
+  const pist=store.get('sm-pist',{});
+  const pistas=h('div',{class:'sm-pistas'},h('span',{class:'label'},'Antes da H5: duas pistas do caderno de Semmelweis'),
+    ...[['rua','Partos na rua','Algumas mulheres davam à luz no caminho, antes de chegar ao hospital, e depois eram internadas na Clínica 1. Elas quase nunca tinham a febre. Elas não passavam pelos exames feitos durante o trabalho de parto.'],
+        ['kol','A morte de Kolletschka','Em 1847, o médico Jakob Kolletschka, amigo de Semmelweis, foi cortado por um bisturi durante uma autópsia. Ele adoeceu e morreu com sinais muito parecidos com os das mulheres com febre puerperal.']].map(([k,tt,tx])=>{const d=h('details',{open:pist[k]?true:null},h('summary',{},'🔎 '+tt),h('p',{},tx));d.addEventListener('toggle',()=>{pist[k]=d.open;store.set('sm-pist',pist);});return d;}));
+  root.append(passo(2,'Teste as hipóteses da época',h('p',{class:'note'},'Para cada hipótese: primeiro escreva a previsão, depois veja o que aconteceu. Uma previsão que falha derruba a hipótese.'),hBox));
+  drawHip();
+  root.append(panel(h('span',{class:'eyebrow'},'E depois?'),h('h3',{},'Uma boa evidência nem sempre convence de imediato'),
+    h('p',{},'Muitos médicos da época rejeitaram a ideia de Semmelweis: ela contrariava as explicações aceitas, ele não sabia dizer o que eram as “partículas”, e a proposta sugeria que os próprios médicos levavam a doença às pacientes. Só nas décadas seguintes os trabalhos de Louis Pasteur, Joseph Lister e Robert Koch mostraram que microrganismos causam infecções, e a lavagem das mãos virou regra.'),
+    h('p',{class:'callout'},'A ciência é construída por pessoas, em comunidade. Uma ideia ganha força quando outras pessoas repetem os testes, encontram o mesmo resultado e quando surge uma explicação para o mecanismo.')));
+};
+
+// ================= Aula 6: Correlação ou causa? =================
+const PRAIA=(()=>{const r=seeded(4242);const L=[];for(let i=0;i<120;i++){const T=18+r()*16;const u=r()||1e-9,v=r();const g=Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*v);
+  const sorv=Math.max(20,Math.round(45*T-600+g*110));const lam=Math.max(.15,.33*(T-17));let res=0;for(let k=0;k<12;k++)if(r()<lam/12)res++;L.push({T,x:sorv,y:res});}return L;})();
+const CASOS=[
+  {id:'cegonha',t:'Em regiões da Europa onde há mais ninhos de cegonha nascem mais bebês.',ops:[['a','As cegonhas trazem os bebês'],['b','Os bebês atraem as cegonhas'],['c','Uma terceira variável: regiões maiores e mais rurais têm mais telhados para ninhos e mais famílias'],['d','Não há relação nenhuma nos dados']],k:'c',ex:'O tamanho e o tipo de região influenciam as duas coisas. A relação nos números existe, mas não é causa.'},
+  {id:'luz',t:'Um estudo de 1999 encontrou mais miopia em crianças que dormiam com a luz acesa.',ops:[['a','Dormir com a luz acesa causa miopia'],['b','Crianças míopes pedem para deixar a luz acesa'],['c','Uma terceira variável: pais míopes deixavam mais a luz acesa e também têm mais chance de ter filhos míopes'],['d','Foi coincidência']],k:'c',ex:'Estudos seguintes encontraram que a miopia dos pais estava ligada às duas coisas. A conclusão de causa foi corrigida por novos estudos.'},
+  {id:'hosp',t:'Morre mais gente nos hospitais do que em casa. Então os hospitais fazem mal.',ops:[['a','Os hospitais causam as mortes'],['b','A seta é ao contrário: quem está muito doente vai para o hospital'],['c','Uma terceira variável: a idade'],['d','Coincidência']],k:'b',ex:'Quem vai ao hospital já está mais doente. Comparar quem está no hospital com quem está em casa não é uma comparação justa.'}];
+INIT.correlacao=root=>{
+  root.append(head('Aula 6 · Evidências e dados','Correlação ou causa?','Quando duas coisas sobem e descem juntas, dizemos que há uma correlação. Mas isso prova que uma causa a outra? Investigue os dados de uma praia e descubra a variável que estava escondida.'));
+  let modo=store.get('co-modo','plain'),faixa=store.get('co-faixa',30);const sv=s('svg',{class:'chart',role:'img','aria-label':'Gráfico de dispersão: picolés vendidos por dia e resgates de banhistas'});const info=h('div',{});const ctl=h('div',{class:'stack',style:'gap:8px'});
+  const forca=r=>{const a=Math.abs(r);return a>=.7?'forte':a>=.4?'moderada':a>=.2?'fraca':'quase nenhuma';};
+  function draw(){const pts=PRAIA.map(p=>({x:p.x,y:p.y+((p.x*7)%10-5)/40,c:modo==='plain'?'var(--tema)':tempCor(p.T),T:p.T}));
+    const dim=modo==='faixa'?(p=>p.T>=faixa&&p.T<faixa+2):null;
+    scatter(sv,{pts,xLabel:'Picolés vendidos na praia (por dia)',yLabel:'Resgates de banhistas (por dia)',xMin:0,xMax:1100,yMin:0,yMax:Math.max(...PRAIA.map(p=>p.y))+1,dim});
+    const all=corr(PRAIA.map(p=>p.x),PRAIA.map(p=>p.y));info.innerHTML='';
+    if(modo==='faixa'){const sub=PRAIA.filter(p=>p.T>=faixa&&p.T<faixa+2);const r=corr(sub.map(p=>p.x),sub.map(p=>p.y));
+      info.append(h('p',{class:'fb info'},`Só os ${sub.length} dias entre ${faixa} e ${faixa+2} °C: a relação é ${forca(r)}. Quando a temperatura fica parecida, vender mais picolé quase não acompanha mais resgates.`));}
+    else if(modo==='temp')info.append(h('p',{class:'fb info'},'Cores: dias frios em azul, dias quentes em vermelho. Repare onde ficam os dias quentes: muito picolé E muitos resgates.'));
+    else info.append(h('p',{class:'fb info'},`Cada ponto é um dia de verão. A relação entre picolés e resgates é ${forca(all)}: nos dias em que se vende mais picolé, há mais resgates.`));
+    ctl.innerHTML='';if(modo==='faixa'){const sl=h('input',{type:'range',min:18,max:32,step:2,value:faixa,'aria-label':'Faixa de temperatura'});const o=h('output',{},faixa+'–'+(faixa+2)+' °C');sl.oninput=()=>{faixa=+sl.value;store.set('co-faixa',faixa);draw();};ctl.append(h('div',{class:'slider-row'},sl,o));}}
+  const q1=store.get('co-q1',null);const q1o=h('div',{});
+  const showQ1=v=>{q1o.innerHTML='';if(v==null)return;q1o.append(h('p',{class:'fb '+(v==='nao'?'ok':'no')},v==='nao'?'Boa desconfiança. Vamos procurar uma explicação melhor.':'Será? Antes de proibir o picolé, vale procurar outra explicação. Continue.'));};
+  root.append(h('div',{class:'cols wide-left'},panel(h('h3',{},'120 dias numa praia'),seg([['plain','Só os dados'],['temp','Colorir pela temperatura'],['faixa','Comparar dias de temperatura parecida']],modo,v=>{modo=v;store.set('co-modo',v);draw();},{label:'Modo do gráfico'}),sv,ctl,info,model('Dados simulados para a aula, inspirados num exemplo clássico de estatística.')),
+    panel(h('span',{class:'eyebrow'},'Investigue'),h('p',{},'1. Olhe só os dados. Proibir o picolé reduziria os resgates?'),chipsPick([['sim','Sim'],['nao','Não sei, quero investigar mais']],q1,v=>{store.set('co-q1',v);showQ1(v);}),q1o,
+      h('p',{},'2. Agora pinte os pontos pela temperatura e depois compare só dias de temperatura parecida.'),
+      h('div',{class:'callout'},h('strong',{},'Variável de confusão: '),'uma terceira variável (aqui, o calor) que influencia as duas coisas ao mesmo tempo. No calor, mais gente compra picolé e mais gente entra no mar. O picolé e os resgates andam juntos, mas um não causa o outro.'))));
+  draw();showQ1(q1);
+  // Experimento com sorteio
+  const ch=s('svg',{class:'chart',role:'img','aria-label':'Resgates nos grupos sorteados'});const eOut=h('div',{});
+  const rodar=()=>{const r=seeded(Date.now()%100000+7);let a=[0,0],n=[0,0];for(let i=0;i<4000;i++){const g=r()<.5?0:1;n[g]++;if(r()<.012)a[g]++;}
+    barChart(ch,{cats:['Sorteados para tomar picolé','Sorteados para não tomar'],series:[{name:'Resgates',color:'var(--tema)',values:[a[0]/n[0]*100,a[1]/n[1]*100],labels:v=>fmt(v,1)+'%'}],yMax:3,yLabel:'Resgatados (%)',height:230,fmtY:v=>fmt(v,1)+'%'});
+    fbx(eOut,'info',`${fmt(n[0])} banhistas tomaram picolé e ${fmt(n[1])} não, todos no mesmo dia quente e na mesma praia. As porcentagens de resgate ficaram parecidas. Rode de novo: a diferença muda de lado ao acaso.`);};
+  root.append(sim('Teste com sorteio','Para saber se uma coisa causa a outra, os cientistas sorteiam quem recebe o tratamento. O sorteio deixa os grupos parecidos em tudo (idade, coragem, habilidade de nadar…), menos no que está sendo testado.',
+    h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:rodar},'Sortear 4.000 banhistas')),ch,eOut,model('Simulação: aqui, por construção, o picolé não muda o risco. O sorteio revela isso.')));
+  rodar();
+  // Casos
+  const ca=store.get('co-casos',{});const cBox=h('div',{class:'stack'});
+  CASOS.forEach(c=>{const fb=h('div',{});const show=()=>{fb.innerHTML='';if(ca[c.id]==null)return;const ok=ca[c.id]===c.k;fb.append(h('p',{class:'fb '+(ok?'ok':'no')},h('strong',{},ok?'Isso. ':'Pense de novo. '),c.ex));};
+    cBox.append(h('div',{class:'sm-hip'},h('b',{},c.t),chipsPick(c.ops,ca[c.id]??null,v=>{ca[c.id]=v;store.set('co-casos',ca);show();}),fb));show();});
+  root.append(panel(h('span',{class:'eyebrow'},'Casos para investigar'),h('h3',{},'Qual é a melhor explicação?'),cBox));
+};
+
+// ================= Aula 7: Agência de checagem =================
+const CRIT=[['fonte','Não diz quem fez a pesquisa nem onde ela está'],['amostra','Poucas pessoas, ou só um caso'],['controle','Sem grupo de comparação'],['causa','Trata uma correlação como causa'],['revisao','Não passou pela revisão de outros cientistas'],['interesse','Quem pagou ganha com o resultado'],['animais','Testado só em animais ou células, mas a manchete fala de pessoas'],['exagero','Promete cura, milagre ou certeza']];
+const NEWS=[
+  {id:'cha',fonte:'Vídeo em rede social',tit:'Chá de folha “milagrosa” cura diabetes em 7 dias',corpo:'Num vídeo com 2 milhões de visualizações, um influenciador conta que a tia parou de tomar o remédio depois de beber o chá. “Os médicos escondem isso de você”, diz ele.',crit:['fonte','amostra','controle','revisao','exagero'],ver:'enganosa',ex:'É o relato de um único caso, sem comparação e sem pesquisa. Além de enganosa, é perigosa: parar um remédio pode causar danos graves.'},
+  {id:'choc',fonte:'Portal de notícias',tit:'Comer chocolate todo dia emagrece, diz pesquisa',corpo:'Estudo com 12 voluntários, durante 3 semanas, financiado por uma fabricante de chocolate. Quem comeu chocolate perdeu, em média, meio quilo a mais que os outros. O trabalho ainda não foi publicado.',crit:['amostra','revisao','interesse','exagero'],ver:'exagerada',ex:'Existe uma pesquisa, mas ela é pequena e curta, não foi revisada e foi paga por quem lucra com o resultado. A manchete transforma um indício fraco em certeza.'},
+  {id:'fumo',fonte:'Jornal',tit:'Fumar aumenta o risco de câncer de pulmão, confirma estudo',corpo:'A pesquisa acompanhou mais de 40 mil adultos por 10 anos e foi publicada numa revista científica, depois de revisada por outros pesquisadores. O resultado concorda com dezenas de estudos feitos em vários países desde os anos 1950.',crit:[],ver:'confiavel',ex:'Muitas pessoas, longo tempo de acompanhamento, revisão por pares e, principalmente, o mesmo resultado repetido por muitos grupos independentes.'},
+  {id:'vac',fonte:'Agência de notícias',tit:'Vacina reduz casos graves, mostra estudo com 30 mil voluntários',corpo:'Os voluntários foram sorteados: metade recebeu a vacina e metade, um placebo (uma injeção sem efeito). Nem os voluntários nem os médicos sabiam quem tinha recebido o quê. O estudo foi revisado por outros cientistas e publicado.',crit:[],ver:'confiavel',ex:'Sorteio, grupo controle com placebo, ninguém sabendo quem tomou o quê (para evitar viés), amostra grande e revisão por pares.'},
+  {id:'cafe',fonte:'Blog',tit:'Café deixa você mais inteligente: país que mais toma café tem mais prêmios Nobel',corpo:'Uma reportagem comparou o consumo de café de 20 países com o número de prêmios Nobel por habitante e viu que os dois sobem juntos. Não houve nenhum experimento.',crit:['causa','controle','exagero'],ver:'enganosa',ex:'É uma correlação entre países. Riqueza, investimento em pesquisa e educação podem explicar as duas coisas. Não diz nada sobre o efeito do café numa pessoa.'},
+  {id:'cancer',fonte:'Site de notícias',tit:'Cientistas descobrem a cura do câncer!',corpo:'Um grupo de uma universidade testou uma nova substância em camundongos com um tipo de tumor. Os tumores diminuíram em parte dos animais. Os próprios pesquisadores dizem que serão necessários anos de testes antes de saber se ela funciona em pessoas.',crit:['animais','exagero'],ver:'exagerada',ex:'A pesquisa parece séria, e os cientistas foram cuidadosos. Quem exagerou foi a manchete: um resultado em camundongos, com um tipo de tumor, não é “a cura do câncer”.'}];
+const VER=[['confiavel','Confiável'],['exagerada','Exagerada'],['enganosa','Enganosa']];
+INIT.checagem=root=>{
+  root.append(head('Aula 7 · Ciência e sociedade','Agência de checagem','Notícias sobre saúde se espalham rápido, e nem todas têm boas evidências. Você vai trabalhar numa agência de checagem: analise cada notícia com a lista de critérios e dê o seu veredito.'));
+  const st=store.get('ck',{});const grid=h('div',{class:'ck-grid'});const placar=h('span',{class:'pill ex'});
+  const updP=()=>{const n=NEWS.filter(x=>st[x.id]&&st[x.id].ok!=null).length,ok=NEWS.filter(x=>st[x.id]&&st[x.id].ok).length;placar.textContent=`Vereditos certos: ${ok} de ${n} conferidos`;};
+  NEWS.forEach((N,i)=>{const S=st[N.id]=st[N.id]||{crit:[],ver:null};const out=h('div',{});
+    const card=h('article',{class:'ck-card'},h('div',{class:'ck-src'},h('span',{},N.fonte),h('span',{class:'mono'},'Notícia '+(i+1))),h('h3',{},N.tit),h('p',{},N.corpo),
+      h('span',{class:'label'},'Problemas que você encontrou'),chipsPick(CRIT,S.crit,v=>{S.crit=v;S.ok=null;store.set('ck',st);out.innerHTML='';updP();},{multi:true}),
+      h('span',{class:'label'},'Veredito'),seg(VER,S.ver,v=>{S.ver=v;S.ok=null;store.set('ck',st);out.innerHTML='';updP();},{label:'Veredito'}),
+      h('button',{class:'btn primary sm',type:'button',style:'align-self:flex-start',onclick:()=>{if(!S.ver){fbx(out,'no','Escolha um veredito.');return;}
+        const falt=N.crit.filter(c=>!S.crit.includes(c)),sob=S.crit.filter(c=>!N.crit.includes(c));S.ok=S.ver===N.ver;store.set('ck',st);updP();
+        const nm=k=>CRIT.find(c=>c[0]===k)[1].toLowerCase();
+        fbx(out,S.ok?'ok':'no',h('strong',{},S.ok?'Veredito certo. ':'Veredito da agência: '+VER.find(v=>v[0]===N.ver)[1]+'. '),N.ex,
+          falt.length?h('span',{style:'display:block;margin-top:6px'},'Problemas que faltou marcar: '+falt.map(nm).join('; ')+'.'):'',
+          sob.length?h('span',{style:'display:block;margin-top:6px'},'Marcados sem motivo: '+sob.map(nm).join('; ')+'.'):'');}},'Conferir'),out);
+    grid.append(card);});
+  root.append(panel(h('div',{class:'row',style:'justify-content:space-between'},h('h3',{},'Mesa de checagem'),placar),
+    h('p',{class:'note'},'Todas as notícias são fictícias, criadas para a aula. Confiável: boas evidências e relato fiel. Exagerada: há alguma pesquisa, mas a notícia promete mais do que ela mostra. Enganosa: não há evidência que sustente a afirmação.'),grid));
+  updP();
+  root.append(panel(h('span',{class:'eyebrow'},'Leve com você'),h('h3',{},'Cinco perguntas antes de compartilhar'),h('ol',{class:'ck-list'},
+    h('li',{},h('b',{},'Quem disse? '),'Uma pesquisa identificada, de uma instituição, ou um relato pessoal?'),
+    h('li',{},h('b',{},'Com quantos? '),'Um caso ou milhares de pessoas?'),
+    h('li',{},h('b',{},'Comparado com o quê? '),'Havia grupo controle? Houve sorteio?'),
+    h('li',{},h('b',{},'Outros confirmaram? '),'Passou por revisão e foi repetido por outros grupos?'),
+    h('li',{},h('b',{},'A manchete combina com o texto? '),'Em animais ou em pessoas? Indício ou certeza?'))));
+};
+
+// ================= Aula 8: Vinte laboratórios =================
+const SUPL={A:{n:'Suplemento A',ef:0},B:{n:'Suplemento B',ef:6}};
+function rodaLabs(sup,n,seed){const r=seeded(seed);const g=()=>{let u=r()||1e-9,v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*v);};
+  return [...Array(20)].map((_,i)=>{let c=0,t=0;for(let k=0;k<n;k++){c+=60+12*g();t+=60+SUPL[sup].ef+12*g();}return (t-c)/n;});}
+INIT.replicacao=root=>{
+  root.append(head('Aula 8 · A ciência é coletiva','Vinte laboratórios','Uma empresa diz que seus suplementos melhoram a memória. Vinte laboratórios independentes vão testar. Cada um sorteia voluntários para tomar o suplemento ou um placebo e aplica um teste de memória. Um suplemento funciona de verdade; o outro, não. Descubra qual.'));
+  let sup=store.get('rp-sup','A'),n=store.get('rp-n',5),pub=store.get('rp-pub',false),run=store.get('rp-run',1);const feitos=store.get('rp-feitos',{});let res=null;
+  const tiles=h('div',{class:'rp-grid'});const dot=s('svg',{class:'chart',role:'img','aria-label':'Diferença encontrada por cada laboratório'});const sum=h('div',{class:'stats'});const msg=h('div',{});
+  function rodar(){res=rodaLabs(sup,n,run*7919+(sup==='A'?11:29)+n);feitos[sup+n]=true;store.set('rp-feitos',feitos);draw();}
+  function draw(){if(!res){rodar();return;}
+    tiles.innerHTML='';res.forEach((d,i)=>{const pos=d>=5;tiles.append(h('div',{class:'rp-lab'+(pos?' pos':'')+(pub&&!pos?' gaveta':'')},h('span',{class:'mono'},'Lab '+(i+1)),h('b',{},(d>=0?'+':'')+fmt(d,1)),h('small',{},pos?'parece funcionar':'sem efeito claro')));});
+    const W=640,H=150,X=v=>40+(Math.max(-15,Math.min(20,v))+15)/35*(W-60);dot.innerHTML='';dot.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    dot.append(s('rect',{x:X(5),y:10,width:X(20)-X(5),height:100,fill:'var(--good-soft)'}));
+    [-15,-10,-5,0,5,10,15,20].forEach(v=>{dot.append(s('line',{x1:X(v),x2:X(v),y1:10,y2:110,stroke:v===0?'var(--muted)':'var(--line)','stroke-width':v===0?2:1}));dot.append(s('text',{x:X(v),y:128,'text-anchor':'middle','font-size':12,fill:'var(--muted)'},(v>0?'+':'')+v));});
+    dot.append(s('text',{x:(40+W-20)/2,y:146,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:'var(--ink)'},'Diferença de pontos na memória (suplemento − placebo)'));
+    dot.append(s('text',{x:X(12.5),y:24,'text-anchor':'middle','font-size':11,'font-weight':700,fill:'var(--good)'},'“parece funcionar”'));
+    res.forEach((d,i)=>{const pos=d>=5;dot.append(s('circle',{cx:X(d),cy:40+(i%5)*15,r:6,fill:pos?'var(--good)':'var(--tema)',opacity:pub&&!pos?.15:.9}));});
+    const posL=res.filter(d=>d>=5);const mAll=mean(res),mPub=mean(posL);sum.innerHTML='';
+    [['Laboratórios com “efeito”',posL.length+' de 20'],['Média de todos os 20',(mAll>=0?'+':'')+fmt(mAll,1)+' pontos'],[pub?'Média do que foi publicado':'Se só os positivos fossem publicados',posL.length?'+'+fmt(mPub,1)+' pontos':'nada publicado']].forEach(([a,b])=>sum.append(h('div',{class:'stat'},h('span',{class:'note'},a),h('span',{class:'big-num',style:'font-size:1.5rem'},b))));
+    msg.innerHTML='';msg.append(h('p',{class:'fb info'},n===5?'Com só 5 pessoas por grupo, os laboratórios discordam muito entre si: o acaso pesa demais. Experimente 80 pessoas por grupo.':n===80?'Com 80 pessoas por grupo, os resultados dos laboratórios ficam bem mais parecidos entre si e perto do efeito real.':'Compare com 5 e com 80 pessoas por grupo.',pub?' Com a gaveta ligada, só os resultados “positivos” aparecem: quem lê só as revistas acha que o efeito é maior do que é.':''));}
+  root.append(sim('Os vinte laboratórios','Cada bolinha é o resultado de um laboratório. A faixa verde mostra quando um laboratório diria “parece funcionar” (5 pontos ou mais).',
+    h('div',{class:'row'},h('span',{class:'label'},'Suplemento'),seg([['A','Suplemento A'],['B','Suplemento B']],sup,v=>{sup=v;store.set('rp-sup',v);rodar();},{label:'Suplemento'}),
+      h('span',{class:'label'},'Pessoas por grupo'),seg([[5,'5'],[20,'20'],[80,'80']],n,v=>{n=v;store.set('rp-n',v);rodar();},{label:'Pessoas por grupo'})),
+    h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{run++;store.set('rp-run',run);rodar();}},'Repetir os 20 experimentos'),
+      h('label',{class:'row',style:'gap:6px'},(()=>{const c=h('input',{type:'checkbox'});c.checked=pub;c.onchange=()=>{pub=c.checked;store.set('rp-pub',pub);draw();};return c;})(),'Ligar a “gaveta”: as revistas só publicam resultados positivos')),
+    dot,tiles,sum,msg,model('Simulação. A nota de memória varia de pessoa para pessoa (desvio de 12 pontos). Um dos suplementos tem efeito real de +6 pontos; o outro, nenhum.')));
+  // decisão
+  const dec=store.get('rp-dec',null);const dOut=h('div',{});
+  const showD=v=>{dOut.innerHTML='';if(v==null)return;const testou=Object.keys(feitos).some(k=>k.startsWith('A'))&&Object.keys(feitos).some(k=>k.startsWith('B'));
+    if(!testou){dOut.append(h('p',{class:'fb info'},'Teste os dois suplementos antes de decidir.'));return;}
+    dOut.append(h('p',{class:'fb '+(v==='B'?'ok':'no')},h('strong',{},v==='B'?'Isso: o B tem efeito real (+6 pontos). ':'Na verdade, o A não tem efeito nenhum. '),'Com amostras pequenas, alguns laboratórios “acharam” efeito no A só por acaso, e outros não acharam o efeito real do B. É por isso que a ciência exige amostras adequadas, repetição por grupos independentes e a publicação também dos resultados negativos.'));};
+  root.append(panel(h('span',{class:'eyebrow'},'Sua decisão'),h('h3',{},'Qual suplemento funciona?'),chipsPick([['A','Suplemento A'],['B','Suplemento B'],['nenhum','Nenhum dos dois']],dec,v=>{store.set('rp-dec',v);showD(v);}),dOut,
+    h('p',{class:'callout'},h('strong',{},'Revisão por pares: '),'antes de um artigo ser publicado numa revista científica, outros cientistas da área o leem e apontam falhas. Depois, outros grupos repetem o estudo. O conhecimento científico é ',h('b',{},'provisório'),': ele se corrige quando surgem novas evidências. Isso não é um defeito, é o que torna a ciência confiável.')));
+  rodar();showD(dec);
+};
+
+// ================= Aula 9: Palavras da ciência e quiz =================
+const PAL=[['As fatias borrifadas com água ficaram com manchas verdes no dia 5.','obs'],['Talvez o pão mofe mais rápido no escuro.','hip'],['Todos os seres vivos são formados por células, e toda célula surge de outra célula.','teo'],['Os dois alelos de um gene se separam na formação dos gametas.','lei'],['As espécies se modificam ao longo do tempo, por seleção natural e outros mecanismos.','teo'],['Se a febre vier das mãos dos médicos, lavar as mãos vai reduzir as mortes.','hip'],['A Clínica 1 teve 459 mortes em 1846.','obs'],['Numa reação química em recipiente fechado, a massa total não muda.','lei']];
+const PALN={obs:'Observação',hip:'Hipótese',lei:'Lei',teo:'Teoria'};
+const QZ=[
+ ['Você ouve algo rolar dentro de uma caixa e conclui que o objeto é redondo. Essa conclusão é:',['Uma observação','Uma inferência','Uma lei','Uma teoria'],1,'Você ouviu o som (observação) e concluiu a forma (inferência). Inferências podem estar erradas e precisam ser testadas.'],
+ ['Qual pergunta pode ser investigada por um experimento?',['Qual é a flor mais bonita?','O feijão germina mais rápido no claro ou no escuro?','As plantas têm sentimentos?','É certo comer carne?'],1,'Ela diz o que muda (luz) e o que se mede (tempo de germinação).'],
+ ['Uma hipótese científica precisa ser:',['Comprovada antes de ser escrita','Testável: levar a previsões que podem falhar','Aceita pela maioria das pessoas','Copiada de um livro'],1,'Se nenhum resultado pudesse contrariar a hipótese, ela não poderia ser testada.'],
+ ['Num experimento sobre mofo, você muda a umidade e mede a área com mofo. A área com mofo é a:',['Variável independente','Variável dependente','Variável controlada','Hipótese'],1,'É o que você mede para ver o efeito: a variável dependente.'],
+ ['Por que usar várias fatias (réplicas) em cada condição?',['Para gastar mais pão','Para ver se o resultado se repete e reduzir o efeito do acaso','Para mudar mais variáveis','Não é necessário'],1,'Uma fatia só pode dar um resultado incomum por acaso.'],
+ ['Um saco de pão ficou úmido E na geladeira; o outro, seco e no armário. O que dá para concluir?',['Que a umidade causa mofo','Que o frio impede o mofo','Nada sobre cada fator: duas variáveis mudaram juntas','Que a luz não importa'],2,'Num teste justo, muda-se uma variável por vez.'],
+ ['Semmelweis comparou a taxa de mortes (e não o número de mortes) das clínicas porque:',['As clínicas tinham números de partos diferentes','A taxa é sempre maior','Os números estavam errados','Era mais fácil de calcular'],0,'Com totais diferentes, só a proporção permite uma comparação justa.'],
+ ['O padre mudou de caminho e as mortes não caíram. Isso:',['Comprova que o medo causa a febre','Refuta a hipótese do medo do padre','Não diz nada','Comprova a hipótese das mãos'],1,'A previsão da hipótese falhou, então ela foi descartada.'],
+ ['Em dias de muito picolé vendido há mais resgates no mar. A melhor explicação é:',['O picolé causa afogamentos','Os resgates fazem as pessoas comprarem picolé','O calor aumenta as duas coisas','É impossível explicar'],2,'O calor é uma variável de confusão: influencia as duas.'],
+ ['Para testar se um remédio funciona, o melhor é:',['Perguntar a quem tomou se melhorou','Sortear quem toma o remédio e quem toma placebo','Dar o remédio só para quem está mais doente','Ver se muitas pessoas compram o remédio'],1,'O sorteio forma grupos parecidos, e o placebo permite comparar de forma justa.'],
+ ['Com só 5 pessoas por grupo, vários laboratórios “acharam” efeito num suplemento sem efeito. Isso mostra que:',['A ciência não funciona','Amostras pequenas sofrem muito com o acaso; é preciso repetir e usar amostras maiores','O suplemento funciona','Os laboratórios mentiram'],1,'Repetição e amostras adequadas protegem contra conclusões ao acaso.'],
+ ['Na ciência, uma teoria é:',['Um palpite sem provas','Uma explicação ampla, apoiada por muitas evidências e testes','Uma lei que ainda não foi provada','Uma opinião de um cientista famoso'],1,'Teoria explica por que os fenômenos acontecem e integra muitas evidências. Ela não “vira” lei: leis descrevem regularidades; teorias explicam.'],
+ ['Antes de ser publicado numa revista científica, um artigo costuma passar por:',['Votação popular','Revisão por outros cientistas da área (revisão por pares)','Aprovação do governo','Nenhuma avaliação'],1,'Outros especialistas avaliam métodos e conclusões e apontam falhas.'],
+ ['Dizer que o conhecimento científico é provisório significa que:',['Ele não vale nada','Ele pode ser revisto quando surgem novas evidências','Ele muda conforme a opinião de cada um','Ele nunca é usado'],1,'É a capacidade de se corrigir que torna a ciência confiável.']];
+INIT.quiz=root=>{
+  root.append(head('Aula 9 · Revisão do Tema 1','Palavras da ciência e quiz','Observação, hipótese, lei e teoria têm significados precisos na ciência, diferentes do uso no dia a dia. Organize os conceitos e depois revise o tema com o quiz.'));
+  const pa=store.get('qz-pal',{});const pBox=h('div',{class:'stack',style:'gap:8px'});
+  PAL.forEach(([t,k],i)=>{const fb=h('div',{});const show=()=>{fb.innerHTML='';if(pa[i]==null)return;const ok=pa[i]===k;fb.append(h('p',{class:'fb '+(ok?'ok':'no')},h('strong',{},ok?'Isso. ':'É '+PALN[k].toLowerCase()+'. '),{obs:'Descreve algo percebido ou medido.',hip:'Explicação provisória que leva a uma previsão testável.',lei:'Descreve uma regularidade da natureza: o que acontece, sempre nas mesmas condições.',teo:'Explicação ampla, apoiada por muitas evidências, que integra leis, observações e hipóteses testadas.'}[k]));};
+    pBox.append(h('div',{class:'cx-oi'},h('span',{},t),seg(Object.entries(PALN),pa[i]??null,v=>{pa[i]=v;store.set('qz-pal',pa);show();},{label:t})),fb);show();});
+  root.append(panel(h('span',{class:'eyebrow'},'Palavras da ciência'),h('h3',{},'Observação, hipótese, lei ou teoria?'),
+    h('div',{class:'pal-def'},...Object.entries({obs:'O que se percebe ou se mede.',hip:'Uma explicação provisória e testável.',lei:'Descreve uma regularidade: o que acontece.',teo:'Explica por que acontece, com muitas evidências.'}).map(([k,d])=>h('div',{},h('b',{},PALN[k]),h('span',{},d)))),pBox,
+    h('p',{class:'callout'},'No dia a dia, “é só uma teoria” quer dizer “é só um palpite”. Na ciência é o contrário: uma teoria, como a teoria celular ou a teoria da evolução, é das formas mais sólidas de conhecimento. Mesmo assim, continua aberta a revisão.')));
+  let qi=0,resp=store.get('qz-resp',{});const qcard=h('div',{class:'panel stack',style:'padding:24px'});const qstats=h('div',{class:'stats'});
+  function q(){const it=QZ[qi];const t=it[0],o=it[1],c=it[2],e=it[3];const done=Object.prototype.hasOwnProperty.call(resp,qi);qcard.innerHTML='';
+    qcard.append(h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'eyebrow'},`Pergunta ${qi+1} de ${QZ.length}`),h('span',{class:'pill'+(done?' ok':'')},done?'Respondida':'Não respondida')));
+    qcard.append(h('h3',{style:'font-size:clamp(1.15rem,2.2vw,1.6rem)'},t));
+    const og=h('div',{style:'display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px'});
+    o.forEach((a,j)=>{const b=h('button',{class:'tool-card',style:`min-height:0;flex-direction:row;align-items:center;gap:12px;font-size:1.02rem;${done&&j===c?'border-color:var(--good);background:var(--good-soft)':''}${done&&j===resp[qi]&&j!==c?'border-color:var(--bad);background:var(--bad-soft)':''}`,disabled:done},h('span',{class:'mono',style:'font-weight:700;color:var(--tema)'},'ABCD'[j]),h('span',{},a));b.onclick=()=>{resp[qi]=j;store.set('qz-resp',resp);q();};og.append(b);});qcard.append(og);
+    if(done)qcard.append(h('div',{class:'fb '+(resp[qi]===c?'ok':'info')},h('strong',{},resp[qi]===c?'Resposta correta. ':'Vamos revisar: a resposta é '+'ABCD'[c]+'. '),e));
+    qcard.append(h('div',{class:'row',style:'justify-content:space-between'},h('button',{class:'btn',disabled:qi===0,onclick:()=>{qi--;q();}},'← Anterior'),h('button',{class:'btn primary',disabled:qi===QZ.length-1,onclick:()=>{qi++;q();}},'Próxima →')));
+    const n=Object.keys(resp).length,ok=Object.entries(resp).filter(([k,a])=>QZ[k]&&QZ[k][2]===a).length;qstats.innerHTML='';[['Respondidas',n+'/'+QZ.length],['Acertos na 1ª tentativa',String(ok)]].forEach(([a,b])=>qstats.append(h('div',{class:'stat'},h('span',{class:'note'},a),h('span',{class:'big-num'},b))));}
+  const qside=h('div',{class:'panel stack'},h('h3',{},'Seu percurso'),qstats,h('button',{class:'btn ghost sm',style:'align-self:flex-start',onclick:()=>{resp={};store.set('qz-resp',resp);qi=0;q();}},'Recomeçar o quiz'),h('p',{class:'note'},'Toque numa alternativa para ver se acertou e ler a explicação. Vale a primeira resposta.'));
+  root.append(h('h3',{style:'font-size:1.5rem'},'Quiz do Tema 1'),h('div',{class:'cols wide-left'},qcard,qside));q();
+};
+
+// ================= Fichas (o painel do professor lê esta lista) =================
+const SPEC=[
+ {code:'Aula 01',titulo:'Aula 1 · O mistério da caixa-preta',tipo:'Individual',
+  desc:'Registre as suas conclusões sobre as três caixas e explique como chegou a elas.',
+  itens:[
+   {k:'mc',t:'Caixa A: qual é a conclusão mais bem apoiada pelas observações?',ch:['Bolinha de gude','Bola de pingue-pongue','Esfera de aço','Moeda de cobre','Não dá para decidir'],key:'Bolinha de gude',pts:1},
+   {k:'mc',t:'Caixa B: qual é a conclusão mais bem apoiada pelas observações?',ch:['Moeda de cobre','Clipe de aço','Borracha','Esfera de aço','Não dá para decidir'],key:'Clipe de aço',pts:1},
+   {k:'mc',t:'Caixa C: qual é a conclusão mais bem apoiada pelas observações?',ch:['Dado de madeira','Cubo de plástico','Borracha','Não dá para decidir entre o dado de madeira e o cubo de plástico'],key:'Não dá para decidir entre o dado de madeira e o cubo de plástico',pts:1},
+   {k:'par',t:'Escreva uma observação e uma inferência que você fez na caixa B e explique a diferença entre elas',man:2},
+   {k:'par',t:'Invente um teste novo para decidir a caixa C. Que resultado você esperaria para cada objeto?',man:2},
+   {k:'par',t:'Como a ciência consegue estudar coisas que ninguém vê diretamente, como o interior da Terra?',man:2},
+  ]},
+ {code:'Aula 02',titulo:'Aula 2 · Fábrica de perguntas',tipo:'Individual',
+  desc:'Mostre que você sabe reconhecer e criar perguntas investigáveis.',
+  itens:[
+   {k:'hdr',t:'Estas perguntas podem ser investigadas por observação ou experimento?'},
+   {k:'mc',t:'A música clássica faz as plantas crescerem mais?',ch:['Sim, é investigável','Não, depende de opinião, valores ou crença'],key:'Sim, é investigável',pts:1},
+   {k:'mc',t:'Qual é o animal mais bonito do Brasil?',ch:['Sim, é investigável','Não, depende de opinião, valores ou crença'],key:'Não, depende de opinião, valores ou crença',pts:1},
+   {k:'mc',t:'Gatos enxergam na escuridão total?',ch:['Sim, é investigável','Não, depende de opinião, valores ou crença'],key:'Sim, é investigável',pts:1},
+   {k:'mc',t:'É certo usar animais em pesquisas?',ch:['Sim, é investigável','Não, depende de opinião, valores ou crença'],key:'Não, depende de opinião, valores ou crença',pts:1},
+   {k:'par',t:'Escreva uma pergunta investigável sobre algo que você observou em casa, na escola ou no bairro',man:2},
+   {k:'par',t:'Na sua pergunta: o que você mudaria, o que mediria e com o que compararia?',man:2},
+  ]},
+ {code:'Aula 03',titulo:'Aulas 3 e 4 · Laboratório do pão',tipo:'Individual',
+  desc:'Use o seu experimento no laboratório do pão. O botão abaixo copia os seus dados.',
+  itens:[
+   {k:'par',t:'Sua hipótese (se… então… porque…)',man:2},
+   {k:'txt',t:'Variável independente (o que você mudou)'},
+   {k:'txt',t:'Variável dependente (o que você mediu)'},
+   {k:'par',t:'Variáveis controladas (o que ficou igual em todos os sacos)',man:1},
+   {k:'par',t:'Resultados: cobertura média de mofo de cada saco no dia 7',man:1},
+   {k:'mc',t:'Sua hipótese foi:',ch:['Apoiada pelos dados','Refutada pelos dados','Inconclusiva']},
+   {k:'mc',t:'Para que servem as réplicas?',ch:['Para ter mais pão para comer','Para ver se o resultado se repete e reduzir o efeito do acaso','Para testar várias variáveis ao mesmo tempo','Para o experimento terminar mais rápido'],key:'Para ver se o resultado se repete e reduzir o efeito do acaso',pts:1},
+   {k:'mc',t:'Se você muda duas variáveis ao mesmo tempo e o resultado muda, o que dá para concluir?',ch:['Que as duas causaram o efeito','Que só a primeira causou','Não dá para saber qual delas causou a diferença','Que nenhuma causou'],key:'Não dá para saber qual delas causou a diferença',pts:1},
+   {k:'par',t:'Conclusão: o que os seus dados mostram e qual é um limite do seu experimento?',man:3},
+  ]},
+ {code:'Aula 05',titulo:'Aula 5 · O caso das duas maternidades',tipo:'Individual',
+  desc:'Dados reais do Hospital Geral de Viena (1841 a 1847). Use vírgula ou ponto nos decimais.',
+  itens:[
+   {k:'num',t:'Taxa de mortes da Clínica 1 em 1846 (%)',key:11.4,tol:0.2,pts:1},
+   {k:'num',t:'Taxa de mortes da Clínica 2 em 1846 (%)',key:2.8,tol:0.2,pts:1},
+   {k:'hdr',t:'O que a evidência fez com cada hipótese?'},
+   {k:'mc',t:'Miasmas (ar ruim da cidade)',ch:['Apoiada','Refutada'],key:'Refutada',pts:1},
+   {k:'mc',t:'Superlotação',ch:['Apoiada','Refutada'],key:'Refutada',pts:1},
+   {k:'mc',t:'Medo do padre e do sino',ch:['Apoiada','Refutada'],key:'Refutada',pts:1},
+   {k:'mc',t:'Partículas levadas pelas mãos dos médicos',ch:['Apoiada','Refutada'],key:'Apoiada',pts:1},
+   {k:'par',t:'Por que os “partos na rua” foram uma pista importante?',man:2},
+   {k:'par',t:'Por que uma boa evidência nem sempre convence as pessoas de imediato?',man:2},
+  ]},
+ {code:'Aula 06',titulo:'Aula 6 · Correlação ou causa?',tipo:'Individual',
+  desc:'Use o que você investigou nos dados da praia e nos casos.',
+  itens:[
+   {k:'mc',t:'O que explica a relação entre picolés vendidos e resgates no mar?',ch:['O picolé causa afogamentos','Os resgates fazem as pessoas comprar picolé','Uma terceira variável: o calor','Coincidência'],key:'Uma terceira variável: o calor',pts:1},
+   {k:'mc',t:'“Morre mais gente nos hospitais do que em casa.” Qual é a melhor explicação?',ch:['Os hospitais causam as mortes','Quem está muito doente vai para o hospital','Coincidência'],key:'Quem está muito doente vai para o hospital',pts:1},
+   {k:'mc',t:'Para descobrir se X causa Y, o melhor desenho de estudo é:',ch:['Perguntar a quem usou X','Sortear quem recebe X e comparar com um grupo controle','Observar uma pessoa só','Ver se X é popular'],key:'Sortear quem recebe X e comparar com um grupo controle',pts:1},
+   {k:'par',t:'Explique, com suas palavras, a diferença entre correlação e causa',man:2},
+   {k:'par',t:'Planeje um experimento para testar se uma bebida melhora a memória. Use sorteio e grupo controle',man:3},
+  ]},
+ {code:'Aula 07',titulo:'Aula 7 · Agência de checagem',tipo:'Individual',
+  desc:'Seus vereditos para as seis notícias e uma reescrita honesta.',
+  itens:[
+   {k:'mc',t:'Notícia 1 · Chá de folha “milagrosa” cura diabetes',ch:['Confiável','Exagerada','Enganosa'],key:'Enganosa',pts:1},
+   {k:'mc',t:'Notícia 2 · Chocolate emagrece',ch:['Confiável','Exagerada','Enganosa'],key:'Exagerada',pts:1},
+   {k:'mc',t:'Notícia 3 · Fumo e câncer de pulmão',ch:['Confiável','Exagerada','Enganosa'],key:'Confiável',pts:1},
+   {k:'mc',t:'Notícia 4 · Vacina e casos graves',ch:['Confiável','Exagerada','Enganosa'],key:'Confiável',pts:1},
+   {k:'mc',t:'Notícia 5 · Café e prêmios Nobel',ch:['Confiável','Exagerada','Enganosa'],key:'Enganosa',pts:1},
+   {k:'mc',t:'Notícia 6 · “Cura do câncer” em camundongos',ch:['Confiável','Exagerada','Enganosa'],key:'Exagerada',pts:1},
+   {k:'par',t:'Escolha a notícia 2, 5 ou 6 e reescreva a manchete de forma honesta',man:2},
+   {k:'par',t:'Que perguntas você vai fazer antes de compartilhar uma notícia sobre saúde?',man:2},
+  ]},
+ {code:'Aula 08',titulo:'Aula 8 · Vinte laboratórios',tipo:'Individual',
+  desc:'Depois de testar os dois suplementos com amostras de tamanhos diferentes.',
+  itens:[
+   {k:'mc',t:'Qual suplemento tem efeito real?',ch:['Suplemento A','Suplemento B','Nenhum dos dois','Os dois'],key:'Suplemento B',pts:1},
+   {k:'mc',t:'Com 5 pessoas por grupo, o que aconteceu?',ch:['Todos os laboratórios encontraram o mesmo resultado','Os resultados variaram muito de um laboratório para outro','Nenhum laboratório encontrou diferença','Os resultados foram iguais aos de 80 pessoas'],key:'Os resultados variaram muito de um laboratório para outro',pts:1},
+   {k:'mc',t:'Se as revistas publicarem só os resultados positivos:',ch:['Nada muda','Quem lê vai achar que o efeito é maior do que é','O efeito fica menor','Os experimentos ficam mais confiáveis'],key:'Quem lê vai achar que o efeito é maior do que é',pts:1},
+   {k:'par',t:'Por que um único estudo não basta para concluir que algo funciona?',man:2},
+   {k:'par',t:'O que significa dizer que o conhecimento científico é provisório? Isso é um defeito ou uma qualidade? Justifique',man:2},
+  ]},
+ {code:'Aula 09',titulo:'Aula 9 · O que você consegue explicar?',tipo:'Avaliação individual',
+  desc:'Avaliação do Tema 1. Responda com suas palavras e use exemplos das aulas.',
+  itens:[
+   {k:'par',t:'1 · Diferencie observação de inferência e dê um exemplo de cada',man:2},
+   {k:'par',t:'2 · Planeje um experimento: pergunta, hipótese, variável independente, variável dependente, controle e réplicas',man:3},
+   {k:'par',t:'3 · Como Semmelweis descartou hipóteses? Explique com um exemplo',man:2},
+   {k:'par',t:'4 · Por que uma correlação não prova que uma coisa causa a outra?',man:2},
+   {k:'par',t:'5 · O que é uma teoria científica? Ela é “só um palpite”?',man:2},
+   {k:'par',t:'6 · Como a ciência se corrige com o tempo? Cite a revisão por pares ou a repetição de estudos',man:2},
+   {k:'mc',t:'Autoavaliação: como você se sente para planejar uma investigação sozinho?',ch:['Ainda preciso de ajuda','Consigo com algumas dúvidas','Consigo com segurança']},
+  ]},
+];
+
+// ================= Fichas de resposta (envio para o professor) =================
+// Endereço do receptor (Google Apps Script implantado como app da Web). Vazio = envio ainda não ativado.
+const RECEIVER=PORTAL.receiver();
+// Fora do Claude (Cloudflare etc.) o envio é direto, sem abrir outra aba.
+const STANDALONE=(()=>{try{return window.top===window&&!window.claude;}catch(e){return false;}})();
+const FICHA_DE={caixa:'Aula 01',perguntas:'Aula 02',mofo:'Aula 03',semmelweis:'Aula 05',correlacao:'Aula 06',checagem:'Aula 07',replicacao:'Aula 08',quiz:'Aula 09'};
+const MAXTXT=1000;
+function b64url(str){const b=btoa(unescape(encodeURIComponent(str)));return b.replace(/\+/g,'-').replace(/\//g,'_');}
+function getId(){return PORTAL.ident();}
+function attachFicha(secId){
+  const code=FICHA_DE[secId];const f=SPEC.find(x=>x.code===code);const sec=document.getElementById(secId);if(!f||!sec||sec.querySelector('.ficha'))return;
+  const draftKey='draft-'+code;let draft=store.get(draftKey,{});let sendId=store.get('sid-'+code,null);
+  const saveDraft=()=>{store.set(draftKey,draft);sendId=null;store.set('sid-'+code,null);refresh();};
+  const box=h('section',{class:'ficha',id:'ficha-'+secId,'aria-label':'Ficha de respostas'});
+  // atalho no topo da aula
+  const hd=sec.querySelector('.aula-head');if(hd)hd.after(h('div',{class:'ficha-jump'},h('button',{class:'btn',onclick:()=>box.scrollIntoView({behavior:'smooth',block:'start'})},'Responder a ficha desta aula ↓'),h('span',{class:'note'},f.tipo)));
+  box.append(h('div',{class:'ficha-head'},h('span',{class:'eyebrow'},'Ficha da aula · '+f.tipo),h('h2',{},'Minhas respostas'),h('p',{class:'lede'},f.desc)));box.append(PORTAL.fichaBanner());
+  // identificação
+  const ident=getId();
+  const nome=h('input',{type:'text',id:'id-nome-'+secId,autocomplete:'name',placeholder:'Nome e sobrenome',value:ident.nome});
+  const grupo=h('select',{id:'id-grupo-'+secId},h('option',{value:''},'Escolha'),...PORTAL.grupos().map(g=>h('option',{value:g,selected:g===ident.grupo},g)));
+  const turmaSeg=PORTAL.turmaCtl(seg,ident,v=>{ident.turma=v;PORTAL.saveIdent(ident);refresh();});
+  nome.oninput=()=>{ident.nome=nome.value;PORTAL.saveIdent(ident);refresh();};
+  grupo.onchange=()=>{ident.grupo=grupo.value;PORTAL.saveIdent(ident);refresh();};
+  box.append(h('div',{class:'ficha-id'},
+    h('label',{class:'stack',style:'gap:4px;flex:1 1 240px'},h('span',{class:'label'},'Nome completo'),nome),
+    h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Turma'),turmaSeg),
+    h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Grupo'),grupo)));
+  // preenchimento automático
+  if(code==='Aula 03')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const m=window.__mofo;if(!m){fillMsg.textContent='Primeiro monte o experimento no laboratório acima.';return;}
+    draft['Sua hipótese (se… então… porque…)']=m.hip;draft['Variável independente (o que você mudou)']=m.vi;draft['Variável dependente (o que você mediu)']='Cobertura de mofo na fatia (% da área)';
+    draft['Variáveis controladas (o que ficou igual em todos os sacos)']=m.iguais;draft['Resultados: cobertura média de mofo de cada saco no dia 7']=m.res;
+    fillMsg.textContent='Dados do laboratório copiados. Confira e complete antes de enviar.';saveDraft();build();}},'Usar os dados do laboratório'),(fillMsg=h('span',{class:'note'}))));
+  var fillMsg;
+  const itemsBox=h('div',{class:'ficha-itens'});box.append(itemsBox);
+  function build(){itemsBox.innerHTML='';let n=0;
+    f.itens.forEach(it=>{
+      if(it.k==='hdr'){itemsBox.append(h('p',{class:'callout'},it.t));return;}
+      n++;const lab=h('span',{class:'ficha-q'},h('b',{class:'mono'},n+'.'),' '+it.t);let ctl;
+      if(it.k==='mc'){ctl=h('div',{class:'chips',role:'radiogroup','aria-label':it.t});it.ch.forEach(c=>{const b=h('button',{type:'button',class:'chip',role:'radio','aria-checked':String(draft[it.t]===c),'aria-pressed':String(draft[it.t]===c)},c);b.onclick=()=>{draft[it.t]=c;$$('.chip',ctl).forEach(x=>{x.setAttribute('aria-pressed','false');x.setAttribute('aria-checked','false');});b.setAttribute('aria-pressed','true');b.setAttribute('aria-checked','true');saveDraft();};ctl.append(b);});}
+      else if(it.k==='par'){const ta=h('textarea',{rows:3,maxlength:MAXTXT,'aria-label':it.t});ta.value=draft[it.t]||'';const cnt=h('span',{class:'note'},(ta.value.length)+'/'+MAXTXT);ta.oninput=()=>{draft[it.t]=ta.value;cnt.textContent=ta.value.length+'/'+MAXTXT;store.set(draftKey,draft);sendId=null;refresh();};ctl=h('div',{class:'stack',style:'gap:2px'},ta,cnt);}
+      else{const inp=h('input',{type:'text',inputmode:it.k==='num'?'decimal':'text','aria-label':it.t,placeholder:it.k==='num'?'Só o número':''});inp.value=draft[it.t]||'';inp.oninput=()=>{draft[it.t]=inp.value;store.set(draftKey,draft);sendId=null;refresh();};ctl=inp;}
+      itemsBox.append(h('div',{class:'ficha-item'},lab,it.help?h('span',{class:'note'},it.help):null,ctl));});}
+  build();
+  // envio
+  const status=h('div',{class:'ficha-status'});
+  const send=STANDALONE?h('button',{class:'btn primary big',type:'button'},PORTAL.sendLabel()):h('a',{class:'btn primary big',target:'_blank',rel:'noopener',href:'#'},PORTAL.sendLabel());
+  const clear=h('button',{class:'btn ghost',onclick:()=>{if(clear.dataset.ok){draft={};saveDraft();build();clear.textContent='Limpar respostas';delete clear.dataset.ok;}else{clear.textContent='Toque de novo para apagar';clear.dataset.ok='1';setTimeout(()=>{clear.textContent='Limpar respostas';delete clear.dataset.ok;},3000);}}},'Limpar respostas');
+  box.append(h('div',{class:'ficha-send'},send,clear),status);
+  function missing(){const m=[];if(!ident.nome||ident.nome.trim().split(/\s+/).length<2)m.push('nome e sobrenome');if(!ident.turma)m.push('turma');if(!ident.grupo)m.push('grupo');
+    f.itens.forEach(it=>{if(it.k==='hdr')return;const req=it.k!=='par'||it.man;if(req&&!String(draft[it.t]||'').trim())m.push('“'+it.t.slice(0,48)+(it.t.length>48?'…':'')+'”');});return m;}
+  function payload(){if(!sendId){sendId=Date.now().toString(36)+Math.random().toString(36).slice(2,8);store.set('sid-'+code,sendId);}
+    const ans={};f.itens.forEach(it=>{if(it.k!=='hdr')ans[it.t]=String(draft[it.t]||'').slice(0,MAXTXT);});
+    const pv=store.get('prev-'+secId,null);if(pv)ans['Previsão inicial']=String(pv.text).slice(0,MAXTXT);
+    return {code:PORTAL.code(code),nome:ident.nome.trim(),escola:(PORTAL.escola?PORTAL.escola():''),turma:ident.turma,grupo:ident.grupo,id:sendId,ans};}
+  const url=()=>RECEIVER+'?d='+encodeURIComponent(b64url(JSON.stringify(payload())));
+  const quando=()=>new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+  let busy=false;
+  function refresh(){status.innerHTML='';
+    if(!RECEIVER){send.setAttribute('aria-disabled','true');if(!STANDALONE)send.removeAttribute('href');status.append(h('p',{class:'note'},PORTAL.offText()));return;}
+    const m=missing();send.setAttribute('aria-disabled',String(m.length>0||busy));
+    if(!STANDALONE)send.href=url();
+    const sent=store.get('sent-'+code,null);
+    if(sent&&sent.id===sendId)status.append(h('p',{class:'fb ok'},STANDALONE?'Recebido em '+sent.quando+'. Se mudar alguma resposta, envie de novo.':'Enviado em '+sent.quando+'. Confira a aba que abriu: ela deve dizer “Resposta enviada!”. Se mudar alguma resposta, envie de novo.'));
+    else if(m.length)status.append(h('p',{class:'note'},'Falta preencher: '+m.slice(0,4).join(', ')+(m.length>4?' e mais '+(m.length-4):'')+'.'));
+    else status.append(h('p',{class:'note'},STANDALONE?'Tudo pronto para enviar.':'Tudo pronto. Ao tocar em Enviar, abre uma aba do Google confirmando o recebimento.'));
+    if(!STANDALONE&&url().length>7800)status.append(h('p',{class:'fb no'},'As respostas estão longas demais para enviar de uma vez. Encurte os textos.'));}
+  function blockIfMissing(e){const m=missing();if(!RECEIVER||m.length){if(e)e.preventDefault();refresh();if(m.length&&RECEIVER){status.innerHTML='';status.append(h('p',{class:'fb no'},'Antes de enviar, preencha: '+m.join(', ')+'.'));}return true;}return false;}
+  if(STANDALONE){
+    send.addEventListener('click',async()=>{if(busy||blockIfMissing())return;busy=true;send.textContent='Enviando…';send.setAttribute('aria-disabled','true');
+      try{const res=await fetch(RECEIVER,{method:'POST',body:JSON.stringify(payload())});const r=await res.json();
+        if(r&&r.ok){store.set('sent-'+code,{id:sendId,quando:quando()});busy=false;send.textContent=PORTAL.sendLabel();refresh();}
+        else throw new Error((r&&r.texto)||'erro');}
+      catch(err){busy=false;send.textContent=PORTAL.sendLabel();refresh();status.innerHTML='';
+        status.append(h('div',{class:'fb no stack',style:'gap:6px'},h('span',{},'Não consegui enviar agora. Confira a internet e tente de novo.'),h('a',{href:url(),target:'_blank',rel:'noopener'},'Ou envie por esta outra via (abre uma aba do Google)')));}});
+  }else{
+    send.addEventListener('click',e=>{if(blockIfMissing(e))return;if(url().length>7800){e.preventDefault();return;}store.set('sent-'+code,{id:sendId,quando:quando()});setTimeout(refresh,50);});
+  }
+  refresh();
+  sec.append(box);
+}
+// ================= "Para começar": prever antes de investigar =================
+function abertura(secId){
+  const sec=document.getElementById(secId);const A=AB[secId];if(!A||!sec||sec.querySelector('.abertura'))return;
+  const box=h('section',{class:'abertura',id:'abert-'+secId,'aria-label':'Para começar'});
+  const saved=h('div',{class:'ab-saved'});
+  box.append(h('div',{class:'ab-head'},h('span',{class:'ab-tag'},'Para começar · '+A.tempo),h('h2',{},A.titulo),h('p',{class:'lede'},A.lede)));
+  const body=h('div',{class:'ab-body'});box.append(body,saved);
+  const api={
+    save(text){store.set('prev-'+secId,{text,quando:new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})});showSaved();updRecap(secId);},
+    get(){return store.get('prev-'+secId,null);},
+    state(k,d){return store.get('ab-'+secId+'-'+k,d);},setState(k,v){store.set('ab-'+secId+'-'+k,v);}
+  };
+  function showSaved(){const p=api.get();saved.innerHTML='';if(p)saved.append(h('p',{class:'fb ok'},'Previsão registrada em '+p.quando+'. No fim da aula, ela aparece na sua ficha para você comparar com o que descobriu.'));}
+  A.render(body,api);showSaved();
+  const anchor=sec.querySelector('.ficha-jump')||sec.querySelector('.aula-head');anchor.after(box);
+  updRecap(secId);
+}
+function updRecap(secId){
+  const sec=document.getElementById(secId);const f=sec&&sec.querySelector('.ficha');if(!f)return;
+  let r=f.querySelector('.ab-recap');const p=store.get('prev-'+secId,null);
+  if(!p){if(r)r.remove();return;}
+  if(!r){r=h('div',{class:'ab-recap'});const hd=f.querySelector('.ficha-head');hd.after(r);}
+  r.innerHTML='';r.append(h('span',{class:'label'},'Sua previsão no começo da aula'),h('p',{},p.text),h('p',{class:'note'},'Ela se confirmou? O que mudou depois da atividade? Use isso nas respostas abaixo.'));
+}
+// Botão de ordenação por toques (funciona no celular)
+function tapOrder(items,onDone,{render}={}){
+  const wrap=h('div',{class:'stack',style:'gap:10px'});let order=[];
+  const pool=h('div',{class:'ab-pool'});const lane=h('ol',{class:'ab-lane'});
+  const draw=()=>{pool.innerHTML='';lane.innerHTML='';
+    items.forEach((it,i)=>{if(order.includes(i))return;const b=h('button',{class:'ab-item',type:'button'},render?render(it):it.n);b.onclick=()=>{order.push(i);draw();};pool.append(b);});
+    order.forEach((i,k)=>{const li=h('li',{},h('button',{class:'ab-item on',type:'button',title:'Tocar para devolver'},render?render(items[i]):items[i].n));li.firstChild.onclick=()=>{order.splice(k,1);draw();};lane.append(li);});
+    if(order.length===items.length)onDone(order.slice());};
+  wrap.append(h('span',{class:'label'},'Toque na ordem'),pool,h('span',{class:'label'},'Sua ordem'),lane);draw();
+  wrap.reset=()=>{order=[];draw();};return wrap;
+}
+const AB={
+ caixa:{tempo:'5 min',titulo:'O que você vê? O que você conclui?',lede:'Olhe a cena. Para cada frase, decida: é algo que dá para ver (observação) ou algo que você concluiu (inferência)?',
+  render(el,api){
+   const F=[['O chão está molhado.','obs'],['Choveu durante a noite.','inf'],['Há poças na rua.','obs'],['Alguém lavou a calçada.','inf'],['O céu está cinzento.','obs'],['Vai chover de novo hoje.','inf']];
+   const ans=api.state('ans',{});const box=h('div',{class:'stack',style:'gap:8px'});const out=h('div',{});
+   F.forEach(([t],i)=>box.append(h('div',{class:'cx-oi'},h('span',{},t),seg([['obs','Vejo'],['inf','Concluo']],ans[i]??null,v=>{ans[i]=v;api.setState('ans',ans);},{label:t}))));
+   el.append(h('div',{class:'det-hero'},ilu('rua','ilu'),box),h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{if(F.some((_,i)=>ans[i]==null)){fbx(out,'no','Classifique as seis frases.');return;}
+     api.save(F.map(([t],i)=>`${t} → ${ans[i]==='obs'?'observação':'inferência'}`).join(' | '));const ok=F.filter(([,k],i)=>ans[i]===k).length;
+     fbx(out,'info',`${ok} de 6 iguais à classificação dos cientistas. Repare: “choveu” parece óbvio, mas alguém pode ter lavado a rua. Inferências podem estar erradas. Hoje você vai fazer muitas inferências sem poder abrir a caixa.`);}},'Registrar minha resposta')),out);}},
+ perguntas:{tempo:'5 min',titulo:'Qual é a sua curiosidade?',lede:'Pense em algo que você já viu e achou curioso: em casa, na rua, no celular, num bicho ou numa planta. Escreva como uma pergunta.',
+  render(el,api){const ta=h('textarea',{rows:2,maxlength:240,placeholder:'Por que… / Será que… / O que acontece se…','aria-label':'Sua pergunta curiosa',style:'width:100%'});ta.value=api.state('q','');ta.oninput=()=>api.setState('q',ta.value);const out=h('div',{});
+   el.append(ta,h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{if(ta.value.trim().length<10){fbx(out,'no','Escreva uma pergunta um pouco mais completa.');return;}api.save(ta.value.trim());fbx(out,'info','Guardada. No fim da aula, volte a ela: dá para investigar? O que você precisaria mudar nela para que dê?');}},'Guardar minha pergunta')),out);}},
+ mofo:{tempo:'4 min',titulo:'Aposte: qual pão mofa primeiro?',lede:'Três fatias iguais, do mesmo pão. Qual vai mofar primeiro? Escolha e diga por quê.',
+  render(el,api){const O=[['pgel','Na geladeira'],['parm','No armário, seco'],['pumi','No armário, úmido']];let v=api.state('v',null);const g=h('div',{class:'ab-choices three'});const why=h('input',{type:'text',maxlength:160,placeholder:'Porque…',style:'width:100%',value:api.state('why','')});why.oninput=()=>api.setState('why',why.value);const out=h('div',{});
+   O.forEach(([k,n])=>{const b=h('button',{class:'ab-choice',type:'button','aria-pressed':String(v===k)},ilu(k,'ilu'),n);b.onclick=()=>{v=k;api.setState('v',k);$$('.ab-choice',g).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');};g.append(b);});
+   el.append(g,why,h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{if(!v){fbx(out,'no','Escolha uma fatia.');return;}api.save(`Mofa primeiro: ${O.find(o=>o[0]===v)[1].toLowerCase()}${why.value.trim()?', porque '+why.value.trim():''}`);fbx(out,'info','Isso que você escreveu é uma hipótese: uma explicação provisória. No laboratório do pão você vai testá-la.');}},'Registrar minha aposta')),out);}},
+ semmelweis:{tempo:'4 min',titulo:'Seu primeiro palpite',lede:'Numa maternidade de 1846, sem antibióticos e sem saber que bactérias existiam, o que você acha que mais aumentava as mortes depois do parto?',
+  render(el,api){let v=api.state('v',null);const out=h('div',{});
+   el.append(chipsPick([['ar','O ar ruim'],['lot','O hospital lotado'],['medo','O medo das pacientes'],['maos','Algo nas mãos de quem atendia'],['comida','A comida do hospital']],v,x=>{v=x;api.setState('v',x);}),
+    h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{if(!v){fbx(out,'no','Escolha um palpite.');return;}api.save('Palpite: '+{ar:'o ar ruim',lot:'o hospital lotado',medo:'o medo das pacientes',maos:'algo nas mãos de quem atendia',comida:'a comida do hospital'}[v]);fbx(out,'info','Na época, todas essas ideias tinham defensores. Hoje você vai testá-las com os dados de verdade.');}},'Registrar meu palpite')),out);}},
+ correlacao:{tempo:'3 min',titulo:'Você concorda?',lede:'“Nos dias em que se vende mais picolé na praia, os salva-vidas fazem mais resgates. Então, proibir o picolé diminuiria os afogamentos.”',
+  render(el,api){let v=api.state('v',null);const out=h('div',{});
+   el.append(seg([['sim','Concordo'],['nao','Discordo'],['talvez','Não tenho certeza']],v,x=>{v=x;api.setState('v',x);},{label:'Sua opinião'}),
+    h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{if(!v){fbx(out,'no','Escolha uma opção.');return;}api.save({sim:'Concordo',nao:'Discordo',talvez:'Não tenho certeza'}[v]+' que proibir o picolé diminuiria os afogamentos.');fbx(out,'info','Guarde essa resposta. Os dados da praia vão ajudar você a decidir.');}},'Registrar')),out);}},
+ checagem:{tempo:'3 min',titulo:'Chegou no grupo da família',lede:'A mensagem abaixo chegou no seu celular. O que você faz?',
+  render(el,api){let v=api.state('v',null);const out=h('div',{});
+   el.append(h('div',{class:'zap'},h('span',{class:'zap-enc'},'Encaminhada com frequência'),h('p',{},'URGENTE!!! Médico famoso revela: beber água morna com limão em jejum ELIMINA qualquer vírus do corpo em 24 horas. Os laboratórios não querem que você saiba. COMPARTILHE com todos que você ama!'),h('span',{class:'zap-h'},'07:42')),
+    seg([['comp','Compartilho: mal não faz'],['nao','Não compartilho'],['pesq','Vou pesquisar antes']],v,x=>{v=x;api.setState('v',x);},{label:'O que você faz'}),
+    h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{if(!v){fbx(out,'no','Escolha uma opção.');return;}api.save({comp:'Compartilharia a mensagem',nao:'Não compartilharia',pesq:'Pesquisaria antes'}[v]);fbx(out,'info','Quais sinais de alerta você vê nessa mensagem? Hoje você vai montar uma lista de checagem.');}},'Registrar')),out);}},
+ replicacao:{tempo:'4 min',titulo:'A moeda é viciada?',lede:'Jogue uma moeda 10 vezes. Se sair muita cara, você diria que a moeda é viciada?',
+  render(el,api){let jog=api.state('jog',null);const row=h('div',{class:'row',style:'gap:6px'});const out=h('div',{});let v=api.state('v',null);const pick=h('div',{});
+   const draw=()=>{row.innerHTML='';if(!jog)return;jog.forEach(c=>row.append(h('span',{class:'coin'+(c?' cara':'')},c?'Ca':'Co')));const n=jog.filter(Boolean).length;row.append(h('b',{style:'margin-left:6px'},n+' caras em 10'));
+     pick.innerHTML='';pick.append(h('span',{class:'label'},'A moeda é viciada?'),seg([['sim','Sim'],['nao','Não'],['mais','Preciso jogar mais vezes']],v,x=>{v=x;api.setState('v',x);api.save(`${n} caras em 10. Viciada? ${({sim:'Sim',nao:'Não',mais:'Preciso jogar mais vezes'})[x]}`);fbx(out,'info','Com 10 lançamentos, resultados como 7 ou 3 caras acontecem com frequência numa moeda perfeita, só por acaso. Com poucos dados, o acaso engana. Guarde isso para os vinte laboratórios.');},{label:'A moeda é viciada?'}));};
+   el.append(h('button',{class:'btn primary',type:'button',onclick:()=>{jog=[...Array(10)].map(()=>Math.random()<.5);api.setState('jog',jog);draw();}},'Jogar a moeda 10 vezes'),row,pick,out);draw();}},
+};
+
+// ================= Início =================
+buildNav();
+go((location.hash||'#inicio').slice(1));
+</script>
+</body></html>
