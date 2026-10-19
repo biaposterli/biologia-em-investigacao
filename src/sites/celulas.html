@@ -343,6 +343,31 @@ details.more summary{cursor:pointer;font-weight:700}
 .panel>svg.chart,.stack>svg.chart{max-width:760px;width:100%;margin:0 auto}
 .stage>.svgbox{max-height:460px}
 
+
+/* Aula 3 em partes */
+.partes{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.parte-btn{display:flex;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 11px;cursor:pointer;color:var(--ink);font:inherit}
+.parte-btn:hover{border-color:var(--tema)}
+.parte-n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font-family:var(--f-display);font-weight:800}
+.parte-t{display:flex;flex-direction:column;min-width:0}
+.parte-t b{font-size:.92rem;line-height:1.2}
+.parte-t small{font-size:.76rem;color:var(--muted);line-height:1.25}
+.parte-btn[aria-pressed="true"]{border-color:var(--tema);background:var(--tema-soft)}
+.parte-btn[aria-pressed="true"] .parte-n{background:var(--tema);color:var(--surface)}
+.parte-head{display:flex;flex-direction:column;gap:4px;padding-top:6px}
+.parte-head h3{font-family:var(--f-display);font-size:1.45rem;margin:0}
+.parte-next{justify-content:flex-end}
+.tem-screen{position:relative;width:100%;aspect-ratio:10/7;background:#111;border-radius:12px;overflow:hidden;border:6px solid #1d221f;touch-action:none;cursor:crosshair;user-select:none;-webkit-user-select:none}
+.tem-screen svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tem-hud{position:absolute;left:8px;top:6px;font-family:var(--f-mono);font-size:.72rem;color:#e8efe9;background:rgba(0,0,0,.5);padding:2px 7px;border-radius:6px;pointer-events:none}
+.tem-bar{position:absolute;left:10px;bottom:8px;width:calc(100% - 20px);display:flex;flex-direction:column;gap:2px;font-family:var(--f-mono);font-size:.72rem;color:#fff;pointer-events:none;text-shadow:0 0 3px #000}
+.tem-bar i{display:block;height:4px;background:#fff;box-shadow:0 0 2px #000}
+.album{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.album span{border:1px dashed var(--line);border-radius:10px;padding:6px 9px;font-size:.84rem;color:var(--muted);display:flex;flex-direction:column;gap:1px}
+.album span small{font-size:.72rem;font-weight:400}
+.album span.on{border-style:solid;border-color:var(--good);background:var(--good-soft);color:var(--ink);font-weight:700}
+.chips.tight .chip{padding:5px 10px;font-size:.84rem}
+.chip:disabled{opacity:.55;cursor:default}
 </style>
 
 <header class="top">
@@ -486,7 +511,7 @@ const TEMAS={t2:'Tema 2 · Células',t3:'Tema 3 · Núcleo e divisões celulares
 const TOOLS=[
   {id:'niveis',n:'1',t:'t2',ap:'Teoria celular',title:'Zoom da vida',desc:'Do bode sertanejo à célula do coração: aproxime, ordene os níveis e julgue frases no Tribunal da Teoria Celular.'},
   {id:'tipos',n:'2',t:'t2',ap:'Quadro comparativo',title:'Detetive do nucleoide',desc:'Bactéria da coalhada, célula animal e célula da folha lado a lado. Monte o quadro presente, ausente ou depende.'},
-  {id:'organelas',n:'3',t:'t2',ap:'Percurso da proteína',title:'Fábrica de leite de cabra',desc:'Guie a caseína do DNA até a saída da célula e compare a célula da glândula com a célula da folha da jurema.'},
+  {id:'organelas',n:'3',t:'t2',ap:'Microscópio eletrônico',title:'Fábrica de leite de cabra',desc:'Seis partes, as 12 estruturas do livro: percurso das proteínas, microscópio eletrônico, lisossomos, fígado na água oxigenada, citoesqueleto e centríolos.'},
   {id:'cebola',n:'4',t:'t2',ap:'Microscópio virtual',title:'Microscópio da cebola',desc:'Troque a objetiva, ajuste o foco, estime o tamanho das células e separe o que você viu do que sabe pelo modelo.'},
   {id:'membrana',n:'5',t:'t2',ap:'Cartões de situações',title:'Porteiro da membrana',desc:'Partículas atravessando a bicamada, proteínas transportadoras e a bomba de sódio e potássio gastando ATP.'},
   {id:'osmose',n:'6',t:'t2',ap:'Experimento virtual',title:'Batata no sal',desc:'Experimento virtual de osmose com balança, réplicas e verificação de teste justo.'},
@@ -816,23 +841,528 @@ function drawGland_OLD(){
   o+=`<g class="hot" data-o="liso" tabindex="0"><circle cx="340" cy="120" r="14" fill="#c9d36a" stroke="#7d8a2a" stroke-width="2"/>${[[-4,-3],[3,2],[-2,5]].map(([x,y])=>`<circle cx="${340+x}" cy="${120+y}" r="2" fill="#7d8a2a"/>`).join('')}</g>`;
   return o;
 }
-INIT.organelas=root=>{
-  root.append(head('Aula 3 · Tema 2, p. 28–30','Fábrica de leite de cabra','Como as estruturas celulares trabalham em conjunto? Uma célula da glândula mamária da cabra produz caseína, a principal proteína do leite (a do queijo de coalho), e a libera. Guie a proteína pela célula.'));
+// ================= Aula 3 em partes (organelas do livro: membrana, citosol, citoesqueleto, núcleo, centríolos, ribossomos, RE granular e agranular, complexo golgiense, lisossomos, peroxissomo, mitocôndria) =================
+function tween(dur,f,done){const t0=performance.now();const st=t=>{const k=Math.min(1,(t-t0)/dur);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;f(e,k);if(k<1)requestAnimationFrame(st);else if(done)done();};requestAnimationFrame(st);}
+function moveAlong(el,pts,{dur=520,xa='cx',ya='cy'}={},done){const go=i=>{if(i>=pts.length){if(done)done();return;}const x0=+el.getAttribute(xa),y0=+el.getAttribute(ya);const[x,y]=pts[i];tween(dur,e=>{el.setAttribute(xa,x0+(x-x0)*e);el.setAttribute(ya,y0+(y-y0)*e);},()=>go(i+1));};go(0);}
+function bz(p,t){const[p0,p1,p2,p3]=p;const u=1-t;return[u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]];}
+function bzD(p){return `M${p[0][0].toFixed(1)},${p[0][1].toFixed(1)} C${p[1][0].toFixed(1)},${p[1][1].toFixed(1)} ${p[2][0].toFixed(1)},${p[2][1].toFixed(1)} ${p[3][0].toFixed(1)},${p[3][1].toFixed(1)}`;}
+function bzDots(p,n,off,rad,fill,sides=[1,-1]){let o='';for(let k=1;k<n;k++){const t=k/n;const a=bz(p,t),b=bz(p,Math.min(1,t+.01));const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1;sides.forEach(s=>{o+=`<circle cx="${(a[0]-dy/L*off*s).toFixed(1)}" cy="${(a[1]+dx/L*off*s).toFixed(1)}" r="${rad}" fill="${fill}"/>`;});}return o;}
+const nb=(x,y,n)=>`<g pointer-events="none"><circle cx="${x}" cy="${y}" r="8" fill="#17231d"/><text x="${x}" y="${y+3.6}" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">${n}</text></g>`;
+
+// Sub-navegação da aula em partes
+function partes(root,key,defs){
+  const nav=h('nav',{class:'partes','aria-label':'Partes da aula'});const holder=h('div',{class:'stack'});
+  const built={},panes={},btns={};
+  let cur=store.get('parte-'+key,defs[0].id);if(!defs.some(d=>d.id===cur))cur=defs[0].id;
+  defs.forEach((d,i)=>{const b=h('button',{type:'button',class:'parte-btn','aria-pressed':'false'},h('span',{class:'parte-n'},String(i+1)),h('span',{class:'parte-t'},h('b',{},d.t),h('small',{},d.sub)));b.onclick=()=>show(d.id,true);btns[d.id]=b;nav.append(b);});
+  function show(id,scroll){cur=id;store.set('parte-'+key,id);
+    Object.entries(btns).forEach(([k,b])=>b.setAttribute('aria-pressed',String(k===id)));
+    Object.values(panes).forEach(p=>p.hidden=true);
+    if(!built[id]){const i=defs.findIndex(d=>d.id===id);const d=defs[i];const p=h('div',{class:'stack parte'});panes[id]=p;holder.append(p);built[id]=true;
+      p.append(h('div',{class:'parte-head'},h('span',{class:'eyebrow'},'Parte '+(i+1)+' de '+defs.length+' · '+d.org),h('h3',{},d.t),d.lede?h('p',{class:'lede'},d.lede):null));
+      try{d.init(p);}catch(e){console.error(e);}
+      const nx=defs[i+1];if(nx)p.append(h('div',{class:'row parte-next'},h('button',{class:'btn primary',onclick:()=>show(nx.id,true)},'Parte '+(i+2)+': '+nx.t+' →')));}
+    panes[id].hidden=false;
+    if(scroll)nav.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  root.append(nav,holder);show(cur,false);
+}
+function qq(q,opts,correct,expl){const idx=opts.map((_,i)=>i).sort(()=>Math.random()-.5);return quickQ(q,idx.map(i=>opts[i]),idx.indexOf(correct),expl);}
+// Pergunta de previsão com retorno (chama onAns(acertou))
+function predQ(q,opts,correct,expl,onAns,wrong){const box=h('div',{class:'stack',style:'gap:8px'});const out=h('div',{});
+  box.append(h('p',{class:'ficha-q'},q));const ch=h('div',{class:'chips'});
+  opts.map((o,i)=>[o,i]).sort(()=>Math.random()-.5).forEach(([o,i])=>{const b=h('button',{class:'chip',type:'button','aria-pressed':'false'},o);b.onclick=()=>{$$('.chip',ch).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');out.innerHTML='';const ok=i===correct;out.append(h('p',{class:'fb '+(ok?'ok':'no')},(ok?'Isso! ':'Ainda não. ')+(ok||!wrong||!wrong[i]?expl:wrong[i]+' Tente outra.')));if(onAns)onAns(ok,i);};ch.append(b);});
+  box.append(ch,out);return box;}
+
+// ---------- Parte 1 · Fábrica: o percurso da caseína + três destinos do complexo golgiense ----------
+function parteCaseina(p){
   let step=0;const sv=svgEl('0 0 420 300',drawGland(),'svgbox','Célula secretora da glândula mamária com organelas clicáveis');
   const dot=s('circle',{r:9,fill:'#f2c94c',stroke:'#8a5d1a','stroke-width':3,cx:210,cy:238,opacity:0,'pointer-events':'none'});sv.append(dot);
   const msg=h('div',{class:'info-card'},h('strong',{},'Passo 1 de 5'),h('span',{},'Onde começa a produção da caseína? Toque na estrutura.'));
   const trail=h('div',{class:'pathway'});
-  function move(x,y){const x0=+dot.getAttribute('cx'),y0=+dot.getAttribute('cy');const t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/600);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;dot.setAttribute('cx',x0+(x-x0)*e);dot.setAttribute('cy',y0+(y-y0)*e);if(k<1)requestAnimationFrame(f);};requestAnimationFrame(f);}
   $$('.hot',sv).forEach(g=>{const act=()=>{const k=g.dataset.o;const o=ORG3[k];
     if(step>=ROTA.length){msg.innerHTML='';msg.append(h('strong',{},o.n),h('span',{},o.f));return;}
-    if(k===ROTA[step]){dot.setAttribute('opacity',1);move(o.x,o.y);trail.append(h('span',{class:'node'},o.n));if(step<ROTA.length-1)trail.append(h('span',{class:'arr'},'→'));
+    if(k===ROTA[step]){dot.setAttribute('opacity',1);moveAlong(dot,[[o.x,o.y]],{dur:600});trail.append(h('span',{class:'node'},o.n));if(step<ROTA.length-1)trail.append(h('span',{class:'arr'},'→'));
       msg.innerHTML='';msg.append(h('strong',{},'✓ '+o.n),h('span',{},ROTA_TXT[step]));step++;
       if(step<ROTA.length)msg.append(h('span',{class:'note'},'Passo '+(step+1)+' de 5: para onde ela vai agora?'));
-      else{msg.append(h('p',{class:'fb ok'},'Rota completa! Toque nas outras estruturas para ver o que fazem. Repare: a mitocôndria fornece o ATP de todas as etapas.'));}}
+      else msg.append(h('p',{class:'fb ok'},'Rota completa! Toque nas outras estruturas para ver o que fazem. Repare: a mitocôndria fornece o ATP de todas as etapas.'));}
     else{msg.innerHTML='';msg.append(h('strong',{},'Ainda não: '+o.n),h('span',{},o.f),h('span',{class:'note'},'Passo '+(step+1)+' de 5: tente outra estrutura.'));}};
     g.addEventListener('click',act);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});});
-  root.append(h('div',{class:'panel stack'},h('h3',{},'Guie a caseína'),h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},msg,h('span',{class:'label'},'Caminho percorrido'),trail,h('button',{class:'btn ghost sm',onclick:()=>{step=0;trail.innerHTML='';dot.setAttribute('opacity',0);dot.setAttribute('cx',210);dot.setAttribute('cy',238);msg.innerHTML='';msg.append(h('strong',{},'Passo 1 de 5'),h('span',{},'Onde começa a produção da caseína?'));}},'Recomeçar'))),disclaimer()));
-  root.append(h('div',{class:'panel stack'},h('h3',{},'Glândula da cabra × folha da jurema'),h('p',{class:'note'},'Onde cada estrutura aparece? Pense numa célula animal típica e numa célula da folha.'),
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Guie a caseína'),h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},msg,h('span',{class:'label'},'Caminho percorrido'),trail,h('button',{class:'btn ghost sm',onclick:()=>{step=0;trail.innerHTML='';dot.setAttribute('opacity',0);dot.setAttribute('cx',210);dot.setAttribute('cy',238);msg.innerHTML='';msg.append(h('strong',{},'Passo 1 de 5'),h('span',{},'Onde começa a produção da caseína? Toque na estrutura.'));}},'Recomeçar o percurso')))));
+  p.append(parteEncomendas());
+}
+// Mapa da célula secretora (modelo) com os números do livro
+const FAB={N:[150,186],RIB:[74,100],RER:[222,238],REV:[276,192],GOL:[312,148],SEC:[334,74],MEM:[334,30],OUT:[334,12],STO:[398,184],LIS:[252,96],CIT:[150,112],PORE:[150,186],NUC:[96,214]};
+function drawFab(){
+  let o=`<rect width="460" height="300" fill="#f6efe3"/><rect width="460" height="27" fill="#e8f1f7"/><text x="10" y="17" font-size="10.5" font-weight="700" fill="#2a6497">fora da célula</text>`;
+  o+=`<rect x="12" y="28" width="436" height="264" rx="22" fill="#fbe9dd" stroke="#b07a5a" stroke-width="3"/>`;
+  o+=`<text x="130" y="60" font-size="10" fill="#8a6a50" font-style="italic">citosol</text>`;
+  [[196,118,25],[414,262,-10],[40,60,10]].forEach(([x,y,a])=>{o+=`<g transform="translate(${x} ${y}) rotate(${a})"><ellipse rx="17" ry="8" fill="#e58f4f" stroke="#a35a24" stroke-width="1.5"/><path d="M-10,-6 v8 M-4,6 v-8 M2,-6 v8 M8,6 v-8" stroke="#a35a24" stroke-width="1.1"/></g>`;});
+  // núcleo
+  o+=`<ellipse cx="104" cy="222" rx="72" ry="47" fill="#e3d6f0"/><ellipse cx="104" cy="222" rx="72" ry="47" fill="none" stroke="#6b4a90" stroke-width="2"/><ellipse cx="104" cy="222" rx="77" ry="52" fill="none" stroke="#6b4a90" stroke-width="2"/>`;
+  [-70,-40,-10,20,150,200].forEach(a=>{const t=a*Math.PI/180;o+=`<rect x="${104+74.5*Math.cos(t)-3}" y="${222+49.5*Math.sin(t)-3}" width="6" height="6" fill="#fbe9dd"/>`;});
+  o+=`<circle cx="118" cy="226" r="13" fill="#9c7fc0"/><text x="58" y="254" font-size="10" fill="#4f3a6b" font-weight="700">núcleo</text>`;
+  for(let a=-95;a<=10;a+=7){const t=a*Math.PI/180;o+=`<circle cx="${(104+81*Math.cos(t)).toFixed(1)}" cy="${(222+56*Math.sin(t)).toFixed(1)}" r="1.9" fill="#3a2a6a"/>`;}
+  // ribossomos livres (polissomos)
+  [[60,92],[78,104],[92,88],[68,112],[100,108],[132,92]].forEach(([x,y],i)=>{for(let k=0;k<5;k++)o+=`<circle cx="${x+Math.cos(k*1.3+i)*5}" cy="${y+Math.sin(k*1.3+i)*4}" r="1.9" fill="#3a2a6a"/>`;});
+  o+=`<text x="34" y="134" font-size="9.5" fill="#3a2a6a">ribossomos livres</text>`;
+  // retículo granular
+  for(let i=0;i<4;i++){const p=[[176,274-i*15],[210,270-i*15],[240,252-i*14],[268,224-i*12]];o+=`<path d="${bzD(p)}" fill="none" stroke="#4a8a7a" stroke-width="5" stroke-linecap="round"/>`+bzDots(p,12,4.4,1.6,'#3a2a6a');}
+  o+=`<text x="176" y="288" font-size="9.5" fill="#2f6a5c" font-weight="700">retículo endoplasmático granular</text>`;
+  [[280,196],[272,178]].forEach(([x,y])=>o+=`<circle cx="${x}" cy="${y}" r="4.5" fill="#d6ece5" stroke="#4a8a7a" stroke-width="1.6"/>`);
+  // complexo golgiense
+  for(let i=0;i<5;i++)o+=`<path d="M${272+i*3},${166-i*7} q${40-i*3},-18 ${80-i*6},0" fill="none" stroke="#d17a8f" stroke-width="4.6" stroke-linecap="round"/>`;
+  o+=`<text x="282" y="184" font-size="9.5" fill="#a24f66" font-weight="700">complexo golgiense</text>`;
+  // destinos
+  o+=`<circle cx="334" cy="74" r="10" fill="#fff7e0" stroke="#d1a03a" stroke-width="2"/><path d="M322,28 q0,10 12,12 q12,-2 12,-12" fill="#fff7e0" stroke="#d1a03a" stroke-width="2"/>`;
+  o+=`<text x="350" y="58" font-size="9.5" fill="#8a5d1a">secreção</text>`;
+  [[398,180],[386,204],[414,206]].forEach(([x,y])=>o+=`<circle cx="${x}" cy="${y}" r="9" fill="#fff7e0" stroke="#d1a03a" stroke-width="2"/><circle cx="${x}" cy="${y}" r="3.6" fill="#c08a2a"/>`);
+  o+=`<text x="356" y="230" font-size="9.5" fill="#8a5d1a">vesículas guardadas</text>`;
+  o+=`<circle cx="252" cy="96" r="11" fill="#c9d36a" stroke="#7d8a2a" stroke-width="2"/><text x="226" y="76" font-size="9.5" fill="#5d6a1a" font-weight="700">lisossomo</text>`;
+  o+=nb(158,166,1)+nb(104,74,2)+nb(198,200,3)+nb(292,212,4)+nb(266,134,5)+nb(356,82,6)+nb(434,168,7)+nb(272,108,8);
+  return o;
+}
+const RL='Ribossomo livre, no citosol',RA='Ribossomo aderido ao retículo granular';
+const DEST=['⑥ Sai da célula (secreção)','⑦ Fica guardada em vesículas dentro da célula','⑧ Forma um lisossomo'];
+const DEST_NO=['⑥ é o caminho das proteínas que vão trabalhar fora da célula.','⑦ é para proteínas que ficam guardadas até a célula receber um sinal.','⑧ é para as enzimas digestivas, que vão trabalhar dentro da própria célula.'];
+const ENC=[
+ {id:'cas',n:'Caseína',sub:'proteína do leite',cor:'#f2c94c',steps:[
+  {p:'Onde a caseína é fabricada?',o:[RL,RA],a:1,ok:'Proteínas que vão sair da célula são feitas por ribossomos aderidos ao retículo granular ③ e entram nele.',no:['Ribossomos livres fazem proteínas que ficam no citosol. A caseína vai sair da célula.'],path:['RER']},
+  {p:'Do retículo granular, ela segue…',o:['…em vesículas até o complexo golgiense','…direto para fora da célula','…para dentro do núcleo'],a:0,ok:'Vesículas do retículo ④ levam a caseína e se fundem ao complexo golgiense ⑤.',no:[null,'Saindo do retículo, a caseína ainda não está pronta: falta passar pela organela que modifica e empacota.','O núcleo guarda o DNA; proteínas de secreção não vão para lá.'],path:['REV','GOL']},
+  {p:'Já modificada, para onde o complexo golgiense envia a caseína?',o:DEST,a:0,ok:'Vesículas de secreção levam a caseína até a membrana e ela sai da célula ⑥ por exocitose, indo para o leite.',path:['SEC','MEM','OUT']}]},
+ {id:'ins',n:'Insulina',sub:'hormônio, célula do pâncreas',cor:'#e07a5f',steps:[
+  {p:'Onde a insulina é fabricada?',o:[RL,RA],a:1,ok:'Como a caseína, é uma proteína que um dia vai sair da célula: começa nos ribossomos do retículo granular.',no:['Ela será liberada no sangue, então não fica no citosol.'],path:['RER']},
+  {p:'Do retículo granular, ela segue…',o:['…em vesículas até o complexo golgiense','…direto para o sangue'],a:0,ok:'Passa pelo complexo golgiense ④ ⑤, que modifica a molécula.',no:[null,'Antes de sair, a proteína é modificada e empacotada.'],path:['REV','GOL']},
+  {p:'A célula só libera a insulina quando a glicose do sangue sobe. Enquanto isso, a insulina…',o:DEST,a:1,ok:'Fica guardada em vesículas dentro da célula ⑦. Quando chega o sinal (glicose alta), as vesículas se fundem à membrana.',path:['STO']}]},
+ {id:'enz',n:'Enzimas digestivas',sub:'vão digerir dentro da célula',cor:'#9aa83a',steps:[
+  {p:'Onde as enzimas digestivas do lisossomo são fabricadas?',o:[RL,RA],a:1,ok:'Também nos ribossomos do retículo granular: assim ficam sempre dentro de membranas e não digerem a célula.',no:['Se ficassem soltas no citosol, digeririam a própria célula.'],path:['RER']},
+  {p:'Do retículo granular, elas seguem…',o:['…em vesículas até o complexo golgiense','…soltas pelo citosol'],a:0,ok:'O complexo golgiense recebe as enzimas ④ ⑤ e as separa das outras proteínas.',no:[null,'Soltas no citosol, elas seriam perigosas para a célula.'],path:['REV','GOL']},
+  {p:'Para onde o complexo golgiense envia as enzimas digestivas?',o:DEST,a:2,ok:'Ele as empacota em vesículas que formam os lisossomos ⑧.',path:['LIS']}]},
+ {id:'gli',n:'Enzima da glicólise',sub:'quebra a glicose no citosol',cor:'#5aa0c8',steps:[
+  {p:'Essa enzima trabalha no citosol. Onde ela é fabricada?',o:[RL,RA],a:0,ok:'Proteínas que trabalham no citosol saem prontas de ribossomos livres ②.',no:[null,'O que nasce no retículo vai para membranas, lisossomos ou para fora. Esta enzima fica no citosol.'],path:['RIB']},
+  {p:'Depois de pronta, ela…',o:['…fica no citosol, onde ocorre a glicólise','…vai ao complexo golgiense','…sai da célula'],a:0,ok:'Fica no citosol. Ela não passa pelo retículo nem pelo complexo golgiense.',no:[null,'Ela já nasceu no lugar onde vai trabalhar.','A glicólise acontece dentro da célula.'],path:['CIT']}]},
+ {id:'his',n:'Histona',sub:'proteína que enrola o DNA',cor:'#9c7fc0',steps:[
+  {p:'Onde é fabricada a histona, a proteína em que o DNA se enrola?',o:[RL,RA],a:0,ok:'Em ribossomos livres ②, como a enzima da glicólise. Nenhuma proteína é fabricada dentro do núcleo.',no:[null,'Ela não vai para fora da célula nem para lisossomos.'],path:['RIB']},
+  {p:'Depois de pronta, ela…',o:['…fica no citosol','…entra no núcleo pelos poros do envoltório','…vai ao complexo golgiense'],a:1,ok:'Entra pelos poros do envoltório nuclear e se junta ao DNA, formando a cromatina (Aula 7).',no:['O DNA, onde ela trabalha, está dentro do núcleo.',null,'Ela não precisa ser empacotada: passa direto pelos poros.'],path:['PORE','NUC']}]},
+];
+function parteEncomendas(){
+  const done=store.get('enc-done',{});
+  const sv=svgEl('0 0 460 300',drawFab(),'svgbox','Célula secretora com núcleo, ribossomos, retículo granular, complexo golgiense, lisossomo e vesículas, numerada como no livro');
+  const tok=s('circle',{r:7,fill:'#f2c94c',stroke:'#17231d','stroke-width':2,cx:FAB.N[0],cy:FAB.N[1],opacity:0,'pointer-events':'none'});sv.append(tok);
+  const cnt=counter('encomendas entregues',Object.keys(done).length+' de '+ENC.length);
+  const pick=h('div',{class:'chips'});const card=h('div',{class:'info-card'},h('strong',{},'Escolha uma encomenda'),h('span',{},'Cada proteína tem um destino. Descubra onde ela é feita e por onde passa.'));
+  let cur=null,si=0;
+  const drawPick=()=>{pick.innerHTML='';ENC.forEach(c=>{const b=h('button',{class:'chip',type:'button','aria-pressed':String(cur&&cur.id===c.id)},(done[c.id]?'✓ ':'')+c.n);b.onclick=()=>start(c);pick.append(b);});};
+  function start(c){cur=c;si=0;tok.setAttribute('fill',c.cor);tok.setAttribute('cx',FAB.N[0]);tok.setAttribute('cy',FAB.N[1]);tok.setAttribute('opacity',1);drawPick();ask(h('span',{class:'note'},'O RNA mensageiro com a “receita” da '+c.n.toLowerCase()+' saiu do núcleo pelos poros. Os ribossomos que vão lê-lo também foram montados no núcleo ①.'));}
+  function ask(pre){card.innerHTML='';const st=cur.steps[si];card.append(h('strong',{},cur.n+' · '+cur.sub));if(pre)card.append(pre);card.append(h('p',{class:'ficha-q'},'Etapa '+(si+1)+' de '+cur.steps.length+': '+st.p));
+    const ch=h('div',{class:'chips'});const out=h('div',{});
+    st.o.map((t,i)=>[t,i]).sort(()=>Math.random()-.5).forEach(([t,i])=>{const b=h('button',{class:'chip',type:'button'},t);b.onclick=()=>{out.innerHTML='';
+      if(i===st.a){$$('button',ch).forEach(x=>x.disabled=true);b.setAttribute('aria-pressed','true');
+        moveAlong(tok,st.path.map(k=>FAB[k]),{dur:520},()=>{si++;if(si<cur.steps.length)ask(h('p',{class:'fb ok'},'✓ '+st.ok));else{done[cur.id]=1;store.set('enc-done',done);cnt.set(Object.keys(done).length+' de '+ENC.length);drawPick();card.innerHTML='';card.append(h('strong',{},'✓ '+cur.n+' entregue'),h('p',{class:'fb ok'},st.ok),h('span',{class:'note'},Object.keys(done).length<ENC.length?'Escolha outra encomenda.':'Você entregou todas! Compare: o que decide se uma proteína passa ou não pelo retículo e pelo complexo golgiense?'));}});}
+      else{const hint=st.o===DEST?DEST_NO[i]+' Pense na função desta proteína.':(st.no&&st.no[i])||'Pense na função desta proteína.';out.append(h('p',{class:'fb no'},'Ainda não. '+hint));}};ch.append(b);});
+    card.append(ch,out);}
+  drawPick();
+  return h('div',{class:'panel stack'},h('h3',{},'Cinco encomendas, cinco destinos'),
+    h('p',{class:'note'},'Nem toda proteína faz o caminho da caseína. Os números no mapa são os mesmos do quadro do livro (① a ⑧). O mapa é um modelo de célula secretora, que vale para a glândula mamária e para o pâncreas.'),
+    h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},pick,card,cnt)),
+    qq('Os ribossomos que aparecem no mapa foram montados em que lugar?',['No núcleo (no nucléolo); depois passaram para o citoplasma','No complexo golgiense','Dentro das mitocôndrias'],0,'Os ribossomos são montados no núcleo e transportados ao citoplasma ①. Lá ficam livres ② ou presos ao retículo granular e à membrana externa do núcleo ③.'),
+    qq('Por que a enzima da glicólise não passa pelo complexo golgiense e a caseína passa?',['Porque a enzima trabalha no próprio citosol; só o que vai para fora, para vesículas ou para lisossomos segue pelo retículo e pelo complexo golgiense','Porque a enzima é menor','Porque o complexo golgiense estava ocupado'],0,'O destino decide o caminho: ribossomos livres para o citosol (e para o núcleo); retículo granular e complexo golgiense para secreção, vesículas guardadas e lisossomos.'));
+}
+
+// ---------- Parte 2 · Microscópio eletrônico (MET e MEV) ----------
+const ORGN={
+ membrana:{n:'Membrana plasmática',d:'linha escura contínua que contorna a célula; voltada para fora, forma dobras em forma de dedo (microvilosidades).',f:'Reveste a célula, delimita-a e controla a entrada e a saída de substâncias.'},
+ citosol:{n:'Citosol',d:'o fundo granuloso, cinza, entre as organelas.',f:'Material em que as organelas ficam imersas. Nele ocorre, por exemplo, a glicólise.'},
+ citoesq:{n:'Citoesqueleto',d:'fios finíssimos e quase retos, visíveis só no maior aumento; muitos partem da região dos centríolos.',f:'Rede de filamentos de proteína que sustenta a célula, mantém sua forma e move organelas e vesículas.'},
+ nucleo:{n:'Núcleo',d:'a maior estrutura, contornada por duas membranas com poros, com manchas escuras de cromatina e um nucléolo bem denso.',f:'Guarda o material genético (DNA), separado do citoplasma pelo envoltório nuclear.'},
+ centriolo:{n:'Centríolos',d:'par de cilindros curtos perto do núcleo: um visto de lado (listrado) e outro em corte (um anel de 9 conjuntos de tubinhos).',f:'Formam as fibras às quais os cromossomos se ligam durante a divisão celular.'},
+ ribossomo:{n:'Ribossomos',d:'pontinhos escuros de cerca de 25 nm, em grupinhos soltos ou enfileirados sobre membranas.',f:'Fabricam proteínas. São montados no núcleo e ficam livres no citosol ou presos ao retículo granular e ao envoltório nuclear.'},
+ reg:{n:'Retículo endoplasmático granular',d:'bolsas achatadas e paralelas, empilhadas, com a superfície pontilhada.',f:'Seus ribossomos fabricam proteínas, que são armazenadas e enviadas em vesículas.'},
+ rea:{n:'Retículo endoplasmático agranular',d:'emaranhado de tubinhos lisos e ramificados, sem pontinhos na superfície.',f:'Produz lipídios, participa do metabolismo de carboidratos e inativa substâncias tóxicas.'},
+ golgi:{n:'Complexo golgiense',d:'pilha de 4 a 6 bolsas curvas e achatadas, com vesículas pequenas nas pontas.',f:'Modifica, armazena, empacota e distribui as proteínas que vêm do retículo.'},
+ lisossomo:{n:'Lisossomo',d:'bolsinha redonda de uma só membrana, com conteúdo escuro e irregular (restos sendo digeridos).',f:'Digestão intracelular de material englobado e de partes velhas da própria célula.'},
+ peroxissomo:{n:'Peroxissomo',d:'bolsinha redonda de uma só membrana, com conteúdo cinza uniforme; no fígado de muitos animais tem um miolo escuro cristalino.',f:'Elimina compostos tóxicos, como a água oxigenada.'},
+ mitocondria:{n:'Mitocôndria',d:'bastonete de duas membranas; a interna forma dobras (cristas) que atravessam o interior.',f:'Realiza as etapas finais da respiração celular aeróbia, que fornece a energia usada pela célula.'},
+ vesicula:{n:'Vesícula de secreção',d:'bolsa redonda e clara com grãozinhos escuros (micelas de caseína), perto da superfície.',f:'Leva a caseína até a membrana para a exocitose.',x:1},
+ gordura:{n:'Gota de gordura',d:'esfera grande, cinza e lisa, sem membrana dupla nem pontinhos.',f:'Reserva de lipídios; na glândula mamária, vira a gordura do leite.',x:1},
+ glicogenio:{n:'Grânulos de glicogênio',d:'rosetas de grãozinhos muito escuros, em grupos.',f:'Reserva de glicose. No fígado, aparecem misturados ao retículo agranular.',x:1},
+};
+const BOOK12=['membrana','citosol','citoesq','nucleo','centriolo','ribossomo','reg','rea','golgi','lisossomo','peroxissomo','mitocondria'];
+const TEM_ZF=[1,3,9],TEM_MAG=['×5.000','×15.000','×45.000'];
+function temGen(kind){
+  const lac=kind==='lac';const r=seeded(lac?311:707);const K='t'+kind;
+  const C={x0:70,y0:lac?96:86,x1:930,y1:640};
+  const N=lac?{cx:520,cy:500,rx:150,ry:90}:{cx:470,cy:352,rx:118,ry:106};
+  const objs=[],occ=[];
+  const inN=(x,y,pad=0)=>((x-N.cx)/(N.rx+pad))**2+((y-N.cy)/(N.ry+pad))**2<=1;
+  const free=(x,y,rad)=>x-rad>C.x0+8&&x+rad<C.x1-8&&y-rad>C.y0+8&&y+rad<C.y1-8&&!inN(x,y,rad+8)&&occ.every(o=>Math.hypot(o[0]-x,o[1]-y)>o[2]+rad+3);
+  const spot=(rad,bx,tries=600)=>{bx=bx||[C.x0,C.y0,C.x1,C.y1];for(let i=0;i<tries;i++){const x=bx[0]+r()*(bx[2]-bx[0]),y=bx[1]+r()*(bx[3]-bx[1]);if(free(x,y,rad)){occ.push([x,y,rad]);return[x,y];}}return null;};
+  const f1=v=>v.toFixed(1);
+  let dots='';for(let i=0;i<16;i++)dots+=`<circle cx="${f1(r()*16)}" cy="${f1(r()*16)}" r="${(.3+r()*.35).toFixed(2)}" fill="#6f6f67" opacity=".7"/>`;
+  let bg=`<defs><pattern id="${K}cy" width="16" height="16" patternUnits="userSpaceOnUse">${dots}</pattern></defs>`;
+  // vizinhança
+  bg+=`<rect width="1000" height="700" fill="#c3c3ba"/><rect width="1000" height="700" fill="url(#${K}cy)" opacity=".7"/>`;
+  if(lac){bg+=`<rect width="1000" height="${C.y0-2}" fill="#dcdcd4"/>`;for(let i=0;i<70;i++)bg+=`<circle cx="${f1(r()*1000)}" cy="${f1(4+r()*(C.y0-60))}" r="${(1.5+r()*2.5).toFixed(1)}" fill="#3d3d37"/>`;
+    bg+=`<circle cx="300" cy="${C.y0-48}" r="38" fill="#bfbfb5" stroke="#2b2b28" stroke-width="1"/>`;objs.push({t:'gordura',x:300,y:C.y0-48,r:38,z:1,note:'Esta gota já está saindo da célula, envolvida por um pedaço da membrana: vai para o leite.'});}
+  else{bg+=`<rect width="1000" height="${C.y0-2}" fill="#d6d6ce"/><path d="M0,${C.y0-56} H1000" stroke="#2b2b28" stroke-width="1"/><path d="M0,${C.y0-60} H1000" stroke="#2b2b28" stroke-width="1"/><ellipse cx="640" cy="10" rx="190" ry="34" fill="#4a4a44"/>`;
+    objs.push({t:'fora',rect:[0,0,1000,C.y0-50],note:'Isto é o capilar do fígado (sinusoide), fora da célula. A mancha escura é parte de uma hemácia.'});}
+  // célula: citosol
+  let L=`<rect x="${C.x0}" y="${C.y0}" width="${C.x1-C.x0}" height="${C.y1-C.y0}" rx="26" fill="#b6b6ac"/><rect x="${C.x0}" y="${C.y0}" width="${C.x1-C.x0}" height="${C.y1-C.y0}" rx="26" fill="url(#${K}cy)"/>`;
+  // núcleo (ocupação)
+  // pilhas do retículo granular
+  const stacks=lac?[[198,470,1.45,220,6],[300,604,.12,170,4],[804,470,-1.45,220,6],[722,604,-.12,170,4],[172,300,1.25,130,4],[842,300,-1.25,130,4]]:[[230,540,.4,170,4],[712,552,-.3,170,4],[730,170,.2,150,3],[220,180,-.4,150,3],[150,390,1.5,140,3]];
+  let RER='';
+  stacks.forEach(([cx,cy,ang,len,n])=>{const ca=Math.cos(ang),sa=Math.sin(ang),gap=8,T=(u,v)=>[cx+u*ca-v*sa,cy+u*sa+v*ca];
+    for(let i=0;i<n;i++){const v=(i-(n-1)/2)*gap+(r()-.5)*2,b=(r()-.5)*8;const p=[T(-len/2,v+b),T(-len/6,v-b*.4),T(len/6,v+b*.4),T(len/2,v-b)];
+      const d=bzD(p);RER+=`<path d="${d}" fill="none" stroke="#2b2b28" stroke-width="3.6" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#cfcfc5" stroke-width="1.9" stroke-linecap="round"/>`+bzDots(p,Math.round(len/2.4),2.7,.75,'#22221f');
+      const pts=[];for(let k=0;k<=12;k++)pts.push(bz(p,k/12));objs.push({t:'reg',poly:pts,w:3,z:1,z3:['ribossomo'],note:'Os pontinhos enfileirados sobre a membrana são ribossomos aderidos.'});
+      pts.forEach(q=>occ.push([q[0],q[1],6]));}});
+  // complexo golgiense
+  let GOL='';const gol=lac?[[468,334,0],[612,350,.25]]:[[812,318,1.35],[650,440,.5]];
+  const golgi=(cx,cy,ang)=>{const ca=Math.cos(ang),sa=Math.sin(ang),T=(u,v)=>[cx+u*ca-v*sa,cy+u*sa+v*ca];let o='';
+    for(let i=0;i<5;i++){const v=(i-2)*5.2,Lh=30-Math.abs(i-2)*3,c=9;const p=[T(-Lh,v+c),T(-Lh/3,v-c*.7),T(Lh/3,v-c*.7),T(Lh,v+c)];const d=bzD(p);
+      o+=`<path d="${d}" fill="none" stroke="#2b2b28" stroke-width="2.8" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#cfcfc5" stroke-width="1.1" stroke-linecap="round"/>`;
+      [p[0],p[3]].forEach(q=>o+=`<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="2.6" fill="#cfcfc5" stroke="#2b2b28" stroke-width=".8"/>`);}
+    for(let k=0;k<12;k++){const u=(r()-.5)*70,v=-16-r()*14+(Math.abs(u)>25?18:0);const q=T(u,v);o+=`<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="${(2.2+r()*1.2).toFixed(1)}" fill="#cfcfc5" stroke="#2b2b28" stroke-width=".7"/>`;}
+    objs.push({t:'golgi',x:cx,y:cy,r:34,z:1});occ.push([cx,cy,38]);return o;};
+  gol.forEach(g=>GOL+=golgi(...g));
+  // centríolos e microtúbulos
+  const cen=lac?[392,372]:[640,262];occ.push([cen[0],cen[1],20]);
+  let CEN=`<circle cx="${cen[0]}" cy="${cen[1]}" r="17" fill="#7d7d75" opacity=".35"/><g transform="translate(${cen[0]-6} ${cen[1]}) rotate(20)"><rect x="-5" y="-12" width="10" height="24" rx="1.5" fill="#9b9b92" stroke="#2b2b28" stroke-width=".5"/>${[-3.6,-2.6,2.6,3.6].map(x=>`<path d="M${x},-11.5 v23" stroke="#33332f" stroke-width=".55"/>`).join('')}</g>`;
+  CEN+=`<g transform="translate(${cen[0]+8} ${cen[1]+3})"><circle r="5.8" fill="#9b9b92"/>${[...Array(9)].map((_,k)=>{const a=k*2*Math.PI/9;const cx=4.6*Math.cos(a),cy=4.6*Math.sin(a);const ta=a+Math.PI/2+.5;return [-1,0,1].map(j=>`<circle cx="${(cx+Math.cos(ta)*j*1.05).toFixed(2)}" cy="${(cy+Math.sin(ta)*j*1.05).toFixed(2)}" r=".52" fill="#262622"/>`).join('');}).join('')}</g>`;
+  objs.push({t:'centriolo',x:cen[0],y:cen[1],r:16,z:3});
+  let FIL='';
+  for(let k=0;k<26;k++){const a=k/26*Math.PI*2+r()*.2,len=140+r()*300;const b=(r()-.5)*.25;const p=[[cen[0],cen[1]],[cen[0]+Math.cos(a)*len*.33,cen[1]+Math.sin(a)*len*.33],[cen[0]+Math.cos(a+b)*len*.66,cen[1]+Math.sin(a+b)*len*.66],[cen[0]+Math.cos(a+b*2)*len,cen[1]+Math.sin(a+b*2)*len]];
+    const pts=[];for(let i=0;i<=8;i++)pts.push(bz(p,i/8));const ok=pts.filter(q=>q[0]>C.x0+10&&q[0]<C.x1-10&&q[1]>C.y0+10&&q[1]<C.y1-10&&!inN(q[0],q[1],4));if(ok.length<pts.length)continue;
+    FIL+=`<path d="${bzD(p)}" fill="none" stroke="#55554e" stroke-width="1.1" opacity=".6"/>`;objs.push({t:'citoesq',poly:pts,w:1.2,z:3,acc:['citoesq'],note:'Este é um microtúbulo, um dos filamentos do citoesqueleto. Repare que ele parte da região dos centríolos.'});}
+  for(let k=0;k<16;k++){const side=r()*4|0;let x,y,dx,dy;const m=14;if(side===0){x=C.x0+60+r()*(C.x1-C.x0-120);y=C.y0+m;dx=1;dy=0;}else if(side===1){x=C.x0+60+r()*(C.x1-C.x0-120);y=C.y1-m;dx=1;dy=0;}else if(side===2){x=C.x0+m;y=C.y0+60+r()*(C.y1-C.y0-120);dx=0;dy=1;}else{x=C.x1-m;y=C.y0+60+r()*(C.y1-C.y0-120);dx=0;dy=1;}
+    const ln=40+r()*60;const pts=[[x-dx*ln,y-dy*ln],[x+dx*ln,y+dy*ln]];FIL+=`<path d="M${f1(pts[0][0])},${f1(pts[0][1])} L${f1(pts[1][0])},${f1(pts[1][1])}" stroke="#4a4a44" stroke-width=".55" opacity=".7"/>`;objs.push({t:'citoesq',poly:pts,w:1,z:3,note:'Feixe de filamentos finos (de actina) logo abaixo da membrana: também é citoesqueleto.'});}
+  // gotas de gordura
+  let LIP='';for(let i=0;i<(lac?5:2);i++){const rad=lac?32+r()*26:22+r()*10;const q=spot(rad,lac?[C.x0,C.y0,C.x1,C.y0+260]:null);if(!q)continue;LIP+=`<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="${f1(rad)}" fill="#bfbfb5" stroke="#8e8e86" stroke-width=".6"/>`;objs.push({t:'gordura',x:q[0],y:q[1],r:rad,z:1});}
+  // vesículas de secreção (glândula)
+  let VES='';if(lac)for(let i=0;i<24;i++){const rad=11+r()*9;const q=spot(rad,[C.x0,C.y0,C.x1,C.y0+250]);if(!q)continue;VES+=`<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="${f1(rad)}" fill="#d9d9d0" stroke="#2b2b28" stroke-width=".8"/>`;
+    for(let k=0;k<3+(r()*5|0);k++){const a=r()*6.28,d=r()*(rad-4);VES+=`<circle cx="${f1(q[0]+Math.cos(a)*d)}" cy="${f1(q[1]+Math.sin(a)*d)}" r="${(1.5+r()*1.6).toFixed(1)}" fill="#3d3d37"/>`;}
+    objs.push({t:'vesicula',x:q[0],y:q[1],r:rad,z:1});}
+  // retículo agranular (com glicogênio no fígado)
+  let REA='';for(let i=0;i<(lac?2:15);i++){const R=lac?34:44;const q=spot(R);if(!q)continue;const[x,y]=q;
+    if(!lac)for(let k=0;k<55;k++){const a=r()*6.28,d=Math.sqrt(r())*R;const gx=x+Math.cos(a)*d,gy=y+Math.sin(a)*d;for(let j=0;j<5;j++){const b=j*1.26+a;REA+=`<circle cx="${f1(gx+Math.cos(b)*1.6)}" cy="${f1(gy+Math.sin(b)*1.6)}" r=".95" fill="#24241f"/>`;}}
+    for(let k=0;k<8;k++){let px=x+(r()-.5)*R*1.2,py=y+(r()-.5)*R*1.2;let d=`M${f1(px)},${f1(py)}`;for(let j=0;j<3;j++){const nx=px+(r()-.5)*36,ny=py+(r()-.5)*36;d+=` Q${f1((px+nx)/2+(r()-.5)*16)},${f1((py+ny)/2+(r()-.5)*16)} ${f1(nx)},${f1(ny)}`;px=nx;py=ny;}
+      REA+=`<path d="${d}" fill="none" stroke="#2b2b28" stroke-width="2.9" stroke-linecap="round"/><path d="${d}" fill="none" stroke="#cfcfc5" stroke-width="1.5" stroke-linecap="round"/>`;}
+    for(let k=0;k<9;k++){const a=r()*6.28,d=r()*R;REA+=`<circle cx="${f1(x+Math.cos(a)*d)}" cy="${f1(y+Math.sin(a)*d)}" r="${(1.8+r()*1.4).toFixed(1)}" fill="#cfcfc5" stroke="#2b2b28" stroke-width=".8"/>`;}
+    objs.push(lac?{t:'rea',x,y,r:R,z:2}:{t:'rea',x,y,r:R,z:2,acc:['rea','glicogenio'],note:'No fígado, o retículo agranular fica misturado a grânulos escuros de glicogênio, a reserva de glicose: é o “metabolismo de carboidratos” do livro.'});}
+  // mitocôndrias
+  let MIT='';for(let i=0;i<(lac?22:44);i++){const rx=22+r()*12,ry=11+r()*5;const q=spot(rx*.85);if(!q)continue;const a=(r()*180)|0;
+    let c='';for(let x=-rx+6,j=0;x<rx-5;x+=5.5,j++){const yy=Math.sqrt(Math.max(0,1-(x/rx)**2))*ry-1.6;c+=j%2?`M${f1(x)},${f1(yy)} v${f1(-yy*1.25)}`:`M${f1(x)},${f1(-yy)} v${f1(yy*1.25)}`;}
+    MIT+=`<g transform="translate(${f1(q[0])} ${f1(q[1])}) rotate(${a})"><ellipse rx="${f1(rx)}" ry="${f1(ry)}" fill="#8b8b82" stroke="#2b2b28" stroke-width="1.1"/><ellipse rx="${f1(rx-1.8)}" ry="${f1(ry-1.8)}" fill="none" stroke="#2b2b28" stroke-width=".6"/><path d="${c}" stroke="#2b2b28" stroke-width=".9" fill="none"/></g>`;objs.push({t:'mitocondria',x:q[0],y:q[1],r:(rx+ry)/2,z:1});}
+  // lisossomos
+  let LIS='';for(let i=0;i<(lac?4:8);i++){const rad=11+r()*7;const q=spot(rad,lac?null:[640,C.y0,C.x1,C.y1]);if(!q)continue;LIS+=`<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="${f1(rad)}" fill="#55554e" stroke="#22221f" stroke-width=".9"/>`;
+    for(let k=0;k<4;k++){const a=r()*6.28,d=r()*rad*.55;LIS+=`<circle cx="${f1(q[0]+Math.cos(a)*d)}" cy="${f1(q[1]+Math.sin(a)*d)}" r="${(2+r()*2.5).toFixed(1)}" fill="#7d7d74"/>`;}
+    for(let k=0;k<9;k++){const a=r()*6.28,d=r()*rad*.8;LIS+=`<circle cx="${f1(q[0]+Math.cos(a)*d)}" cy="${f1(q[1]+Math.sin(a)*d)}" r=".9" fill="#1c1c19"/>`;}
+    objs.push({t:'lisossomo',x:q[0],y:q[1],r:rad,z:1});}
+  // peroxissomos
+  let PER='';for(let i=0;i<(lac?3:20);i++){const rad=10+r()*4;const q=spot(rad);if(!q)continue;PER+=`<circle cx="${f1(q[0])}" cy="${f1(q[1])}" r="${f1(rad)}" fill="#97978e" stroke="#2b2b28" stroke-width=".8"/>`;
+    if(!lac){const a=(r()*180)|0;PER+=`<g transform="translate(${f1(q[0]+(r()-.5)*4)} ${f1(q[1]+(r()-.5)*4)}) rotate(${a})"><rect x="-3.6" y="-2.4" width="7.2" height="4.8" fill="#2e2e2a"/><path d="M-3.6,-.8 h7.2 M-3.6,.8 h7.2" stroke="#6a6a62" stroke-width=".35"/></g>`;}
+    objs.push({t:'peroxissomo',x:q[0],y:q[1],r:rad,z:1});}
+  // ribossomos livres (polissomos)
+  let RIB='';let nr=0;for(let i=0;i<900&&nr<(lac?150:170);i++){const x=C.x0+r()*(C.x1-C.x0),y=C.y0+r()*(C.y1-C.y0);if(!free(x,y,5))continue;nr++;const a0=r()*6.28;
+    for(let k=0;k<5+(r()*3|0);k++){const a=a0+k*1.1;RIB+=`<circle cx="${f1(x+Math.cos(a)*(2+k*.5))}" cy="${f1(y+Math.sin(a)*(2+k*.5))}" r=".75" fill="#22221f"/>`;}
+    objs.push({t:'ribossomo',x,y,r:5.5,z:3,note:'Grupinho de ribossomos livres lendo o mesmo RNA mensageiro (polissomo).'});}
+  // núcleo
+  let NUC=`<ellipse cx="${N.cx}" cy="${N.cy}" rx="${N.rx}" ry="${N.ry}" fill="#a7a79d"/><ellipse cx="${N.cx}" cy="${N.cy}" rx="${N.rx}" ry="${N.ry}" fill="url(#${K}cy)"/>`;
+  NUC+=`<ellipse cx="${N.cx}" cy="${N.cy}" rx="${N.rx-5}" ry="${N.ry-5}" fill="none" stroke="#4c4c46" stroke-width="8" stroke-dasharray="${[...Array(14)].map(()=>(10+r()*40|0)+' '+(4+r()*16|0)).join(' ')}" opacity=".8"/>`;
+  for(let i=0;i<12;i++){const a=r()*6.28,d=Math.sqrt(r())*.7;NUC+=`<ellipse cx="${f1(N.cx+Math.cos(a)*N.rx*d)}" cy="${f1(N.cy+Math.sin(a)*N.ry*d)}" rx="${(5+r()*9).toFixed(1)}" ry="${(4+r()*6).toFixed(1)}" fill="#55554e" opacity=".55"/>`;}
+  const nco=lac?[N.cx+40,N.cy-14]:[N.cx-24,N.cy+10];for(let i=0;i<10;i++)NUC+=`<circle cx="${f1(nco[0]+(r()-.5)*24)}" cy="${f1(nco[1]+(r()-.5)*20)}" r="${(6+r()*6).toFixed(1)}" fill="#34342e"/>`;
+  objs.push({t:'nucleo',x:nco[0],y:nco[1],r:20,z:1,note:'Esta mancha densa é o nucléolo, dentro do núcleo: é onde os ribossomos começam a ser montados.'});
+  NUC+=`<ellipse cx="${N.cx}" cy="${N.cy}" rx="${N.rx}" ry="${N.ry}" fill="none" stroke="#2b2b28" stroke-width="1"/><ellipse cx="${N.cx}" cy="${N.cy}" rx="${N.rx+2.6}" ry="${N.ry+2.6}" fill="none" stroke="#2b2b28" stroke-width="1"/>`;
+  for(let i=0;i<22;i++){const a=i/22*6.283+r()*.1;const x=N.cx+(N.rx+1.3)*Math.cos(a),y=N.cy+(N.ry+1.3)*Math.sin(a);NUC+=`<circle cx="${f1(x)}" cy="${f1(y)}" r="2.6" fill="#b0b0a6"/>`;}
+  let er='';for(let a=0;a<6.283;a+=.016){if(r()<.35)continue;er+=`<circle cx="${f1(N.cx+(N.rx+5)*Math.cos(a))}" cy="${f1(N.cy+(N.ry+5)*Math.sin(a))}" r=".75" fill="#22221f"/>`;}NUC+=er;
+  // membrana, microvilosidades e vizinhas
+  let MEM=`<rect x="${C.x0}" y="${C.y0}" width="${C.x1-C.x0}" height="${C.y1-C.y0}" rx="26" fill="none" stroke="#2b2b28" stroke-width="1.3"/><path d="M${C.x0-3.5},${C.y0+30} V${C.y1-22} Q${C.x0-3.5},${C.y1+3.5} ${C.x0+22},${C.y1+3.5} H${C.x1-22} Q${C.x1+3.5},${C.y1+3.5} ${C.x1+3.5},${C.y1-22} V${C.y0+30}" fill="none" stroke="#2b2b28" stroke-width="1.1"/>`;
+  for(let x=C.x0+22;x<C.x1-22;x+=8+r()*3){const hh=lac?20+r()*22:14+r()*26;const w=4+r()*1.2;const tilt=(r()-.5)*(lac?2:10);MEM+=`<path d="M${f1(x-w/2)},${C.y0+1} q${f1(tilt/2)},${f1(-hh/2)} ${f1(tilt)},${f1(-hh)} a${f1(w/2)},${f1(w/2)} 0 0 1 ${f1(w)},0 q${f1(-tilt/2)},${f1(hh/2)} ${f1(-tilt)},${f1(hh)}" fill="#b6b6ac" stroke="#2b2b28" stroke-width=".8"/>`;}
+  objs.push({t:'membrana',rect:[C.x0,C.y0-46,C.x1,C.y0+3],note:'Essas dobras em forma de dedo são microvilosidades: a membrana plasmática voltada para fora da célula.'});
+  if(!lac){MEM+=`<ellipse cx="934" cy="300" rx="20" ry="30" fill="#dcdcd4" stroke="#2b2b28" stroke-width="1.1"/>`;for(let k=0;k<7;k++)MEM+=`<path d="M${914+(k%2)*3},${278+k*7} h${8+r()*5}" stroke="#2b2b28" stroke-width="2.2" stroke-linecap="round"/>`;
+    objs.push({t:'fora',x:934,y:300,r:24,z:1,note:'Isto é um canalículo biliar: um espaço entre duas células do fígado, para onde a bile é secretada. Fica fora da célula.'});}
+  return {svg:bg+L+REA+FIL+RER+GOL+LIP+VES+MIT+LIS+PER+RIB+CEN+NUC+MEM,objs,C,N};
+}
+function mevGen(kind){const lac=kind==='lac';const r=seeded(lac?55:66);const K='m'+kind;
+  let o=`<defs><radialGradient id="${K}g" cx="36%" cy="30%" r="80%"><stop offset="0" stop-color="#f4f4ee"/><stop offset=".55" stop-color="#a7a7a0"/><stop offset="1" stop-color="#3f3f3b"/></radialGradient><radialGradient id="${K}s" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#b9b9b2"/><stop offset="1" stop-color="#55554f"/></radialGradient><pattern id="${K}v" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="3.2" cy="3.2" r="1.5" fill="#fff" opacity=".6"/><circle cx="4" cy="4" r="1.5" fill="#000" opacity=".28"/></pattern><pattern id="${K}w" width="9.3" height="8.1" patternUnits="userSpaceOnUse" patternTransform="rotate(23)"><circle cx="4" cy="4" r="1.6" fill="#fff" opacity=".45"/><circle cx="4.8" cy="4.8" r="1.6" fill="#000" opacity=".2"/></pattern></defs><rect width="1000" height="700" fill="#262623"/>`;
+  const S=lac?440:720;for(let row=-1;row<4;row++)for(let col=-1;col<5;col++){const cx=col*S*.866+(row%2?S*.433:0)+(r()-.5)*14,cy=row*S*.75+(r()-.5)*14;let d='';for(let k=0;k<6;k++){const a=k*Math.PI/3+Math.PI/6;const rr=S*.5*(.97+r()*.06);d+=(k?'L':'M')+f2(cx+Math.cos(a)*rr)+','+f2(cy+Math.sin(a)*rr*.95);}d+='Z';
+    o+=`<path d="${d}" fill="url(#${K}g)" stroke="#1e1e1b" stroke-width="7" stroke-linejoin="round"/><path d="${d}" fill="url(#${K}v)" opacity=".6"/><path d="${d}" fill="url(#${K}w)" opacity=".7"/>`;}
+  if(lac){for(let i=0;i<5;i++){const x=80+r()*840,y=60+r()*580,rr=34+r()*24;o+=`<circle cx="${f2(x)}" cy="${f2(y)}" r="${f2(rr)}" fill="url(#${K}s)"/>`;}for(let i=0;i<90;i++)o+=`<circle cx="${f2(r()*1000)}" cy="${f2(r()*700)}" r="${f2(2+r()*2.5)}" fill="url(#${K}s)"/>`;}
+  else{o+=`<g transform="translate(640 330) rotate(-18)"><ellipse rx="190" ry="180" fill="url(#${K}s)"/><ellipse rx="96" ry="90" fill="#6d6d67" opacity=".55"/><ellipse rx="70" ry="64" cx="-12" cy="-10" fill="#a9a9a2" opacity=".35"/></g>`;}
+  return o;}
+function f2(v){return v.toFixed(1);}
+function parteMicroscopio(p){
+  let kind='lac',mode='met',zi=0,cx=500,cy=350,sel=null,tries=0;
+  const album=store.get('tem-album',{lac:{},hep:{}});
+  const cache={},getT=k=>cache['t'+k]||(cache['t'+k]=temGen(k)),getM=k=>cache['m'+k]||(cache['m'+k]=mevGen(k));
+  const screen=h('div',{class:'tem-screen',role:'img','aria-label':'Tela do microscópio eletrônico'});
+  const sv=document.createElementNS(NS,'svg');sv.setAttribute('preserveAspectRatio','xMidYMid slice');const world=s('g');const mk=s('g',{'pointer-events':'none'});sv.append(world,mk);
+  const hud=h('div',{class:'tem-hud'});const barI=h('i');const barT=h('span');const bar=h('div',{class:'tem-bar'},barI,barT);screen.append(sv,hud,bar);
+  const card=h('div',{class:'info-card'},h('strong',{},'Toque numa estrutura'),h('span',{},'Arraste para mover a lâmina. Use o aumento para ver detalhes; pontos pequenos só aparecem bem em ×45.000.'));
+  const NM={lac:'Glândula mamária (lactócito)',hep:'Fígado (hepatócito)'};
+  function draw(){world.innerHTML=mode==='met'?getT(kind).svg:getM(kind);mk.innerHTML='';sel=null;vb();}
+  function vb(){const w=1000/TEM_ZF[zi],hh=700/TEM_ZF[zi];cx=Math.min(1000-w/2,Math.max(w/2,cx));cy=Math.min(700-hh/2,Math.max(hh/2,cy));sv.setAttribute('viewBox',`${cx-w/2} ${cy-hh/2} ${w} ${hh}`);
+    hud.textContent=(mode==='met'?'MET':'MEV')+' · '+TEM_MAG[zi]+' · '+(kind==='lac'?'glândula mamária':'fígado');
+    const umTot=w*0.02;const c=[.05,.1,.2,.5,1,2,5].find(u=>u/umTot>=.12)||5;barI.style.width=(c/umTot*100).toFixed(1)+'%';barT.textContent=(c<1?String(c).replace('.',',')+' µm ('+Math.round(c*1000)+' nm)':c+' µm');
+    zoomSeg.set(String(zi));}
+  const toWorld=(ev)=>{const pt=sv.createSVGPoint();pt.x=ev.clientX;pt.y=ev.clientY;const m=sv.getScreenCTM();if(!m)return null;const q=pt.matrixTransform(m.inverse());return[q.x,q.y];};
+  const tolW=()=>16*(1000/TEM_ZF[zi])/Math.max(200,screen.clientWidth);
+  const segD=(px,py,a,b)=>{const vx=b[0]-a[0],vy=b[1]-a[1];const t=Math.max(0,Math.min(1,((px-a[0])*vx+(py-a[1])*vy)/(vx*vx+vy*vy||1)));return Math.hypot(px-a[0]-t*vx,py-a[1]-t*vy);};
+  function hit(x,y){const G=getT(kind),tol=tolW();let best=null,bd=1e9,small=false;
+    for(const o of G.objs){let d;if(o.rect){const[a,b,c,e]=o.rect;d=(x>=a&&x<=c&&y>=b&&y<=e)?-1:1e9;}else if(o.poly){d=1e9;for(let i=1;i<o.poly.length;i++)d=Math.min(d,segD(x,y,o.poly[i-1],o.poly[i]));d-=o.w;}else d=Math.hypot(x-o.x,y-o.y)-o.r;
+      if(d>tol)continue;if((o.z||1)>zi+1){small=true;continue;}const score=d<0?d/Math.max(o.r||4,4)-1:d/tol;if(score<bd){bd=score;best=o;}}
+    if(best)return{o:best,small};
+    const{C,N}=G;if(((x-N.cx)/(N.rx+3))**2+((y-N.cy)/(N.ry+3))**2<=1)return{o:{t:'nucleo'},small};
+    if(x<C.x0||x>C.x1||y<C.y0||y>C.y1)return{o:{t:'fora',note:'Aqui já é fora da célula estudada (outra célula vizinha ou o espaço entre elas).'},small};
+    const dEdge=Math.min(x-C.x0,C.x1-x,y-C.y0,C.y1-y);if(dEdge<tol*1.1)return{o:{t:'membrana'},small};
+    return{o:{t:'citosol'},small};}
+  function accOf(o){const a=(o.acc||[o.t]).slice();if(o.z3&&zi>=2)a.push(...o.z3);return a;}
+  function mark(x,y){const t=tolW();mk.innerHTML='';mk.append(s('circle',{cx:x,cy:y,r:t,fill:'none',stroke:'#ffd84a','stroke-width':t*.14}),s('circle',{cx:x,cy:y,r:t*.12,fill:'#ffd84a'}));}
+  function onTap(x,y){
+    if(mode==='mev'){card.innerHTML='';card.append(h('strong',{},'Superfície das células'),h('span',{},'No microscópio eletrônico de varredura (MEV), o feixe de elétrons percorre a superfície da amostra. Você vê o relevo de fora das células: a membrana plasmática coberta de microvilosidades'+(kind==='lac'?' e gotas de gordura saindo.':' e, no capilar, uma hemácia.')),h('span',{class:'note'},'O interior não aparece. Para ver as organelas, troque para o MET, que atravessa um corte finíssimo da célula.'));return;}
+    const{o,small}=hit(x,y);mark(x,y);sel=o;tries=0;
+    card.innerHTML='';
+    if(o.t==='fora'){card.append(h('strong',{},'Fora da célula'),h('span',{},o.note));return;}
+    card.append(h('strong',{},'O que é isto?'));if(small&&o.t==='citosol')card.append(h('span',{class:'note'},'Há estruturas muito pequenas aqui. Aumente para ×45.000 antes de decidir.'));
+    const ch=h('div',{class:'chips tight'});const out=h('div',{});
+    Object.keys(ORGN).forEach(k=>{if(k==='glicogenio'&&kind==='lac')return;if(k==='vesicula'&&kind==='hep')return;const b=h('button',{class:'chip',type:'button'},ORGN[k].n);b.onclick=()=>{out.innerHTML='';const acc=accOf(o);
+      if(acc.includes(k)){$$('.chip',ch).forEach(x=>x.disabled=true);b.setAttribute('aria-pressed','true');const nova=!album[kind][k];album[kind][k]=1;store.set('tem-album',album);drawAlbum();
+        out.append(h('p',{class:'fb ok'},'✓ '+ORGN[k].n+(nova?' (nova no seu álbum)':'')+'. '+ORGN[k].f));if(o.note)out.append(h('p',{class:'note'},o.note));}
+      else{tries++;b.disabled=true;const real=ORGN[o.t];out.append(h('p',{class:'fb no'},tries<2?'Não parece ser '+ORGN[k].n.toLowerCase()+'. Observe de novo o que você marcou: '+real.d:'É '+real.n.toLowerCase()+': '+real.d+' Toque nele de novo e registre no álbum.'));}};ch.append(b);});
+    card.append(ch,out);}
+  // arrastar e tocar
+  let drag=null;
+  screen.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,cx,cy,m:false};try{screen.setPointerCapture(e.pointerId);}catch(_){} });
+  screen.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.m&&Math.hypot(dx,dy)<6)return;drag.m=true;const k=(1000/TEM_ZF[zi])/Math.max(200,screen.clientWidth);cx=drag.cx-dx*k;cy=drag.cy-dy*k;vb();});
+  screen.addEventListener('pointerup',e=>{if(drag&&!drag.m){const q=toWorld(e);if(q)onTap(q[0],q[1]);}drag=null;});
+  screen.addEventListener('pointercancel',()=>drag=null);
+  screen.addEventListener('wheel',e=>{e.preventDefault();const q=toWorld(e);const nz=Math.max(0,Math.min(2,zi+(e.deltaY<0?1:-1)));if(nz===zi)return;if(q){cx=q[0];cy=q[1];}zi=nz;vb();},{passive:false});
+  const zoomSeg=seg([['0','×5.000'],['1','×15.000'],['2','×45.000']],String(zi),v=>{if(sel&&mk.firstChild){cx=+mk.firstChild.getAttribute('cx');cy=+mk.firstChild.getAttribute('cy');}zi=+v;mk.innerHTML='';vb();},{label:'Aumento'});
+  const kindSeg=seg([['lac','Glândula mamária'],['hep','Fígado']],kind,v=>{kind=v;draw();card.innerHTML='';card.append(h('strong',{},NM[v]),h('span',{},'Amostra trocada. Toque numa estrutura.'));},{label:'Amostra'});
+  const modeSeg=seg([['met','MET (transmissão)'],['mev','MEV (varredura)']],mode,v=>{mode=v;draw();onTapInfo();},{label:'Tipo de microscópio'});
+  [kindSeg,modeSeg].forEach(x=>x.style.gridTemplateColumns='repeat(2,1fr)');
+  function onTapInfo(){card.innerHTML='';if(mode==='mev')card.append(h('strong',{},'Microscópio de varredura'),h('span',{},'Imagem do relevo da superfície. Toque em qualquer ponto.'));else card.append(h('strong',{},'Microscópio de transmissão'),h('span',{},'Corte finíssimo da célula atravessado por elétrons. Toque numa estrutura.'));}
+  const albumBox=h('div',{class:'album'});const extraBox=h('div',{class:'album'});const prog=counter('estruturas do livro no álbum','0 de 12',true);
+  function drawAlbum(){albumBox.innerHTML='';extraBox.innerHTML='';let n=0;
+    BOOK12.forEach(k=>{const g=album.lac[k],f=album.hep[k];if(g||f)n++;albumBox.append(h('span',{class:g||f?'on':'',title:ORGN[k].f},(g||f?'✓ ':'')+ORGN[k].n,h('small',{},g&&f?'nas duas':g?'glândula':f?'fígado':'')));});
+    ['vesicula','gordura','glicogenio'].forEach(k=>{const g=album.lac[k],f=album.hep[k];extraBox.append(h('span',{class:g||f?'on':''},(g||f?'✓ ':'')+ORGN[k].n));});
+    prog.set(n+' de 12');}
+  const dica=h('button',{class:'btn ghost sm',onclick:()=>{const falta=BOOK12.filter(k=>!album.lac[k]&&!album.hep[k]);card.innerHTML='';if(!falta.length){card.append(h('strong',{},'Álbum completo!'),h('span',{},'Agora compare as duas amostras no quadro abaixo.'));return;}const k=falta[Math.random()*falta.length|0];const zz={citoesq:'×45.000',centriolo:'×45.000',ribossomo:'×45.000',rea:'×15.000 ou mais'}[k]||'×5.000 ou ×15.000';card.append(h('strong',{},'Pista'),h('span',{},'Procure '+ORGN[k].d+' Aumento sugerido: '+zz+'.'));if(k==='peroxissomo')card.append(h('span',{class:'note'},'Fica mais fácil na amostra de fígado.'));}},'Pista: o que falta?');
+  draw();drawAlbum();
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Microscópio eletrônico'),
+    h('p',{class:'note'},'No microscópio da cebola (Aula 4) não dá para ver ribossomos nem o interior das organelas. Aqui você usa elétrons em vez de luz. Compare duas células da mesma cabra: uma da glândula mamária, que produz leite, e uma do fígado.'),
+    h('div',{class:'row'},kindSeg,modeSeg),
+    h('div',{class:'cols wide-left'},h('div',{class:'stack'},screen,h('div',{class:'row'},h('span',{class:'label'},'Aumento'),zoomSeg)),h('div',{class:'stack'},card,dica)),
+    h('div',{class:'stack',style:'gap:8px'},h('div',{class:'row'},h('span',{class:'label'},'Meu álbum de organelas'),prog),albumBox,h('span',{class:'label'},'Outras estruturas'),extraBox),
+    disclaimer('Imagens desenhadas como modelo, em proporções reais (a célula tem cerca de 17 µm). Em micrografias verdadeiras, as estruturas aparecem cortadas em ângulos variados e com menos contraste.')));
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Compare as duas células'),
+    h('p',{class:'note'},'Use o que você observou no MET. Em qual das duas células cada estrutura é mais abundante?'),
+    quadro({storeKey:'tem-cmp',rows:['Retículo endoplasmático granular','Retículo endoplasmático agranular','Peroxissomos','Vesículas de secreção','Gotas de gordura','Grânulos de glicogênio','Mitocôndrias'],cols:['Onde há mais?'],opts:['Glândula mamária','Fígado','Parecido nas duas'],
+      key:[['Glândula mamária'],['Fígado'],['Fígado'],['Glândula mamária'],['Glândula mamária'],['Fígado'],['Fígado']],accept:{6:{0:['Fígado','Parecido nas duas']}},
+      why:{'0-0':'a glândula tem pilhas enormes de bolsas pontilhadas ao redor do núcleo.','1-0':'no fígado há dezenas de áreas com tubinhos lisos.','2-0':'conte as bolsinhas cinza com miolo escuro no fígado.','3-0':'as vesículas com grãozinhos escuros ficam no topo da célula da glândula.','4-0':'repare nas esferas grandes e lisas no topo da célula da glândula.','5-0':'as rosetas escuras aparecem só no fígado.'},colW:'minmax(150px,1fr)'}),
+    qq('A célula da glândula tem muito retículo granular e muitas vesículas de secreção. Isso combina com a função dela porque…',['…ela fabrica grande quantidade de proteína (caseína) para exportar','…ela precisa digerir bactérias','…ela guarda glicose'],0,'Estrutura e função andam juntas: quem exporta muita proteína tem muito retículo granular e muitas vesículas de secreção.'),
+    qq('O fígado tem muito retículo agranular e muitos peroxissomos. Qual hipótese explica isso?',['O fígado inativa muitas substâncias tóxicas e trabalha com lipídios e carboidratos','O fígado produz leite','O fígado não respira'],0,'É uma hipótese que dá para testar: na Parte 4 você vai investigar o que os peroxissomos do fígado fazem com a água oxigenada.'),
+    qq('Um ribossomo mede cerca de 25 nm. Por que ele não aparece no microscópio de luz da Aula 4?',['Porque é menor que o menor detalhe que a luz consegue separar (cerca de 0,2 µm = 200 nm)','Porque é transparente demais','Porque só existe em células animais'],0,'O microscópio de luz não separa detalhes menores que cerca de 200 nm. Com elétrons, detalhes de poucos nanômetros ficam visíveis.')));
+}
+
+// ---------- Parte 3 · Lisossomos: faxina contra a mastite e autofagia ----------
+function drawMacro(){
+  let o=`<rect width="460" height="300" fill="#e8f1f7"/><text x="10" y="18" font-size="10.5" font-weight="700" fill="#2a6497">tecido da glândula mamária</text>`;
+  o+=`<path d="M172,52 C262,24 404,40 432,118 C452,196 404,282 302,278 C220,274 150,252 146,172 C144,120 150,78 172,52Z" fill="#fbe9dd" stroke="#b07a5a" stroke-width="3"/>`;
+  o+=`<path d="M326,166 C344,140 398,142 410,176 C420,206 400,232 370,232 C350,232 358,212 344,206 C330,200 314,188 326,166Z" fill="#e3d6f0" stroke="#6b4a90" stroke-width="2"/>`;
+  for(let i=0;i<4;i++)o+=`<path d="M${286+i*3},${110-i*6} q${26-i*2},-12 ${52-i*4},0" fill="none" stroke="#d17a8f" stroke-width="4" stroke-linecap="round"/>`;
+  [[392,92,15],[222,242,-20]].forEach(([x,y,a])=>o+=`<g transform="translate(${x} ${y}) rotate(${a})"><ellipse rx="17" ry="8" fill="#e58f4f" stroke="#a35a24" stroke-width="1.5"/><path d="M-10,-6 v8 M-4,6 v-8 M2,-6 v8 M8,6 v-8" stroke="#a35a24" stroke-width="1.1"/></g>`);
+  o+=`<text x="300" y="268" font-size="10" fill="#8a6a50" font-style="italic">macrófago (célula de defesa)</text>`;
+  return o;}
+const FX={
+ bac:{tit:'Faxina contra a mastite',lede:'A mastite é a inflamação da glândula mamária, comum em cabras leiteiras e muitas vezes causada pela bactéria Staphylococcus aureus. Um macrófago vai eliminar as bactérias. Escolha a próxima etapa.',
+  steps:[{id:'eng',t:'Englobar as bactérias numa vesícula',ok:'A membrana envolve as bactérias e forma uma vesícula ⑨ dentro da célula (fagocitose).'},
+   {id:'fus',t:'Um lisossomo se funde à vesícula',ok:'O lisossomo se funde à vesícula ⑩.'},
+   {id:'dig',t:'Enzimas digestivas quebram as bactérias',ok:'O lisossomo libera enzimas digestivas ⑪, que quebram as moléculas grandes das bactérias em moléculas pequenas.'},
+   {id:'rea',t:'Moléculas úteis passam para o citosol',ok:'Aminoácidos, açúcares e outras moléculas pequenas atravessam a membrana da vesícula e são reaproveitados pela célula ⑫.'},
+   {id:'eli',t:'Restos não digeridos são eliminados',ok:'O que sobrou é eliminado para fora da célula por exocitose ⑫.'}],
+  order:[['eng'],['fus'],['dig'],['rea','eli'],['rea','eli']],
+  wrong:{fus:'O lisossomo só pode se fundir a uma vesícula que já exista.',dig:'As enzimas ficam presas no lisossomo; elas só agem quando o lisossomo se une ao material englobado.',rea:'Ainda não há moléculas pequenas: a bactéria precisa ser digerida antes.',eli:'Ainda não há restos: a digestão vem antes.',eng:'Isso já aconteceu.'}},
+ aut:{tit:'Autofagia: reciclando uma mitocôndria velha',lede:'A célula também digere partes de si mesma. Uma mitocôndria velha e danificada vai ser reciclada.',
+  steps:[{id:'env',t:'Uma membrana envolve a mitocôndria velha',ok:'Uma membrana envolve a mitocôndria e forma uma vesícula.'},
+   {id:'fus',t:'Um lisossomo se funde à vesícula',ok:'O lisossomo se funde à vesícula e libera suas enzimas.'},
+   {id:'dig',t:'Enzimas digerem a mitocôndria',ok:'A mitocôndria é quebrada em moléculas pequenas.'},
+   {id:'rea',t:'As moléculas são reaproveitadas',ok:'Os aminoácidos e lipídios voltam ao citosol e servem para construir novas estruturas.'}],
+  order:[['env'],['fus'],['dig'],['rea']],
+  wrong:{fus:'Primeiro a mitocôndria precisa estar dentro de uma vesícula.',dig:'As enzimas ainda estão presas no lisossomo.',rea:'Ainda não há moléculas pequenas para reaproveitar.',env:'Isso já aconteceu.'}}};
+function faxina(key){
+  const F=FX[key];const sv=svgEl('0 0 460 300',drawMacro(),'svgbox',F.tit);
+  const st={};const g=s('g');sv.append(g);
+  function build(){g.innerHTML='';st.done=[];
+    st.lis=s('circle',{cx:300,cy:150,r:10,fill:'#c9d36a',stroke:'#7d8a2a','stroke-width':2});
+    st.lis2=s('circle',{cx:262,cy:92,r:9,fill:'#c9d36a',stroke:'#7d8a2a','stroke-width':2});
+    st.ves=s('circle',{cx:key==='bac'?96:230,cy:key==='bac'?152:190,r:24,fill:'none',stroke:'#b07a5a','stroke-width':2.4,opacity:0});
+    st.items=s('g');st.mols=s('g');
+    if(key==='bac'){[[86,144],[98,140],[92,156],[106,152],[80,158],[100,166]].forEach(([x,y])=>st.items.append(s('circle',{cx:x,cy:y,r:6,fill:'#7e5aa8',stroke:'#4a2e6e','stroke-width':1.2})));}
+    else{st.items.append(s('ellipse',{cx:230,cy:190,rx:17,ry:8,fill:'#8a6a52',stroke:'#4a3324','stroke-width':1.5,transform:'rotate(-15 230 190)'}),s('path',{d:'M220,185 v8 M226,197 v-8 M232,185 v8 M238,197 v-8',stroke:'#4a3324','stroke-width':1.1,transform:'rotate(-15 230 190)'}));}
+    g.append(st.items,st.ves,st.mols,st.lis,st.lis2);}
+  const fade=(el,to,dur=500)=>{const a=+(el.getAttribute('opacity')??1);tween(dur,e=>el.setAttribute('opacity',a+(to-a)*e));};
+  const anim={
+   eng:done=>{const dx=205-96,dy=162-152;tween(900,e=>{st.items.setAttribute('transform',`translate(${dx*e} ${dy*e})`);st.ves.setAttribute('cx',96+dx*e);st.ves.setAttribute('cy',152+dy*e);st.ves.setAttribute('opacity',Math.min(1,e*1.6));},done);},
+   env:done=>{st.ves.setAttribute('r',34);tween(800,e=>{st.ves.setAttribute('opacity',e);st.ves.setAttribute('r',34-10*e);},done);},
+   fus:done=>{const vx=+st.ves.getAttribute('cx'),vy=+st.ves.getAttribute('cy');moveAlong(st.lis,[[vx+18,vy-10]],{dur:800},()=>{tween(500,e=>{st.lis.setAttribute('opacity',1-e);st.ves.setAttribute('fill',`rgba(201,211,106,${.45*e})`);st.ves.setAttribute('stroke','#7d8a2a');},done);});},
+   dig:done=>{const vx=+st.ves.getAttribute('cx'),vy=+st.ves.getAttribute('cy');fade(st.items,0,900);for(let i=0;i<14;i++){const a=Math.random()*6.28,d=Math.random()*15;st.mols.append(s('circle',{cx:vx+Math.cos(a)*d,cy:vy+Math.sin(a)*d,r:2,fill:i%3?'#7e5aa8':'#b07a5a',opacity:0}));}$$('circle',st.mols).forEach(c=>fade(c,1,900));setTimeout(done,950);},
+   rea:done=>{const cs=$$('circle',st.mols).filter(c=>!c.dataset.out);cs.slice(0,Math.ceil(cs.length*.7)).forEach(c=>{c.dataset.out=1;const a=Math.random()*6.28;moveAlong(c,[[+c.getAttribute('cx')+Math.cos(a)*60,+c.getAttribute('cy')+Math.sin(a)*50]],{dur:900});c.setAttribute('fill','#2b7a4b');});setTimeout(done,950);},
+   eli:done=>{const parts=[st.ves,...$$('circle',st.mols).filter(c=>!c.dataset.out)];const vx=+st.ves.getAttribute('cx'),vy=+st.ves.getAttribute('cy');parts.forEach(c=>{const ox=+c.getAttribute('cx')-vx,oy=+c.getAttribute('cy')-vy;moveAlong(c,[[150+ox,170+oy],[110+ox,170+oy]],{dur:600});});setTimeout(()=>{parts.forEach(c=>fade(c,0,500));setTimeout(done,520);},1250);}};
+  const card=h('div',{class:'info-card'},h('strong',{},'Etapa 1'),h('span',{},'O que acontece primeiro?'));
+  const ch=h('div',{class:'chips'});const trail=h('ol',{class:'note',style:'margin:0;padding-left:20px'});let busy=false;
+  function drawCh(){ch.innerHTML='';const lv=st.done.length;const opts=F.steps.slice().sort((a,b)=>a.t.localeCompare(b.t));
+    opts.forEach(sx=>{const isDone=st.done.includes(sx.id);const b=h('button',{class:'chip',type:'button',disabled:isDone?true:null,'aria-pressed':String(isDone)},(isDone?'✓ ':'')+sx.t);
+      b.onclick=()=>{if(busy)return;const okNow=lv<F.order.length&&F.order[lv].includes(sx.id);card.innerHTML='';
+        if(!okNow){card.append(h('strong',{},'Ainda não'),h('span',{},F.wrong[sx.id]||'Pense no que precisa acontecer antes.'));return;}
+        busy=true;st.done.push(sx.id);trail.append(h('li',{},sx.t));card.append(h('strong',{},'✓ '+sx.t),h('span',{},sx.ok));drawCh();
+        anim[sx.id](()=>{busy=false;if(st.done.length===F.order.length)card.append(h('p',{class:'fb ok'},key==='bac'?'Faxina completa! Esse é o percurso ⑨ → ⑫ do quadro do livro.':'Reciclagem completa! A célula renova suas organelas assim o tempo todo.'));});};ch.append(b);});}
+  build();drawCh();
+  return h('div',{class:'panel stack'},h('h3',{},F.tit),h('p',{class:'note'},F.lede),
+    h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},card,ch,h('span',{class:'label'},'Sua sequência'),trail,h('button',{class:'btn ghost sm',onclick:()=>{busy=false;build();trail.innerHTML='';card.innerHTML='';card.append(h('strong',{},'Etapa 1'),h('span',{},'O que acontece primeiro?'));drawCh();}},'Recomeçar'))));
+}
+function parteLisossomo(p){
+  p.append(faxina('bac'),faxina('aut'));
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Investigue'),
+    qq('Em algumas doenças raras, falta uma das enzimas do lisossomo. O que você espera ver nas células dessas pessoas, no microscópio eletrônico?',['Lisossomos cheios de material que não foi digerido','Células sem núcleo','Mais mitocôndrias'],0,'São as doenças de depósito lisossômico: sem a enzima, o material não é digerido e se acumula dentro dos lisossomos.'),
+    qq('As enzimas digestivas do lisossomo poderiam destruir a própria célula. O que impede isso?',['Elas ficam sempre dentro de membranas: do retículo ao complexo golgiense e daí ao lisossomo','Elas só existem em células mortas','O núcleo desliga as enzimas'],0,'As enzimas são produzidas no retículo granular, empacotadas pelo complexo golgiense e ficam isoladas por membrana. Por isso a célula só digere o que entra no lisossomo.')));
+}
+
+// ---------- Parte 4 · Peroxissomo e retículo agranular: fígado na água oxigenada ----------
+const TUB=[{k:'A',n:'Fígado cru + água oxigenada',p:'#7a2e2a',m:40,sd:4},{k:'B',n:'Fígado cozido + água oxigenada',p:'#8a6a5a',m:1,sd:.8},{k:'C',n:'Batata crua + água oxigenada',p:'#e8d79a',m:14,sd:2.5},{k:'D',n:'Só água oxigenada',p:null,m:0,sd:0},{k:'E',n:'Fígado cru + água',p:'#7a2e2a',m:0,sd:0}];
+const MMU=3.2;// unidades do desenho por mm
+function drawTubes(foam){let o=`<rect width="460" height="300" fill="var(--surface-2)"/><rect x="0" y="262" width="460" height="38" fill="#c9b79a"/>`;
+  TUB.forEach((t,i)=>{const x=50+i*88,top=40,base=250,liq=222;
+    o+=`<rect x="${x-18}" y="${top}" width="36" height="${base-top}" rx="14" fill="#f4fbff" stroke="#7a95a8" stroke-width="2"/>`;
+    o+=`<rect x="${x-16}" y="${liq}" width="32" height="${base-liq-2}" rx="12" fill="${t.k==='E'?'#cfe6f5':'#dcecf7'}"/>`;
+    if(t.p)o+=`<path d="M${x-9},${base-6} q4,-12 12,-8 q8,-2 6,8z" fill="${t.p}" stroke="#3a1a14" stroke-width="1"/>`;
+    const fh=Math.max(0,foam[i]||0)*MMU;if(fh>0){o+=`<rect x="${x-16}" y="${liq-fh}" width="32" height="${fh}" fill="#ffffff" stroke="#c9d6df" stroke-width=".8"/>`;for(let b=0;b<fh/4;b++)o+=`<circle cx="${x-12+((b*37)%24)}" cy="${liq-2-((b*13)%Math.max(1,fh-2))}" r="${1.4+(b%3)}" fill="none" stroke="#b9c9d4" stroke-width=".7"/>`;}
+    for(let mm=0;mm<=50;mm+=5){const y=liq-mm*MMU;o+=`<path d="M${x+18},${y} h${mm%10?4:8}" stroke="#2a3a44" stroke-width="1"/>`;if(mm%10===0)o+=`<text x="${x+28}" y="${y+3}" font-size="8.5" fill="#2a3a44" font-family="JetBrains Mono, monospace">${mm}</text>`;}
+    o+=`<text x="${x}" y="282" text-anchor="middle" font-size="13" font-weight="700" fill="#17231d">${t.k}</text>`;});
+  o+=`<text x="12" y="24" font-size="10" fill="var(--muted)">altura da espuma acima do líquido (mm)</text>`;return o;}
+function parteFigado(p){
+  const reps=store.get('perox-reps',[]);const reads=store.get('perox-reads',{});const okRep=store.get('perox-ok',{});
+  const sv=svgEl('0 0 460 300',drawTubes([0,0,0,0,0]),'svgbox','Cinco tubos de ensaio com régua de espuma');
+  const msg=h('div',{class:'info-card'},h('strong',{},'Pergunta'),h('span',{},'O fígado tem muitos peroxissomos. Será que ele decompõe a água oxigenada (H₂O₂), um composto tóxico? Preveja antes de testar.'));
+  const tbl=h('div',{class:'tbl-wrap'});const chartBox=h('div',{});let showing=-1;
+  const run=h('button',{class:'btn primary'},'');
+  const updRun=()=>{run.textContent=reps.length<3?'Adicionar o líquido e cronometrar 1 min · réplica '+(reps.length+1)+' de 3':'As 3 réplicas foram feitas';run.disabled=reps.length>=3;};
+  run.onclick=()=>{if(reps.length>=3)return;const v=TUB.map(t=>t.m?Math.max(0,Math.round(t.m+gauss()*t.sd)):0);reps.push(v);store.set('perox-reps',reps);const i=reps.length-1;run.disabled=true;
+    tween(2600,e=>{const ef=1-Math.exp(-4*e);sv.innerHTML=drawTubes(v.map(x=>x*ef/(1-Math.exp(-4))));},()=>{showing=i;updRun();drawTbl();msg.innerHTML='';msg.append(h('strong',{},'Réplica '+(i+1)+' pronta'),h('span',{},'Leia a altura da espuma em cada tubo, na régua, e anote na tabela. O zero é a superfície do líquido.'));});};
+  function drawTbl(){const t=h('table',{class:'data'});t.append(h('thead',{},h('tr',{},h('th',{},'Tubo'),...[0,1,2].map(j=>h('th',{class:'n'},'Réplica '+(j+1))),h('th',{class:'n'},'Média'))));const tb=h('tbody');
+    TUB.forEach((tu,i)=>{const tr=h('tr',{},h('td',{},h('b',{},tu.k+' '),h('small',{},tu.n)));
+      [0,1,2].forEach(j=>{const td=h('td',{class:'n'});if(j<reps.length){if(okRep[j]){td.append(String(reads[j+'-'+i]));}else{const inp=h('input',{type:'text',inputmode:'decimal',value:reads[j+'-'+i]??'',style:'width:4.2em','aria-label':'Tubo '+tu.k+' réplica '+(j+1)});inp.oninput=()=>{reads[j+'-'+i]=inp.value;store.set('perox-reads',reads);};td.append(inp);}}else td.append('—');tr.append(td);});
+      const ok=[0,1,2].filter(j=>okRep[j]);tr.append(h('td',{class:'n'},ok.length?fmt(ok.reduce((a,j)=>a+reps[j][i],0)/ok.length,1):'—'));tb.append(tr);});
+    t.append(tb);tbl.innerHTML='';tbl.append(t);
+    const pend=[0,1,2].filter(j=>j<reps.length&&!okRep[j]);
+    if(pend.length){const out=h('div',{});tbl.append(h('div',{class:'row',style:'margin-top:8px'},h('button',{class:'btn',onclick:()=>{out.innerHTML='';const j=pend[0];let bad=[];TUB.forEach((tu,i)=>{const v=parseFloat(String(reads[j+'-'+i]??'').replace(',','.'));if(isNaN(v)||Math.abs(v-reps[j][i])>3)bad.push(tu.k);});
+      if(bad.length){out.append(h('p',{class:'fb no'},'Confira a leitura dos tubos '+bad.join(', ')+' na réplica '+(j+1)+'. Mostrando essa réplica nos tubos.'));sv.innerHTML=drawTubes(reps[j]);}
+      else{okRep[j]=1;store.set('perox-ok',okRep);drawTbl();drawChart();}}},'Conferir leituras da réplica '+(pend[0]+1)),h('button',{class:'btn ghost sm',onclick:()=>{sv.innerHTML=drawTubes(reps[pend[0]]);}},'Ver os tubos dessa réplica')),out);}}
+  function drawChart(){chartBox.innerHTML='';const ok=[0,1,2].filter(j=>okRep[j]);if(!ok.length)return;const means=TUB.map((_,i)=>ok.reduce((a,j)=>a+reps[j][i],0)/ok.length);
+    let o=`<rect width="460" height="200" fill="var(--surface)"/>`;const mx=50;for(let y=0;y<=mx;y+=10){const yy=170-y*2.8;o+=`<path d="M40,${yy} H450" stroke="var(--line)"/><text x="34" y="${yy+3}" text-anchor="end" font-size="10" fill="var(--muted)">${y}</text>`;}
+    means.forEach((m,i)=>{const x=60+i*80;o+=`<rect x="${x}" y="${170-m*2.8}" width="50" height="${m*2.8}" fill="${['#8a3560','#a3601b','#c9a227','#2a6497','#556459'][i]}" rx="3"/><text x="${x+25}" y="186" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">${TUB[i].k}</text><text x="${x+25}" y="${165-m*2.8}" text-anchor="middle" font-size="10" fill="var(--ink)">${fmt(m,1)}</text>`;});
+    o+=`<text x="40" y="14" font-size="10" fill="var(--muted)">Média da espuma (mm) · ${ok.length} réplica(s)</text>`;chartBox.append(svgEl('0 0 460 200',o,'svgbox','Gráfico de barras das médias de espuma'));}
+  updRun();drawTbl();drawChart();if(reps.length)sv.innerHTML=drawTubes(reps[reps.length-1]);
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Fígado na água oxigenada'),
+    h('p',{class:'note'},'Experimento virtual. Cada tubo recebe 5 mL de líquido e um pedaço de 1 g do material, todos à mesma temperatura. Faça 3 réplicas.'),
+    (()=>{const prev=store.get('perox-prev',null);const ch=h('div',{class:'chips'});const out=h('p',{class:'note'},prev?'Sua previsão: '+prev+'.':'');['A · fígado cru','B · fígado cozido','C · batata crua','Em nenhum'].forEach(t=>{const b=h('button',{class:'chip',type:'button','aria-pressed':String(prev===t)},t);b.onclick=()=>{store.set('perox-prev',t);$$('.chip',ch).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');out.textContent='Previsão registrada: '+t+'. Agora teste.';};ch.append(b);});return h('div',{class:'stack',style:'gap:6px'},h('p',{class:'ficha-q'},'Previsão: em qual tubo vai se formar mais espuma?'),ch,out);})(),
+    h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},msg,run)),tbl,chartBox));
+  p.append(h('div',{class:'panel stack'},h('h3',{},'O que os resultados mostram?'),
+    qq('Os tubos D (só água oxigenada) e E (fígado cru + água) quase não formaram espuma. O que isso mostra?',['Que a espuma só aparece quando o fígado cru encontra a água oxigenada: o gás vem da decomposição da água oxigenada','Que o fígado produz gás sozinho','Que a água oxigenada sempre espuma'],0,'D e E são os controles. A espuma é gás oxigênio liberado quando a água oxigenada é decomposta: 2 H₂O₂ → 2 H₂O + O₂.'),
+    qq('Por que o fígado cozido (B) quase não formou espuma?',['O calor desnaturou a enzima que decompõe a água oxigenada','O fígado cozido não tem células','A água oxigenada do tubo B era diferente'],0,'A enzima é a catalase, abundante nos peroxissomos. Como toda proteína, perde a forma (desnatura) com o calor e deixa de funcionar.'),
+    qq('A batata também formou espuma, só que menos. O que isso indica?',['Células vegetais também têm peroxissomos com catalase, porém a batata tem menos que o fígado','A batata tem fígado','A batata produz água oxigenada'],0,'Peroxissomos existem em células animais e vegetais. A quantidade varia com a função do tecido.'),
+    h('div',{class:'callout'},h('strong',{},'O peroxissomo. '),'A água oxigenada se forma em reações normais da célula e é tóxica. A catalase dos peroxissomos a transforma em água e oxigênio. É por isso que água oxigenada borbulha numa ferida: as células liberam catalase.')));
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Retículo granular, agranular ou peroxissomo?'),
+    classify({key:'rea-per',cats:[['reg','RE granular'],['rea','RE agranular'],['per','Peroxissomo']],items:[
+      {t:'Fabricar a caseína que vai para o leite',a:'reg',why:'Proteína de exportação: ribossomos aderidos ao retículo granular.'},
+      {t:'Produzir lipídios, como os da gordura do leite',a:'rea',why:'O retículo agranular produz lipídios.'},
+      {t:'Participar do uso do glicogênio, a reserva de glicose do fígado',a:'rea',why:'No fígado, o retículo agranular fica junto ao glicogênio: é o metabolismo de carboidratos.'},
+      {t:'Transformar a água oxigenada em água e oxigênio',a:'per',why:'A catalase dos peroxissomos faz isso.'},
+      {t:'Inativar medicamentos e outras substâncias no fígado',a:'rea',why:'É uma das funções do retículo agranular, muito desenvolvido no fígado.'},
+      {t:'Produzir enzimas digestivas que irão para os lisossomos',a:'reg',why:'São proteínas feitas nos ribossomos do retículo granular.'}]}),
+    qq('Em pessoas que tomam certos medicamentos por muito tempo, as células do fígado passam a ter mais retículo agranular. Isso reforça qual ideia?',['A quantidade de uma organela acompanha o trabalho que a célula precisa fazer','O retículo agranular produz o medicamento','O medicamento destrói o retículo'],0,'Com mais substância para inativar, a célula amplia o retículo agranular. Estrutura e função andam juntas.')));
+}
+
+// ---------- Parte 5 · Citoesqueleto e centríolos ----------
+function parteTrilhos(p){
+  const W=460,H=300,cx=230,cy=150;const sv=document.createElementNS(NS,'svg');sv.setAttribute('viewBox','0 0 460 300');sv.setAttribute('class','svgbox');sv.setAttribute('role','img');sv.setAttribute('aria-label','Célula com microtúbulos que partem dos centríolos e vesículas se movendo');
+  const cen=[262,132];const spread=a=>{const r=120+28*Math.sin(3*a+.5)+18*Math.cos(5*a);return[cx+r*Math.cos(a)*1.3,cy+r*Math.sin(a)*.82];};
+  const round=a=>[cx+104*Math.cos(a),cy+104*Math.sin(a)*.95];
+  let c=0;const NMT=28;const mts=[...Array(NMT)].map((_,k)=>{const a=k/NMT*Math.PI*2+.05;return{a};});
+  const outline=s('path',{fill:'#fbe9dd',stroke:'#b07a5a','stroke-width':3});const actin=s('path',{fill:'none',stroke:'#d98f7c','stroke-width':4,opacity:.55});
+  const mtG=s('g');const ves=[...Array(12)].map((_,i)=>({m:(i*7)%NMT,s:Math.random(),d:Math.random()<.5?1:-1,v:.004+Math.random()*.004,el:s('circle',{r:5,fill:'#f2c94c',stroke:'#8a5d1a','stroke-width':1.5}),jx:0,jy:0}));
+  const nuc=s('ellipse',{cx:212,cy:160,rx:38,ry:28,fill:'#e3d6f0',stroke:'#6b4a90','stroke-width':2});
+  const cG=s('g',{});cG.innerHTML=`<circle cx="${cen[0]}" cy="${cen[1]}" r="11" fill="#c9b6dc" opacity=".6"/><rect x="${cen[0]-9}" y="${cen[1]-3}" width="10" height="6" rx="1.5" fill="#6b4a90"/><rect x="${cen[0]+1}" y="${cen[1]-6}" width="6" height="10" rx="1.5" fill="#6b4a90"/>`;
+  sv.append(s('rect',{width:W,height:H,fill:'var(--surface-2)'}),outline,actin,nuc,mtG,cG,...ves.map(v=>v.el));
+  const shape=t=>{let d='';for(let k=0;k<=60;k++){const a=k/60*Math.PI*2;const A=spread(a),B=round(a);const x=A[0]*(1-t)+B[0]*t,y=A[1]*(1-t)+B[1]*t;d+=(k?'L':'M')+x.toFixed(1)+','+y.toFixed(1);}return d+'Z';};
+  const edge=(a,t)=>{const A=spread(a),B=round(a);return[A[0]*(1-t)+B[0]*t,A[1]*(1-t)+B[1]*t];};
+  const rd=h('output',{},'0%');const mv=counter('vesículas em movimento','12 de 12');
+  const sl=h('input',{type:'range',min:0,max:100,value:0,'aria-label':'Dose de colchicina'});sl.oninput=()=>{c=+sl.value/100;rd.textContent=sl.value+'%';};
+  let shp=0;
+  const frame=()=>{if(!sv.isConnected)return;requestAnimationFrame(frame);const sec=sv.closest('section');if(sec&&sec.hidden)return;if(sv.closest('[hidden]'))return;
+    shp+=(c*.85-shp)*.03;outline.setAttribute('d',shape(shp));actin.setAttribute('d',shape(shp));actin.setAttribute('transform',`translate(${cx} ${cy}) scale(.95) translate(${-cx} ${-cy})`);
+    const len=Math.max(0,1-c*1.05);let mt='';const ends=mts.map(m=>{const e=edge(m.a,shp);const ex=cen[0]+(e[0]-cen[0])*.9,ey=cen[1]+(e[1]-cen[1])*.9;return[ex,ey];});
+    mts.forEach((m,k)=>{const[ex,ey]=ends[k];const L=len*(.75+.25*((k*5)%7)/6);if(L>.02)mt+=`<path d="M${cen[0]},${cen[1]} L${(cen[0]+(ex-cen[0])*L).toFixed(1)},${(cen[1]+(ey-cen[1])*L).toFixed(1)}" stroke="#4a8a7a" stroke-width="1.6" opacity=".8"/>`;m.L=L;});mtG.innerHTML=mt;
+    let moving=0;ves.forEach(v=>{const m=mts[v.m];const[ex,ey]=ends[v.m];let x,y;if(v.s<=m.L-.02){v.s+=v.v*v.d;if(v.s>m.L-.02||v.s>.98){v.d=-1;}if(v.s<.12)v.d=1;moving++;v.jx*=.9;v.jy*=.9;}else{v.jx+=(Math.random()-.5)*.6;v.jy+=(Math.random()-.5)*.6;v.jx*=.96;v.jy*=.96;}
+      x=cen[0]+(ex-cen[0])*v.s+v.jx;y=cen[1]+(ey-cen[1])*v.s+v.jy;v.el.setAttribute('cx',x.toFixed(1));v.el.setAttribute('cy',y.toFixed(1));});mv.set(moving+' de '+ves.length);};
+  requestAnimationFrame(frame);
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Trilhos da célula'),
+    h('p',{class:'note'},'Os microtúbulos do citoesqueleto (verdes) partem da região dos centríolos e funcionam como trilhos: proteínas motoras carregam vesículas (amarelas) por eles. A colchicina, substância extraída de uma planta, desmonta os microtúbulos. Aumente a dose e observe.'),
+    h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},h('div',{class:'slider-row'},h('span',{class:'label'},'Colchicina'),rd,sl),mv,
+      h('p',{class:'note'},'Observe três coisas: o comprimento dos microtúbulos, o movimento das vesículas e a forma da célula.'))),
+    qq('Com colchicina, as vesículas param e a célula perde a forma alongada. O que isso mostra sobre o citoesqueleto?',['Ele sustenta a forma da célula e serve de caminho para organelas e vesículas','Ele produz as vesículas','Ele digere as vesículas'],0,'É a função do quadro do livro: sustentar, manter a forma e deslocar organelas e vesículas no interior da célula.'),
+    disclaimer('Modelo simplificado: o citoesqueleto também tem filamentos de actina (faixa rosada junto à membrana), que a colchicina não desmonta.')));
+  // divisão celular com e sem colchicina
+  const dv=document.createElementNS(NS,'svg');dv.setAttribute('viewBox','0 0 460 260');dv.setAttribute('class','svgbox');dv.setAttribute('role','img');dv.setAttribute('aria-label','Célula em metáfase com centríolos nos polos');
+  let col=false,phase=0;const P1=[70,130],P2=[390,130];const ys=[66,108,152,194];const CC=['#c0504d','#c0504d','#2a6497','#2a6497'];
+  function drawDiv(t){let o=`<rect width="460" height="260" fill="var(--surface-2)"/><ellipse cx="230" cy="130" rx="${200+t*20}" ry="${112-t*8}" fill="#fbe9dd" stroke="#b07a5a" stroke-width="3"/>`;
+    [P1,P2].forEach(([x,y])=>{o+=`<circle cx="${x}" cy="${y}" r="13" fill="#c9b6dc" opacity=".7"/><rect x="${x-8}" y="${y-3}" width="10" height="6" rx="1.5" fill="#6b4a90"/><rect x="${x+1}" y="${y-6}" width="6" height="10" rx="1.5" fill="#6b4a90"/>`;if(!col)for(let k=0;k<7;k++){const a=(k-3)*.16+(x<230?0:Math.PI);o+=`<path d="M${x},${y} l${(Math.cos(a)*-34).toFixed(1)},${(Math.sin(a)*34).toFixed(1)}" stroke="#4a8a7a" stroke-width="1.4" opacity=".6"/>`;}});
+    const R=seeded(9);
+    ys.forEach((y0,i)=>{let xa,xb,y;if(col){xa=170+R()*110;y=50+R()*160;xb=xa+11;}else{xa=223-t*130;xb=237+t*130;y=y0+(130-y0)*t*.25;}
+      if(!col){o+=`<path d="M${P1[0]},${P1[1]} L${xa+2},${y}" stroke="#4a8a7a" stroke-width="1.6"/><path d="M${P2[0]},${P2[1]} L${xb-2},${y}" stroke="#4a8a7a" stroke-width="1.6"/>`;}
+      const lenC=i%2?22:30;o+=`<rect x="${xa-5}" y="${y-lenC/2}" width="10" height="${lenC}" rx="5" fill="${CC[i]}"/><rect x="${xb-5}" y="${y-lenC/2}" width="10" height="${lenC}" rx="5" fill="${CC[i]}"/>`;if(t<.05)o+=`<circle cx="230" cy="${y}" r="3.4" fill="#17231d"/>`;});
+    if(!col&&t<.05)o+=`<path d="M230,40 V220" stroke="#17231d" stroke-dasharray="4 4" opacity=".35"/>`;
+    dv.innerHTML=o;}
+  const out=h('div',{});
+  const colSeg=seg([['sem','Sem colchicina'],['com','Com colchicina']],'sem',v=>{col=v==='com';phase=0;drawDiv(0);out.innerHTML='';},{label:'Tratamento'});
+  colSeg.style.gridTemplateColumns='repeat(2,1fr)';
+  const goBtn=h('button',{class:'btn primary',onclick:()=>{out.innerHTML='';if(col){out.append(h('p',{class:'fb info'},'Nada acontece: sem microtúbulos, não há fibras do fuso. As cromátides-irmãs continuam juntas e espalhadas, e a célula fica parada nessa fase.'));return;}if(phase)return;phase=1;tween(1800,e=>drawDiv(e),()=>out.append(h('p',{class:'fb ok'},'As fibras que partem dos polos, onde estão os centríolos, puxam as cromátides-irmãs para lados opostos.')));}},'Separar as cromátides');
+  drawDiv(0);
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Centríolos e as fibras da divisão'),
+    h('p',{class:'note'},'Célula 2n = 4, como na Aula 8, com os cromossomos alinhados no meio. Os centríolos ficam nos polos e deles partem fibras feitas de microtúbulos. Compare o que acontece com e sem colchicina.'),
+    h('div',{class:'row'},colSeg,goBtn),h('div',{class:'stage'},dv),out,
+    qq('Para montar um cariótipo, os laboratórios tratam as células com colchicina antes de fotografar os cromossomos. Por quê?',['Para deixar muitas células paradas com os cromossomos bem condensados, sem se separarem','Para colorir os cromossomos','Para matar as bactérias da amostra'],0,'Sem fibras, a divisão não avança e as células se acumulam nessa fase, quando os cromossomos estão mais condensados e visíveis.'),
+    qq('As células da maioria das plantas com flores não têm centríolos, mas se dividem normalmente. O que isso indica?',['Que as fibras da divisão podem se formar sem centríolos; nas células animais, os centríolos organizam essas fibras','Que plantas não fazem mitose','Que as plantas usam colchicina'],0,'Nas células animais, as fibras partem da região dos centríolos. Nas plantas, outras regiões da célula organizam os microtúbulos.')));
+}
+
+// ---------- Parte 6 · Fechamento ----------
+const SEM=[
+ {k:'membrana',q:'Hemácias colocadas em água destilada incham até a membrana se romper. O que acontece com elas?',o:['O conteúdo vaza e a célula morre: a membrana delimita a célula e controla o que entra e sai','Nada muda','A célula se divide'],a:0},
+ {k:'citosol',q:'A glicólise, primeira etapa da quebra da glicose, ocorre no citosol. Se as enzimas do citosol parassem, a célula…',o:['…não conseguiria começar a obter energia da glicose','…perderia o núcleo','…ficaria sem membrana'],a:0},
+ {k:'citoesq',q:'Com colchicina, os microtúbulos do citoesqueleto se desmontam. O que você espera?',o:['Vesículas param, a célula perde a forma e a divisão não avança','A célula produz mais proteínas','Nada muda'],a:0},
+ {k:'nucleo',q:'As hemácias dos mamíferos perdem o núcleo ao amadurecer. Qual é uma consequência?',o:['Não se dividem nem renovam suas proteínas, e vivem só cerca de 120 dias','Passam a fazer fotossíntese','Vivem para sempre'],a:0},
+ {k:'centriolo',q:'Numa célula animal tratada para não formar as fibras que partem dos centríolos, a mitose…',o:['…não separa as cromátides-irmãs','…fica mais rápida','…produz gametas'],a:0},
+ {k:'ribossomo',q:'Alguns antibióticos, como a tetraciclina, bloqueiam os ribossomos das bactérias. O que acontece com elas?',o:['Param de fabricar proteínas e deixam de crescer','Ficam com mais núcleo','Fazem mais fotossíntese'],a:0},
+ {k:'reg',q:'Se o retículo granular da célula da glândula mamária parasse de funcionar…',o:['…a caseína do leite deixaria de ser produzida','…a gordura do leite dobraria','…a célula ganharia cloroplastos'],a:0},
+ {k:'rea',q:'Se o retículo agranular do fígado funcionasse mal…',o:['…o fígado inativaria menos substâncias tóxicas e produziria menos lipídios','…a caseína pararia de ser produzida','…a célula não teria núcleo'],a:0},
+ {k:'golgi',q:'Sem o complexo golgiense…',o:['…as proteínas não seriam modificadas nem empacotadas: a secreção pararia e não se formariam lisossomos','…a célula não teria DNA','…a célula pararia de respirar'],a:0},
+ {k:'lisossomo',q:'Quando falta uma enzima do lisossomo (doenças de depósito lisossômico)…',o:['…o material não digerido se acumula dentro da célula','…a célula fica sem membrana','…as mitocôndrias somem'],a:0},
+ {k:'peroxissomo',q:'Se os peroxissomos não tivessem catalase…',o:['…a água oxigenada se acumularia e danificaria a célula','…a célula faria mais fotossíntese','…o leite ficaria sem gordura'],a:0},
+ {k:'mitocondria',q:'As hemácias dos mamíferos também não têm mitocôndrias. Como elas obtêm energia?',o:['Só pela glicólise e fermentação lática no citosol, que rendem pouco ATP','Pela fotossíntese','Pelo núcleo'],a:0},
+];
+function parteFechamento(p){
+  const done=store.get('sem-done',{});const cnt=counter('previsões certas',Object.keys(done).length+' de 12');
+  const grid=h('div',{class:'chips'});const box=h('div',{class:'stack'});let cur=null;
+  const drawG=()=>{grid.innerHTML='';SEM.forEach((c,i)=>{const b=h('button',{class:'chip',type:'button','aria-pressed':String(cur===i)},(done[c.k]?'✓ ':'')+'Sem '+ORGN[c.k].n.toLowerCase());b.onclick=()=>{cur=i;drawG();show(i);};grid.append(b);});};
+  const show=i=>{const c=SEM[i];box.innerHTML='';box.append(predQ(c.q,c.o,c.a,ORGN[c.k].n+': '+ORGN[c.k].f,ok=>{if(ok&&!done[c.k]){done[c.k]=1;store.set('sem-done',done);cnt.set(Object.keys(done).length+' de 12');drawG();}}));};
+  drawG();
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Célula sem…'),h('p',{class:'note'},'Escolha uma estrutura, “desligue” e preveja o que acontece. Vários casos são reais.'),grid,box,cnt));
+  const NOMES=BOOK12.map(k=>ORGN[k].n).sort((a,b)=>a.localeCompare(b,'pt-BR'));
+  const FUN=[['Envolve a célula e controla o que entra e o que sai','membrana'],['Meio em que as organelas ficam mergulhadas','citosol'],['Filamentos de proteína que dão forma e movem vesículas','citoesq'],['Guarda o DNA, separado pelo envoltório nuclear','nucleo'],['Formam as fibras às quais os cromossomos se ligam na divisão','centriolo'],['Fabricam proteínas, livres ou presos a membranas','ribossomo'],['Bolsas com ribossomos que produzem e armazenam proteínas','reg'],['Tubos sem ribossomos: lipídios e metabolismo de carboidratos','rea'],['Modifica, empacota e distribui proteínas','golgi'],['Digestão intracelular','lisossomo'],['Elimina compostos tóxicos, como a água oxigenada','peroxissomo'],['Etapas finais da respiração aeróbia','mitocondria']];
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Quem faz o quê?'),h('p',{class:'note'},'As 12 estruturas do quadro do livro. Escolha a estrutura de cada função.'),
+    quadro({storeKey:'org12',rows:FUN.map(f=>f[0]),cols:['Estrutura'],opts:NOMES,key:FUN.map(f=>[ORGN[f[1]].n]),colW:'minmax(170px,1.2fr)'})));
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Glândula da cabra × folha da jurema'),h('p',{class:'note'},'Onde cada estrutura aparece? Pense numa célula animal típica e numa célula da folha.'),
     classify({key:'animveg',cats:[['A','Só animal'],['V','Só vegetal'],['D','Nas duas']],items:[
       {t:'Mitocôndria',a:'D',why:'Células vegetais também respiram e têm mitocôndrias: fotossíntese não substitui a respiração.'},
       {t:'Cloroplasto',a:'V',why:'Só em células vegetais (e de algas) que fazem fotossíntese, como as da folha.'},
@@ -841,17 +1371,21 @@ INIT.organelas=root=>{
       {t:'Centríolos',a:'A',why:'Presentes nas células animais; a maioria das plantas com flores não tem centríolos.'},
       {t:'Complexo golgiense',a:'D',why:'Nas duas. Na planta, também produz materiais da parede celular.'},
       {t:'Ribossomos e retículo endoplasmático',a:'D',why:'Toda célula eucariótica produz proteínas.'},
+      {t:'Peroxissomo',a:'D',why:'Nas duas: lembre da batata na água oxigenada.'},
+      {t:'Lisossomo',a:['A','D'],why:'Típico das células animais. Nas plantas, o vacúolo faz boa parte da digestão intracelular.'},
       {t:'Citoesqueleto',a:'D',why:'Sustentação e movimentos internos nas duas.'},
     ]})));
-  root.append(h('div',{class:'panel stack'},h('h3',{},'Quem faz o quê?'),
-    classify({key:'funcoes',cats:[['lis','Lisossomo'],['mit','Mitocôndria'],['clo','Cloroplasto'],['rel','RE liso'],['gol','Golgi'],['cit','Citoesqueleto']],items:[
-      {t:'Digestão intracelular',a:'lis',why:'Lisossomos têm enzimas digestivas.'},
-      {t:'Respiração celular e produção da maior parte do ATP',a:'mit',why:'A mitocôndria realiza as etapas aeróbias da respiração.'},
-      {t:'Fotossíntese',a:'clo',why:'Os cloroplastos captam a energia da luz.'},
-      {t:'Síntese de lipídios',a:'rel',why:'O retículo liso não tem ribossomos e produz lipídios.'},
-      {t:'Modificar, empacotar e enviar proteínas',a:'gol',why:'É o “centro de distribuição” da célula.'},
-      {t:'Sustentação e forma da célula; transporte de vesículas',a:'cit',why:'Filamentos de proteína formam o citoesqueleto.'},
-    ]})));
+}
+INIT.organelas=root=>{
+  root.append(head('Aula 3 · Tema 2, p. 28–30','Fábrica de leite de cabra','Como as organelas trabalham em conjunto? A aula tem seis partes e foi pensada para dois encontros: partes 1 a 3 no primeiro, 4 a 6 no segundo. Juntas, elas passam por todas as estruturas do quadro do livro.'));
+  partes(root,'org',[
+    {id:'fab',t:'Fábrica de proteínas',sub:'ribossomos, retículo, Golgi',org:'ribossomos, retículo granular, complexo golgiense, citosol, núcleo',init:parteCaseina},
+    {id:'mic',t:'Microscópio eletrônico',sub:'MET e MEV',org:'todas as organelas',lede:'Investigue duas células reais em proporção: monte um álbum com as 12 estruturas do livro e compare a glândula mamária com o fígado.',init:parteMicroscopio},
+    {id:'lis',t:'Faxina celular',sub:'lisossomos',org:'lisossomos',init:parteLisossomo},
+    {id:'fig',t:'Fígado na água oxigenada',sub:'peroxissomo, RE agranular',org:'peroxissomo e retículo agranular',lede:'Teste a hipótese da Parte 2: o que os peroxissomos do fígado fazem com um composto tóxico?',init:parteFigado},
+    {id:'tri',t:'Trilhos e cordas',sub:'citoesqueleto, centríolos',org:'citoesqueleto e centríolos',init:parteTrilhos},
+    {id:'fec',t:'Célula sem…',sub:'fechamento',org:'as 12 estruturas',init:parteFechamento},
+  ]);
 };
 
 
@@ -1801,13 +2335,26 @@ const SPEC=[
   {k:'mc',t:'Células da folha possuem mitocôndrias?',ch:['Sim','Não, porque fazem fotossíntese'],key:'Sim',pts:1},
   {k:'par',t:'Bilhete: por que uma bactéria é uma célula mesmo sem núcleo?',man:2},
   {k:'par',t:'Cite uma semelhança e uma diferença entre a bactéria da coalhada e uma célula da folha',man:2}]},
- {code:C1+'03',id:'organelas',titulo:'Aula 3 · Fábrica de leite de cabra',tipo:'Individual',desc:'Percurso da proteína e comparação entre células animais e vegetais.',itens:[
+ {code:C1+'03',id:'organelas',titulo:'Aula 3 · Fábrica de leite de cabra',tipo:'Individual',desc:'Organelas: percurso das proteínas, microscópio eletrônico, lisossomos, peroxissomo, citoesqueleto e centríolos.',itens:[
   {k:'mc',t:'Onde a caseína é produzida?',ch:['No núcleo','Nos ribossomos do retículo endoplasmático rugoso','No complexo golgiense','Nos lisossomos'],key:'Nos ribossomos do retículo endoplasmático rugoso',pts:1},
   {k:'mc',t:'Qual estrutura modifica e empacota a caseína antes da secreção?',ch:['Mitocôndria','Retículo endoplasmático liso','Complexo golgiense','Lisossomo'],key:'Complexo golgiense',pts:1},
   {k:'mc',t:'Como a caseína sai da célula?',ch:['Por difusão simples','Por exocitose: a vesícula se funde à membrana','Pelos poros do núcleo'],key:'Por exocitose: a vesícula se funde à membrana',pts:1},
   {k:'mc',t:'Qual estrutura existe na célula vegetal e não existe na célula animal?',ch:['Mitocôndria','Parede celular','Ribossomo','Complexo golgiense'],key:'Parede celular',pts:1},
   {k:'par',t:'Descreva o caminho da caseína, da produção até a secreção',man:2},
-  {k:'par',t:'Registre duas estruturas da célula vegetal e suas funções',man:2}]},
+  {k:'par',t:'Registre duas estruturas da célula vegetal e suas funções',man:2},
+  {k:'hdr',t:'Partes 1 a 3 · Proteínas, microscópio eletrônico e lisossomos'},
+  {k:'mc',t:'Onde é fabricada uma enzima que vai trabalhar no citosol?',ch:['Em ribossomos livres, no citosol','Em ribossomos aderidos ao retículo granular','No complexo golgiense'],key:'Em ribossomos livres, no citosol',pts:1},
+  {k:'mc',t:'Além de enviar proteínas para fora da célula, o complexo golgiense também:',ch:['Forma lisossomos e vesículas que ficam guardadas na célula','Produz ATP','Guarda o DNA'],key:'Forma lisossomos e vesículas que ficam guardadas na célula',pts:1},
+  {k:'mc',t:'Qual microscópio permite ver as organelas no interior da célula?',ch:['Microscópio de luz','Microscópio eletrônico de varredura (MEV)','Microscópio eletrônico de transmissão (MET)'],key:'Microscópio eletrônico de transmissão (MET)',pts:1},
+  {k:'par',t:'No microscópio eletrônico, cite uma diferença entre as organelas da célula da glândula mamária e as da célula do fígado e explique como ela se relaciona com a função de cada célula',man:2},
+  {k:'mc',t:'Depois que um macrófago engloba uma bactéria numa vesícula, o que acontece?',ch:['A vesícula se funde a um lisossomo, que libera enzimas digestivas','A bactéria vai para o núcleo','A vesícula vai para o retículo granular'],key:'A vesícula se funde a um lisossomo, que libera enzimas digestivas',pts:1},
+  {k:'hdr',t:'Partes 4 a 6 · Peroxissomo, citoesqueleto e centríolos'},
+  {k:'num',t:'Média da espuma no tubo A (fígado cru), em mm'},
+  {k:'num',t:'Média da espuma no tubo B (fígado cozido), em mm'},
+  {k:'mc',t:'Por que o fígado cozido quase não forma espuma com água oxigenada?',ch:['O calor desnaturou a catalase dos peroxissomos','O fígado cozido não tem água','A água oxigenada evaporou'],key:'O calor desnaturou a catalase dos peroxissomos',pts:1},
+  {k:'par',t:'Experimento do fígado: escreva a pergunta, a sua previsão e a conclusão, citando o papel dos tubos D e E',man:2},
+  {k:'mc',t:'Com colchicina, os microtúbulos se desmontam. O que acontece com uma célula em divisão?',ch:['Fica parada: sem fibras, as cromátides-irmãs não se separam','Divide-se mais rápido','Perde o núcleo'],key:'Fica parada: sem fibras, as cromátides-irmãs não se separam',pts:1},
+  {k:'mc',t:'Qual organela elimina compostos tóxicos, como a água oxigenada?',ch:['Lisossomo','Peroxissomo','Centríolo','Complexo golgiense'],key:'Peroxissomo',pts:1}]},
  {code:C1+'04',id:'cebola',titulo:'Aula 4 · Microscópio da cebola',tipo:'Individual',desc:'Roteiro de observação no microscópio virtual.',itens:[
   {k:'txt',t:'Ampliação total usada (ocular × objetiva)',help:'Exemplo: 100× (10× × 10×). Se usou micrografia, escreva "micrografia".'},
   {k:'num',t:'Quantas células cabem, em fila, no diâmetro do campo (objetiva de 10×)?',opt:true},
