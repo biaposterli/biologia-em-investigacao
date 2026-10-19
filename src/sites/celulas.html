@@ -1279,7 +1279,7 @@ function trilhosVesiculas(p){
   const round=a=>[cx+104*Math.cos(a),cy+104*Math.sin(a)*.95];
   let c=0;const NMT=28;const mts=[...Array(NMT)].map((_,k)=>{const a=k/NMT*Math.PI*2+.05;return{a};});
   const outline=s('path',{fill:'#fbe9dd',stroke:'#b07a5a','stroke-width':3});const actin=s('path',{fill:'none',stroke:'#d98f7c','stroke-width':4,opacity:.55});
-  const mtG=s('g');const ves=[...Array(12)].map((_,i)=>({m:(i*7)%NMT,s:Math.random(),d:Math.random()<.5?1:-1,v:.004+Math.random()*.004,el:s('circle',{r:5,fill:'#f2c94c',stroke:'#8a5d1a','stroke-width':1.5}),jx:0,jy:0}));
+  const mtG=s('g');const ves=[...Array(12)].map((_,i)=>({m:(i*9+2)%NMT,s:Math.random(),d:1,v:.005+(i%4)*.0012,el:s('circle',{r:6,fill:'#f2c94c',stroke:'#8a5d1a','stroke-width':1.5}),jx:0,jy:0}));
   const nuc=s('ellipse',{cx:212,cy:160,rx:38,ry:28,fill:'#e3d6f0',stroke:'#6b4a90','stroke-width':2});
   const cG=s('g',{});cG.innerHTML=`<circle cx="${cen[0]}" cy="${cen[1]}" r="11" fill="#c9b6dc" opacity=".6"/><rect x="${cen[0]-9}" y="${cen[1]-3}" width="10" height="6" rx="1.5" fill="#6b4a90"/><rect x="${cen[0]+1}" y="${cen[1]-6}" width="6" height="10" rx="1.5" fill="#6b4a90"/>`;
   sv.append(s('rect',{width:W,height:H,fill:'var(--surface-2)'}),outline,actin,nuc,mtG,cG,...ves.map(v=>v.el));
@@ -1291,6 +1291,8 @@ function trilhosVesiculas(p){
   let shp=0,running=false;
   const setC=v=>{c=Math.max(0,Math.min(100,+v))/100;sl.value=String(Math.round(c*100));rd.textContent=Math.round(c*100)+'%';draw(true);start();};
   sl.addEventListener('input',()=>setC(sl.value));sl.addEventListener('change',()=>setC(sl.value));
+  const fx=s('g');sv.append(fx);
+  function pulse(x,y){const c0=s('circle',{cx:x,cy:y,r:4,fill:'none',stroke:'#d1a03a','stroke-width':2});fx.append(c0);tween(600,e=>{c0.setAttribute('r',4+10*e);c0.setAttribute('opacity',1-e);},()=>c0.remove());}
   function draw(jump){
     shp+=(c*.85-shp)*(jump?.25:.06);outline.setAttribute('d',shape(shp));actin.setAttribute('d',shape(shp));actin.setAttribute('transform',`translate(${cx} ${cy}) scale(.95) translate(${-cx} ${-cy})`);
     const len=Math.max(0,1-c);mtc.set(Math.round(len*100)+'%');let mt='';const ends=mts.map(m=>{const e=edge(m.a,shp);return[cen[0]+(e[0]-cen[0])*.9,cen[1]+(e[1]-cen[1])*.9];});
@@ -1298,7 +1300,7 @@ function trilhosVesiculas(p){
     let moving=0;ves.forEach(v=>{const m=mts[v.m];const[ex,ey]=ends[v.m];
       if(!v.free&&v.s>m.L){v.free=true;v.fx=cen[0]+(ex-cen[0])*v.s;v.fy=cen[1]+(ey-cen[1])*v.s;}
       if(v.free&&m.L>v.s+.05){v.free=false;}
-      if(!v.free){v.s+=v.v*v.d;if(v.s>Math.min(.95,m.L-.01)){v.d=-1;v.s=Math.min(v.s,m.L-.01);}if(v.s<.14)v.d=1;moving++;
+      if(!v.free){v.s+=v.v;if(v.s>Math.min(.97,m.L-.01)){if(m.L>.9)pulse(ex,ey);v.s=.12;}moving++;
         v.el.setAttribute('cx',(cen[0]+(ex-cen[0])*v.s).toFixed(1));v.el.setAttribute('cy',(cen[1]+(ey-cen[1])*v.s).toFixed(1));v.el.setAttribute('fill','#f2c94c');}
       else{v.fx+=(Math.random()-.5)*.5;v.fy+=(Math.random()-.5)*.5;v.el.setAttribute('cx',v.fx.toFixed(1));v.el.setAttribute('cy',v.fy.toFixed(1));v.el.setAttribute('fill','#c9b98a');}});
     mv.set(moving+' de '+ves.length);}
@@ -1306,7 +1308,7 @@ function trilhosVesiculas(p){
   function start(){if(running||!sv.isConnected)return;running=true;requestAnimationFrame(frame);}
   const presets=h('div',{class:'chips'},...[[0,'Sem colchicina'],[50,'Dose média'],[100,'Dose alta']].map(([v,l])=>h('button',{class:'chip',type:'button',onclick:()=>setC(v)},l)));
   p.append(h('div',{class:'panel stack'},h('h3',{},'Trilhos da célula: o citoesqueleto'),
-    h('p',{class:'note'},'Como as vesículas com caseína chegam até a membrana? Os microtúbulos do citoesqueleto (verdes) partem da região dos centríolos e funcionam como trilhos: proteínas motoras carregam vesículas (amarelas) por eles. A colchicina, substância extraída de uma planta, desmonta os microtúbulos. Aumente a dose e observe. Na Aula 9 você verá o que ela faz com uma célula em divisão.'),
+    h('p',{class:'note'},'Como as vesículas com caseína chegam até a membrana? Os microtúbulos do citoesqueleto (verdes) partem da região dos centríolos e funcionam como trilhos: proteínas motoras carregam as vesículas (amarelas) por eles até a membrana, onde elas liberam o conteúdo (o anel que pisca). O movimento é automático. A colchicina, substância extraída de uma planta, desmonta os microtúbulos. Aumente a dose e observe. Na Aula 9 você verá o que ela faz com uma célula em divisão.'),
     h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},h('div',{class:'slider-row'},h('span',{class:'label'},'Colchicina'),rd,sl),presets,mtc,mv,
       h('p',{class:'note'},'Observe três coisas: o comprimento dos microtúbulos, o movimento das vesículas e a forma da célula.'))),
     qq('Com colchicina, as vesículas param e a célula perde a forma alongada. O que isso mostra sobre o citoesqueleto?',['Ele sustenta a forma da célula e serve de caminho para organelas e vesículas','Ele produz as vesículas','Ele digere as vesículas'],0,'É a função do quadro do livro: sustentar, manter a forma e deslocar organelas e vesículas no interior da célula.'),
