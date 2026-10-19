@@ -1285,22 +1285,33 @@ function trilhosVesiculas(p){
   sv.append(s('rect',{width:W,height:H,fill:'var(--surface-2)'}),outline,actin,nuc,mtG,cG,...ves.map(v=>v.el));
   const shape=t=>{let d='';for(let k=0;k<=60;k++){const a=k/60*Math.PI*2;const A=spread(a),B=round(a);const x=A[0]*(1-t)+B[0]*t,y=A[1]*(1-t)+B[1]*t;d+=(k?'L':'M')+x.toFixed(1)+','+y.toFixed(1);}return d+'Z';};
   const edge=(a,t)=>{const A=spread(a),B=round(a);return[A[0]*(1-t)+B[0]*t,A[1]*(1-t)+B[1]*t];};
-  const rd=h('output',{},'0%');const mv=counter('vesículas em movimento','12 de 12');
-  const sl=h('input',{type:'range',min:0,max:100,value:0,'aria-label':'Dose de colchicina'});sl.oninput=()=>{c=+sl.value/100;rd.textContent=sl.value+'%';};
-  let shp=0;
-  const frame=()=>{if(!sv.isConnected)return;requestAnimationFrame(frame);const sec=sv.closest('section');if(sec&&sec.hidden)return;if(sv.closest('[hidden]'))return;
-    shp+=(c*.85-shp)*.03;outline.setAttribute('d',shape(shp));actin.setAttribute('d',shape(shp));actin.setAttribute('transform',`translate(${cx} ${cy}) scale(.95) translate(${-cx} ${-cy})`);
-    const len=Math.max(0,1-c*1.05);let mt='';const ends=mts.map(m=>{const e=edge(m.a,shp);const ex=cen[0]+(e[0]-cen[0])*.9,ey=cen[1]+(e[1]-cen[1])*.9;return[ex,ey];});
-    mts.forEach((m,k)=>{const[ex,ey]=ends[k];const L=len*(.75+.25*((k*5)%7)/6);if(L>.02)mt+=`<path d="M${cen[0]},${cen[1]} L${(cen[0]+(ex-cen[0])*L).toFixed(1)},${(cen[1]+(ey-cen[1])*L).toFixed(1)}" stroke="#4a8a7a" stroke-width="1.6" opacity=".8"/>`;m.L=L;});mtG.innerHTML=mt;
-    let moving=0;ves.forEach(v=>{const m=mts[v.m];const[ex,ey]=ends[v.m];let x,y;if(v.s<=m.L-.02){v.s+=v.v*v.d;if(v.s>m.L-.02||v.s>.98){v.d=-1;}if(v.s<.12)v.d=1;moving++;v.jx*=.9;v.jy*=.9;}else{v.jx+=(Math.random()-.5)*.6;v.jy+=(Math.random()-.5)*.6;v.jx*=.96;v.jy*=.96;}
-      x=cen[0]+(ex-cen[0])*v.s+v.jx;y=cen[1]+(ey-cen[1])*v.s+v.jy;v.el.setAttribute('cx',x.toFixed(1));v.el.setAttribute('cy',y.toFixed(1));});mv.set(moving+' de '+ves.length);};
-  requestAnimationFrame(frame);
+  const rd=h('output',{},'0%');const mv=counter('vesículas sendo transportadas','12 de 12');const mtc=counter('comprimento dos microtúbulos','100%');
+  ves.forEach((v,i)=>{v.s=.18+((i*37)%60)/100;v.free=false;});
+  const sl=h('input',{type:'range',min:0,max:100,step:1,value:0,'aria-label':'Dose de colchicina',style:'grid-column:1/-1'});
+  let shp=0,running=false;
+  const setC=v=>{c=Math.max(0,Math.min(100,+v))/100;sl.value=String(Math.round(c*100));rd.textContent=Math.round(c*100)+'%';draw(true);start();};
+  sl.addEventListener('input',()=>setC(sl.value));sl.addEventListener('change',()=>setC(sl.value));
+  function draw(jump){
+    shp+=(c*.85-shp)*(jump?.25:.06);outline.setAttribute('d',shape(shp));actin.setAttribute('d',shape(shp));actin.setAttribute('transform',`translate(${cx} ${cy}) scale(.95) translate(${-cx} ${-cy})`);
+    const len=Math.max(0,1-c);mtc.set(Math.round(len*100)+'%');let mt='';const ends=mts.map(m=>{const e=edge(m.a,shp);return[cen[0]+(e[0]-cen[0])*.9,cen[1]+(e[1]-cen[1])*.9];});
+    mts.forEach((m,k)=>{const[ex,ey]=ends[k];const L=len*(.8+.2*((k*5)%7)/6);m.L=L;if(L>.02)mt+=`<path d="M${cen[0]},${cen[1]} L${(cen[0]+(ex-cen[0])*L).toFixed(1)},${(cen[1]+(ey-cen[1])*L).toFixed(1)}" stroke="#4a8a7a" stroke-width="1.8" stroke-linecap="round" opacity=".85"/>`;});mtG.innerHTML=mt;
+    let moving=0;ves.forEach(v=>{const m=mts[v.m];const[ex,ey]=ends[v.m];
+      if(!v.free&&v.s>m.L){v.free=true;v.fx=cen[0]+(ex-cen[0])*v.s;v.fy=cen[1]+(ey-cen[1])*v.s;}
+      if(v.free&&m.L>v.s+.05){v.free=false;}
+      if(!v.free){v.s+=v.v*v.d;if(v.s>Math.min(.95,m.L-.01)){v.d=-1;v.s=Math.min(v.s,m.L-.01);}if(v.s<.14)v.d=1;moving++;
+        v.el.setAttribute('cx',(cen[0]+(ex-cen[0])*v.s).toFixed(1));v.el.setAttribute('cy',(cen[1]+(ey-cen[1])*v.s).toFixed(1));v.el.setAttribute('fill','#f2c94c');}
+      else{v.fx+=(Math.random()-.5)*.5;v.fy+=(Math.random()-.5)*.5;v.el.setAttribute('cx',v.fx.toFixed(1));v.el.setAttribute('cy',v.fy.toFixed(1));v.el.setAttribute('fill','#c9b98a');}});
+    mv.set(moving+' de '+ves.length);}
+  const frame=()=>{if(!sv.isConnected){running=false;return;}requestAnimationFrame(frame);if(sv.closest('[hidden]'))return;draw(false);};
+  function start(){if(running||!sv.isConnected)return;running=true;requestAnimationFrame(frame);}
+  const presets=h('div',{class:'chips'},...[[0,'Sem colchicina'],[50,'Dose média'],[100,'Dose alta']].map(([v,l])=>h('button',{class:'chip',type:'button',onclick:()=>setC(v)},l)));
   p.append(h('div',{class:'panel stack'},h('h3',{},'Trilhos da célula: o citoesqueleto'),
     h('p',{class:'note'},'Como as vesículas com caseína chegam até a membrana? Os microtúbulos do citoesqueleto (verdes) partem da região dos centríolos e funcionam como trilhos: proteínas motoras carregam vesículas (amarelas) por eles. A colchicina, substância extraída de uma planta, desmonta os microtúbulos. Aumente a dose e observe. Na Aula 9 você verá o que ela faz com uma célula em divisão.'),
-    h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},h('div',{class:'slider-row'},h('span',{class:'label'},'Colchicina'),rd,sl),mv,
+    h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},h('div',{class:'slider-row'},h('span',{class:'label'},'Colchicina'),rd,sl),presets,mtc,mv,
       h('p',{class:'note'},'Observe três coisas: o comprimento dos microtúbulos, o movimento das vesículas e a forma da célula.'))),
     qq('Com colchicina, as vesículas param e a célula perde a forma alongada. O que isso mostra sobre o citoesqueleto?',['Ele sustenta a forma da célula e serve de caminho para organelas e vesículas','Ele produz as vesículas','Ele digere as vesículas'],0,'É a função do quadro do livro: sustentar, manter a forma e deslocar organelas e vesículas no interior da célula.'),
     disclaimer('Modelo simplificado: o citoesqueleto também tem filamentos de actina (faixa rosada junto à membrana), que a colchicina não desmonta.')));
+  draw(true);start();
 }
 function trilhosDivisao(p){
   // divisão celular com e sem colchicina
