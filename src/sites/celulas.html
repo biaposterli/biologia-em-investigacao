@@ -1634,9 +1634,11 @@ IL.hemInch=()=>`<rect width="120" height="90" fill="#fbeeee"/><circle cx="60" cy
 IL.hemMurcha=()=>{let p='';for(let k=0;k<16;k++){const a=k/16*6.283,r1=24,r2=31;p+=`${k?'L':'M'}${60+Math.cos(a)*r2},${45+Math.sin(a)*r2} L${60+Math.cos(a+.2)*r1},${45+Math.sin(a+.2)*r1} `;}return `<rect width="120" height="90" fill="#fbeeee"/><path d="${p}Z" fill="#b8403b"/>`;};
 // ---------- Aula 6: recursos visuais (palitos, balança, dobra, lupa, desafio, cotidiano) ----------
 // Palito de batata dentro do copo: incha e fica reto quando ganha água; encolhe, enruga e tomba quando perde.
-function osmStrip(x,base,len,w,pct,col='#f2deb0',stroke='#b9975a'){
-  const loss=Math.max(0,-pct),gain=Math.max(0,pct);const droop=Math.min(46,loss*3.2);const L=len*(1+pct/100*.9);const W=w*(1+pct/100*1.4);
-  const tx=x+droop,ty=base-L+droop*.55;const cx1=x+droop*.08,cy1=base-L*.55;
+function osmStrip(x,base,len,w,pct,dir=1,col='#f2deb0',stroke='#b9975a'){
+  // o palito tomba para o lado (dir) só até a parede interna do copo; o resto da perda vira a ponta caindo para baixo
+  const loss=Math.max(0,-pct),gain=Math.max(0,pct);const droop=Math.min(46,loss*3.2);const L=len*(1+Math.max(-20,Math.min(10,pct))/100*.6);const W=w*(1+Math.max(-20,Math.min(10,pct))/100*1.2);
+  const room=Math.max(0,(dir>0?108-x:x-32)-W/2-2);const side=Math.min(droop,room),fall=Math.max(0,droop-room);
+  const tx=x+dir*side,ty=Math.min(base-L*.42,base-L+droop*.4+fall*.6);const cx1=x+dir*side*.08,cy1=base-L*.55;
   const d=`M${x},${base} Q${cx1.toFixed(1)},${cy1.toFixed(1)} ${tx.toFixed(1)},${ty.toFixed(1)}`;
   let o=`<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${(W+3).toFixed(1)}" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${col}" stroke-width="${W.toFixed(1)}" stroke-linecap="round"/>`;
   if(loss>2)for(let k=1;k<4;k++){const t=k/4,u=1-t;const px=u*u*x+2*u*t*cx1+t*t*tx,py=u*u*base+2*u*t*cy1+t*t*ty;o+=`<path d="M${(px-W/2+1).toFixed(1)},${py.toFixed(1)} q${(W/4).toFixed(1)},2 ${(W/2-1).toFixed(1)},0" stroke="${stroke}" stroke-width=".9" fill="none"/>`;}
@@ -1723,7 +1725,7 @@ INIT.osmose=root=>{
   const cupRef={},lcdRef={};
   const modelPct=k=>{const c=(data?data.cfg:cfg)[k];return osmPct(c.sal,c.tempo,c.esp,(data?data.cfg:cfg).murcha);};
   function cupSvg(k,stage,frac){const c=cfg[k];const tint=c.sal===0?'#d6ecf7':c.sal<=2?'#e3eff4':'#eef2f3';const xs=[50,70,90],base=104,len=62,w=8*c.esp;let pot='';
-    if(stage>=1){xs.forEach((x,i)=>{let pct=0;if(stage===3&&data&&data.fin)pct=(data.fin[k][i]/data.ini[k][i]-1)*100;else if(stage===2)pct=modelPct(k)*(frac||0);else if(stage===2.5)pct=modelPct(k);pot+=osmStrip(x,base,len,w,pct);});
+    if(stage>=1){xs.forEach((x,i)=>{let pct=0;if(stage===3&&data&&data.fin)pct=(data.fin[k][i]/data.ini[k][i]-1)*100;else if(stage===2)pct=modelPct(k)*(frac||0);else if(stage===2.5)pct=modelPct(k);pot+=osmStrip(x,base,len,w,pct,i===0?-1:1);});
       if(stage===2){const m=modelPct(k);pot+=waterFlow(xs,base,len,m>=0?1:-1);}}
     const salt=c.sal?[...Array(Math.min(14,c.sal*2))].map((_,i)=>`<rect x="${30+(i*23)%80}" y="${100+(i*7)%10}" width="2.4" height="2.4" fill="#fff" stroke="#c9d3d8" stroke-width=".5" transform="rotate(${i*20} ${31+(i*23)%80} ${101+(i*7)%10})"/>`).join(''):'';
     return `<path d="M24,38 h92 l-6.4,72 h-79.2z" fill="${tint}"/>${salt}${pot}<path d="M20,20 h100 l-8,92 h-84z" fill="none" stroke="#6a7378" stroke-width="2.4"/><path d="M24,38 h92" stroke="#9cc4dc" stroke-width="1.4"/><text x="70" y="132" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">${k}</text>`;}
