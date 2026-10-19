@@ -1632,29 +1632,117 @@ function osmPct(c,t,esp,murcha){const c0=murcha?1.3:.9,gain=murcha?14:8;const eq
 IL.hemNormal=()=>`<rect width="120" height="90" fill="#fbeeee"/><ellipse cx="60" cy="45" rx="32" ry="30" fill="#d9534f"/><ellipse cx="60" cy="45" rx="15" ry="14" fill="#e98b87"/>`;
 IL.hemInch=()=>`<rect width="120" height="90" fill="#fbeeee"/><circle cx="60" cy="45" r="36" fill="#e46b66"/><path d="M84,24 l10,-8 M90,40 l12,-2 M84,66 l10,8" stroke="#d9534f" stroke-width="3" stroke-linecap="round"/>`;
 IL.hemMurcha=()=>{let p='';for(let k=0;k<16;k++){const a=k/16*6.283,r1=24,r2=31;p+=`${k?'L':'M'}${60+Math.cos(a)*r2},${45+Math.sin(a)*r2} L${60+Math.cos(a+.2)*r1},${45+Math.sin(a+.2)*r1} `;}return `<rect width="120" height="90" fill="#fbeeee"/><path d="${p}Z" fill="#b8403b"/>`;};
+// ---------- Aula 6: recursos visuais (palitos, balança, dobra, lupa, desafio, cotidiano) ----------
+// Palito de batata dentro do copo: incha e fica reto quando ganha água; encolhe, enruga e tomba quando perde.
+function osmStrip(x,base,len,w,pct,col='#f2deb0',stroke='#b9975a'){
+  const loss=Math.max(0,-pct),gain=Math.max(0,pct);const droop=Math.min(46,loss*3.2);const L=len*(1+pct/100*.9);const W=w*(1+pct/100*1.4);
+  const tx=x+droop,ty=base-L+droop*.55;const cx1=x+droop*.08,cy1=base-L*.55;
+  const d=`M${x},${base} Q${cx1.toFixed(1)},${cy1.toFixed(1)} ${tx.toFixed(1)},${ty.toFixed(1)}`;
+  let o=`<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${(W+3).toFixed(1)}" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${col}" stroke-width="${W.toFixed(1)}" stroke-linecap="round"/>`;
+  if(loss>2)for(let k=1;k<4;k++){const t=k/4,u=1-t;const px=u*u*x+2*u*t*cx1+t*t*tx,py=u*u*base+2*u*t*cy1+t*t*ty;o+=`<path d="M${(px-W/2+1).toFixed(1)},${py.toFixed(1)} q${(W/4).toFixed(1)},2 ${(W/2-1).toFixed(1)},0" stroke="${stroke}" stroke-width=".9" fill="none"/>`;}
+  if(gain>2)o+=`<path d="M${(x-W/2+2).toFixed(1)},${(base-L*.3).toFixed(1)} v${(-L*.4).toFixed(1)}" stroke="#fff" stroke-width="1.6" opacity=".7"/>`;
+  return o;}
+// moléculas de água entrando (dir=1) ou saindo (dir=-1) do palito, animadas por SMIL
+function waterFlow(xs,base,len,dir){let o='';xs.forEach((x,i)=>{for(let k=0;k<3;k++){const y=base-len*(.25+k*.25),side=k%2?1:-1;const far=x+side*14,near=x+side*4;const from=dir>0?far:near,to=dir>0?near:far;
+  o+=`<circle cx="${from}" cy="${y}" r="1.7" fill="#2a83c6"><animate attributeName="cx" values="${from};${to}" dur="${(.9+((i+k)%3)*.25).toFixed(2)}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="${(.9+((i+k)%3)*.25).toFixed(2)}s" repeatCount="indefinite"/></circle>`;}});return o;}
+// Teste da dobra: palito preso pela ponta esquerda
+function bendSvg(pct,ang,broke){const W=14*(1+pct/100*1.4),L=200*(1+pct/100*.6);const x0=52,y0=46;
+  let o=`<rect width="300" height="190" fill="var(--surface-2)"/>`;
+  const th=Math.max(.0001,ang*Math.PI/180);const R=L/th;const pts=[];
+  const lim=broke?L*.45:L;for(let s=0;s<=lim;s+=4){const f=s/R;pts.push([x0+R*Math.sin(f),y0+R*(1-Math.cos(f))]);}
+  const d='M'+pts.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join(' L');
+  o+=`<path d="${d}" fill="none" stroke="#b9975a" stroke-width="${(W+3).toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="#f2deb0" stroke-width="${W.toFixed(1)}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  if(broke){const[mx,my]=pts[pts.length-1];o+=`<g transform="translate(${mx+10} ${my+46}) rotate(35)"><path d="M0,0 L${(L*.5).toFixed(1)},0" stroke="#b9975a" stroke-width="${(W+3).toFixed(1)}" stroke-linecap="round"/><path d="M0,0 L${(L*.5).toFixed(1)},0" stroke="#f2deb0" stroke-width="${W.toFixed(1)}" stroke-linecap="round"/></g>`;
+    o+=`<text x="${mx+18}" y="${my-12}" font-size="20" font-weight="800" fill="#a3601b">crec!</text>${[[-14,-12],[12,-14],[16,8],[-12,10]].map(([dx,dy])=>`<path d="M${mx.toFixed(1)},${my.toFixed(1)} l${dx},${dy}" stroke="#a3601b" stroke-width="2"/>`).join('')}`;}
+  o+=`<rect x="22" y="${y0-17}" width="34" height="34" rx="9" fill="#d9b48f" stroke="#a37d55"/><text x="39" y="${y0+32}" text-anchor="middle" font-size="10" fill="var(--muted)">dedos</text>`;
+  return o;}
+function osmDobra(getRes){
+  const box=h('div',{class:'bench'});const out=h('div',{});
+  function draw(){box.innerHTML='';const R=getRes();if(!R){box.append(h('p',{class:'note'},'Termine o experimento da bancada (pese as massas finais) para testar os palitos.'));return;}
+    ['A','B'].forEach(k=>{const pct=R[k].pct,sal=R[k].sal;const sv=svgEl('0 0 300 190',bendSvg(pct,0,false),'svgbox','Palito do copo '+k);sv.style.maxWidth='340px';let busy=false;
+      const lim=pct>-2.5?28:pct>-7?80:200;const quebra=pct>-2.5;
+      const b=h('button',{class:'btn',onclick:()=>{if(busy)return;busy=true;out.innerHTML='';tween(1100,e=>{sv.innerHTML=bendSvg(pct,lim*e,false);},()=>{if(quebra){sv.innerHTML=bendSvg(pct,lim,true);}
+        out.append(h('p',{class:'fb info'},'Copo '+k+': '+(quebra?'o palito resistiu pouco e quebrou. Células cheias de água (túrgidas) deixam o tecido firme e quebradiço.':pct>-7?'o palito dobrou um pouco e voltou devagar: perdeu parte da água.':'o palito dobrou como borracha sem quebrar: as células perderam água e o tecido ficou mole (flácido).')));
+        setTimeout(()=>{busy=false;},300);});}},'Dobrar o palito '+k);
+      box.append(h('div',{class:'bottle'},h('strong',{},'Copo '+k+' · '+(sal?fmt(sal)+' g de sal':'só água')),sv,b,h('button',{class:'btn ghost sm',onclick:()=>{sv.innerHTML=bendSvg(pct,0,false);}},'Pegar outro palito')));});}
+  const wrap=h('div',{class:'panel stack'},h('h3',{},'Teste da dobra'),h('p',{class:'note'},'Na prática, a diferença aparece também nas mãos: tire um palito de cada copo e tente dobrar. Qual quebra e qual dobra?'),box,out);
+  wrap.refresh=draw;draw();return wrap;}
+// Lupa: células da batata em diferentes concentrações
+function osmCells(sal,murcha){const c0=murcha?1.3:.9;const t=sal<c0?0:Math.min(1,(sal-c0)/4);const g=sal<c0?(1-sal/c0):0;
+  let o=`<rect width="360" height="220" fill="#eef6fb"/>`;const dir=sal<c0?1:sal>c0+.05?-1:0;
+  for(let r=0;r<2;r++)for(let i=0;i<3;i++){const x=12+i*116,y=12+r*102,w=106,hh=94;
+    o+=`<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="6" fill="#e8f1d8" stroke="#7a9a4a" stroke-width="5"/>`;
+    const sh=t*24,ix=x+6+sh*.5,iy=y+6+sh*.45,iw=w-12-sh,ih=hh-12-sh*.9;const rr=6+t*20;
+    o+=`<rect x="${ix.toFixed(1)}" y="${iy.toFixed(1)}" width="${iw.toFixed(1)}" height="${ih.toFixed(1)}" rx="${rr.toFixed(1)}" fill="#fbf3dc" stroke="#b0602a" stroke-width="1.6"/>`;
+    const vs=.78-t*.5+g*.08;o+=`<rect x="${(ix+iw*(1-vs)/2).toFixed(1)}" y="${(iy+ih*(1-vs)/2).toFixed(1)}" width="${(iw*vs).toFixed(1)}" height="${(ih*vs).toFixed(1)}" rx="${(rr+4).toFixed(1)}" fill="#d6ebf7" stroke="#6aa6d1" stroke-width="1.2"/>`;
+    o+=`<circle cx="${(ix+12).toFixed(1)}" cy="${(iy+12).toFixed(1)}" r="6" fill="#d9c7ea" stroke="#6b4a90"/>`;
+    for(let k=0;k<3;k++){const yy=y+20+k*26;const a=x-4,b=x+16;const from=dir>0?a:b,to=dir>0?b:a;if(dir!==0)o+=`<circle cx="${from}" cy="${yy}" r="2.2" fill="#2a83c6"><animate attributeName="cx" values="${from};${to}" dur="${(1+k*.3).toFixed(1)}s" repeatCount="indefinite"/></circle>`;
+      else o+=`<circle cx="${x+4}" cy="${yy}" r="2.2" fill="#2a83c6"><animate attributeName="cx" values="${x-2};${x+10};${x-2}" dur="1.6s" repeatCount="indefinite"/></circle>`;}}
+  return {svg:o,estado:dir>0?'túrgidas':dir<0?(t>.15?'plasmolisadas':'começando a perder água'):'em equilíbrio'};}
+function osmLupa(){let sal=0,murcha=false;const sv=svgEl('0 0 360 220','', 'svgbox','Células da batata vistas ao microscópio');const st=h('div',{class:'info-card'});
+  const draw=()=>{const r=osmCells(sal,murcha);sv.innerHTML=r.svg;st.innerHTML='';st.append(h('strong',{},'Células '+r.estado),h('span',{},r.estado==='túrgidas'?'O meio tem menos sal que o interior das células (hipotônico). Entra mais água do que sai: o vacúolo enche e empurra a membrana contra a parede, que resiste. A célula fica firme, mas não estoura.':r.estado==='em equilíbrio'?'O meio tem a mesma concentração que o interior das células (isotônico). A água entra e sai na mesma quantidade.':'O meio tem mais sal que o interior (hipertônico). Sai mais água do que entra: o vacúolo murcha e a membrana se descola da parede. Isso é a plasmólise.'));};
+  const sl=h('input',{type:'range',min:0,max:10,step:.5,value:0,'aria-label':'Sal no meio (g em 100 mL)',style:'grid-column:1/-1'});const out=h('output',{},'0 g');
+  sl.addEventListener('input',()=>{sal=+sl.value;out.textContent=fmt(sal,1)+' g';draw();});
+  const ms=seg([[false,'Batata fresca'],[true,'Batata murcha']],false,v=>{murcha=v;draw();},{label:'Batata'});ms.style.gridTemplateColumns='repeat(2,1fr)';
+  draw();
+  return h('div',{class:'panel stack'},h('h3',{},'Lupa: o que acontece nas células?'),h('p',{class:'note'},'Aumente o sal do meio e observe as células de um corte fino de batata. Os pontos azuis representam o sentido em que a água passa mais.'),
+    h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},h('div',{class:'slider-row'},h('span',{class:'label'},'Sal no meio (g em 100 mL)'),out,sl),ms,st)),
+    disclaimer('Modelo didático: o tamanho das mudanças está exagerado para ficar visível.'));}
+// Desafio: em que concentração a batata não muda?
+function osmDesafio(){const SER=[0,.5,1,1.5,2,3];let res=store.get('osm-serie',null);const chart=document.createElementNS(NS,'svg');chart.setAttribute('class','chart');chart.setAttribute('viewBox','0 0 520 260');const out=h('div',{});
+  const draw=()=>{let o=`<rect width="520" height="260" fill="var(--surface)"/>`;const X=v=>60+v/3*430,Y=v=>130-v*7;
+    for(let v=-15;v<=15;v+=5)o+=`<path d="M60,${Y(v)} H500" stroke="${v?'var(--line)':'var(--muted)'}"/><text x="52" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="var(--muted)">${v>0?'+':''}${v}%</text>`;
+    SER.forEach(v=>o+=`<text x="${X(v)}" y="250" text-anchor="middle" font-size="11" fill="var(--muted)">${fmt(v,1)}</text>`);o+=`<text x="280" y="232" text-anchor="middle" font-size="11" fill="var(--muted)">sal (g em 100 mL)</text>`;
+    if(res){const pts=res.map((p,i)=>[X(SER[i]),Y(p)]);o+=`<path d="M${pts.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' L')}" fill="none" stroke="#a3601b" stroke-width="2"/>`;pts.forEach(([x,y],i)=>o+=`<circle cx="${x}" cy="${y}" r="5" fill="var(--surface)" stroke="#a3601b" stroke-width="2.4"/><text x="${x}" y="${y-9}" text-anchor="middle" font-size="10.5" fill="var(--ink)">${res[i]>0?'+':''}${fmt(res[i],1)}</text>`);}
+    else o+=`<text x="280" y="120" text-anchor="middle" font-size="13" fill="var(--muted)">Monte a série de copos para ver o gráfico.</text>`;
+    chart.innerHTML=o;};
+  const run=h('button',{class:'btn primary',onclick:()=>{res=SER.map(c=>Math.round((osmPct(c,30,1,false)+gauss()*.8)*10)/10);store.set('osm-serie',res);draw();out.innerHTML='';}},'Montar 6 copos e medir (30 min)');
+  const inp=h('input',{type:'text',inputmode:'decimal',placeholder:'ex.: 2,5',style:'width:6em','aria-label':'Concentração estimada'});
+  const chk=h('button',{class:'btn',onclick:()=>{out.innerHTML='';if(!res){out.append(h('p',{class:'fb no'},'Monte a série antes.'));return;}const v=parseFloat(inp.value.replace(',','.'));if(isNaN(v)){out.append(h('p',{class:'fb no'},'Digite um número.'));return;}
+    const ok=Math.abs(v-.9)<=.35;out.append(h('p',{class:'fb '+(ok?'ok':'no')},ok?'Boa estimativa! O ponto em que a linha cruza o zero fica perto de 0,9 g em 100 mL. Nessa concentração a água entra e sai das células na mesma quantidade: é a concentração equivalente ao interior das células da batata.':'Olhe onde a linha cruza o 0%: à esquerda a batata ganha massa, à direita perde. O ponto procurado fica entre esses dois copos.'));
+    if(ok)out.append(h('p',{class:'note'},'Curiosidade: o soro fisiológico usado em hospitais tem 0,9 g de sal em 100 mL, a concentração que não faz nossas hemácias incharem nem murcharem.'));}},'Conferir');
+  draw();
+  return h('div',{class:'panel stack'},h('h3',{},'Desafio: em que concentração a batata não muda?'),h('p',{class:'note'},'Com uma série de copos, de 0 a 3 g de sal, todos com o mesmo tempo e o mesmo corte, dá para descobrir a concentração em que a batata não ganha nem perde água.'),
+    h('div',{class:'row'},run),chart,h('div',{class:'row'},h('span',{class:'label'},'Minha estimativa (g em 100 mL)'),inp,chk),out);}
+// Osmose no cotidiano
+function osmCotidiano(){return h('div',{class:'panel stack'},h('h3',{},'Osmose na cozinha do sertão'),h('p',{class:'note'},'Em cada situação, a água entra ou sai das células?'),
+  classify({key:'osm-coti',cats:[['E','Entra água'],['S','Sai água'],['I','Equilíbrio']],items:[
+    {t:'Carne de sol: a carne é coberta de sal e deixada secar',a:'S',why:'O sal puxa a água das células da carne e dos micróbios. Sem água, as bactérias não se multiplicam: por isso a carne de sol dura mais.'},
+    {t:'Salada de alface temperada com sal uma hora antes do almoço',a:'S',why:'O tempero forma um meio hipertônico: as folhas perdem água e murcham.'},
+    {t:'Alface murcha deixada numa tigela com água gelada',a:'E',why:'A água entra nas células, o vacúolo enche e as folhas voltam a ficar firmes.'},
+    {t:'Feijão deixado de molho na água na noite anterior',a:'E',why:'As sementes secas absorvem água e incham.'},
+    {t:'Doce de goiaba bem açucarado guardado fora da geladeira',a:'S',why:'Muito açúcar também forma um meio hipertônico: os micróbios perdem água e o doce não estraga logo.'},
+    {t:'Soro fisiológico (0,9%) aplicado na veia',a:'I',why:'É isotônico em relação ao sangue: as hemácias não incham nem murcham.'}]}));}
+
 INIT.osmose=root=>{
-  root.append(head('Aula 6 · Tema 2, p. 32–36','Batata no sal','O sal altera a quantidade de água em um tecido vegetal? Monte os copos virtuais, pese as amostras, espere e pese de novo.'));
+  root.append(head('Aula 6 · Tema 2, p. 32–36','Batata no sal','O sal altera a quantidade de água em um tecido vegetal? Monte os copos com palitos de batata, pese, acelere o tempo e veja os palitos mudarem. Depois teste a dobra, olhe as células na lupa e encare o desafio.'));
   const cfg=store.get('osm-cfg',{A:{sal:0,tempo:20,esp:1},B:{sal:5,tempo:20,esp:1},murcha:false});
   let data=store.get('osm-sim',null);let phase=data&&data.fin?3:data?1:0;let mode='sim';
   const saveCfg=()=>store.set('osm-cfg',cfg);
   const cupBox=h('div',{class:'bench'});const warn=h('div',{});
-  function cupSvg(k,stage){const c=cfg[k];const tint=c.sal===0?'#d6ecf7':c.sal<=2?'#e3eff4':'#eef2f3';let pot='';
-    for(let i=0;i<3;i++){let sc=1;if(stage===3&&data&&data.fin){sc=Math.cbrt(data.fin[k][i]/data.ini[k][i]);}const w=26*sc*(c.esp===1.5?1.15:c.esp===.5?.8:1),hh=16*sc*(c.esp===1.5?1.2:c.esp===.5?.7:1);
-      pot+=`<rect x="${32+i*30-w/2+15}" y="${72-hh/2+i*4}" width="${w}" height="${hh}" rx="3" fill="#f2deb0" stroke="#b9975a" stroke-width="1.6"/>`;}
-    return `<path d="M20,20 h100 l-8,92 h-84z" fill="#fff" stroke="#6a7378" stroke-width="2.4"/><path d="M24,38 h92 l-6.4,72 h-79.2z" fill="${tint}"/>${stage>=1&&stage<3?pot:''}${stage===3?pot:''}<text x="70" y="132" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">${k}</text>`;}
+  const cupRef={},lcdRef={};
+  const modelPct=k=>{const c=(data?data.cfg:cfg)[k];return osmPct(c.sal,c.tempo,c.esp,(data?data.cfg:cfg).murcha);};
+  function cupSvg(k,stage,frac){const c=cfg[k];const tint=c.sal===0?'#d6ecf7':c.sal<=2?'#e3eff4':'#eef2f3';const xs=[50,70,90],base=104,len=62,w=8*c.esp;let pot='';
+    if(stage>=1){xs.forEach((x,i)=>{let pct=0;if(stage===3&&data&&data.fin)pct=(data.fin[k][i]/data.ini[k][i]-1)*100;else if(stage===2)pct=modelPct(k)*(frac||0);else if(stage===2.5)pct=modelPct(k);pot+=osmStrip(x,base,len,w,pct);});
+      if(stage===2){const m=modelPct(k);pot+=waterFlow(xs,base,len,m>=0?1:-1);}}
+    const salt=c.sal?[...Array(Math.min(14,c.sal*2))].map((_,i)=>`<rect x="${30+(i*23)%80}" y="${100+(i*7)%10}" width="2.4" height="2.4" fill="#fff" stroke="#c9d3d8" stroke-width=".5" transform="rotate(${i*20} ${31+(i*23)%80} ${101+(i*7)%10})"/>`).join(''):'';
+    return `<path d="M24,38 h92 l-6.4,72 h-79.2z" fill="${tint}"/>${salt}${pot}<path d="M20,20 h100 l-8,92 h-84z" fill="none" stroke="#6a7378" stroke-width="2.4"/><path d="M24,38 h92" stroke="#9cc4dc" stroke-width="1.4"/><text x="70" y="132" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">${k}</text>`;}
+  function lcdText(k){if(!data)return '— g';const v=data.fin?data.fin[k]:data.ini[k];return fmt(v.reduce((a,b)=>a+b,0),2)+' g';}
+  function countLcd(key){['A','B'].forEach(k=>{const el=lcdRef[k];if(!el||!data)return;const tgt=(data[key][k]).reduce((a,b)=>a+b,0);tween(900,e=>{el.textContent=fmt(tgt*e,2)+' g';});});}
   function drawCups(){cupBox.innerHTML='';
-    ['A','B'].forEach(k=>{const c=cfg[k];const sv=svgEl('0 0 140 140',cupSvg(k,phase),'svgbox','Copo '+k);
+    ['A','B'].forEach(k=>{const c=cfg[k];const sv=svgEl('0 0 140 140',cupSvg(k,phase,1),'svgbox','Copo '+k);cupRef[k]=sv;
+      const lcd=h('span',{class:'mono',style:'background:#1d221f;color:#9be7a6;border-radius:6px;padding:2px 8px;font-size:.9rem'},lcdText(k));lcdRef[k]=lcd;
       const mk=(arr,key,lab,f)=>{const sel=h('select',{'aria-label':lab+' do copo '+k,disabled:phase>0?'':null},...arr.map(v=>h('option',{value:v,selected:c[key]===v},f(v))));sel.onchange=()=>{c[key]=+sel.value;saveCfg();drawCups();checkFair();};return h('label',{class:'stack',style:'gap:2px;width:100%'},h('span',{class:'label'},lab),sel);};
-      cupBox.append(h('div',{class:'bottle'},sv,mk(SAL,'sal','Sal (g em 100 mL)',v=>v===0?'0 g (só água)':fmt(v)+' g'),mk(TEMPO,'tempo','Tempo de imersão',v=>v+' min'),mk(ESP,'esp','Espessura do corte',v=>fmt(v,1)+' cm')));});}
+      cupBox.append(h('div',{class:'bottle'},sv,h('div',{class:'row',style:'gap:6px;justify-content:center'},h('span',{class:'note'},'⚖ 3 palitos:'),lcd),mk(SAL,'sal','Sal (g em 100 mL)',v=>v===0?'0 g (só água)':fmt(v)+' g'),mk(TEMPO,'tempo','Tempo de imersão',v=>v+' min'),mk(ESP,'esp','Espessura do palito',v=>fmt(v,1)+' cm')));});}
   function checkFair(){warn.innerHTML='';const d=[];if(cfg.A.tempo!==cfg.B.tempo)d.push('o tempo de imersão');if(cfg.A.esp!==cfg.B.esp)d.push('a espessura do corte');
     if(cfg.A.sal===cfg.B.sal)warn.append(h('p',{class:'warnbox'},'Os dois copos têm a mesma quantidade de sal: assim não dá para testar o efeito do sal.'));
     if(d.length)warn.append(h('p',{class:'warnbox'},'⚠ Teste injusto: além do sal, você mudou '+d.join(' e ')+'. Se a massa mudar, não saberemos qual variável causou a diferença.'));}
   const murchaSeg=seg([[false,'Batata fresca'],[true,'Batata guardada há dias (murcha)']],cfg.murcha,v=>{cfg.murcha=v;saveCfg();},{label:'Batata'});
-  const bPrep=h('button',{class:'btn primary'},'1 · Cortar e pesar (massa inicial)');const bWait=h('button',{class:'btn primary'},'2 · Mergulhar e esperar');const bFin=h('button',{class:'btn primary'},'3 · Secar com 3 toques de papel e pesar');const bNew=h('button',{class:'btn ghost'},'Novo experimento');
+  const bPrep=h('button',{class:'btn primary'},'1 · Cortar e pesar (massa inicial)');const bWait=h('button',{class:'btn primary'},'2 · Mergulhar e acelerar o tempo');const bFin=h('button',{class:'btn primary'},'3 · Secar com 3 toques de papel e pesar');const bNew=h('button',{class:'btn ghost'},'Novo experimento');
   const prog=h('div',{class:'bar',style:'height:10px;background:var(--surface-2);border-radius:6px;overflow:hidden'},h('i',{style:'display:block;height:100%;width:0;background:var(--tema);transition:width 1.6s linear'}));
-  bPrep.onclick=()=>{const mass=esp=>Math.round(2.5*2.5*esp*1.08*(1+gauss()*.07)*100)/100;data={cfg:JSON.parse(JSON.stringify(cfg)),ini:{A:[0,1,2].map(()=>mass(cfg.A.esp)),B:[0,1,2].map(()=>mass(cfg.B.esp))},fin:null};store.set('osm-sim',data);phase=1;upd();};
-  bWait.onclick=()=>{phase=2;upd();const bar=prog.firstChild;bar.style.width='0';void bar.offsetWidth;bar.style.width='100%';setTimeout(()=>{phase=2.5;upd();},1700);};
-  bFin.onclick=()=>{const f={};['A','B'].forEach(k=>{const c=data.cfg[k];f[k]=data.ini[k].map(m=>{const pct=osmPct(c.sal,c.tempo,c.esp,data.cfg.murcha)+gauss()*1.3+gauss()*.6;return Math.round(m*(1+pct/100)*100)/100;});});data.fin=f;store.set('osm-sim',data);phase=3;upd();};
+  bPrep.onclick=()=>{const mass=esp=>Math.round(2.5*2.5*esp*1.08*(1+gauss()*.07)*100)/100;data={cfg:JSON.parse(JSON.stringify(cfg)),ini:{A:[0,1,2].map(()=>mass(cfg.A.esp)),B:[0,1,2].map(()=>mass(cfg.B.esp))},fin:null};store.set('osm-sim',data);phase=1;upd();countLcd('ini');};
+  bWait.onclick=()=>{phase=2;upd();const bar=prog.firstChild;bar.style.transition='width 2.6s linear';bar.style.width='0';void bar.offsetWidth;bar.style.width='100%';tween(2600,e=>{['A','B'].forEach(k=>{if(cupRef[k])cupRef[k].innerHTML=cupSvg(k,2,e);});},()=>{phase=2.5;upd();});};
+  bFin.onclick=()=>{const f={};['A','B'].forEach(k=>{const c=data.cfg[k];f[k]=data.ini[k].map(m=>{const pct=osmPct(c.sal,c.tempo,c.esp,data.cfg.murcha)+gauss()*1.3+gauss()*.6;return Math.round(m*(1+pct/100)*100)/100;});});data.fin=f;store.set('osm-sim',data);phase=3;upd();countLcd('fin');};
   bNew.onclick=()=>{data=null;store.set('osm-sim',null);phase=0;prog.firstChild.style.transition='none';prog.firstChild.style.width='0';setTimeout(()=>prog.firstChild.style.transition='',30);upd();};
   const ctrl=h('div',{class:'row'});const tblBox=h('div',{});const chart=document.createElementNS(NS,'svg');chart.setAttribute('class','chart');
   function rowsFrom(){if(mode==='real'){const r=store.get('osm-real',{});return ['A','B'].flatMap(k=>[0,1,2].map(i=>({k,i,ini:r[k+i+'i'],fin:r[k+i+'f']})));}
@@ -1682,13 +1770,15 @@ INIT.osmose=root=>{
   function upd(){drawCups();checkFair();ctrl.innerHTML='';
     if(mode==='real'){ctrl.append(h('span',{class:'note'},'Digite as massas medidas na prática (A: água; B: 5 g de sal em 100 mL).'));}
     else{bPrep.disabled=phase!==0;bWait.disabled=phase!==1;bFin.disabled=phase!==2.5;ctrl.append(bPrep,bWait,bFin,bNew);}
-    drawTable();drawChart();
+    drawTable();drawChart();if(typeof dobra!=='undefined'&&dobra)dobra.refresh();
     store.set('osm-last',{mode,rows:rowsFrom(),cfg:mode==='real'?null:data&&data.cfg});}
   const modeSeg=h('span',{class:'pill ex'},'Experimento virtual');
   root.append(h('div',{class:'panel stack bancada'},h('div',{class:'row',style:'justify-content:space-between'},h('h3',{},'Bancada'),modeSeg),
     h('div',{class:'row'},h('span',{class:'label'},'Batata'),murchaSeg),cupBox,warn,ctrl,prog,
     h('div',{class:'cols'},tblBox,h('div',{class:'stack'},chart,h('p',{class:'note'},'Barras: média das réplicas. Círculos: cada réplica. Não esconda os resultados que destoam.'))),
-    disclaimer('Modelo didático: as massas variam entre réplicas como numa prática real (cortes diferentes, secagem). Não substitui a prática.')));
+    disclaimer('Modelo didático: as massas variam entre réplicas como numa prática real (cortes diferentes, secagem). A mudança de forma dos palitos está exagerada para ficar visível. Não substitui a prática.')));
+  var dobra=osmDobra(()=>{if(!data||!data.fin)return null;const R={};['A','B'].forEach(k=>{const v=data.ini[k].map((m,i)=>(data.fin[k][i]/m-1)*100);R[k]={pct:v.reduce((a,b)=>a+b,0)/3,sal:data.cfg[k].sal};});return R;});
+  root.append(dobra,osmLupa());
   upd();
   // Hemácias
   const TUBOS=[['Água destilada','hipotônico'],['Soro fisiológico (0,9% de sal)','isotônico'],['Solução com 3% de sal','hipertônico']];
@@ -1699,6 +1789,7 @@ INIT.osmose=root=>{
     h('button',{class:'btn primary',style:'align-self:flex-start',onclick:()=>{hemOut.innerHTML='';if(Object.keys(pv).length<3){hemOut.append(h('p',{class:'fb no'},'Faça a previsão para os três tubos.'));return;}
       const g=h('div',{class:'ab-grid'});TUBOS.forEach(([n,t],i)=>{const r=RES[t];g.append(h('div',{class:'ab-card'},h('strong',{},n+' · meio '+t),ilu(r==='inch'?'hemInch':r==='normal'?'hemNormal':'hemMurcha','ilu ilu-card'),h('span',{class:'pill '+(pv[i]===r?'ok':'no')},pv[i]===r?'previsão confirmada':'previsão diferente')));});
       hemOut.append(g,h('p',{class:'fb info'},'Em meio hipotônico, entra água e a hemácia pode romper (hemólise). Em meio hipertônico, ela perde água e murcha. A célula vegetal não rompe em água porque a parede celular resiste: ela fica túrgida.'));}},'Revelar'),hemOut));
+  root.append(osmDesafio(),osmCotidiano());
 };
 
 
