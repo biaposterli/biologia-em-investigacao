@@ -266,6 +266,7 @@ extend('heredo',root=>{
       msg.innerHTML='';if(!hist.length){msg.append(h('p',{class:'note'},'Simule as gestações do casal, uma de cada vez.'));return;}
       const ult=hist.slice(-3);const seq=ult.length>=2&&ult.every(x=>x==='aa');
       msg.append(h('div',{class:'fb info'},h('b',{},`Gestação ${hist.length}: ${hist[hist.length-1]}. `),`Chance de a próxima gestação ser aa: `,h('b',{},'1/4'),', ',seq?'mesmo depois de filhos aa seguidos. ':'qualquer que tenha sido o resultado anterior. ','Cada gestação vem de um novo encontro de gametas: as probabilidades se renovam a cada gestação.'));}
+    box.append(h('p',{class:'callout'},h('strong',{},'Lembrete da aula 4: '),'para “o 1º filho aa ',h('b',{},'e'),' o 2º filho aa”, multiplique (1/4 × 1/4 = 1/16). Para “um filho AA ',h('b',{},'ou'),' Aa”, some (1/4 + 2/4 = 3/4). “E” deixa a chance menor; “ou” deixa maior.'));
     box.append(h('div',{class:'hg-card'},h('h4',{},'Independência entre gestações'),h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{const g=['A','a'][Math.random()<.5?0:1]+['A','a'][Math.random()<.5?0:1];hist.push(g==='aA'?'Aa':g);store.set('hg-gest',hist);dg();}},'🤰 Nova gestação'),h('button',{class:'btn ghost sm',onclick:()=>{hist.length=0;store.set('hg-gest',hist);dg();}},'Recomeçar')),row,msg));dg();
     // desafio 2/3
     const q=store.get('hg-23',null);const fb=h('div',{});

@@ -746,6 +746,7 @@ INIT.agencia=root=>{
   if(!document.getElementById('ag-css')){const st=document.createElement('style');st.id='ag-css';st.textContent=
 `.agp{width:100%;max-width:150px;height:auto}.ag-ico{width:24px;height:24px;flex:none}.ag-tli{width:44px;height:44px;flex:none}.ag-av{width:36px;height:36px;flex:none}.aga{width:100%;max-width:190px;height:auto}
 .ag-card{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+@media (max-width:600px){.ag-tab{display:none}}
 .ag-card .ag-fig{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;min-height:150px}
 .ag-cap{font-size:.86rem;color:var(--muted);text-align:center;line-height:1.4}
 .ag-cap b{color:var(--her)}
@@ -765,6 +766,22 @@ INIT.agencia=root=>{
 .ag-sieve div.on{opacity:1;border-color:var(--her);background:var(--her-soft)}
 `;document.head.append(st);}
   root.append(head('Aula 4 · Livro p. 331–334','Agência de previsões genéticas','Cada pedido vira uma previsão com cálculo e condição de validade. “E” entre eventos independentes: multiplique. “Ou” entre alternativas que não podem acontecer juntas: some.'));
+  // Explicação das regras do "e" e do "ou"
+  (()=>{const regra=(cor,tit,perg,fig,conta,fim)=>h('div',{class:'stat-box ag-card',style:'border-top:5px solid '+cor},h('h4',{style:'margin:0;font:700 1.15rem var(--f-display)'},tit),h('p',{style:'margin:0'},perg),h('div',{class:'ag-fig'},fig),h('p',{class:'ag-cap',style:'margin:0'},conta),h('p',{style:'margin:0;font-size:.92rem'},fim));
+    const tab=h('div',{class:'tbl-wrap ag-tab'},h('table',{class:'data'},h('tr',{},h('th',{},'O que o pedido exige?'),h('th',{},'Exemplo'),h('th',{},'Conta'),h('th',{},'O resultado...')),
+      h('tr',{},h('td',{},h('b',{},'Várias coisas'),', todas precisam acontecer (“e”)'),h('td',{},'1º filho aa ',h('b',{},'e'),' 2º filho aa'),h('td',{class:'mono'},'1/4 × 1/4 = 1/16'),h('td',{},h('b',{},'diminui'),': exigir mais é mais difícil')),
+      h('tr',{},h('td',{},h('b',{},'Uma coisa só'),', e mais de um resultado serve (“ou”)'),h('td',{},'um filho AA ',h('b',{},'ou'),' Aa'),h('td',{class:'mono'},'1/4 + 2/4 = 3/4'),h('td',{},h('b',{},'aumenta'),': aceitar mais é mais fácil'))));
+    root.append(panel(h('span',{class:'eyebrow'},'Antes dos pedidos'),h('h3',{},'Multiplicar ou somar? A pergunta que decide'),
+      h('p',{},'Antes de fazer a conta, leia o pedido e pergunte: ',h('b',{},'quantas coisas precisam acontecer?'),' A palavra “e” ou “ou” no pedido costuma dar a pista.'),
+      h('div',{class:'cols'},
+        regra('var(--her)','“E”: multiplica','Um casal Aa × Aa terá dois filhos. Qual a chance de o 1º ser aa E o 2º também ser aa?',agArea('Aa','Aa','aa','aa'),
+          h('span',{},'O 1º filho tem 4 resultados possíveis; o 2º, outros 4. Juntos: 4 × 4 = 16 combinações. Só ',h('b',{},'1'),' tem os dois aa: ',h('b',{},'1/4 × 1/4 = 1/16'),'.'),
+          h('span',{},h('b',{},'Quando vale: '),'os eventos são ',h('b',{},'independentes'),' (um não muda a chance do outro). É o caso de filhos diferentes: cada um vem de um novo encontro de gametas.')),
+        regra('var(--dna)','“Ou”: soma','Um filho de Aa × Aa. Qual a chance de ele ser AA OU Aa?',agPunnett('Aa','Aa',g=>g!=='aa'),
+          h('span',{},'AA ocupa 1 casa (1/4) e Aa ocupa 2 casas (2/4). Qualquer uma serve, então juntamos as casas: ',h('b',{},'1/4 + 2/4 = 3/4'),'.'),
+          h('span',{},h('b',{},'Quando vale: '),'as alternativas são ',h('b',{},'mutuamente exclusivas'),' (não acontecem ao mesmo tempo). Um filho não pode ser AA e Aa ao mesmo tempo, então nenhuma casa é contada duas vezes.'))),
+      tab,
+      h('div',{class:'callout'},h('strong',{},'Dica para conferir a conta: '),'“e” deixa o número ',h('b',{},'menor'),' do que cada chance sozinha; “ou” deixa ',h('b',{},'maior'),'. Se alguém fizer 1/4 + 1/4 = 1/2 para “os dois filhos aa”, o resultado ficou maior do que a chance de um filho só, e isso não faz sentido: exigir dois filhos aa é mais difícil do que exigir um.')));})();
   root.append(panel(h('h3',{},'Pedidos que chegaram à agência'),h('p',{class:'note'},'Modelo: gene autossômico com alelos A e a, dominância completa, gametas com a mesma probabilidade. Genitores Aa × Aa.'),
     h('div',{class:'row',style:'gap:14px;align-items:center'},h('span',{class:'row',style:'gap:6px'},svgOf(pessoaSv(14,15,13,false),'0 0 28 28','ag-ico'),h('span',{},h('b',{},'AA'),' ou ',h('b',{},'Aa'),': produz melanina')),h('span',{class:'row',style:'gap:6px'},svgOf(pessoaSv(14,15,13,true),'0 0 28 28','ag-ico'),h('span',{},h('b',{},'aa'),': albinismo'))),
     h('p',{class:'note',style:'margin:0'},'Família fictícia. No albinismo oculocutâneo tipo 1, a herança é autossômica recessiva: a pessoa aa produz pouca ou nenhuma melanina, o pigmento da pele, dos cabelos e dos olhos. Quem é Aa produz melanina normalmente, mas pode passar o alelo a para os filhos.'),
@@ -2107,6 +2124,7 @@ extend('heredo',root=>{
       msg.innerHTML='';if(!hist.length){msg.append(h('p',{class:'note'},'Simule as gestações do casal, uma de cada vez.'));return;}
       const ult=hist.slice(-3);const seq=ult.length>=2&&ult.every(x=>x==='aa');
       msg.append(h('div',{class:'fb info'},h('b',{},`Gestação ${hist.length}: ${hist[hist.length-1]}. `),`Chance de a próxima gestação ser aa: `,h('b',{},'1/4'),', ',seq?'mesmo depois de filhos aa seguidos. ':'qualquer que tenha sido o resultado anterior. ','Cada gestação vem de um novo encontro de gametas: as probabilidades se renovam a cada gestação.'));}
+    box.append(h('p',{class:'callout'},h('strong',{},'Lembrete da aula 4: '),'para “o 1º filho aa ',h('b',{},'e'),' o 2º filho aa”, multiplique (1/4 × 1/4 = 1/16). Para “um filho AA ',h('b',{},'ou'),' Aa”, some (1/4 + 2/4 = 3/4). “E” deixa a chance menor; “ou” deixa maior.'));
     box.append(h('div',{class:'hg-card'},h('h4',{},'Independência entre gestações'),h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{const g=['A','a'][Math.random()<.5?0:1]+['A','a'][Math.random()<.5?0:1];hist.push(g==='aA'?'Aa':g);store.set('hg-gest',hist);dg();}},'🤰 Nova gestação'),h('button',{class:'btn ghost sm',onclick:()=>{hist.length=0;store.set('hg-gest',hist);dg();}},'Recomeçar')),row,msg));dg();
     // desafio 2/3
     const q=store.get('hg-23',null);const fb=h('div',{});
