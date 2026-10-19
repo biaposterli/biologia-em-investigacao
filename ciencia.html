@@ -604,6 +604,37 @@ const TESTES=[
   {id:'pesar',n:'Pesar',ic:'⚖',txt:o=>`A balança marca ${50+o.m} g. Uma caixa vazia, igual a esta, tem 50 g.`,ok:(o,ref)=>o.m===ref.m},
   {id:'ima',n:'Aproximar um ímã',ic:'∩',txt:o=>o.ima?'A caixa é puxada de leve na direção do ímã. Algo lá dentro é atraído.':'Nada acontece. Nada lá dentro é atraído pelo ímã.',ok:(o,ref)=>o.ima===ref.ima},
 ];
+// Sons sintetizados no navegador (Web Audio). O som depende só das propriedades do objeto:
+// por isso o dado de madeira e o cubo de plástico soam iguais, como na observação escrita.
+const SOM=(()=>{let ctx=null,nb=null,mst=null;
+  const ac=()=>{try{if(!ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ctx=new C();const cp=ctx.createDynamicsCompressor();cp.threshold.value=-14;cp.ratio.value=8;mst=ctx.createGain();mst.gain.value=.6;mst.connect(cp);cp.connect(ctx.destination);}if(ctx.state==='suspended')ctx.resume();return ctx;}catch(e){return null;}};
+  const noise=c=>{if(nb)return nb;const b=c.createBuffer(1,c.sampleRate*2,c.sampleRate);const d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return nb=b;};
+  const out=(c,pan)=>{const g=c.createGain();if(c.createStereoPanner){const p=c.createStereoPanner();p.pan.value=pan||0;g.connect(p);p.connect(mst);}else g.connect(mst);return g;};
+  // impacto com modos de vibração: [frequência, amplitude, duração]
+  function modal(c,t,modes,vol,pan){const o=out(c,pan);modes.forEach(([f,a,d])=>{const os=c.createOscillator();os.frequency.value=f*(1+(Math.random()-.5)*.02);const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(a*vol,t+.002);g.gain.exponentialRampToValueAtTime(.0001,t+d);os.connect(g);g.connect(o);os.start(t);os.stop(t+d+.05);});}
+  function burst(c,t,{f=1000,q=1,type='bandpass',dur=.05,vol=.5,pan=0,att=.002}){const s=c.createBufferSource();s.buffer=noise(c);const fl=c.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+att);g.gain.exponentialRampToValueAtTime(.0001,t+dur);s.connect(fl);fl.connect(g);g.connect(out(c,pan));s.start(t,Math.random());s.stop(t+dur+.05);}
+  const IMP={
+    vidro:(c,t,v,p)=>{modal(c,t,[[2650,.45,.28],[4310,.28,.2],[6120,.14,.13]],v,p);burst(c,t,{f:5200,dur:.02,vol:.15*v,pan:p});},
+    oco:(c,t,v,p)=>{modal(c,t,[[1180,.22,.06],[2380,.07,.035]],v,p);burst(c,t,{f:3200,q:.8,dur:.015,vol:.08*v,pan:p});},
+    metal:(c,t,v,p)=>{modal(c,t,[[620,.4,.55],[1530,.3,.42],[2470,.2,.3],[3810,.1,.22]],v,p);burst(c,t,{f:2600,dur:.03,vol:.25*v,pan:p});},
+    seco:(c,t,v,p)=>{modal(c,t,[[520,.45,.06],[1240,.18,.04]],v,p);burst(c,t,{f:1300,q:2,dur:.045,vol:.35*v,pan:p});},
+    fino:(c,t,v,p)=>{burst(c,t,{f:6200,q:3,dur:.05,vol:.14*v,pan:p});modal(c,t,[[4700,.06,.07]],v,p);},
+    abafado:(c,t,v,p)=>{burst(c,t,{f:260,q:.7,type:'lowpass',dur:.1,vol:.55*v,pan:p});}};
+  function rolar(c,t,dur,mat){const s=c.createBufferSource();s.buffer=noise(c);s.loop=true;const fl=c.createBiquadFilter();fl.type='bandpass';fl.frequency.value={vidro:1900,oco:2600,metal:1200}[mat]||1500;fl.Q.value=1.3;
+    const v=mat==='oco'?.07:.22;const g=c.createGain();g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.12);g.gain.setValueAtTime(v,t+dur-.06);g.gain.linearRampToValueAtTime(0,t+dur);
+    const lfo=c.createOscillator();lfo.frequency.value=17;const lg=c.createGain();lg.gain.value=v*.4;lfo.connect(lg);lg.connect(g.gain);
+    let dst=mst;if(c.createStereoPanner){const pn=c.createStereoPanner();pn.pan.setValueAtTime(-.85,t);pn.pan.linearRampToValueAtTime(.85,t+dur);pn.connect(mst);dst=pn;}
+    s.connect(fl);fl.connect(g);g.connect(dst);s.start(t);s.stop(t+dur+.05);lfo.start(t);lfo.stop(t+dur);}
+  return {ok:()=>!!(window.AudioContext||window.webkitAudioContext),
+    // devolve a duração do som, em segundos
+    play(test,o){const c=ac();if(!c)return 0;const t=c.currentTime+.04;const I=IMP[o.som];
+      if(test==='inclinar'){if(o.mov==='rola'){rolar(c,t,.95,o.som);I(c,t+.95,1,.85);return 1.3;}
+        if(o.mov==='tomba'){[0,.34,.68].forEach((d,i)=>I(c,t+d,1-i*.15,-.6+i*.6));return 1.05;}
+        burst(c,t,{f:900,q:.6,dur:.35,vol:.07,pan:-.3,att:.15});I(c,t+.35,1,.85);return .8;}
+      if(test==='sacudir'){for(let i=0;i<10;i++)I(c,t+i*.12+Math.random()*.035,.55+Math.random()*.45,i%2?.65:-.65);return 1.4;}
+      if(test==='pesar'){burst(c,t,{f:300,q:.7,type:'lowpass',dur:.12,vol:.35});modal(c,t+.55,[[1760,.18,.12]],1,0);modal(c,t+.72,[[1760,.18,.12]],1,0);return .95;}
+      if(test==='ima'){if(o.ima){burst(c,t,{f:800,q:.6,dur:.22,vol:.05,att:.12});I(c,t+.22,1.1,.5);return .6;}burst(c,t,{f:600,q:.5,dur:.4,vol:.025,att:.2});return .5;}
+      return 0;}};})();
 function caixaSv(letra,cls=''){return svgOf(`<ellipse cx="80" cy="128" rx="62" ry="7" fill="rgba(0,0,0,.14)"/><path d="M22,52 L80,30 L138,52 L80,74z" fill="#d9b27a" stroke="#8a6a45" stroke-width="2"/><path d="M22,52 V112 L80,134 V74z" fill="#c49660" stroke="#8a6a45" stroke-width="2"/><path d="M138,52 V112 L80,134 V74z" fill="#b5864f" stroke="#8a6a45" stroke-width="2"/><path d="M51,41 L109,63 M58,38 L116,60" stroke="#e9d9b0" stroke-width="6" opacity=".9"/><text x="110" y="104" text-anchor="middle" font-size="30" font-weight="800" fill="#5d4630" font-family="Bricolage Grotesque, sans-serif">${letra}</text><text x="50" y="104" text-anchor="middle" font-size="22" font-weight="800" fill="#7a5634" font-family="Bricolage Grotesque, sans-serif">?</text>`,'0 0 160 140','cx-box '+cls);}
 INIT.caixa=root=>{
   root.append(head('Aula 1 · Observação e inferência','O mistério da caixa-preta','Cada caixa lacrada tem um objeto dentro. Você não pode abrir. Como descobrir o que é? É assim que a ciência estuda o que não dá para ver diretamente: o interior da Terra, um átomo, um gene.'));
@@ -614,12 +645,13 @@ INIT.caixa=root=>{
   const compat=k=>Object.keys(OBJ).filter(id=>obs[k].every(t=>TESTES.find(x=>x.id===t).ok(OBJ[id],OBJ[CAIXAS[k]])));
   async function testar(t){const o=OBJ[CAIXAS[cx]];const bx=stage.querySelector('.cx-box');
     if(bx&&!reduced()){bx.classList.remove('anim-inclinar','anim-sacudir','anim-pesar','anim-ima');void bx.getBBox;bx.classList.add('anim-'+t.id);}
-    if(!obs[cx].includes(t.id))obs[cx].push(t.id);save();await sleep(reduced()?0:450);draw();}
+    const dur=som&&SOM.ok()?SOM.play(t.id,o):0;
+    if(!obs[cx].includes(t.id))obs[cx].push(t.id);save();await sleep(reduced()?dur*1000:Math.max(450,dur*1000));draw();}
   function draw(){
     stage.innerHTML='';stage.append(caixaSv(cx));
     tbtns.innerHTML='';TESTES.forEach(t=>tbtns.append(h('button',{class:'btn'+(obs[cx].includes(t.id)?'':' primary'),type:'button',onclick:()=>testar(t)},h('span',{'aria-hidden':'true'},t.ic),t.n)));
     log.innerHTML='';if(!obs[cx].length)log.append(h('p',{class:'note'},'Ainda nenhum teste. Escolha um teste acima: cada um gera uma observação.'));
-    obs[cx].forEach(id=>{const t=TESTES.find(x=>x.id===id);log.append(h('div',{class:'cx-obs'},h('span',{class:'pill ex'},t.n),h('span',{},t.txt(OBJ[CAIXAS[cx]]))));});
+    obs[cx].forEach(id=>{const t=TESTES.find(x=>x.id===id);log.append(h('div',{class:'cx-obs'},h('span',{class:'pill ex'},t.n),h('span',{style:'flex:1'},t.txt(OBJ[CAIXAS[cx]])),som&&SOM.ok()?h('button',{class:'btn ghost sm',type:'button','aria-label':'Ouvir de novo: '+t.n,title:'Ouvir de novo',onclick:()=>SOM.play(t.id,OBJ[CAIXAS[cx]])},'🔊'):null));});
     board.innerHTML='';Object.entries(OBJ).forEach(([id,o])=>{const off=!!elim[cx][id];const b=h('button',{type:'button',class:'cx-cand'+(off?' off':''),'aria-pressed':String(off),title:off?'Descartado: toque para voltar':'Possível: toque para descartar'},svgOf(o.sv,'0 0 40 40'),h('span',{},o.n),h('small',{},off?'descartado':'possível'));
       b.onclick=()=>{elim[cx][id]=!elim[cx][id];save();draw();};board.append(b);});
     bmsg.innerHTML='';
@@ -646,9 +678,14 @@ INIT.caixa=root=>{
     if(!obs[cx].length){fbx(bmsg,'info','Faça um teste antes de descartar objetos.');return;}
     if(!errados.length&&!injustos.length)fbx(bmsg,'ok',`Quadro coerente com as observações. Ainda possíveis: ${poss.map(p=>OBJ[p].n).join(', ')}.`);
     else fbx(bmsg,'no',[errados.length?`Ainda marcados como possíveis, mas contrariam alguma observação: ${errados.map(p=>OBJ[p].n).join(', ')}. `:'',injustos.length?`Descartados sem motivo (combinam com tudo o que você observou): ${injustos.map(p=>OBJ[p].n).join(', ')}.`:''].join(''));}},'Conferir o meu quadro');
+  let som=store.get('cx-som',true);
+  const somBtn=h('button',{class:'btn ghost sm',type:'button','aria-pressed':String(som)},som?'🔊 Som ligado':'🔇 Som desligado');
+  somBtn.onclick=()=>{som=!som;store.set('cx-som',som);somBtn.textContent=som?'🔊 Som ligado':'🔇 Som desligado';somBtn.setAttribute('aria-pressed',String(som));draw();};
+  if(!SOM.ok())somBtn.hidden=true;
   const sel=seg([['A','Caixa A'],['B','Caixa B'],['C','Caixa C']],cx,v=>{cx=v;store.set('cx-cur',v);draw();},{label:'Caixa'});
   root.append(h('div',{class:'cols wide-right'},
-    panel(h('span',{class:'label'},'Escolha a caixa'),sel,stage,h('span',{class:'label'},'Testes'),tbtns,model('A massa de cada caixa vazia é 50 g. Os testes e os sons são simulados.')),
+    panel(h('span',{class:'label'},'Escolha a caixa'),sel,stage,h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'label'},'Testes'),somBtn),tbtns,
+      SOM.ok()?h('p',{class:'note'},'🎧 Use fone de ouvido: o som mostra o que acontece lá dentro. Ao inclinar, ele vai de um lado para o outro.'):null,model('A massa de cada caixa vazia é 50 g. Os sons são sintetizados pelo próprio site a partir do material e do movimento de cada objeto.')),
     panel(h('h3',{},'Caderno de observações'),log,h('h3',{},'Quadro de suspeitos'),h('p',{class:'note'},'Toque num objeto para descartá-lo quando uma observação não combinar com ele.'),board,h('div',{class:'row'},chk),bmsg)));
   root.append(panel(h('h3',{},'Conclusão'),h('p',{class:'note'},'Use só o que as observações permitem afirmar. Às vezes a resposta mais honesta é “ainda não dá para saber”.'),cBox,peekOut));
   // Observação ou inferência?
