@@ -404,6 +404,10 @@ function h(tag,attrs={},...kids){const e=document.createElement(tag);for(const[k
 const NS='http://www.w3.org/2000/svg';
 function s(tag,attrs={},...kids){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs||{})){if(v==null)continue;e.setAttribute(k,v);}for(const c of kids.flat()){if(c==null)continue;e.append(c.nodeType?c:document.createTextNode(String(c)));}return e;}
 const store={get(k,d){try{const v=localStorage.getItem('cel-'+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem('cel-'+k,JSON.stringify(v))}catch(e){}}};
+// Registro de quais chaves cada aula usa, para o botão “Recomeçar esta aula”
+const RST={cur:null,glob:new Set()};(function(){const g=store.get,st=store.set;const note=k=>{k=String(k);if(k.startsWith('__'))return;if(!RST.cur){RST.glob.add(k);return;}if(RST.glob.has(k))return;const K='__keys-'+RST.cur;const L=g.call(store,K,[]);if(!L.includes(k)){L.push(k);st.call(store,K,L);}};store.get=function(k,d){note(k);return g.call(store,k,d);};store.set=function(k,v){note(k);st.call(store,k,v);};store.del=function(k){try{localStorage.removeItem('cel-'+k)}catch(e){}};})();
+function addReset(id){const sec=document.getElementById(id);const hd=sec&&sec.querySelector('.aula-head');if(!hd||hd.querySelector('.btn-reset'))return;const b=h('button',{class:'btn ghost sm btn-reset',type:'button',style:'margin-top:12px;width:auto;max-width:max-content;display:inline-flex;align-self:flex-start;justify-self:start'},'↺ Recomeçar esta aula');b.onclick=()=>{if(!confirm('Apagar as respostas e os resultados desta aula neste aparelho e começar de novo?\n\nFichas que você já enviou ao professor continuam na planilha dele.'))return;const L=store.get('__keys-'+id,[]);L.forEach(k=>store.del(k));store.del('__keys-'+id);sec.innerHTML='';inited[id]=false;go(id);};const tx=hd.querySelector('.lede')||hd.lastElementChild;tx.after(b);}
+
 const fmt=(n,d=0)=>Number(n).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const ri=(a,b)=>Math.floor(rnd(a,b+1));
@@ -507,9 +511,10 @@ function decorateHead(id){
 }
 function go(id){
   if(!document.getElementById(id))id='inicio';
+  RST.cur=(typeof INIT!=='undefined'&&INIT[id])?id:null;
   $$('section.aula').forEach(sc=>sc.hidden=sc.id!==id);
   $$('#tabs button').forEach(b=>b.setAttribute('aria-current',String(b.dataset.go===id)));
-  if(!inited[id]&&INIT[id]){inited[id]=true;try{INIT[id]($('#'+id));}catch(err){console.error(err);}decorateHead(id);if(typeof attachFicha==='function')attachFicha(id);if(typeof abertura==='function')abertura(id);}
+  if(!inited[id]&&INIT[id]){inited[id]=true;try{INIT[id]($('#'+id));}catch(err){console.error(err);}decorateHead(id);if(typeof attachFicha==='function')attachFicha(id);if(typeof abertura==='function')abertura(id);addReset(id);}
   const sec=$('#'+id);sec.classList.remove('fade');void sec.offsetWidth;sec.classList.add('fade');
   try{history.replaceState(null,'','#'+id);}catch(e){}
   const tb=$(`#tabs button[data-go="${id}"]`);if(tb)tb.scrollIntoView({block:'nearest',inline:'nearest'});
