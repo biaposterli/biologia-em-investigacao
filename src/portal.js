@@ -14,7 +14,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     gen:{id:'gen',nome:'Genética em Investigação',curto:'Genética',file:'genetica.html',cor:'#a3336b'},
     mic:{id:'mic',nome:'Microcosmo',curto:'Microcosmo',file:'microcosmo.html',cor:'#2c58a5'}
   };
-  var ORDER=['cel','mic','eco','gen'];
+  var ORDER=['mic','cel','eco','gen'];
   var K_TURMA='bi-turma',K_ID='bi-ident',K_PROF='bi-prof';
 
   function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
