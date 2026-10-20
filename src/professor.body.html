@@ -179,7 +179,7 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
     if(!C.r){teste={st:'no',t:'Esse endereço não parece o URL de um app da Web do Apps Script. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'};update();return;}
     if(!P.standalone()){teste={st:'wait',t:'Dentro do Claude o portal não consegue falar com o Google. Toque em “Abrir o receptor em outra aba”: se aparecer “Receptor ativo”, está tudo certo.'};update();return;}
     teste={st:'wait',t:'Testando…'};update();
-    try{const r=await fetch(P.urlDoReceptor(C.r)+'?acao=teste');const j=await r.json();teste=j&&j.ok?{st:'ok',t:'Receptor funcionando. As fichas vão para a planilha de '+j.professor+'.'}:{st:'no',t:'O endereço respondeu, mas não é este receptor. Confira o código colado no Apps Script.'};}
+    try{const r=await fetch(P.urlDoReceptor(C.r)+'?acao=teste');const j=await r.json();teste=j&&j.ok?((j.versao||1)>=2?{st:'ok',t:'Receptor funcionando. As fichas vão para a planilha de '+j.professor+', e os estudantes já podem criar a senha para continuar em outro aparelho.'}:{st:'wait',t:'Receptor funcionando, mas é a versão antiga: as fichas chegam, porém as senhas dos estudantes ainda não. Copie o código abaixo, cole no Apps Script no lugar do antigo e atualize em Implantar → Gerenciar implantações → Editar → Nova versão. O link da turma continua o mesmo.'}):{st:'no',t:'O endereço respondeu, mas não é este receptor. Confira o código colado no Apps Script.'};}
     catch(err){teste={st:'no',t:'Não consegui falar com o receptor. Confira se a implantação está como “Qualquer pessoa” e se o URL termina em /exec.'};}
     update();};
   // 4. link

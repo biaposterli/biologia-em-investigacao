@@ -137,6 +137,7 @@ pre.code{max-height:220px;overflow:auto;background:var(--bg);border:1px solid va
       <button data-v="correcao">Correção</button>
       <button data-v="aluno">Por estudante</button>
       <button data-v="forms">Envios</button>
+      <button data-v="senhas">Senhas dos estudantes</button>
     </nav>
   </div>
 </header>
@@ -171,8 +172,8 @@ function seg(opts,val,on){const w=h('div',{class:'seg'});opts.forEach(([v,t])=>{
 function notaClass(n){return n==null?'none':n>=7?'g':n>=5?'m':'b';}
 
 // ================= Estado =================
-const S={tabs:[],forms:[],resp:{},aval:{},avalRows:0,alunos:[],errors:{},loadedAt:null,loading:false};
-const UI={view:'geral',turma:'todas',ativ:SPEC[0].code,status:'todos',busca:'',aluno:null,focus:null,conn:false};
+const S={tabs:[],forms:[],resp:{},aval:{},avalRows:0,alunos:[],estudantes:[],errors:{},loadedAt:null,loading:false};
+const UI={verSenhas:false,buscaSenha:'',turmaSenha:'todas',view:'geral',turma:'todas',ativ:SPEC[0].code,status:'todos',busca:'',aluno:null,focus:null,conn:false};
 let CONN=null,DEMO=false;
 const dirty=new Set();
 
@@ -190,6 +191,7 @@ async function saveRow(row){if(DEMO)return;let r;try{r=await fetch(P.urlDoRecept
 function applyData(abas){
   S.tabs=Object.keys(abas||{});S.forms=[];S.resp={};S.aval={};S.alunos=[];
   const al=abas['Alunos']||[];S.alunos=al.slice(1).filter(r=>r[0]&&String(r[0]).trim()).map(r=>({nome:String(r[0]).trim(),turma:P.rotuloTurma(r[3],r[1]),grupo:String(r[2]||'').trim()}));
+  const es=abas['Estudantes']||[];S.estudantes=es.slice(1).filter(r=>r[1]&&String(r[1]).trim()).map(r=>({nome:String(r[1]).trim(),escola:String(r[2]||'').trim(),turma:P.rotuloTurma(r[2],r[3]),grupo:String(r[4]||'').trim(),senha:String(r[5]||'').trim(),criado:String(r[6]||''),quando:String(r[7]||'')}));
   const av=abas['Avaliação']||[];av.slice(1).forEach((r,i)=>{if(!r[0])return;let man={};try{man=JSON.parse(r[7]||'{}')}catch(e){}S.aval[r[0]]={row:i+2,man,nota:r[8]===''||r[8]==null?null:num(r[8]),coment:r[9]||'',quando:r[10]||''};});S.avalRows=av.length;
   ALL.forEach(f=>{S.resp[f.code]=abas[f.code]?parseResp(f,abas[f.code]):[];});
 }
@@ -266,7 +268,7 @@ function render(){
   if(S.errors.page){m.append(h('div',{class:'err'},h('strong',{},'Não consegui abrir a planilha. '),errMsg(S.errors.page)));m.append(connect());return;}
   if(!S.loadedAt){m.append(h('p',{class:'note'},'Lendo a planilha…'));return;}
   ['forms','alunos','aval'].concat(ALL.map(f=>f.code)).forEach(k=>{if(S.errors[k])m.append(h('div',{class:'warn'},h('strong',{},(k==='forms'?'Aba Formulários':k==='alunos'?'Aba Alunos':k==='aval'?'Aba Avaliação':k)+': '),errMsg(S.errors[k])));});
-  ({geral:viewGeral,correcao:viewCorrecao,aluno:viewAluno,forms:viewForms})[UI.view](m);
+  ({geral:viewGeral,correcao:viewCorrecao,aluno:viewAluno,forms:viewForms,senhas:viewSenhas})[UI.view](m);
 }
 function turmasAll(){const t=new Set();S.alunos.forEach(a=>a.turma&&t.add(a.turma));ALL.forEach(f=>(S.resp[f.code]||[]).forEach(r=>r.turma&&t.add(r.turma)));return [...t].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}));}
 function turmaFilter(){const ts=turmasAll();if(UI.turma!=='todas'&&!ts.includes(UI.turma))UI.turma='todas';
@@ -412,6 +414,27 @@ function viewForms(m){
 function project(f,link){const o=h('div',{class:'overlay',role:'dialog','aria-label':'QR code em tela cheia'},h('h2',{},f.titulo),h('div',{class:'qr',html:qrSvg(link)}),h('span',{class:'link'},link),h('button',{class:'btn',onclick:()=>o.remove()},'Fechar'));o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
 function copy(text,btn){const done=()=>{const t=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=t,1500);};try{navigator.clipboard.writeText(text).then(done).catch(()=>sel());}catch(e){sel();}function sel(){const r=document.createRange();const el=btn.closest('.panel,.empty').querySelector('.link,pre');if(el){r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);}}}
 
+// Senhas que os estudantes criaram para continuar em outro aparelho (aba "Estudantes" da planilha)
+function viewSenhas(m){
+  const ts=[...new Set(S.estudantes.map(e=>e.turma).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}));
+  if(UI.turmaSenha!=='todas'&&!ts.includes(UI.turmaSenha))UI.turmaSenha='todas';
+  const st=h('select',{'aria-label':'Turma'},[['todas','Todas as turmas']].concat(ts.map(x=>[x,x])).map(([v,n])=>h('option',{value:v,selected:v===UI.turmaSenha},n)));st.onchange=()=>{UI.turmaSenha=st.value;render();};
+  const busca=h('input',{type:'text',placeholder:'Buscar nome',value:UI.buscaSenha,'aria-label':'Buscar nome',style:'width:auto;min-width:180px'});
+  const ver=h('button',{type:'button',class:'btn sm'},UI.verSenhas?'Ocultar senhas':'Mostrar senhas');ver.onclick=()=>{UI.verSenhas=!UI.verSenhas;render();};
+  m.append(h('div',{class:'row',style:'justify-content:space-between'},h('h2',{},'Senhas dos estudantes'),h('div',{class:'row'},h('span',{class:'label'},'Turma'),st,busca,ver)));
+  m.append(h('p',{class:'note',style:'max-width:80ch'},'Cada estudante cria uma senha de 4 números na ficha. Com o nome completo e a senha, ele recupera as respostas em qualquer aparelho. Se alguém esquecer, informe a senha daqui. Para trocar uma senha, edite a coluna “Senha” na aba “Estudantes” da planilha.'));
+  if(!S.tabs.includes('Estudantes')){m.append(h('div',{class:'empty'},h('h3',{},'Nenhuma senha criada ainda'),h('p',{},'A aba “Estudantes” aparece na planilha quando o primeiro estudante criar a senha. Para isso, o receptor precisa estar na versão nova: na Área do professor, use “Testar o receptor” para conferir.'),h('a',{class:'btn',href:'professor.html'},'Abrir a Área do professor')));return;}
+  const tb=h('tbody');
+  function fill(){tb.innerHTML='';const q=norm(UI.buscaSenha);
+    const rows=S.estudantes.filter(e=>(UI.turmaSenha==='todas'||e.turma===UI.turmaSenha)&&(!q||norm(e.nome).includes(q))).sort((a,b)=>a.turma.localeCompare(b.turma,'pt-BR',{numeric:true})||a.nome.localeCompare(b.nome,'pt-BR'));
+    if(!rows.length)tb.append(h('tr',{},h('td',{colspan:'5',class:'note'},'Ninguém encontrado.')));
+    rows.forEach(e=>tb.append(h('tr',{},h('td',{},h('b',{},e.nome)),h('td',{},e.turma||'—'),h('td',{},e.grupo||'—'),h('td',{class:'mono',style:'font-size:1rem;letter-spacing:.15em'},UI.verSenhas?e.senha:'••••'),h('td',{class:'note'},e.quando||e.criado))));}
+  busca.oninput=()=>{UI.buscaSenha=busca.value;fill();};
+  fill();
+  const t=h('table',{},h('thead',{},h('tr',{},h('th',{},'Estudante'),h('th',{},'Turma'),h('th',{},'Grupo'),h('th',{},'Senha'),h('th',{},'Última atualização'))),tb);
+  m.append(h('div',{class:'tbl'},t),h('p',{class:'note'},S.estudantes.length+' estudante'+(S.estudantes.length===1?'':'s')+' com senha.'));
+}
+
 function connect(){
   const c=CONN||connCfg();
   const url=h('input',{type:'text',id:'cUrl',placeholder:'https://script.google.com/macros/s/…/exec',value:c.r?P.urlDoReceptor(c.r):'',spellcheck:'false',autocomplete:'off',style:'width:100%'});
@@ -444,6 +467,7 @@ function demoData(){
       it.forEach(x=>{let v='';if(x.k==='mc')v=x.key&&rnd()<.72?x.key:pick(x.ch);else if(x.k==='num')v=x.key!=null&&rnd()<.7?String(x.key).replace('.',','):String(Math.round(rnd()*40));else if(x.k==='par')v=pick(TXT);else v='Exemplo de resposta curta';r.push(v);});
       r.push('demo'+fi+'-'+i);rows.push(r);});
     abas[f.code]=rows;});
+  const est=[['Chave','Nome completo','Escola','Turma','Grupo','Senha','Criado em','Atualizado em']];NOMES.slice(0,8).forEach((n,i)=>est.push([n.toLowerCase(),n,'',TUR[i%TUR.length],String(1+i%4),String(1000+Math.floor(rnd()*9000)),'01/10/2026 08:0'+i,'15/10/2026 10:'+(10+i)]));abas['Estudantes']=est;
   abas['Avaliação']=av;return abas;
 }
 // ================= Início =================
