@@ -1,0 +1,198 @@
+<title>Minha página · Biologia em Investigação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/*__PORTAL_CSS__*/
+/* Minha página (estudante) */
+.eu-hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:36px;align-items:start;padding-block:40px 18px}
+@media (max-width:900px){.eu-hero{grid-template-columns:minmax(0,1fr);gap:22px;padding-block:26px 12px}}
+.eu-hero h1{font-size:clamp(2.3rem,6vw,4.4rem);font-weight:800;letter-spacing:-.035em;line-height:.95;overflow-wrap:anywhere}
+.eu-hero h1 small{display:block;font-size:.42em;font-weight:500;letter-spacing:-.01em;color:var(--muted);margin-bottom:6px}
+.eu-av{width:64px;height:64px;border-radius:18px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.6rem;flex:none}
+.facts{display:flex;gap:28px;flex-wrap:wrap}
+.facts div{display:flex;flex-direction:column}
+.facts b{font-family:var(--f-display);font-size:2.1rem;font-weight:800;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.facts span{font-size:.82rem;color:var(--muted)}
+.facts .f-ok b{color:var(--good)}.facts .f-and b{color:var(--warn)}
+.card{display:flex;flex-direction:column;gap:14px;border:1px solid var(--line);background:var(--surface);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+.card h2{font-size:1.35rem}
+.ids{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:end}
+@media (max-width:480px){.ids{grid-template-columns:minmax(0,1fr)}}
+.segs{display:flex;flex-wrap:wrap;gap:6px}
+.seg-b{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 11px;font-weight:700;font-size:.88rem;cursor:pointer;font-family:var(--f-mono)}
+.seg-b[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:26px 14px}
+.filtro{display:flex;gap:4px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px}
+.filtro button{border:0;background:transparent;border-radius:9px;padding:6px 12px;font-weight:700;font-size:.88rem;cursor:pointer;color:var(--muted)}
+.filtro button[aria-pressed="true"]{background:var(--surface-2);color:var(--ink)}
+.blocos{display:flex;flex-direction:column;gap:18px}
+.bloco{border:1px solid var(--line);border-radius:20px;background:var(--surface);box-shadow:var(--shadow);overflow:hidden}
+.bloco-h{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 20px;background:var(--tema-soft);border-bottom:1px solid color-mix(in srgb,var(--tema) 25%,transparent)}
+.bloco-h h3{font-size:1.25rem;font-weight:800}
+.bloco-h .note{margin-left:auto}
+.barra{flex:1 1 140px;max-width:220px;height:8px;border-radius:999px;background:color-mix(in srgb,var(--tema) 18%,var(--surface));overflow:hidden}
+.barra i{display:block;height:100%;background:var(--tema);border-radius:999px}
+.fichas{list-style:none;margin:0;padding:6px 0}
+.ficha-l{display:grid;grid-template-columns:54px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 20px}
+.ficha-l+.ficha-l{border-top:1px solid var(--line)}
+.ficha-n{font-family:var(--f-display);font-weight:800;font-size:1.5rem;line-height:1;color:var(--tema);text-align:center;font-variant-numeric:tabular-nums}
+.ficha-n small{display:block;font-family:var(--f-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.ficha-t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.ficha-t b{line-height:1.25}
+.st{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:.8rem;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.st i{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
+.st.ok{color:var(--good);background:var(--good-soft);border-color:color-mix(in srgb,var(--good) 40%,transparent)}
+.st.and{color:var(--warn);background:var(--warn-soft);border-color:color-mix(in srgb,var(--warn) 40%,transparent)}
+.st.mud{color:var(--bad);background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 35%,transparent)}
+@media (max-width:560px){.ficha-l{grid-template-columns:42px minmax(0,1fr);padding:10px 14px}.ficha-l .btn{grid-column:2;justify-self:start}.ficha-n{font-size:1.25rem}.bloco-h{padding:14px}.bloco-h .note{margin-left:0}}
+.vazio{padding:16px 20px;color:var(--muted)}
+.pessoas{display:flex;flex-direction:column;gap:6px}
+.pessoa{display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:var(--bg)}
+.pessoa.on{border:2px solid var(--good)}
+.pessoa .bi-av{width:36px;height:36px;border-radius:11px}
+.pessoa-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.pessoa-t small{color:var(--muted);font-size:.82rem}
+.privacy{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px}
+footer{padding-block:34px 40px}
+</style>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 4.5A9.5 9.5 0 0 0 4.5 14H14z" fill="var(--cel)"/><path d="M14 4.5A9.5 9.5 0 0 1 23.5 14H14z" fill="var(--mic)"/><path d="M4.5 14A9.5 9.5 0 0 0 14 23.5V14z" fill="var(--eco)"/><path d="M23.5 14A9.5 9.5 0 0 1 14 23.5V14z" fill="var(--gen)"/></svg>Biologia em Investigação</a>
+    <nav aria-label="Seções">
+      <a href="index.html#sites">Sites</a>
+      <a href="estudante.html" aria-current="page">Minha página</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="eu-hero">
+    <div class="stack" style="gap:18px" id="eu"></div>
+    <aside class="card" id="dados" aria-label="Meus dados"></aside>
+  </section>
+
+  <div class="sec-head">
+    <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">Minhas fichas</span><h2>Todas as aulas, em todos os sites</h2></div>
+    <div class="filtro" role="group" aria-label="Mostrar" id="filtro"></div>
+  </div>
+  <div class="blocos" id="blocos"></div>
+
+  <section class="card" style="margin-top:28px" aria-labelledby="aparT">
+    <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">Este aparelho</span><h2 id="aparT">Estudantes que usam este aparelho</h2></div>
+    <p class="note">Em computador ou tablet da escola, cada estudante tem o seu espaço: as respostas de um não se misturam com as do outro. Quem usa o próprio celular não precisa fazer nada aqui.</p>
+    <div class="pessoas" id="pessoas"></div>
+    <div class="row"><button type="button" class="btn" id="btNovo">+ Sou novo neste aparelho</button></div>
+    <p class="privacy"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="flex:none;margin-top:2px"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>As respostas ficam guardadas só neste aparelho, e as fichas enviadas ficam também na planilha do professor. Em aparelho compartilhado, quem trocar de estudante consegue ver as respostas daquele espaço.</span></p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><p class="note">Funciona sem login. Nada desta página sai do aparelho; só as fichas que você envia vão para o professor.</p></div>
+</footer>
+
+<script>window.PORTAL_ESTUDANTE=true;</script>
+<script src="portal.js"></script>
+<script src="specs.js"></script>
+<script>
+(function(){
+  const P=window.PORTAL,el=P.el;
+  const SPECS=window.SPECS||{};
+  function ler(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+  const n2=c=>{const m=String(c).match(/Aula\s*(\d+)\s*$/);return m?String(parseInt(m[1],10)):'·';};
+
+  // Situação de cada ficha do estudante que está usando agora
+  function situacao(sid,f){
+    const pre=P.pfx(P.SITES[sid].chave);
+    const draft=ler(pre+'draft-'+f.code,{})||{};const sent=ler(pre+'sent-'+f.code,null);const id=ler(pre+'sid-'+f.code,null);
+    const qs=f.itens.filter(it=>it.k!=='hdr');const feitas=qs.filter(it=>String(draft[it.t]||'').trim()).length;
+    let st='nova';
+    if(sent&&sent.id&&sent.id===id)st='ok';else if(sent)st='mud';else if(feitas)st='and';
+    return {st,feitas,total:qs.length,quando:sent&&sent.quando||''};
+  }
+  const DADOS=P.ORDER.filter(k=>Array.isArray(SPECS[k])&&SPECS[k].length).map(k=>({sid:k,fichas:SPECS[k].map(f=>({f,s:situacao(k,f)}))}));
+  const todas=DADOS.flatMap(d=>d.fichas);
+  const cont={ok:todas.filter(x=>x.s.st==='ok').length,and:todas.filter(x=>x.s.st==='and'||x.s.st==='mud').length,total:todas.length};
+
+  // ---------- Cabeçalho ----------
+  const eu=document.getElementById('eu');
+  function drawEu(){
+    const e=P.estudanteAtual();const nome=String(e.nome||'').trim();eu.innerHTML='';
+    eu.append(el('div',{class:'row',style:'gap:14px;flex-wrap:nowrap'},el('span',{class:'eu-av','aria-hidden':'true'},P.iniciais(nome)),el('span',{class:'eyebrow',style:'color:var(--muted)'},'Minha página')),
+      el('h1',{},el('small',{},nome?'Olá,':'Olá!'),nome||'Escreva o seu nome ao lado'),
+      el('p',{class:'lede'},'Aqui estão as fichas de todos os sites: o que você já enviou, o que está pela metade e o que ainda falta. Toque numa aula para continuar de onde parou.'),
+      el('div',{class:'facts'},
+        el('div',{class:'f-ok'},el('b',{class:'mono'},String(cont.ok)),el('span',{},'fichas enviadas')),
+        el('div',{class:'f-and'},el('b',{class:'mono'},String(cont.and)),el('span',{},'em andamento')),
+        el('div',{},el('b',{class:'mono'},String(cont.total)),el('span',{},'fichas no portal'))));
+  }
+
+  // ---------- Meus dados (os mesmos da ficha) ----------
+  const dados=document.getElementById('dados');
+  function drawDados(){
+    const id=P.ident();dados.innerHTML='';
+    const nome=el('input',{type:'text',autocomplete:'name',placeholder:'Nome e sobrenome',value:id.nome,'aria-label':'Nome completo'});
+    nome.oninput=()=>{const i=P.ident();i.nome=nome.value;P.saveIdent(i);drawEu();drawPessoas();};
+    const grupo=el('select',{'aria-label':'Grupo'},el('option',{value:''},'Escolha'),...P.grupos().map(g=>el('option',{value:g,selected:g===id.grupo},g)));
+    grupo.onchange=()=>{const i=P.ident();i.grupo=grupo.value;P.saveIdent(i);drawPessoas();};
+    const ts=P.turmas();let turmaCtl;
+    if(ts.length){turmaCtl=el('div',{class:'segs',role:'group','aria-label':'Turma'});ts.forEach(t=>{const b=el('button',{type:'button',class:'seg-b','aria-pressed':String(t===id.turma)},t);b.onclick=()=>{const i=P.ident();i.turma=t;P.saveIdent(i);drawDados();drawPessoas();};turmaCtl.append(b);});}
+    else turmaCtl=el('span',{class:'note'},'Aparece quando você entrar na turma');
+    dados.append(el('span',{class:'eyebrow'},'Meus dados'),el('h2',{},'Quem está respondendo'),
+      el('label',{class:'field'},el('span',{class:'label'},'Nome completo'),nome),
+      el('div',{class:'ids'},el('div',{class:'field'},el('span',{class:'label'},'Turma'),turmaCtl),el('label',{class:'field'},el('span',{class:'label'},'Grupo'),grupo)),
+      el('p',{class:'note'},'Estes dados vão junto com as fichas que você enviar.'),
+      P.fichaBanner());
+  }
+
+  // ---------- Fichas por site ----------
+  let FILTRO='todas';
+  const ROT={ok:'Enviada',mud:'Mudou depois do envio',and:'Em andamento',nova:'Não começada'};
+  const filtro=document.getElementById('filtro');
+  [['todas','Todas'],['falta','Falta enviar'],['ok','Enviadas']].forEach(([k,t])=>{const b=el('button',{type:'button','aria-pressed':String(k===FILTRO)},t);b.onclick=()=>{FILTRO=k;[...filtro.children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawBlocos();};filtro.append(b);});
+  const blocos=document.getElementById('blocos');
+  function drawBlocos(){
+    blocos.innerHTML='';
+    if(!DADOS.length){blocos.append(el('p',{class:'vazio'},'Não consegui carregar a lista de fichas. Recarregue a página.'));return;}
+    DADOS.forEach(d=>{const s=P.SITES[d.sid];
+      const env=d.fichas.filter(x=>x.s.st==='ok').length;
+      const vis=d.fichas.filter(x=>FILTRO==='todas'||(FILTRO==='ok'?x.s.st==='ok':x.s.st!=='ok'));
+      const ul=el('ul',{class:'fichas'});
+      vis.forEach(({f,s:si})=>{
+        const det=si.st==='ok'?'Enviada'+(si.quando?' em '+si.quando:''):si.st==='mud'?'Você mudou respostas depois de enviar'+(si.quando?' em '+si.quando:'')+'. Envie de novo.':si.st==='and'?si.feitas+' de '+si.total+' respondidas':si.total+' questões · '+(f.tipo||'');
+        const href=s.file+'?ficha='+encodeURIComponent(f.code);
+        ul.append(el('li',{class:'ficha-l'},
+          el('div',{class:'ficha-n'},el('small',{},'aula'),n2(f.code)),
+          el('div',{class:'ficha-t'},el('b',{},String(f.titulo||f.code).replace(/^Aulas?\s[\d e]+·\s*/,'')),el('span',{class:'st '+si.st},el('i',{'aria-hidden':'true'}),ROT[si.st]),el('span',{class:'note'},det)),
+          el('a',{class:'btn sm'+(si.st==='and'||si.st==='mud'?' primary':''),href},si.st==='ok'?'Ver':si.st==='nova'?'Abrir':'Continuar')));
+      });
+      if(!vis.length)ul.append(el('li',{class:'vazio'},FILTRO==='ok'?'Nenhuma ficha enviada neste site ainda.':'Tudo enviado neste site.'));
+      blocos.append(el('section',{class:'bloco','data-s':d.sid,'aria-label':s.nome},
+        el('div',{class:'bloco-h'},el('h3',{},s.nome),el('span',{class:'barra',role:'img','aria-label':env+' de '+d.fichas.length+' enviadas'},el('i',{style:'width:'+Math.round(100*env/d.fichas.length)+'%'})),el('span',{class:'note mono'},env+'/'+d.fichas.length+' enviadas')),
+        ul));
+    });
+  }
+
+  // ---------- Estudantes deste aparelho ----------
+  const pessoas=document.getElementById('pessoas');
+  function drawPessoas(){
+    pessoas.innerHTML='';
+    P.estudantes().forEach(s=>{
+      const info=[s.turma?'Turma '+s.turma:'',s.grupo&&s.grupo!=='Sem grupo'?'Grupo '+s.grupo:''].filter(Boolean).join(' · ');
+      let acao;
+      if(s.atual)acao=el('span',{class:'st ok'},el('i',{'aria-hidden':'true'}),'Usando agora');
+      else{
+        const usar=el('button',{type:'button',class:'btn sm',onclick:()=>{P.trocarEstudante(s.id);location.reload();}},'Usar');
+        const tirar=s.id==='p0'?null:el('button',{type:'button',class:'btn sm ghost',onclick:()=>{if(confirm('Tirar '+(s.nome||'este estudante')+' deste aparelho?\n\nAs respostas dele salvas aqui serão apagadas. As fichas que ele já enviou continuam na planilha do professor.')){P.removerEstudante(s.id);drawPessoas();}}},'Tirar do aparelho');
+        acao=el('div',{class:'row',style:'gap:6px'},usar,tirar);
+      }
+      pessoas.append(el('div',{class:'pessoa'+(s.atual?' on':'')},el('span',{class:'bi-av','aria-hidden':'true'},P.iniciais(s.nome)),el('span',{class:'pessoa-t'},el('b',{},s.nome||'Estudante sem nome'),info?el('small',{},info):null),acao));
+    });
+  }
+  document.getElementById('btNovo').onclick=()=>{P.novoEstudante();location.reload();};
+
+  drawEu();drawDados();drawBlocos();drawPessoas();
+})();
+</script>

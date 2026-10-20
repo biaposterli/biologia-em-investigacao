@@ -1,6 +1,10 @@
 /* Biologia em Investigação · núcleo compartilhado do portal
    Guarda a turma (vinda do link ou do código do professor), a identificação do estudante
-   e monta a faixa de navegação entre os sites. Carregado por todas as páginas. */
+   e monta a faixa de navegação entre os sites. Carregado por todas as páginas.
+   Estudantes: cada aparelho pode ter vários estudantes (computador ou tablet compartilhado).
+   Cada um tem o seu espaço de respostas. O primeiro estudante do aparelho ("p0") usa as chaves
+   antigas (por exemplo "gen-draft-Aula 01"), então nada do que já foi respondido é movido ou apagado;
+   os demais usam chaves com o seu código ("gen-@e1abc-draft-Aula 01"). */
 window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.push((e.message||'erro')+' (linha '+e.lineno+')');});}catch(e){}
 (function(){
   'use strict';
@@ -9,14 +13,14 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   var PORTAL_URL='';
 
   var SITES={
-    cie:{id:'cie',nome:'Ciência em Investigação',curto:'Ciência',file:'ciencia.html',cor:'#5b45a3'},
-    eco:{id:'eco',nome:'Ecologia em Investigação',curto:'Ecologia',file:'ecologia.html',cor:'#1d6b58'},
-    cel:{id:'cel',nome:'Células em Ação',curto:'Células',file:'celulas.html',cor:'#a3601b'},
-    gen:{id:'gen',nome:'Genética em Investigação',curto:'Genética',file:'genetica.html',cor:'#a3336b'},
-    mic:{id:'mic',nome:'Microcosmo',curto:'Microcosmo',file:'microcosmo.html',cor:'#2c58a5'}
+    cie:{id:'cie',nome:'Ciência em Investigação',curto:'Ciência',file:'ciencia.html',cor:'#5b45a3',chave:'cie'},
+    eco:{id:'eco',nome:'Ecologia em Investigação',curto:'Ecologia',file:'ecologia.html',cor:'#1d6b58',chave:'eco'},
+    cel:{id:'cel',nome:'Células em Ação',curto:'Células',file:'celulas.html',cor:'#a3601b',chave:'cel'},
+    gen:{id:'gen',nome:'Genética em Investigação',curto:'Genética',file:'genetica.html',cor:'#a3336b',chave:'gen'},
+    mic:{id:'mic',nome:'Microcosmo',curto:'Microcosmo',file:'microcosmo.html',cor:'#2c58a5',chave:'micro'}
   };
   var ORDER=['cie','mic','cel','eco','gen'];
-  var K_TURMA='bi-turma',K_ID='bi-ident',K_PROF='bi-prof';
+  var K_TURMA='bi-turma',K_ID='bi-ident',K_PROF='bi-prof',K_PERFIS='bi-perfis',K_QUEM='bi-quem';
 
   function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
   function lsSet(k,v){try{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
@@ -55,15 +59,54 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);
   }catch(e){}})();
 
-  // ---------- Identificação do estudante (vale para os quatro sites) ----------
-  function ident(){
-    var i=lsGet(K_ID,null)||{nome:'',turma:'',grupo:''};
-    var c=turma();
-    if(c&&c.t.length&&i.turma&&c.t.indexOf(i.turma)<0)i.turma='';
-    if(c&&i.grupo&&grupos().indexOf(i.grupo)<0)i.grupo='';
-    return {nome:i.nome||'',turma:i.turma||'',grupo:i.grupo||''};
+  // ---------- Estudantes deste aparelho ----------
+  function idOk(id){return /^(p0|e[a-z0-9]{4,15})$/.test(String(id||''));}
+  function perfis(){
+    var p=lsGet(K_PERFIS,null);
+    if(!p||!Array.isArray(p.lista)||!p.lista.length){
+      // Primeira vez com esta versão: quem já usava o aparelho vira o primeiro estudante, com tudo o que respondeu
+      var i=lsGet(K_ID,null)||{};
+      p={v:1,atual:'p0',lista:[{id:'p0',nome:limpa(i.nome,120),turma:limpa(i.turma,20),grupo:limpa(i.grupo,20)}]};
+      lsSet(K_PERFIS,p);
+    }
+    p.lista=p.lista.filter(function(x){return x&&idOk(x.id);});
+    if(!p.lista.some(function(x){return x.id==='p0';}))p.lista.unshift({id:'p0',nome:'',turma:'',grupo:''});
+    if(!p.lista.some(function(x){return x.id===p.atual;}))p.atual='p0';
+    return p;
   }
-  function saveIdent(i){lsSet(K_ID,{nome:i.nome||'',turma:i.turma||'',grupo:i.grupo||''});}
+  // O estudante desta aba fica fixo até a página recarregar (trocar de estudante recarrega a página)
+  var ATUAL=perfis().atual;
+  function estudantes(){return perfis().lista.map(function(x){return {id:x.id,nome:x.nome||'',turma:x.turma||'',grupo:x.grupo||'',atual:x.id===ATUAL};});}
+  function estudanteAtual(){var l=perfis().lista;for(var k=0;k<l.length;k++)if(l[k].id===ATUAL)return l[k];return l[0];}
+  // Prefixo das respostas de um site para um estudante: pfx('gen') → "gen-" (primeiro estudante) ou "gen-@e1abc-"
+  function pfx(chave,id){id=id||ATUAL;return id==='p0'?chave+'-':chave+'-@'+id+'-';}
+  function trocarEstudante(id){var p=perfis();if(!p.lista.some(function(x){return x.id===id;}))return false;p.atual=id;lsSet(K_PERFIS,p);try{sessionStorage.setItem(K_QUEM,'1');}catch(e){}return true;}
+  function novoEstudante(){var p=perfis();var id='e'+Date.now().toString(36).slice(-6)+Math.random().toString(36).slice(2,6);p.lista.push({id:id,nome:'',turma:'',grupo:''});p.atual=id;lsSet(K_PERFIS,p);try{sessionStorage.setItem(K_QUEM,'1');}catch(e){}return id;}
+  // Tira um estudante do aparelho e apaga as respostas dele SÓ neste aparelho (as fichas enviadas continuam na planilha)
+  function removerEstudante(id){
+    if(id==='p0'||id===ATUAL)return false;var p=perfis();if(!p.lista.some(function(x){return x.id===id;}))return false;
+    var marca='-@'+id+'-',apagar=[];
+    try{for(var k=0;k<localStorage.length;k++){var c=localStorage.key(k);if(c&&c.indexOf(marca)>0)apagar.push(c);}apagar.forEach(function(c){localStorage.removeItem(c);});}catch(e){}
+    p.lista=p.lista.filter(function(x){return x.id!==id;});lsSet(K_PERFIS,p);return true;
+  }
+  function nomeCurto(n){n=String(n||'').trim();return n?n.split(/\s+/)[0]:'';}
+
+  // ---------- Identificação do estudante (vale para todos os sites) ----------
+  function ident(){
+    var i=estudanteAtual()||{nome:'',turma:'',grupo:''};
+    var c=turma();
+    var r={nome:i.nome||'',turma:i.turma||'',grupo:i.grupo||''};
+    if(c&&c.t.length&&r.turma&&c.t.indexOf(r.turma)<0)r.turma='';
+    if(c&&r.grupo&&grupos().indexOf(r.grupo)<0)r.grupo='';
+    return r;
+  }
+  function saveIdent(i){
+    var p=perfis();var v={nome:limpa(i.nome,120),turma:limpa(i.turma,20),grupo:limpa(i.grupo,20)};
+    p.lista.forEach(function(x){if(x.id===ATUAL){x.nome=v.nome;x.turma=v.turma;x.grupo=v.grupo;}});
+    lsSet(K_PERFIS,p);
+    if(ATUAL==='p0')lsSet(K_ID,v); // mantém a chave antiga em dia
+    try{window.dispatchEvent(new CustomEvent('bi-ident',{detail:v}));}catch(e){}
+  }
   function grupos(){var c=turma();var n=c&&c.g?c.g:8;var a=[];for(var k=1;k<=n;k++)a.push(String(k));a.push('Sem grupo');return a;}
   function turmas(){var c=turma();return c?c.t.slice():[];}
   function escola(){var c=turma();return c&&c.e?c.e:'';}
@@ -102,7 +145,17 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
         box.append(el('p',{class:'bi-banner-t'},el('strong',{},'Para enviar, entre na turma. '),'Abra o link que o seu professor compartilhou ou cole aqui o código da turma.'),caixaCodigo(function(){setTimeout(function(){location.reload();},400);}));
       }
     }
-    draw();return box;
+    draw();
+    // Quem está respondendo (em aparelho compartilhado, cada estudante tem o seu espaço)
+    var quem=el('div',{class:'bi-quem'});
+    function drawQuem(){
+      var e=estudanteAtual(),n=String(e&&e.nome||'').trim();quem.innerHTML='';
+      quem.append(el('span',{class:'bi-av','aria-hidden':'true'},iniciais(n)),
+        el('span',{class:'bi-quem-t'},n?['Respondendo como ',el('strong',{},n),'. '] : (window.PORTAL_ESTUDANTE?'Escreva o seu nome. ':'Escreva o seu nome abaixo. '),window.PORTAL_ESTUDANTE?null:el('a',{href:'estudante.html'},'Minha página')),
+        el('button',{type:'button',class:'btn ghost sm',onclick:function(){escolherEstudante({titulo:'Quem vai responder?'});}},'Não é você? Trocar'));
+    }
+    drawQuem();window.addEventListener('bi-ident',drawQuem);
+    return el('div',{class:'bi-fb'},box,quem);
   }
 
   // Seletor de turma da ficha (usa o seletor de botões do próprio site)
@@ -110,6 +163,46 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     var t=turmas();
     if(!t.length)return el('span',{class:'note bi-turma-off'},'Definida pelo link do professor');
     return seg(t.map(function(x){return [x,x];}),ident.turma||null,onChange,{label:'Turma'});
+  }
+
+  // ---------- Escolher o estudante (aparelho compartilhado) ----------
+  function iniciais(n){var p=String(n||'').trim().split(/\s+/).filter(Boolean);return p.length?((p[0][0]||'')+(p.length>1?p[p.length-1][0]:'')).toUpperCase():'?';}
+  function escolherEstudante(op){
+    op=op||{};injectCss();
+    var velho=document.getElementById('bi-quem-dlg');if(velho)velho.remove();
+    var lista=estudantes();
+    var fundo=el('div',{class:'bi-dlg-bg',id:'bi-quem-dlg'});
+    function fechar(){fundo.remove();document.removeEventListener('keydown',esc);try{sessionStorage.setItem(K_QUEM,'1');}catch(e){}}
+    function esc(e){if(e.key==='Escape')fechar();}
+    function ir(id){if(id===ATUAL){fechar();return;}trocarEstudante(id);location.reload();}
+    var itens=el('div',{class:'bi-dlg-list'});
+    lista.forEach(function(s){
+      itens.append(el('button',{type:'button',class:'bi-pessoa'+(s.atual?' on':''),onclick:function(){ir(s.id);}},
+        el('span',{class:'bi-av','aria-hidden':'true'},iniciais(s.nome)),
+        el('span',{class:'bi-pessoa-t'},el('b',{},s.nome||'Estudante sem nome'),el('small',{},[s.turma?'Turma '+s.turma:'',s.grupo&&s.grupo!=='Sem grupo'?'Grupo '+s.grupo:''].filter(Boolean).join(' · ')||(s.atual?'Usando agora':''))),
+        s.atual?el('span',{class:'bi-pessoa-tag'},'agora'):null));
+    });
+    var caixa=el('div',{class:'bi-dlg',role:'dialog','aria-modal':'true','aria-labelledby':'bi-dlg-t'},
+      el('h2',{id:'bi-dlg-t'},op.titulo||'Quem está usando?'),
+      el('p',{class:'note'},'Cada estudante tem o seu espaço neste aparelho, com as suas respostas. Toque no seu nome ou crie o seu espaço.'),
+      itens,
+      el('div',{class:'row'},el('button',{type:'button',class:'btn primary',onclick:function(){novoEstudante();location.reload();}},'+ Sou novo neste aparelho'),el('button',{type:'button',class:'btn ghost',onclick:fechar},'Fechar')));
+    fundo.append(caixa);fundo.addEventListener('click',function(e){if(e.target===fundo)fechar();});
+    document.addEventListener('keydown',esc);document.body.append(fundo);
+    var foco=caixa.querySelector('.bi-pessoa.on')||caixa.querySelector('button');if(foco)foco.focus();
+  }
+
+  // Link para uma ficha: site.html?ficha=Aula%2001 abre a aula e rola até a ficha
+  function irParaFicha(){
+    try{
+      var p=new URLSearchParams(location.search);var code=p.get('ficha');if(!code)return;
+      p.delete('ficha');var q=p.toString();history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);
+      var sec=null;
+      try{if(typeof FICHA_DE!=='undefined'){for(var k in FICHA_DE)if(FICHA_DE[k]===code){sec=k;break;}}}catch(e){}
+      try{if(!sec&&typeof SPEC!=='undefined'&&SPEC.find){var f=SPEC.find(function(x){return x.code===code;});if(f&&f.id)sec=f.id;}}catch(e){}
+      if(!sec||typeof go!=='function'||!document.getElementById(sec))return;
+      go(sec);setTimeout(function(){var b=document.getElementById('ficha-'+sec);if(b)b.scrollIntoView({behavior:'smooth',block:'start'});},350);
+    }catch(e){}
   }
 
   // ---------- Professor (fica só no navegador do professor) ----------
@@ -142,6 +235,22 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   '.bi-code-in{flex:1 1 220px;min-width:0;font-family:var(--f-mono,monospace);font-size:.85rem}'+
   '.bi-code-msg{font-size:.85rem;color:var(--muted)}.bi-code-msg.err{color:var(--bad,#b03c35)}.bi-code-msg.ok{color:var(--good,#2b7a4b);font-weight:700}'+
   '.bi-turma-off{align-self:center}'+
+  '.bi-fb{display:flex;flex-direction:column;gap:8px}'+
+  '.bi-quem{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;font-size:.92rem}'+
+  '.bi-quem-t{flex:1 1 200px}.bi-quem-t a{font-weight:700;color:var(--tema,var(--ink))}'+
+  '.bi-av{width:30px;height:30px;border-radius:9px;background:var(--tema-soft,var(--surface-2));color:var(--tema,var(--ink));display:inline-grid;place-items:center;font-family:var(--f-display,inherit);font-weight:800;font-size:.85rem;flex:none}'+
+  '.bi-strip a.bi-eu{margin-left:auto;border-color:var(--line);background:var(--surface);color:var(--ink);padding:2px 10px 2px 3px}'+
+  '.bi-strip a.bi-eu .bi-av{width:22px;height:22px;border-radius:999px;font-size:.66rem}'+
+  '.bi-dlg-bg{position:fixed;inset:0;z-index:80;background:rgba(10,16,13,.55);display:flex;align-items:center;justify-content:center;padding:16px}'+
+  '.bi-dlg{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);padding:22px;width:min(460px,100%);max-height:calc(100vh - 32px);overflow:auto;display:flex;flex-direction:column;gap:12px}'+
+  '.bi-dlg h2{font-size:1.4rem}'+
+  '.bi-dlg-list{display:flex;flex-direction:column;gap:6px}'+
+  '.bi-pessoa{display:flex;align-items:center;gap:12px;text-align:left;width:100%;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);cursor:pointer}'+
+  '.bi-pessoa:hover{border-color:var(--tema,var(--ink))}'+
+  '.bi-pessoa.on{border-width:2px;border-color:var(--tema,var(--good))}'+
+  '.bi-pessoa .bi-av{width:38px;height:38px;border-radius:11px;font-size:1rem}'+
+  '.bi-pessoa-t{display:flex;flex-direction:column;flex:1;min-width:0}.bi-pessoa-t b{line-height:1.25}.bi-pessoa-t small{color:var(--muted);font-size:.82rem}'+
+  '.bi-pessoa-tag{font-family:var(--f-mono,monospace);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--good,#2b7a4b)}'+
   '.bi-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:999px;font-weight:700;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px);text-align:center}';
   function injectCss(){if(document.getElementById('bi-css'))return;var s=document.createElement('style');s.id='bi-css';s.textContent=CSS;document.head.append(s);}
   function strip(){
@@ -149,6 +258,10 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     var cur=window.PORTAL_SITE;
     var nav=el('nav',{class:'bi-strip','aria-label':'Sites da coleção'},el('a',{href:'index.html',class:'bi-home'},'← Biologia em Investigação'),el('span',{class:'bi-sep','aria-hidden':'true'}));
     ORDER.forEach(function(k){var s=SITES[k];nav.append(el('a',{href:s.file,'aria-current':k===cur?'page':null},el('i',{style:'background:'+s.cor,'aria-hidden':'true'}),s.nome));});
+    var eu=el('a',{href:'estudante.html',class:'bi-eu',title:'Minha página: minhas fichas em todos os sites'});
+    function drawEu(){var n=estudanteAtual().nome;eu.innerHTML='';eu.append(el('span',{class:'bi-av','aria-hidden':'true'},iniciais(n)),nomeCurto(n)?'Minha página · '+nomeCurto(n):'Minha página');}
+    drawEu();window.addEventListener('bi-ident',drawEu);
+    nav.append(eu);
     top.prepend(nav);
   }
   function toast(t){var d=el('div',{class:'bi-toast',role:'status'},t);document.body.append(d);setTimeout(function(){d.remove();},4200);}
@@ -156,12 +269,15 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     injectCss();
     if(window.PORTAL_SITE)strip();
     if(window.__biTurmaNova){var c=turma();if(c)toast('Você entrou na turma de '+c.n+'.');}
+    if(window.PORTAL_SITE)setTimeout(irParaFicha,0);
+    // Aparelho com mais de um estudante: pergunta quem está usando, uma vez por sessão do navegador
+    if(window.PORTAL_SITE||window.PORTAL_ESTUDANTE){var ja='1';try{ja=sessionStorage.getItem(K_QUEM);}catch(e){}if(!ja&&perfis().lista.length>1)setTimeout(function(){escolherEstudante();},300);}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 
   window.PORTAL={SITES:SITES,ORDER:ORDER,escola:escola,rotuloTurma:rotuloTurma,el:el,lsGet:lsGet,lsSet:lsSet,
     turma:turma,definirTurma:definirTurma,sairDaTurma:sairDaTurma,lerCodigo:lerCodigo,codigoDaTurma:codigoDaTurma,caixaCodigo:caixaCodigo,
-    ident:ident,saveIdent:saveIdent,grupos:grupos,turmas:turmas,turmaCtl:turmaCtl,fichaBanner:fichaBanner,
+    ident:ident,saveIdent:saveIdent,estudantes:estudantes,estudanteAtual:estudanteAtual,pfx:pfx,trocarEstudante:trocarEstudante,novoEstudante:novoEstudante,removerEstudante:removerEstudante,escolherEstudante:escolherEstudante,iniciais:iniciais,grupos:grupos,turmas:turmas,turmaCtl:turmaCtl,fichaBanner:fichaBanner,
     site:site,code:code,codeFor:codeFor,receiver:receiver,sendLabel:sendLabel,offText:offText,
     idDoReceptor:idDoReceptor,urlDoReceptor:urlDoReceptor,prof:prof,salvarProf:salvarProf,standalone:standalone,baseUrl:baseUrl,linkDaTurma:linkDaTurma,
     injectCss:injectCss,toast:toast};

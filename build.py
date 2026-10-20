@@ -35,6 +35,7 @@ def icons(name, manifest=False):
 idx = icons('portal', True) + '\n' + page('index'); prof = icons('portal') + '\n' + page('professor')
 (OUT / 'index.body.html').write_text(idx)            # página principal do artefato (o Claude coloca o esqueleto)
 (OUT / 'professor.html').write_text(SKEL.replace('</head>', icons('portal') + '</head>') + page('professor') + '\n</body></html>')
+(OUT / 'estudante.html').write_text(SKEL.replace('</head>', icons('portal') + '</head>') + page('estudante') + '\n</body></html>')
 shutil.copy(SRC / 'portal.js', OUT / 'portal.js')
 for f, n in [('ciencia.html','ciencia'),('ecologia.html','ecologia'),('celulas.html','celulas'),('genetica.html','genetica'),('microcosmo.html','microcosmo'),('painel.html','portal')]:
     t = (OUT / f).read_text()
@@ -51,7 +52,7 @@ shutil.copytree(SRC / 'icons', OUT / 'icons')
 SITE = R / 'site'
 if SITE.exists(): shutil.rmtree(SITE)
 SITE.mkdir()
-for f in ['ciencia.html', 'ecologia.html', 'celulas.html', 'genetica.html', 'microcosmo.html', 'painel.html', 'professor.html', 'portal.js', 'specs.js', 'site.webmanifest']:
+for f in ['ciencia.html', 'ecologia.html', 'celulas.html', 'genetica.html', 'microcosmo.html', 'painel.html', 'professor.html', 'estudante.html', 'portal.js', 'specs.js', 'site.webmanifest']:
     shutil.copy(OUT / f, SITE / f)
 shutil.copytree(OUT / 'icons', SITE / 'icons')
 (SITE / 'index.html').write_text(SKEL.replace('</head>', icons('portal', True) + '</head>') + page('index') + '\n</body></html>')
