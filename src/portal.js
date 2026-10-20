@@ -204,7 +204,8 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     return j||{};
   }
   function nuvem(){var e=estudanteAtual();return e&&e.nuvem&&e.nuvem.senha?e.nuvem:null;}
-  var enviando=false;
+  var enviando=false,CRIANDO=false,SENHA_NOVA='';
+  function avisar(){try{window.dispatchEvent(new Event('bi-nuvem'));}catch(e){}}
   async function guardarNaNuvem(keep){
     var nv=nuvem(),e=estudanteAtual();if(!nv||enviando||!receiver())return;
     if(normNome(e.nome)!==nv.nome)return; // mudou o nome: espera entrar de novo
@@ -218,7 +219,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   // Quadro da ficha: entrar com a senha ou criar a senha
   function caixaNuvem(){
     var box=el('div',{class:'bi-nuvem',role:'region','aria-label':'Guardar as respostas'});
-    var ultimoNome='',timer=null,estado='',dispensado={};
+    var ultimoNome='',timer=null,timerCriar=null,estado='',erroCriar='';
     function pin(id){return el('input',{type:'password',inputmode:'numeric',pattern:'[0-9]*',maxlength:'4',autocomplete:'off',class:'bi-pin',id:id,'aria-label':'Senha de 4 números',placeholder:'••••'});}
     function msg(t,cls){return el('p',{class:'bi-nuvem-msg'+(cls?' '+cls:''),role:'status'},t);}
     function draw(){
@@ -226,12 +227,21 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
       var e=estudanteAtual(),nv=nuvem();
       if(!receiver()){box.hidden=true;return;}box.hidden=false;
       if(nv&&normNome(e.nome)===nv.nome){
+        if(SENHA_NOVA){
+          box.className='bi-nuvem nova';
+          box.append(el('p',{class:'bi-nuvem-t'},el('strong',{},'Esta é a sua senha:')),
+            el('div',{class:'bi-senha',role:'status','aria-label':'Senha '+SENHA_NOVA.split('').join(' ')},SENHA_NOVA),
+            el('p',{class:'bi-nuvem-t'},'Anote no caderno. Em outro celular ou computador, escreva o seu nome completo e esta senha para continuar de onde parou. Se esquecer, o professor também tem a senha.'),
+            el('div',{class:'bi-nuvem-row'},el('button',{type:'button',class:'btn primary sm',onclick:function(){SENHA_NOVA='';avisar();}},'Já anotei')));
+          return;
+        }
         box.className='bi-nuvem on';
-        box.append(el('span',{class:'bi-nuvem-ic','aria-hidden':'true'},'☁'),el('span',{class:'bi-nuvem-t'},'Suas respostas ficam guardadas também na planilha do professor. Em outro aparelho, escreva o seu nome e a senha.'));
+        var vis=el('span',{class:'mono'},'••••'),bt=el('button',{type:'button',class:'btn ghost sm'},'Ver minha senha');
+        bt.onclick=function(){var v=vis.textContent==='••••';vis.textContent=v?nv.senha:'••••';bt.textContent=v?'Ocultar':'Ver minha senha';};
+        box.append(el('span',{class:'bi-nuvem-ic','aria-hidden':'true'},'☁'),el('span',{class:'bi-nuvem-t'},'Respostas guardadas também na planilha do professor. Senha: ',vis),bt);
         return;
       }
       if(!nomeOk(e.nome)){box.hidden=true;return;}
-      if(dispensado[normNome(e.nome)]){box.hidden=true;return;}
       if(estado==='busca'){box.append(msg('Procurando '+e.nome.trim()+' na turma…'));return;}
       if(estado==='existe'){
         var p1=pin('bi-pin-in'),ok=el('button',{type:'button',class:'btn primary sm'},'Entrar'),m=msg('');
@@ -254,36 +264,44 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
         }
         ok.onclick=entrar;p1.addEventListener('keydown',function(ev){if(ev.key==='Enter'){ev.preventDefault();entrar();}});
         box.append(el('p',{class:'bi-nuvem-t'},el('strong',{},e.nome.trim()),' já tem respostas guardadas nesta turma. Digite a sua senha para trazê-las para este aparelho.'),
-          el('div',{class:'bi-nuvem-row'},p1,ok,el('button',{type:'button',class:'btn ghost sm',onclick:function(){dispensado[normNome(e.nome)]=1;draw();}},'Não sou eu')),m);
+          el('div',{class:'bi-nuvem-row'},p1,ok,el('button',{type:'button',class:'btn ghost sm',onclick:function(){m.className='bi-nuvem-msg';m.textContent='Então já existe outro estudante com esse nome. Acrescente mais um sobrenome ao seu nome para ter a sua própria senha.';}},'Não sou eu')),m);
         return;
       }
-      if(estado==='novo'){
-        var p2=pin('bi-pin-novo'),cr=el('button',{type:'button',class:'btn primary sm'},'Criar senha'),m2=msg('');
-        async function criar(){
-          if(!/^\d{4}$/.test(p2.value)){m2.textContent='Escolha 4 números.';m2.className='bi-nuvem-msg err';return;}
-          cr.disabled=true;m2.textContent='Guardando…';m2.className='bi-nuvem-msg';
-          var cur=estudanteAtual(),s=JSON.stringify(coletar());
-          try{var j=await api('aluno-criar',{nome:cur.nome.trim(),senha:p2.value,turma:cur.turma,grupo:cur.grupo,dados:s});
-            if(!j.ok){cr.disabled=false;m2.className='bi-nuvem-msg err';m2.textContent=j.texto||'Não deu certo.';if(j.erro==='existe'){estado='existe';setTimeout(draw,1600);}return;}
-            var senha=p2.value;atualizarPerfil(function(x){x.nuvem={nome:normNome(cur.nome),senha:senha,ult:hash(s+'|'+cur.turma+'|'+cur.grupo),quando:Date.now()};});
-            estado='';draw();toast('Senha criada. Guarde: '+senha);
-          }catch(err){cr.disabled=false;m2.className='bi-nuvem-msg err';m2.textContent=err.texto||'Não deu certo.';}
-        }
-        cr.onclick=criar;p2.addEventListener('keydown',function(ev){if(ev.key==='Enter'){ev.preventDefault();criar();}});
-        box.append(el('p',{class:'bi-nuvem-t'},el('strong',{},'Quer continuar em outro aparelho? '),'Crie uma senha de 4 números. Depois é só escrever o seu nome e a senha em qualquer celular ou computador. O professor também vê a senha, caso você esqueça.'),
-          el('div',{class:'bi-nuvem-row'},p2,cr,el('button',{type:'button',class:'btn ghost sm',onclick:function(){dispensado[normNome(e.nome)]=1;draw();}},'Agora não')),m2);
+      if(estado==='novo'||estado==='criando'){
+        box.append(msg(estado==='criando'?'Gerando a sua senha…':'Primeira vez de '+e.nome.trim()+' por aqui? Quando terminar de escrever o nome, a sua senha será gerada.'));
+        if(erroCriar)box.append(msg(erroCriar,'err'));
         return;
       }
       box.hidden=true;
     }
     async function verificar(){
       var e=estudanteAtual(),n=normNome(e.nome);if(!nomeOk(e.nome)||!receiver()||(nuvem()&&nuvem().nome===n)){estado='';draw();return;}
-      if(n===ultimoNome&&estado)return;ultimoNome=n;estado='busca';draw();
+      if(n===ultimoNome&&estado)return;ultimoNome=n;estado='busca';erroCriar='';draw();
       try{var j=await api('aluno-ver',{nome:e.nome.trim()});if(normNome(estudanteAtual().nome)!==n)return;estado=j.ok?(j.existe?'existe':'novo'):'';}catch(err){estado='';}
-      draw();
+      draw();if(estado==='novo')timerCriar=setTimeout(confirmar,7000);
     }
-    function agendar(){clearTimeout(timer);var e=estudanteAtual();if(normNome(e.nome)!==ultimoNome){estado='';draw();}timer=setTimeout(verificar,1100);}
+    // O nome está completo (saiu do campo, apertou Enter ou parou de digitar): gera a senha
+    async function confirmar(){
+      clearTimeout(timerCriar);
+      var e=estudanteAtual(),n=normNome(e.nome);
+      if(estado!=='novo'||n!==ultimoNome||!nomeOk(e.nome)||nuvem())return;
+      if(CRIANDO)return;CRIANDO=true;estado='criando';erroCriar='';draw();
+      var s=JSON.stringify(coletar());
+      try{var j=await api('aluno-criar',{nome:e.nome.trim(),turma:e.turma,grupo:e.grupo,dados:s});
+        if(j.ok&&/^\d{4}$/.test(String(j.senha||''))){
+          var senha=String(j.senha);atualizarPerfil(function(x){x.nuvem={nome:n,senha:senha,ult:hash(s+'|'+e.turma+'|'+e.grupo),quando:Date.now()};});
+          SENHA_NOVA=senha;estado='';
+        }else if(j.erro==='existe'){estado='existe';}
+        else{estado='novo';erroCriar=(j.texto||'Não consegui gerar a senha.')+' Tente sair do campo do nome de novo.';}
+      }catch(err){estado='novo';erroCriar=(err.texto||'Não consegui gerar a senha.');}
+      finally{CRIANDO=false;}
+      avisar();
+    }
+    function agendar(){clearTimeout(timer);clearTimeout(timerCriar);var e=estudanteAtual();if(normNome(e.nome)!==ultimoNome){estado='';draw();}timer=setTimeout(verificar,1100);}
     window.addEventListener('bi-ident',agendar);
+    window.addEventListener('bi-nuvem',draw);
+    document.addEventListener('focusout',function(ev){var x=ev.target;if(x&&x.matches&&x.matches('input[autocomplete=name]'))setTimeout(confirmar,200);});
+    document.addEventListener('keydown',function(ev){var x=ev.target;if(ev.key==='Enter'&&x&&x.matches&&x.matches('input[autocomplete=name]'))setTimeout(confirmar,200);});
     draw();verificar();
     return box;
   }
@@ -376,6 +394,9 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   '.bi-pessoa-tag{font-family:var(--f-mono,monospace);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--good,#2b7a4b)}'+
   '.bi-nuvem{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border-radius:12px;border:1px solid color-mix(in srgb,var(--tema,var(--accent)) 40%,var(--line));background:var(--tema-soft,var(--surface-2))}'+
   '.bi-nuvem.on{flex-direction:row;align-items:center;gap:10px;padding:8px 12px;background:var(--surface);border-color:var(--line);font-size:.88rem;color:var(--muted)}'+
+  '.bi-nuvem.nova{border-width:2px;border-color:var(--good,#2b7a4b);background:var(--good-soft,#dbefe1)}'+
+  '.bi-senha{font-family:var(--f-mono,monospace);font-size:2.4rem;font-weight:700;letter-spacing:.35em;line-height:1;color:var(--ink)}'+
+  '.bi-nuvem.on .bi-nuvem-t{flex:1}'+
   '.bi-nuvem-ic{font-size:1.2rem;color:var(--good,#2b7a4b)}'+
   '.bi-nuvem-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}'+
   '.bi-pin{width:7.5em!important;font-family:var(--f-mono,monospace);font-size:1.1rem;letter-spacing:.3em;text-align:center}'+

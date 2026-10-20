@@ -5,7 +5,8 @@
  * uma aba por site e aula (por exemplo "Ecologia · Aula 01").
  * Também entrega os dados ao Painel de avaliação, que só abre com a senha abaixo.
  * Versão 2: guarda as respostas de cada estudante (aba "Estudantes") para ele continuar em outro
- * aparelho, entrando com o nome e uma senha de 4 números. Você vê as senhas no painel e nessa aba.
+ * aparelho, entrando com o nome e uma senha de 4 números, gerada na primeira vez que ele escreve o nome.
+ * Você vê as senhas no painel e nessa aba.
  *
  * Este código foi gerado na Área do professor do portal, já com o seu nome e a sua senha.
  * Não é preciso alterar nada.
@@ -187,7 +188,9 @@ function aluno(d) {
   const escola = limpar(d.escola, 80).trim();
   if (nome.split(/\s+/).length < 2) return { ok: false, erro: 'nome', texto: 'Escreva nome e sobrenome.' };
   const chave = chaveAluno(nome, escola);
-  const senha = String(d.senha == null ? '' : d.senha).trim();
+  let senha = String(d.senha == null ? '' : d.senha).trim();
+  // Primeira vez do estudante: a senha é gerada aqui
+  if (d.acao === 'aluno-criar' && !senha) senha = ('000' + Math.floor(Math.random() * 10000)).slice(-4);
   const lock = LockService.getScriptLock();
   lock.waitLock(20000);
   try {
@@ -202,7 +205,7 @@ function aluno(d) {
       if (!pedacos) return { ok: false, erro: 'grande', texto: 'Respostas grandes demais para guardar.' };
       const row = [chave, nome, escola, limpar(d.turma, 20), limpar(d.grupo, 20), "'" + senha, agora, agora].map(function (v, i) { return i === 5 ? v : seguro(v); }).concat(pedacos);
       aba.appendRow(row);
-      return { ok: true };
+      return { ok: true, senha: senha };
     }
     if (!linha) return { ok: false, erro: 'naoexiste', texto: 'Não encontrei esse nome nesta turma.' };
     // Tentativas erradas: no máximo 5 seguidas por estudante a cada 15 minutos
