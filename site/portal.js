@@ -404,7 +404,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   '.bi-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:999px;font-weight:700;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px);text-align:center}'+
   '.bi-rodape{border-top:1px solid var(--line);margin-top:8px}'+
   '.bi-rodape-in{max-width:1280px;margin:0 auto;padding:18px 16px calc(90px + env(safe-area-inset-bottom,0px))}'+
-  '.bi-copy{margin:0;font-size:.82rem;line-height:1.45;color:var(--muted)}';
+  '.bi-copy{margin:0;font-size:.82rem;line-height:1.45;color:var(--muted)}.bi-copy a{color:inherit;font-weight:700}';
   function injectCss(){if(document.getElementById('bi-css'))return;var s=document.createElement('style');s.id='bi-css';s.textContent=CSS;document.head.append(s);}
   function strip(){
     var top=document.querySelector('header.top .top-in');if(!top||top.querySelector('.bi-strip'))return;
@@ -418,10 +418,11 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     top.prepend(nav);
   }
   // Aviso de direitos autorais no rodapé de todas as páginas
-  var COPY='© 2026 Biologia em Investigação · Criado por Bianca Posterli Firmino et al. Todos os direitos reservados.';
+  var COPY='© 2026 Biologia em Investigação · Criado por Bianca Posterli Firmino et al. · Licença ';
+  var COPY_FIM=': pode ser usado e adaptado, citando a autoria, sem fins comerciais.';
   function rodape(){
     if(document.querySelector('.bi-copy'))return;
-    var p=el('p',{class:'bi-copy'},COPY);
+    var p=el('p',{class:'bi-copy'},COPY,el('a',{href:'https://creativecommons.org/licenses/by-nc/4.0/deed.pt-br',target:'_blank',rel:'license noopener'},'CC BY-NC 4.0'),COPY_FIM);
     var w=document.querySelector('body > footer .wrap');
     if(w){w.append(p);return;}
     var f=el('footer',{class:'bi-rodape'},el('div',{class:'bi-rodape-in'},p));
