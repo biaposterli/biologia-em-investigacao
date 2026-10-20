@@ -401,7 +401,10 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   '.bi-nuvem-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}'+
   '.bi-pin{width:7.5em!important;font-family:var(--f-mono,monospace);font-size:1.1rem;letter-spacing:.3em;text-align:center}'+
   '.bi-nuvem-msg{font-size:.88rem;color:var(--muted);margin:0}.bi-nuvem-msg:empty{display:none}.bi-nuvem-msg.err{color:var(--bad,#b03c35);font-weight:700}'+
-  '.bi-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:999px;font-weight:700;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px);text-align:center}';
+  '.bi-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:999px;font-weight:700;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px);text-align:center}'+
+  '.bi-rodape{border-top:1px solid var(--line);margin-top:8px}'+
+  '.bi-rodape-in{max-width:1280px;margin:0 auto;padding:18px 16px calc(90px + env(safe-area-inset-bottom,0px))}'+
+  '.bi-copy{margin:0;font-size:.82rem;line-height:1.45;color:var(--muted)}';
   function injectCss(){if(document.getElementById('bi-css'))return;var s=document.createElement('style');s.id='bi-css';s.textContent=CSS;document.head.append(s);}
   function strip(){
     var top=document.querySelector('header.top .top-in');if(!top||top.querySelector('.bi-strip'))return;
@@ -414,9 +417,21 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     nav.append(eu);
     top.prepend(nav);
   }
+  // Aviso de direitos autorais no rodapé de todas as páginas
+  var COPY='© 2026 Biologia em Investigação · Criado por Bianca Posterli Firmino et al. Todos os direitos reservados.';
+  function rodape(){
+    if(document.querySelector('.bi-copy'))return;
+    var p=el('p',{class:'bi-copy'},COPY);
+    var w=document.querySelector('body > footer .wrap');
+    if(w){w.append(p);return;}
+    var f=el('footer',{class:'bi-rodape'},el('div',{class:'bi-rodape-in'},p));
+    var m=document.querySelector('body > main');
+    if(m)m.after(f);else document.body.append(f);
+  }
   function toast(t){var d=el('div',{class:'bi-toast',role:'status'},t);document.body.append(d);setTimeout(function(){d.remove();},4200);}
   function boot(){
     injectCss();
+    rodape();
     if(window.PORTAL_SITE)strip();
     if(window.__biTurmaNova){var c=turma();if(c)toast('Você entrou na turma de '+c.n+'.');}
     if(window.PORTAL_SITE)setTimeout(irParaFicha,0);
