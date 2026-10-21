@@ -606,8 +606,24 @@ const TESTES=[
 ];
 // Sons sintetizados no navegador (Web Audio). O som depende só das propriedades do objeto:
 // por isso o dado de madeira e o cubo de plástico soam iguais, como na observação escrita.
-const SOM=(()=>{let ctx=null,nb=null,mst=null;
-  const ac=()=>{try{if(!ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ctx=new C();const cp=ctx.createDynamicsCompressor();cp.threshold.value=-14;cp.ratio.value=8;mst=ctx.createGain();mst.gain.value=.6;mst.connect(cp);cp.connect(ctx.destination);}if(ctx.state==='suspended')ctx.resume();return ctx;}catch(e){return null;}};
+// No celular: o iPhone silencia o Web Audio quando a chave lateral está no modo silencioso, e o navegador
+// só libera o som dentro de um toque. Por isso, no primeiro toque, o site (1) pede a sessão de áudio de
+// reprodução, (2) toca um áudio HTML silencioso em laço, que mantém o som ligado mesmo no modo silencioso,
+// e (3) toca um trecho mudo no Web Audio. Se o contexto estiver parado (tela bloqueada, outra aba), ele é
+// retomado antes de tocar.
+const SOM=(()=>{let ctx=null,nb=null,mst=null,mudo=null;
+  function silencio(){if(mudo)return mudo;try{const n=8000,b=new ArrayBuffer(44+n),v=new DataView(b);const w=(o,t)=>{for(let i=0;i<t.length;i++)v.setUint8(o+i,t.charCodeAt(i));};
+    w(0,'RIFF');v.setUint32(4,36+n,true);w(8,'WAVE');w(12,'fmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,1,true);v.setUint32(24,8000,true);v.setUint32(28,8000,true);v.setUint16(32,1,true);v.setUint16(34,8,true);w(36,'data');v.setUint32(40,n,true);for(let i=0;i<n;i++)v.setUint8(44+i,128);
+    const a=new Audio(URL.createObjectURL(new Blob([b],{type:'audio/wav'})));a.loop=true;a.preload='auto';a.setAttribute('playsinline','');a.setAttribute('aria-hidden','true');mudo=a;}catch(e){mudo=false;}return mudo;}
+  function liberar(c){
+    try{if(navigator.audioSession)navigator.audioSession.type='playback';}catch(e){}
+    const a=silencio();if(a&&a.paused){try{const pr=a.play();if(pr&&pr.catch)pr.catch(()=>{});}catch(e){}}
+    try{const b=c.createBuffer(1,1,c.sampleRate),s=c.createBufferSource();s.buffer=b;s.connect(c.destination);s.start(0);}catch(e){}
+  }
+  const ac=()=>{try{if(!ctx){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ctx=new C();const cp=ctx.createDynamicsCompressor();cp.threshold.value=-14;cp.ratio.value=8;mst=ctx.createGain();mst.gain.value=.6;mst.connect(cp);cp.connect(ctx.destination);}
+    liberar(ctx);return ctx;}catch(e){return null;}};
+  // Quando a página volta a aparecer, o áudio silencioso volta a tocar só no próximo toque
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&mudo&&!mudo.paused)mudo.pause();});
   const noise=c=>{if(nb)return nb;const b=c.createBuffer(1,c.sampleRate*2,c.sampleRate);const d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return nb=b;};
   const out=(c,pan)=>{const g=c.createGain();if(c.createStereoPanner){const p=c.createStereoPanner();p.pan.value=pan||0;g.connect(p);p.connect(mst);}else g.connect(mst);return g;};
   // impacto com modos de vibração: [frequência, amplitude, duração]
@@ -626,15 +642,21 @@ const SOM=(()=>{let ctx=null,nb=null,mst=null;
     let dst=mst;if(c.createStereoPanner){const pn=c.createStereoPanner();pn.pan.setValueAtTime(-.85,t);pn.pan.linearRampToValueAtTime(.85,t+dur);pn.connect(mst);dst=pn;}
     s.connect(fl);fl.connect(g);g.connect(dst);s.start(t);s.stop(t+dur+.05);lfo.start(t);lfo.stop(t+dur);}
   return {ok:()=>!!(window.AudioContext||window.webkitAudioContext),
-    // devolve a duração do som, em segundos
-    play(test,o){const c=ac();if(!c)return 0;const t=c.currentTime+.04;const I=IMP[o.som];
+    // devolve a duração do som, em segundos. Se o áudio estiver parado, retoma e toca em seguida.
+    play(test,o){const c=ac();if(!c)return 0;
+      if(c.state==='running')return tocar(c,test,o);
+      const p=c.resume();if(p&&p.then)p.then(()=>tocar(c,test,o)).catch(()=>{});else tocar(c,test,o);
+      return DUR(test,o);}};
+  function DUR(test,o){if(test==='inclinar')return o.mov==='rola'?1.3:o.mov==='tomba'?1.05:.8;if(test==='sacudir')return 1.4;if(test==='pesar')return .95;if(test==='ima')return o.ima?.6:.5;return 0;}
+  function tocar(c,test,o){const t=c.currentTime+.04;const I=IMP[o.som];
       if(test==='inclinar'){if(o.mov==='rola'){rolar(c,t,.95,o.som);I(c,t+.95,1,.85);return 1.3;}
         if(o.mov==='tomba'){[0,.34,.68].forEach((d,i)=>I(c,t+d,1-i*.15,-.6+i*.6));return 1.05;}
         burst(c,t,{f:900,q:.6,dur:.35,vol:.07,pan:-.3,att:.15});I(c,t+.35,1,.85);return .8;}
       if(test==='sacudir'){for(let i=0;i<10;i++)I(c,t+i*.12+Math.random()*.035,.55+Math.random()*.45,i%2?.65:-.65);return 1.4;}
       if(test==='pesar'){burst(c,t,{f:300,q:.7,type:'lowpass',dur:.12,vol:.35});modal(c,t+.55,[[1760,.18,.12]],1,0);modal(c,t+.72,[[1760,.18,.12]],1,0);return .95;}
       if(test==='ima'){if(o.ima){burst(c,t,{f:800,q:.6,dur:.22,vol:.05,att:.12});I(c,t+.22,1.1,.5);return .6;}burst(c,t,{f:600,q:.5,dur:.4,vol:.025,att:.2});return .5;}
-      return 0;}};})();
+      return 0;}
+})();
 function caixaSv(letra,cls=''){return svgOf(`<ellipse cx="80" cy="128" rx="62" ry="7" fill="rgba(0,0,0,.14)"/><path d="M22,52 L80,30 L138,52 L80,74z" fill="#d9b27a" stroke="#8a6a45" stroke-width="2"/><path d="M22,52 V112 L80,134 V74z" fill="#c49660" stroke="#8a6a45" stroke-width="2"/><path d="M138,52 V112 L80,134 V74z" fill="#b5864f" stroke="#8a6a45" stroke-width="2"/><path d="M51,41 L109,63 M58,38 L116,60" stroke="#e9d9b0" stroke-width="6" opacity=".9"/><text x="110" y="104" text-anchor="middle" font-size="30" font-weight="800" fill="#5d4630" font-family="Bricolage Grotesque, sans-serif">${letra}</text><text x="50" y="104" text-anchor="middle" font-size="22" font-weight="800" fill="#7a5634" font-family="Bricolage Grotesque, sans-serif">?</text>`,'0 0 160 140','cx-box '+cls);}
 INIT.caixa=root=>{
   root.append(head('Aula 1 · Observação e inferência','O mistério da caixa-preta','Cada caixa lacrada tem um objeto dentro. Você não pode abrir. Como descobrir o que é? É assim que a ciência estuda o que não dá para ver diretamente: o interior da Terra, um átomo, um gene.'));
@@ -685,7 +707,7 @@ INIT.caixa=root=>{
   const sel=seg([['A','Caixa A'],['B','Caixa B'],['C','Caixa C']],cx,v=>{cx=v;store.set('cx-cur',v);draw();},{label:'Caixa'});
   root.append(h('div',{class:'cols wide-right'},
     panel(h('span',{class:'label'},'Escolha a caixa'),sel,stage,h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'label'},'Testes'),somBtn),tbtns,
-      SOM.ok()?h('p',{class:'note'},'🎧 Use fone de ouvido: o som mostra o que acontece lá dentro. Ao inclinar, ele vai de um lado para o outro.'):null,model('A massa de cada caixa vazia é 50 g. Os sons são sintetizados pelo próprio site a partir do material e do movimento de cada objeto.')),
+      SOM.ok()?h('p',{class:'note'},'🎧 Use fone de ouvido: o som mostra o que acontece lá dentro. Ao inclinar, ele vai de um lado para o outro. Sem som no celular? Aumente o volume pelos botões laterais.'):null,model('A massa de cada caixa vazia é 50 g. Os sons são sintetizados pelo próprio site a partir do material e do movimento de cada objeto.')),
     panel(h('h3',{},'Caderno de observações'),log,h('h3',{},'Quadro de suspeitos'),h('p',{class:'note'},'Toque num objeto para descartá-lo quando uma observação não combinar com ele.'),board,h('div',{class:'row'},chk),bmsg)));
   root.append(panel(h('h3',{},'Conclusão'),h('p',{class:'note'},'Use só o que as observações permitem afirmar. Às vezes a resposta mais honesta é “ainda não dá para saber”.'),cBox,peekOut));
   // Observação ou inferência?
