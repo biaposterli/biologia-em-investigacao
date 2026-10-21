@@ -145,10 +145,14 @@ footer .wrap{padding-block:22px 40px;display:flex;flex-direction:column;gap:6px}
 @media (max-width:560px){.ficha-l{grid-template-columns:42px minmax(0,1fr);padding:10px 14px}.ficha-l .btn{grid-column:2;justify-self:start}.ficha-n{font-size:1.25rem}.bloco-h{padding:14px}.bloco-h .note{margin-left:0}}
 .vazio{padding:16px 20px;color:var(--muted)}
 .pessoas{display:flex;flex-direction:column;gap:6px}
+.remover{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:12px;border:1px solid var(--bad);background:var(--bad-soft)}
+.remover p{margin:0;font-size:.92rem}.remover .aviso{color:var(--bad);font-weight:700}
+.btn.perigo{background:var(--bad);border-color:var(--bad);color:var(--surface)}
 .pessoa{display:flex;align-items:center;gap:12px;padding:8px 10px;border-radius:12px;border:1px solid var(--line);background:var(--bg)}
 .pessoa.on{border:2px solid var(--good)}
 .pessoa .bi-av{width:36px;height:36px;border-radius:11px}
-.pessoa-t{flex:1;min-width:0;display:flex;flex-direction:column}
+.pessoa-t{flex:1 1 150px;min-width:0;display:flex;flex-direction:column}
+.pessoa{flex-wrap:wrap}.pessoa>.row{flex-wrap:wrap;margin-left:auto}
 .pessoa-t small{color:var(--muted);font-size:.82rem}
 .privacy{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:14px}
 footer{padding-block:34px 40px}
@@ -181,7 +185,7 @@ footer{padding-block:34px 40px}
     <p class="note">Em computador ou tablet da escola, cada estudante tem o seu espaço: as respostas de um não se misturam com as do outro. Quem usa o próprio celular não precisa fazer nada aqui.</p>
     <div class="pessoas" id="pessoas"></div>
     <div class="row"><button type="button" class="btn" id="btNovo">+ Sou novo neste aparelho</button></div>
-    <p class="privacy"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="flex:none;margin-top:2px"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>As respostas ficam guardadas só neste aparelho, e as fichas enviadas ficam também na planilha do professor. Em aparelho compartilhado, quem trocar de estudante consegue ver as respostas daquele espaço.</span></p>
+    <p class="privacy"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true" style="flex:none;margin-top:2px"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>As respostas ficam guardadas só neste aparelho, e as fichas enviadas ficam também na planilha do professor. Em aparelho compartilhado, quem trocar de estudante consegue ver as respostas daquele espaço: ao terminar, use “Remover meu perfil” para apagar as suas deste navegador.</span></p>
   </section>
 </main>
 
@@ -276,14 +280,31 @@ footer{padding-block:34px 40px}
     P.estudantes().forEach(s=>{
       const info=s.turma?'Turma '+s.turma:'';
       let acao;
-      if(s.atual)acao=el('span',{class:'st ok'},el('i',{'aria-hidden':'true'}),'Usando agora');
+      if(s.atual)acao=el('div',{class:'row',style:'gap:8px'},el('span',{class:'st ok'},el('i',{'aria-hidden':'true'}),'Usando agora'),
+        el('button',{type:'button',class:'btn sm ghost',id:'btRemover','aria-expanded':String(CONFIRMAR),'aria-controls':'remConf',onclick:()=>{CONFIRMAR=!CONFIRMAR;drawPessoas();}},'Remover meu perfil'));
       else{
         const usar=el('button',{type:'button',class:'btn sm',onclick:()=>{P.trocarEstudante(s.id);location.reload();}},'Usar');
-        const tirar=s.id==='p0'?null:el('button',{type:'button',class:'btn sm ghost',onclick:()=>{if(confirm('Tirar '+(s.nome||'este estudante')+' deste aparelho?\n\nAs respostas dele salvas aqui serão apagadas. As fichas que ele já enviou continuam na planilha do professor.')){P.removerEstudante(s.id);drawPessoas();}}},'Tirar do aparelho');
+        const tirar=el('button',{type:'button',class:'btn sm ghost',onclick:()=>{if(confirm('Tirar '+(s.nome||'este estudante')+' deste aparelho?\n\nAs respostas dele salvas aqui serão apagadas. As fichas que ele já enviou continuam na planilha do professor.')){P.removerEstudante(s.id);drawPessoas();}}},'Tirar do aparelho');
         acao=el('div',{class:'row',style:'gap:6px'},usar,tirar);
       }
       pessoas.append(el('div',{class:'pessoa'+(s.atual?' on':'')},el('span',{class:'bi-av','aria-hidden':'true'},P.iniciais(s.nome)),el('span',{class:'pessoa-t'},el('b',{},s.nome||'Estudante sem nome'),info?el('small',{},info):null),acao));
+      if(s.atual&&CONFIRMAR)pessoas.append(confirmaRemover(s));
     });
+  }
+  // Remover o próprio perfil deste navegador (pede confirmação na própria página)
+  let CONFIRMAR=false;
+  function confirmaRemover(s){
+    const nome=String(s.nome||'').trim();
+    const pend=cont.and;
+    const temSenha=!!(P.estudanteAtual().nuvem&&P.estudanteAtual().nuvem.senha);
+    return el('div',{class:'remover',id:'remConf',role:'region','aria-label':'Remover meu perfil'},
+      el('strong',{},'Remover '+(nome?'o perfil de '+nome:'este perfil')+' deste navegador?'),
+      el('p',{},'Apaga deste aparelho o seu nome, as respostas das fichas e o que você fez nos simuladores. As fichas que você já enviou continuam com o professor.'),
+      temSenha?el('p',{},'Suas respostas também estão guardadas na planilha do professor: em outro momento, escreva o seu nome completo numa ficha e use a sua senha de 4 números para trazê-las de volta.')
+        :(pend?el('p',{class:'aviso'},'Atenção: você tem '+pend+' ficha'+(pend>1?'s':'')+' em andamento que ainda não '+(pend>1?'foram enviadas':'foi enviada')+'. Elas serão perdidas.'):null),
+      el('div',{class:'row',style:'gap:8px'},
+        el('button',{type:'button',class:'btn sm perigo',onclick:()=>{P.removerMeuPerfil();location.href='index.html';}},'Remover meu perfil'),
+        el('button',{type:'button',class:'btn sm ghost',onclick:()=>{CONFIRMAR=false;drawPessoas();document.getElementById('btRemover')?.focus();}},'Cancelar')));
   }
   document.getElementById('btNovo').onclick=()=>{P.novoEstudante();location.reload();};
 

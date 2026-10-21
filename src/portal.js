@@ -83,11 +83,41 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   function trocarEstudante(id){var p=perfis();if(!p.lista.some(function(x){return x.id===id;}))return false;p.atual=id;lsSet(K_PERFIS,p);try{sessionStorage.setItem(K_QUEM,'1');}catch(e){}return true;}
   function novoEstudante(){var p=perfis();var id='e'+Date.now().toString(36).slice(-6)+Math.random().toString(36).slice(2,6);p.lista.push({id:id,nome:'',turma:'',grupo:''});p.atual=id;lsSet(K_PERFIS,p);try{sessionStorage.setItem(K_QUEM,'1');}catch(e){}return id;}
   // Tira um estudante do aparelho e apaga as respostas dele SÓ neste aparelho (as fichas enviadas continuam na planilha)
+  // Apaga deste navegador tudo o que é de um estudante: rascunhos, envios, previsões, grupos e simuladores.
+  // O primeiro estudante ("p0") usa as chaves sem código ("eco-draft-Aula 01"); os demais, "eco-@e1abc-…".
+  // A turma do professor (bi-turma) e a configuração do professor (bi-prof) ficam: são do aparelho.
+  function apagarDados(id){
+    var pref=Object.keys(SITES).map(function(k){return SITES[k].chave+'-';}),apagar=[];
+    try{
+      for(var k=0;k<localStorage.length;k++){var c=localStorage.key(k);if(!c)continue;
+        if(id==='p0'){if(pref.some(function(pf){return c.indexOf(pf)===0&&c.charAt(pf.length)!=='@';}))apagar.push(c);}
+        else if(c.indexOf('-@'+id+'-')>0)apagar.push(c);}
+      apagar.push('bi-equipe-ultima-'+id);if(id==='p0')apagar.push(K_ID);
+      apagar.forEach(function(c){localStorage.removeItem(c);});
+    }catch(e){}
+  }
+  // Tira outro estudante do aparelho (o primeiro espaço não some: fica vazio para o próximo)
   function removerEstudante(id){
-    if(id==='p0'||id===ATUAL)return false;var p=perfis();if(!p.lista.some(function(x){return x.id===id;}))return false;
-    var marca='-@'+id+'-',apagar=[];
-    try{for(var k=0;k<localStorage.length;k++){var c=localStorage.key(k);if(c&&c.indexOf(marca)>0)apagar.push(c);}apagar.forEach(function(c){localStorage.removeItem(c);});}catch(e){}
-    p.lista=p.lista.filter(function(x){return x.id!==id;});lsSet(K_PERFIS,p);return true;
+    if(id===ATUAL)return false;var p=perfis();if(!p.lista.some(function(x){return x.id===id;}))return false;
+    apagarDados(id);
+    if(id==='p0')p.lista.forEach(function(x){if(x.id==='p0'){x.nome='';x.turma='';x.grupo='';delete x.nuvem;}});
+    else p.lista=p.lista.filter(function(x){return x.id!==id;});
+    lsSet(K_PERFIS,p);return true;
+  }
+  // O próprio estudante remove o seu perfil deste navegador. Quem usar o aparelho depois começa num espaço vazio.
+  // As fichas enviadas e as respostas guardadas na planilha do professor não são apagadas.
+  function removerMeuPerfil(){
+    var id=ATUAL;apagarDados(id);var p=perfis();
+    if(id==='p0')p.lista.forEach(function(x){if(x.id==='p0'){x.nome='';x.turma='';x.grupo='';delete x.nuvem;}});
+    else p.lista=p.lista.filter(function(x){return x.id!==id;});
+    var vazio=p.lista.filter(function(x){return !String(x.nome||'').trim()&&!x.nuvem;})[0];
+    if(!vazio){vazio={id:'e'+Date.now().toString(36).slice(-6)+Math.random().toString(36).slice(2,6),nome:'',turma:'',grupo:''};p.lista.push(vazio);}
+    // espaços vazios que sobraram (sem nome e sem nada guardado) saem da lista
+    function temDados(pid){try{for(var k=0;k<localStorage.length;k++){var c=localStorage.key(k);if(c&&c.indexOf('-@'+pid+'-')>0)return true;}}catch(e){}return false;}
+    p.lista=p.lista.filter(function(x){return x.id==='p0'||x.id===vazio.id||String(x.nome||'').trim()||x.nuvem||temDados(x.id);});
+    p.atual=vazio.id;lsSet(K_PERFIS,p);
+    try{sessionStorage.removeItem(K_QUEM);}catch(e){}
+    return true;
   }
   function nomeCurto(n){n=String(n||'').trim();return n?n.split(/\s+/)[0]:'';}
 
@@ -320,7 +350,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     lista.forEach(function(s){
       itens.append(el('button',{type:'button',class:'bi-pessoa'+(s.atual?' on':''),onclick:function(){ir(s.id);}},
         el('span',{class:'bi-av','aria-hidden':'true'},iniciais(s.nome)),
-        el('span',{class:'bi-pessoa-t'},el('b',{},s.nome||'Estudante sem nome'),el('small',{},[s.turma?'Turma '+s.turma:'',s.grupo&&s.grupo!=='Sem grupo'?'Grupo '+s.grupo:''].filter(Boolean).join(' · ')||(s.atual?'Usando agora':''))),
+        el('span',{class:'bi-pessoa-t'},el('b',{},s.nome||'Estudante sem nome'),el('small',{},s.turma?'Turma '+s.turma:(s.atual?'Usando agora':''))),
         s.atual?el('span',{class:'bi-pessoa-tag'},'agora'):null));
     });
     var caixa=el('div',{class:'bi-dlg',role:'dialog','aria-modal':'true','aria-labelledby':'bi-dlg-t'},
@@ -549,7 +579,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
 
   window.PORTAL={SITES:SITES,ORDER:ORDER,escola:escola,rotuloTurma:rotuloTurma,el:el,lsGet:lsGet,lsSet:lsSet,
     turma:turma,definirTurma:definirTurma,sairDaTurma:sairDaTurma,lerCodigo:lerCodigo,codigoDaTurma:codigoDaTurma,caixaCodigo:caixaCodigo,
-    ident:ident,saveIdent:saveIdent,estudantes:estudantes,estudanteAtual:estudanteAtual,pfx:pfx,trocarEstudante:trocarEstudante,novoEstudante:novoEstudante,removerEstudante:removerEstudante,escolherEstudante:escolherEstudante,guardarNaNuvem:guardarNaNuvem,iniciais:iniciais,grupos:grupos,turmas:turmas,turmaCtl:turmaCtl,fichaBanner:fichaBanner,
+    ident:ident,saveIdent:saveIdent,estudantes:estudantes,estudanteAtual:estudanteAtual,pfx:pfx,trocarEstudante:trocarEstudante,novoEstudante:novoEstudante,removerEstudante:removerEstudante,removerMeuPerfil:removerMeuPerfil,escolherEstudante:escolherEstudante,guardarNaNuvem:guardarNaNuvem,iniciais:iniciais,grupos:grupos,turmas:turmas,turmaCtl:turmaCtl,fichaBanner:fichaBanner,
     site:site,code:code,codeFor:codeFor,equipe:equipe,tipoFicha:tipoFicha,receiver:receiver,sendLabel:sendLabel,offText:offText,
     idDoReceptor:idDoReceptor,urlDoReceptor:urlDoReceptor,prof:prof,salvarProf:salvarProf,standalone:standalone,baseUrl:baseUrl,linkDaTurma:linkDaTurma,
     injectCss:injectCss,toast:toast};
