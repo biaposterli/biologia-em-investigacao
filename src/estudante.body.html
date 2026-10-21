@@ -135,15 +135,13 @@ footer{padding-block:34px 40px}
     const id=P.ident();dados.innerHTML='';
     const nome=el('input',{type:'text',autocomplete:'name',placeholder:'Nome e sobrenome',value:id.nome,'aria-label':'Nome completo'});
     nome.oninput=()=>{const i=P.ident();i.nome=nome.value;P.saveIdent(i);drawEu();drawPessoas();};
-    const grupo=el('select',{'aria-label':'Grupo'},el('option',{value:''},'Escolha'),...P.grupos().map(g=>el('option',{value:g,selected:g===id.grupo},g)));
-    grupo.onchange=()=>{const i=P.ident();i.grupo=grupo.value;P.saveIdent(i);drawPessoas();};
     const ts=P.turmas();let turmaCtl;
     if(ts.length){turmaCtl=el('div',{class:'segs',role:'group','aria-label':'Turma'});ts.forEach(t=>{const b=el('button',{type:'button',class:'seg-b','aria-pressed':String(t===id.turma)},t);b.onclick=()=>{const i=P.ident();i.turma=t;P.saveIdent(i);drawDados();drawPessoas();};turmaCtl.append(b);});}
     else turmaCtl=el('span',{class:'note'},'Aparece quando você entrar na turma');
     dados.append(el('span',{class:'eyebrow'},'Meus dados'),el('h2',{},'Quem está respondendo'),
       el('label',{class:'field'},el('span',{class:'label'},'Nome completo'),nome),
-      el('div',{class:'ids'},el('div',{class:'field'},el('span',{class:'label'},'Turma'),turmaCtl),el('label',{class:'field'},el('span',{class:'label'},'Grupo'),grupo)),
-      el('p',{class:'note'},'Estes dados vão junto com as fichas que você enviar.'),
+      el('div',{class:'field'},el('span',{class:'label'},'Turma'),turmaCtl),
+      el('p',{class:'note'},'Estes dados vão junto com as fichas que você enviar. Se fez a ficha com colegas, marque o grupo na própria ficha: ele pode mudar de uma atividade para outra.'),
       P.fichaBanner());
   }
 
@@ -180,7 +178,7 @@ footer{padding-block:34px 40px}
   function drawPessoas(){
     pessoas.innerHTML='';
     P.estudantes().forEach(s=>{
-      const info=[s.turma?'Turma '+s.turma:'',s.grupo&&s.grupo!=='Sem grupo'?'Grupo '+s.grupo:''].filter(Boolean).join(' · ');
+      const info=s.turma?'Turma '+s.turma:'';
       let acao;
       if(s.atual)acao=el('span',{class:'st ok'},el('i',{'aria-hidden':'true'}),'Usando agora');
       else{

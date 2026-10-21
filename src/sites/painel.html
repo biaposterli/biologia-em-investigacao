@@ -83,6 +83,8 @@ tr:last-child td{border-bottom:0}
 .cell.none{color:var(--muted);cursor:default}
 .cell.g{background:var(--good-soft);color:var(--good)} .cell.m{background:var(--mid-soft);color:var(--mid)} .cell.b{background:var(--bad-soft);color:var(--bad)}
 .cell.pend{border-style:dashed;border-color:currentColor}
+.cell.grp{position:relative;padding-right:14px}.cell.grp::after{content:'';position:absolute;right:4px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:currentColor}
+.grp-line{font-size:.88rem;color:var(--ink);margin-top:2px}
 .cell:hover:not(.none){filter:brightness(.95)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:.86rem;display:inline-flex;gap:6px;align-items:center}
@@ -195,6 +197,7 @@ function applyData(abas){
   const es=abas['Estudantes']||[];S.estudantes=es.slice(1).filter(r=>r[1]&&String(r[1]).trim()).map(r=>({nome:String(r[1]).trim(),escola:String(r[2]||'').trim(),turma:P.rotuloTurma(r[2],r[3]),grupo:String(r[4]||'').trim(),senha:String(r[5]||'').trim(),criado:String(r[6]||''),quando:String(r[7]||'')}));
   const av=abas['Avaliação']||[];av.slice(1).forEach((r,i)=>{if(!r[0])return;let man={};try{man=JSON.parse(r[7]||'{}')}catch(e){}S.aval[r[0]]={row:i+2,man,nota:r[8]===''||r[8]==null?null:num(r[8]),coment:r[9]||'',quando:r[10]||''};});S.avalRows=av.length;
   ALL.forEach(f=>{S.resp[f.code]=abas[f.code]?parseResp(f,abas[f.code]):[];});
+  S.part={};ALL.forEach(f=>{S.part[f.code]=partic(S.resp[f.code]);});
 }
 async function loadAll(){
   if(S.loading)return;
@@ -214,11 +217,17 @@ async function loadAll(){
 function parseResp(f,values){
   if(!values||values.length<2)return[];
   const hdr=values[0].map(x=>String(x).trim());const ix=t=>hdr.indexOf(t);
-  const iN=ix('Nome completo'),iT=ix('Turma'),iG=ix('Grupo'),iE=ix('Escola');
+  const iN=ix('Nome completo'),iT=ix('Turma'),iG=ix('Grupo'),iE=ix('Escola'),iC=ix('Colegas do grupo');
   return values.slice(1).map((r,i)=>{if(!r.some(c=>String(c).trim()))return null;const a={};hdr.forEach((t,j)=>a[t]=r[j]!=null?String(r[j]):'');
     const nome=String(r[iN]||'').trim();const ts=String(r[0]||'');
-    return {code:f.code,f,row:i+2,ts,nome,nk:norm(nome),turma:P.rotuloTurma(iE>=0?r[iE]:'',r[iT]),grupo:String(r[iG]||'').trim(),a,key:f.code+'|'+ts+'|'+norm(nome)};}).filter(Boolean);
+    const colegas=[];if(iC>=0)String(r[iC]||'').split(/\s*[;\n]\s*/).forEach(c=>{c=c.trim();if(c&&norm(c)!==norm(nome)&&!colegas.some(x=>norm(x)===norm(c)))colegas.push(c);});
+    return {code:f.code,f,row:i+2,ts,nome,nk:norm(nome),turma:P.rotuloTurma(iE>=0?r[iE]:'',r[iT]),grupo:String(r[iG]||'').trim(),colegas,a,key:f.code+'|'+ts+'|'+norm(nome)};}).filter(Boolean);
 }
+// Envio em grupo: além de quem enviou, cada colega marcado "participa" do mesmo envio (mesma chave, mesma nota).
+// S.resp guarda os envios; S.part guarda as participações, na ordem da planilha (a mais recente de cada estudante vale).
+function partic(rs){const L=[];rs.forEach(r=>{L.push(r);r.colegas.forEach(c=>L.push(Object.assign({},r,{nome:c,nk:norm(c),membro:true,envio:r})));});return L;}
+const integrantes=r=>{const o=r.envio||r;return [o.nome].concat(o.colegas);};
+function grupoTxt(r){if(r.colegas&&r.colegas.length)return 'Em grupo';const g=String(r.grupo||'').trim();if(/^\d+$/.test(g))return 'Grupo '+g;return !g||g==='Sem grupo'||g==='Individual'?'Individual':g;}
 function auto(r){
   const f=r.f;const items=[];let pts=0,max=0;
   const val=t=>r.a[t]!=null?r.a[t]:'';
@@ -255,7 +264,7 @@ function latestBy(list,keyFn){const m=new Map();list.forEach(r=>m.set(keyFn(r),r
 function students(){
   const map=new Map();
   S.alunos.forEach(a=>map.set(norm(a.nome),{nk:norm(a.nome),nome:a.nome,turma:a.turma,grupo:a.grupo,roster:true}));
-  SPEC.forEach(f=>(S.resp[f.code]||[]).forEach(r=>{if(!r.nk)return;const s=map.get(r.nk);if(s){if(!s.roster){s.nome=r.nome;s.turma=r.turma||s.turma;}}else map.set(r.nk,{nk:r.nk,nome:r.nome,turma:r.turma,grupo:r.grupo,roster:false});}));
+  SPEC.forEach(f=>(S.part[f.code]||[]).forEach(r=>{if(!r.nk)return;const s=map.get(r.nk);if(s){if(!s.roster&&!r.membro){s.nome=r.nome;s.turma=r.turma||s.turma;}}else map.set(r.nk,{nk:r.nk,nome:r.nome,turma:r.turma,roster:false});}));
   return [...map.values()].sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
 }
 const turmaOk=t=>UI.turma==='todas'||String(t).trim()===UI.turma;
@@ -287,16 +296,17 @@ function viewGeral(m){
     h('div',{class:'stat'},h('b',{},subs.length),h('span',{},'envios recebidos')),
     h('div',{class:'stat'},h('b',{},pend),h('span',{},'envios aguardando correção')),
     h('div',{class:'stat'},h('b',{},SPEC.filter(f=>(S.resp[f.code]||[]).some(r=>turmaOk(r.turma))).length+'/'+SPEC.length),h('span',{},'atividades com envios'))));
-  m.append(h('div',{class:'legend'},h('span',{class:'cell g'},'8,5'),'nota final (0 a 10)',h('span',{class:'cell m pend'},'6,0'),'parcial: falta corrigir as respostas abertas',h('span',{class:'cell none'},'—'),'sem envio'));
-  if(!st.length){m.append(h('div',{class:'empty'},h('h3',{},'Nenhum envio ainda'),h('p',{},'Assim que os estudantes enviarem as fichas deste site, cada um aparece aqui numa linha. Para ver também quem ainda não enviou, crie na sua planilha uma aba “Alunos” com a lista da turma (coluna A nome, B turma, C grupo).'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener'},'Abrir a planilha'):null));return;}
-  const t=h('table');const hr=h('tr',{},h('th',{},'Estudante'),h('th',{},'Turma'),h('th',{},'Grupo'));SPEC.forEach(f=>hr.append(h('th',{class:'c',title:f.titulo},SHORT[f.code])));hr.append(h('th',{class:'c'},'Média'));t.append(h('thead',{},hr));
+  m.append(h('div',{class:'legend'},h('span',{class:'cell g'},'8,5'),'nota final (0 a 10)',h('span',{class:'cell m pend'},'6,0'),'parcial: falta corrigir as respostas abertas',h('span',{class:'cell g grp'},'9,0'),'ficha feita em grupo (a nota vale para todos)',h('span',{class:'cell none'},'—'),'sem envio'));
+  if(!st.length){m.append(h('div',{class:'empty'},h('h3',{},'Nenhum envio ainda'),h('p',{},'Assim que os estudantes enviarem as fichas deste site, cada um aparece aqui numa linha. Para ver também quem ainda não enviou, crie na sua planilha uma aba “Alunos” com a lista da turma (coluna A nome completo, B turma).'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener'},'Abrir a planilha'):null));return;}
+  const t=h('table');const hr=h('tr',{},h('th',{},'Estudante'),h('th',{},'Turma'));SPEC.forEach(f=>hr.append(h('th',{class:'c',title:f.titulo},SHORT[f.code])));hr.append(h('th',{class:'c'},'Média'));t.append(h('thead',{},hr));
   const tb=h('tbody');
-  const latest={};SPEC.forEach(f=>latest[f.code]=latestBy(S.resp[f.code]||[],r=>r.nk));
-  st.forEach(s=>{const tr=h('tr',{},h('td',{},h('button',{class:'btn sm',style:'border:0;background:none;padding:0;font-weight:700',onclick:()=>{UI.view='aluno';UI.aluno=s.nk;render();}},s.nome),s.roster?null:h('span',{class:'note'},' ')),h('td',{},s.turma||'—'),h('td',{},s.grupo||'—'));
+  const latest={};SPEC.forEach(f=>latest[f.code]=latestBy(S.part[f.code]||[],r=>r.nk));
+  st.forEach(s=>{const tr=h('tr',{},h('td',{},h('button',{class:'btn sm',style:'border:0;background:none;padding:0;font-weight:700',onclick:()=>{UI.view='aluno';UI.aluno=s.nk;render();}},s.nome),s.roster?null:h('span',{class:'note'},' ')),h('td',{},s.turma||'—'));
     const ns=[];
     SPEC.forEach(f=>{const r=latest[f.code].get(s.nk);if(!r){tr.append(h('td',{class:'c'},h('span',{class:'cell none'},'—')));return;}
       const g=grade(r);const v=g.done?g.nota:g.prov;if(g.done&&g.nota!=null)ns.push(g.nota);
-      tr.append(h('td',{class:'c'},h('span',{class:'cell '+notaClass(v)+(g.done?'':' pend'),title:g.semNota?'Enviado (sem nota)':g.done?'Corrigido':'Falta corrigir as respostas abertas',onclick:()=>{UI.view='correcao';UI.ativ=f.code;UI.focus=r.key;UI.status='todos';UI.busca='';render();}},g.semNota?'✓':v==null?'abrir':fmt(v))));});
+      const gr=r.colegas.length>0;
+      tr.append(h('td',{class:'c'},h('span',{class:'cell '+notaClass(v)+(g.done?'':' pend')+(gr?' grp':''),title:(g.semNota?'Enviado (sem nota)':g.done?'Corrigido':'Falta corrigir as respostas abertas')+(gr?' · em grupo: '+integrantes(r).join(', '):''),onclick:()=>{UI.view='correcao';UI.ativ=f.code;UI.focus=r.key;UI.status='todos';UI.busca='';render();}},g.semNota?'✓':v==null?'abrir':fmt(v))));});
     const avg=ns.length?ns.reduce((a,b)=>a+b,0)/ns.length:null;
     tr.append(h('td',{class:'c'},h('span',{class:'cell '+notaClass(avg),style:'cursor:default'},avg==null?'—':fmt(avg))));
     tb.append(tr);});
@@ -328,10 +338,10 @@ function viewCorrecao(m){
   const bus=h('input',{type:'search',placeholder:'Buscar estudante',value:UI.busca,'aria-label':'Buscar estudante'});bus.oninput=()=>{UI.busca=bus.value;drawList();};
   m.append(h('div',{class:'row'},h('span',{class:'label'},'Mostrar'),seg([['todos','Todos'],['pend','Pendentes'],['ok','Corrigidos']],UI.status,v=>{UI.status=v;drawList();}),bus));
   const list=h('div',{class:'stack'});m.append(list);
-  const latestKeys=new Set([...latestBy(rs,r=>r.nk).values()].map(r=>r.key));
+  const latestKeys=new Set([...latestBy((S.part[f.code]||[]).filter(r=>turmaOk(r.turma)),r=>r.nk).values()].map(r=>r.key));
   function drawList(){list.innerHTML='';let L=rs.slice().reverse();
     if(UI.status!=='todos')L=L.filter(r=>grade(r).done===(UI.status==='ok'));
-    if(UI.busca)L=L.filter(r=>r.nk.includes(norm(UI.busca)));
+    if(UI.busca)L=L.filter(r=>integrantes(r).some(n=>norm(n).includes(norm(UI.busca))));
     if(UI.focus)L.sort((a,b)=>(b.key===UI.focus)-(a.key===UI.focus));
     if(!L.length)list.append(h('p',{class:'note'},'Nenhum envio com esse filtro.'));
     L.forEach(r=>list.append(respCard(r,!latestKeys.has(r.key))));
@@ -341,15 +351,16 @@ function viewCorrecao(m){
 function expSummary(rs){
   const TR=['Sem cobertura','Cobertura morta','Cobertura viva'];
   const p=h('div',{class:'panel stack'},h('h3',{},'Resultados por grupo (médias das réplicas, em mL)'));
-  const groups=latestBy(rs,r=>r.turma+'|'+r.grupo);
+  const eqTxt=r=>r.colegas.length?integrantes(r).slice().sort((a,b)=>a.localeCompare(b,'pt-BR')).join(', '):(/^\d+$/.test(r.grupo)?'Grupo '+r.grupo:r.nome);
+  const groups=latestBy(rs,r=>r.turma+'|'+norm(eqTxt(r)));
   const hr=h('tr',{},h('th',{},'Turma'),h('th',{},'Grupo'),h('th',{class:'c'},'Aplicado'));TR.forEach(n=>{hr.append(h('th',{class:'c'},n+' · fundo'),h('th',{class:'c'},n+' · superfície'));});hr.append(h('th',{},'Conferência'));
   const t=h('table');t.append(h('thead',{},hr));const tb=h('tbody');
-  [...groups.values()].sort((a,b)=>(a.turma+a.grupo).localeCompare(b.turma+b.grupo)).forEach(r=>{
+  [...groups.values()].sort((a,b)=>(a.turma+eqTxt(a)).localeCompare(b.turma+eqTxt(b),'pt-BR')).forEach(r=>{
     const ap=num(r.a['Volume aplicado em cada réplica (mL)']);
     const g=(tr,kind)=>{const v=[1,2,3].map(i=>num(r.a[tr+' '+i+' · '+kind+' (mL)'])).filter(x=>!isNaN(x));return v.length?v.reduce((a,b)=>a+b,0)/v.length:NaN;};
     const over=[1,2,3].some(i=>TR.some(tr=>num(r.a[tr+' '+i+' · fundo (mL)'])+num(r.a[tr+' '+i+' · superfície (mL)'])>ap+0.5));
     const pc=v=>isNaN(v)?'—':fmt(v,0)+(isNaN(ap)?'':' ('+fmt(v/ap*100,0)+'%)');
-    const row=h('tr',{},h('td',{},r.turma),h('td',{},r.grupo),h('td',{class:'c mono'},isNaN(ap)?'—':fmt(ap,0)));
+    const row=h('tr',{},h('td',{},r.turma),h('td',{style:'white-space:normal;min-width:180px'},eqTxt(r)),h('td',{class:'c mono'},isNaN(ap)?'—':fmt(ap,0)));
     TR.forEach(tr=>row.append(h('td',{class:'c mono'},pc(g(tr,'fundo'))),h('td',{class:'c mono'},pc(g(tr,'superfície')))));
     row.append(h('td',{},over?h('span',{class:'pill bad'},'fundo + superfície > aplicado'):h('span',{class:'pill ok'},'coerente')));tb.append(row);});
   t.append(tb);p.append(h('div',{class:'tbl'},t),h('p',{class:'note'},'Usa o envio mais recente de cada grupo.'));return p;
@@ -361,7 +372,7 @@ function respCard(r,old){
   function upd(){if(g.semNota){notaEl.textContent='—';notaLbl.textContent='Sem nota';stEl.innerHTML='';stEl.append(h('span',{class:'pill info'},'Autoavaliação'));return;}const mi=manItems(f);const sc=mi.filter(it=>man[it.t]!=null&&man[it.t]!=='');const mp=sc.reduce((a,it)=>a+Number(man[it.t]),0);const tot=g.A.max+manMax(f);const n=tot?((g.A.pts+mp)/tot)*10:0;
     notaEl.textContent=fmt(n);notaEl.style.color=`var(--${notaClass(n)==='g'?'good':notaClass(n)==='m'?'mid':'bad'})`;
     notaLbl.textContent=sc.length===mi.length?'Nota':'Nota parcial (abertas sem nota contam 0)';stEl.innerHTML='';stEl.append(sc.length===mi.length?h('span',{class:'pill ok'},'Todas as abertas avaliadas'):h('span',{class:'pill mid'},(mi.length-sc.length)+' aberta(s) sem nota'));}
-  card.append(h('div',{class:'resp-head'},h('div',{class:'who'},h('b',{},r.nome||'(sem nome)'),h('span',{class:'note'},'Turma '+(r.turma||'—')+' · Grupo '+(r.grupo||'—')+' · '+r.ts)),
+  card.append(h('div',{class:'resp-head'},h('div',{class:'who'},h('b',{},r.nome||'(sem nome)'),h('span',{class:'note'},'Turma '+(r.turma||'—')+' · '+grupoTxt(r)+' · '+r.ts),r.colegas.length?h('span',{class:'grp-line'},'Em grupo com ',h('strong',{},r.colegas.join(', ')),'. A nota vale para os '+(r.colegas.length+1)+'.'):null),
     h('div',{class:'row'},g.done?h('span',{class:'pill ok'},'Corrigido'):h('span',{class:'pill mid'},'Pendente'),old?h('span',{class:'pill'},'Envio anterior (há um mais recente)'):null,stEl),
     h('div',{class:'nota'},notaLbl,h('br'),notaEl,h('span',{class:'note'},' / 10'))));
   if(g.A.items.length){const o=h('div',{class:'obj'});o.append(h('span',{class:'label',style:'grid-column:1/-1'},'Objetivas: '+g.A.pts+' de '+g.A.max));
@@ -378,7 +389,7 @@ function respCard(r,old){
   saveBtn.onclick=async()=>{saveBtn.disabled=true;saveBtn.textContent='Salvando…';msg.textContent='';
     const mi=manItems(f);const mp=mi.reduce((a,it)=>a+(man[it.t]!=null?Number(man[it.t]):0),0);const tot=g.A.max+manMax(f);const done=mi.every(it=>man[it.t]!=null);
     const nota=done&&tot?Math.round(((g.A.pts+mp)/tot)*100)/10:'';
-    const row=[r.key,f.code,r.turma,r.nome,r.grupo,g.A.pts,g.A.max,JSON.stringify(man),nota,coment,new Date().toLocaleString('pt-BR')];
+    const row=[r.key,f.code,r.turma,r.nome,r.colegas.length?'Em grupo: '+integrantes(r).join(', '):grupoTxt(r),g.A.pts,g.A.max,JSON.stringify(man),nota,coment,new Date().toLocaleString('pt-BR')];
     try{await saveRow(row);S.aval[r.key]=S.aval[r.key]||{};
       Object.assign(S.aval[r.key],{man:Object.assign({},man),nota:nota===''?null:nota,coment,quando:row[10]});
       dirty.delete(r.key);saveBtn.textContent='Salvo';msg.textContent=done?'Nota registrada na aba Avaliação.':'Salvo como parcial: ainda há respostas abertas sem nota.';
@@ -395,11 +406,11 @@ function viewAluno(m){
   sel.onchange=()=>{UI.aluno=sel.value;render();};if(!st.some(s=>s.nk===UI.aluno))UI.aluno=st[0].nk;
   m.append(h('div',{class:'row'},h('span',{class:'label'},'Estudante'),sel));
   const s=st.find(x=>x.nk===UI.aluno);
-  const rows=SPEC.map(f=>{const r=latestBy(S.resp[f.code]||[],x=>x.nk).get(s.nk);return {f,r,g:r?grade(r):null};});
+  const rows=SPEC.map(f=>{const r=latestBy(S.part[f.code]||[],x=>x.nk).get(s.nk);return {f,r,g:r?grade(r):null};});
   const done=rows.filter(x=>x.g&&x.g.done&&x.g.nota!=null);const avg=done.length?done.reduce((a,x)=>a+x.g.nota,0)/done.length:null;
   m.append(h('div',{class:'stats'},h('div',{class:'stat'},h('b',{},avg==null?'—':fmt(avg)),h('span',{},'média das atividades corrigidas')),h('div',{class:'stat'},h('b',{},rows.filter(x=>x.r).length+'/'+SPEC.length),h('span',{},'atividades enviadas')),h('div',{class:'stat'},h('b',{},rows.filter(x=>x.r&&!x.g.done).length),h('span',{},'aguardando correção'))));
   const t=h('table');t.append(h('thead',{},h('tr',{},h('th',{},'Aula'),h('th',{},'Atividade'),h('th',{class:'c'},'Objetivas'),h('th',{class:'c'},'Nota'),h('th',{},'Comentário'))));
-  const tb=h('tbody');rows.forEach(({f,r,g})=>{tb.append(h('tr',{},h('td',{},SHORT[f.code]),h('td',{},f.titulo.replace(/^Aulas? [\d e]+ · /,'')),h('td',{class:'c mono'},g?g.A.pts+'/'+g.A.max:'—'),
+  const tb=h('tbody');rows.forEach(({f,r,g})=>{tb.append(h('tr',{},h('td',{},SHORT[f.code]),h('td',{},f.titulo.replace(/^Aulas? [\d e]+ · /,''),r&&r.colegas.length?h('span',{class:'note',style:'display:block'},'Em grupo com '+integrantes(r).filter(n=>norm(n)!==s.nk).join(', ')):null),h('td',{class:'c mono'},g?g.A.pts+'/'+g.A.max:'—'),
     h('td',{class:'c'},r?h('span',{class:'cell '+notaClass(g.done?g.nota:g.prov)+(g.done?'':' pend'),onclick:()=>{UI.view='correcao';UI.ativ=f.code;UI.focus=r.key;render();}},g.semNota?'✓':g.done?fmt(g.nota):(g.prov==null?'abrir':fmt(g.prov))):h('span',{class:'cell none'},'—')),
     h('td',{style:'white-space:normal;min-width:200px'},g&&g.coment?g.coment:'')));});
   t.append(tb);m.append(h('div',{class:'tbl'},t));
@@ -408,9 +419,9 @@ function viewAluno(m){
 function viewForms(m){
   m.append(h('div',{class:'row',style:'justify-content:space-between'},h('h2',{},'Envios'),turmaFilter()));
   m.append(h('div',{class:'grid2'},
-    h('div',{class:'panel stack'},h('h3',{},'Envios por atividade · '+SITES[SITE]),...SPEC.map(f=>{const rs=(S.resp[f.code]||[]).filter(r=>turmaOk(r.turma));const n=rs.length;const al=new Set(rs.map(r=>r.nk)).size;return h('div',{class:'qrow',style:'grid-template-columns:minmax(0,1fr) auto'},h('span',{},f.titulo),h('span',{class:'mono',style:'text-align:right'},n?al+' estudante'+(al>1?'s':'')+(n>al?' · '+n+' envios':''):'—'));})),
+    h('div',{class:'panel stack'},h('h3',{},'Envios por atividade · '+SITES[SITE]),...SPEC.map(f=>{const rs=(S.resp[f.code]||[]).filter(r=>turmaOk(r.turma));const n=rs.length;const al=new Set((S.part[f.code]||[]).filter(r=>turmaOk(r.turma)).map(r=>r.nk)).size;return h('div',{class:'qrow',style:'grid-template-columns:minmax(0,1fr) auto'},h('span',{},f.titulo),h('span',{class:'mono',style:'text-align:right'},n?al+' estudante'+(al>1?'s':'')+(n!==al?' · '+n+' envio'+(n>1?'s':''):''):'—'));})),
     h('div',{class:'panel stack'},h('h3',{},'Link da turma e QR code'),h('p',{class:'note'},'O link, o QR code e o código da turma ficam na Área do professor. Quem entra pelo link já envia as fichas para a sua planilha.'),h('a',{class:'btn primary',href:'professor.html',style:'align-self:flex-start'},'Abrir a Área do professor'),
-      h('h3',{style:'margin-top:8px'},'Lista da turma'),h('p',{class:'note'},'Para ver no painel quem ainda não enviou, crie na planilha uma aba chamada “Alunos”: coluna A nome completo, B turma (igual à do link, por exemplo 2ºA) e C grupo. Se você dá aula em mais de uma escola, use a coluna D para o nome da escola, igual ao da Área do professor.'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener',style:'align-self:flex-start'},'Abrir a planilha'):null)));
+      h('h3',{style:'margin-top:8px'},'Lista da turma'),h('p',{class:'note'},'Para ver no painel quem ainda não enviou, crie na planilha uma aba chamada “Alunos”: coluna A nome completo e B turma (igual à do link, por exemplo 2ºA); a coluna C pode ficar em branco. Se você dá aula em mais de uma escola, use a coluna D para o nome da escola, igual ao da Área do professor. Esta lista também aparece para os estudantes marcarem os colegas nas fichas feitas em grupo.'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener',style:'align-self:flex-start'},'Abrir a planilha'):null)));
 }
 function project(f,link){const o=h('div',{class:'overlay',role:'dialog','aria-label':'QR code em tela cheia'},h('h2',{},f.titulo),h('div',{class:'qr',html:qrSvg(link)}),h('span',{class:'link'},link),h('button',{class:'btn',onclick:()=>o.remove()},'Fechar'));o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
 function copy(text,btn){const done=()=>{const t=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=t,1500);};try{navigator.clipboard.writeText(text).then(done).catch(()=>sel());}catch(e){sel();}function sel(){const r=document.createRange();const el=btn.closest('.panel,.empty').querySelector('.link,pre');if(el){r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);}}}
@@ -447,10 +458,10 @@ function viewSenhas(m){
   function fill(){tb.innerHTML='';const q=norm(UI.buscaSenha);
     const rows=S.estudantes.filter(e=>(UI.turmaSenha==='todas'||e.turma===UI.turmaSenha)&&(!q||norm(e.nome).includes(q))).sort((a,b)=>a.turma.localeCompare(b.turma,'pt-BR',{numeric:true})||a.nome.localeCompare(b.nome,'pt-BR'));
     if(!rows.length)tb.append(h('tr',{},h('td',{colspan:'5',class:'note'},'Ninguém encontrado.')));
-    rows.forEach(e=>tb.append(h('tr',{},h('td',{},h('b',{},e.nome)),h('td',{},e.turma||'—'),h('td',{},e.grupo||'—'),h('td',{class:'mono',style:'font-size:1rem;letter-spacing:.15em'},UI.verSenhas?e.senha:'••••'),h('td',{class:'note'},e.quando||e.criado))));}
+    rows.forEach(e=>tb.append(h('tr',{},h('td',{},h('b',{},e.nome)),h('td',{},e.turma||'—'),h('td',{class:'mono',style:'font-size:1rem;letter-spacing:.15em'},UI.verSenhas?e.senha:'••••'),h('td',{class:'note'},e.quando||e.criado))));}
   busca.oninput=()=>{UI.buscaSenha=busca.value;fill();};
   fill();
-  const t=h('table',{},h('thead',{},h('tr',{},h('th',{},'Estudante'),h('th',{},'Turma'),h('th',{},'Grupo'),h('th',{},'Senha'),h('th',{},'Última atualização'))),tb);
+  const t=h('table',{},h('thead',{},h('tr',{},h('th',{},'Estudante'),h('th',{},'Turma'),h('th',{},'Senha'),h('th',{},'Última atualização'))),tb);
   m.append(h('div',{class:'tbl'},t),h('p',{class:'note'},S.estudantes.length+' estudante'+(S.estudantes.length===1?'':'s')+' com senha.'));
 }
 
@@ -480,11 +491,13 @@ function demoData(){
   const TXT=['Porque a célula realiza todas as funções vitais e se origina de outra célula.','Os dados mostram que o tratamento com cobertura reteve mais água do que o controle.','Observei a parede celular e o núcleo; não consegui distinguir as mitocôndrias.','A hipótese se confirmou em parte: as réplicas variaram, mas a tendência se manteve.','Faltam dados de mais réplicas para afirmar com segurança.'];
   const abas={},av=[['Chave','Atividade','Turma','Nome','Grupo','Pontos automáticos','Máximo automático','Pontos das abertas','Nota','Comentário','Atualizado em']];
   const alunos=[['Nome completo','Turma','Grupo']];NOMES.forEach((n,i)=>alunos.push([n,TUR[i%TUR.length],String(1+i%4)]));abas['Alunos']=alunos;
-  ALL.forEach((f,fi)=>{const it=f.itens.filter(x=>x.k!=='hdr');const cab=['Carimbo de data/hora','Nome completo','Turma','Grupo'].concat(it.map(x=>x.t)).concat(['ID do envio']);const rows=[cab];
-    NOMES.forEach((n,i)=>{if(rnd()<.3)return;const d=new Date(2026,9,1+(fi%20),7+i%5,10+i*3);const ts=('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':00';
-      const r=[ts,n,TUR[i%TUR.length],String(1+i%4)];
+  ALL.forEach((f,fi)=>{const it=f.itens.filter(x=>x.k!=='hdr');const cab=['Carimbo de data/hora','Nome completo','Turma','Grupo'].concat(it.map(x=>x.t)).concat(['Colegas do grupo','ID do envio']);const rows=[cab];
+    const emGrupo=fi%3===0;const coberto=new Set();
+    NOMES.forEach((n,i)=>{if(coberto.has(i)||rnd()<.3)return;
+      let col=[];if(emGrupo&&!/avalia|sem nota/i.test(f.tipo||'')){for(let j=i+4;j<NOMES.length&&col.length<2;j+=4)if(!coberto.has(j)){col.push(NOMES[j]);coberto.add(j);}}const d=new Date(2026,9,1+(fi%20),7+i%5,10+i*3);const ts=('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':00';
+      const r=[ts,n,TUR[i%TUR.length],col.length?'Em grupo':'Individual'];
       it.forEach(x=>{let v='';if(x.k==='mc')v=x.key&&rnd()<.72?x.key:pick(x.ch);else if(x.k==='num')v=x.key!=null&&rnd()<.7?String(x.key).replace('.',','):String(Math.round(rnd()*40));else if(x.k==='par')v=pick(TXT);else v='Exemplo de resposta curta';r.push(v);});
-      r.push('demo'+fi+'-'+i);rows.push(r);});
+      r.push(col.join('; '),'demo'+fi+'-'+i);rows.push(r);});
     abas[f.code]=rows;});
   const est=[['Chave','Nome completo','Escola','Turma','Grupo','Senha','Criado em','Atualizado em']];NOMES.slice(0,8).forEach((n,i)=>est.push([n.toLowerCase(),n,'',TUR[i%TUR.length],String(1+i%4),String(1000+Math.floor(rnd()*9000)),'01/10/2026 08:0'+i,'15/10/2026 10:'+(10+i)]));abas['Estudantes']=est;
   abas['Avaliação']=av;return abas;

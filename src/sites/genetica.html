@@ -1700,14 +1700,14 @@ function attachFicha(secId){
   const draftKey='draft-'+code;let draft=store.get(draftKey,{});let sendId=store.get('sid-'+code,null);
   const saveDraft=()=>{store.set(draftKey,draft);sendId=null;store.set('sid-'+code,null);refresh();};
   const box=h('section',{class:'ficha',id:'ficha-'+secId,'aria-label':'Ficha de respostas'});
-  const hd=sec.querySelector('.aula-head');if(hd)hd.after(h('div',{class:'ficha-jump'},h('button',{class:'btn',onclick:()=>box.scrollIntoView({behavior:'smooth',block:'start'})},'Responder a ficha desta aula ↓'),h('span',{class:'note'},f.tipo)));
-  box.append(h('div',{class:'ficha-head'},h('span',{class:'eyebrow'},'Ficha da aula · '+f.tipo),h('h2',{},'Minhas respostas'),h('p',{class:'lede'},f.desc)));box.append(PORTAL.fichaBanner());
+  const hd=sec.querySelector('.aula-head');if(hd)hd.after(h('div',{class:'ficha-jump'},h('button',{class:'btn',onclick:()=>box.scrollIntoView({behavior:'smooth',block:'start'})},'Responder a ficha desta aula ↓'),h('span',{class:'note'},PORTAL.tipoFicha(f.tipo))));
+  box.append(h('div',{class:'ficha-head'},h('span',{class:'eyebrow'},'Ficha da aula · '+PORTAL.tipoFicha(f.tipo)),h('h2',{},'Minhas respostas'),h('p',{class:'lede'},f.desc)));box.append(PORTAL.fichaBanner());
   const ident=PORTAL.ident();
   const nome=h('input',{type:'text',id:'id-nome-'+secId,autocomplete:'name',placeholder:'Nome e sobrenome',value:ident.nome});
-  const grupo=h('select',{id:'id-grupo-'+secId},h('option',{value:''},'Escolha'),...PORTAL.grupos().map(g=>h('option',{value:g,selected:g===ident.grupo},g)));
+  const equipe=PORTAL.equipe({code,tipo:f.tipo,seg,nome:()=>ident.nome,turma:()=>ident.turma,onChange:()=>{sendId=null;store.set('sid-'+code,null);refresh();}});
   const turmaSeg=PORTAL.turmaCtl(seg,ident,v=>{ident.turma=v;PORTAL.saveIdent(ident);refresh();});
-  nome.oninput=()=>{ident.nome=nome.value;PORTAL.saveIdent(ident);refresh();};grupo.onchange=()=>{ident.grupo=grupo.value;PORTAL.saveIdent(ident);refresh();};
-  box.append(h('div',{class:'ficha-id'},h('label',{class:'stack',style:'gap:4px;flex:1 1 240px'},h('span',{class:'label'},'Nome completo'),nome),h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Turma'),turmaSeg),h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Grupo'),grupo)));
+  nome.oninput=()=>{ident.nome=nome.value;PORTAL.saveIdent(ident);refresh();};
+  box.append(h('div',{class:'ficha-id'},h('label',{class:'stack',style:'gap:4px;flex:1 1 240px'},h('span',{class:'label'},'Nome completo'),nome),h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Turma'),turmaSeg)));box.append(equipe.el);
   const fillable=f.itens.filter(it=>it.fill);
   if(fillable.length){const fm=h('span',{class:'note'});box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{let n=0;fillable.forEach(it=>{const v=it.fill();if(v!=null&&v!==''){draft[it.t]=String(v);n++;}});saveDraft();build();fm.textContent=n?'Dados da ferramenta copiados. Confira antes de enviar.':'Use primeiro a ferramenta desta aula.';}},'Preencher com os dados da ferramenta'),fm));}
   const itemsBox=h('div',{class:'ficha-itens'});box.append(itemsBox);
@@ -1723,12 +1723,12 @@ function attachFicha(secId){
   const send=STANDALONE?h('button',{class:'btn primary big',type:'button'},PORTAL.sendLabel()):h('a',{class:'btn primary big',target:'_blank',rel:'noopener',href:'#'},PORTAL.sendLabel());
   const clear=h('button',{class:'btn ghost',onclick:()=>{if(clear.dataset.ok){draft={};saveDraft();build();clear.textContent='Limpar respostas';delete clear.dataset.ok;}else{clear.textContent='Toque de novo para apagar';clear.dataset.ok='1';setTimeout(()=>{clear.textContent='Limpar respostas';delete clear.dataset.ok;},3000);}}},'Limpar respostas');
   box.append(h('div',{class:'ficha-send'},send,clear),status);
-  function missing(){const m=[];if(!ident.nome||ident.nome.trim().split(/\s+/).length<2)m.push('nome e sobrenome');if(!ident.turma)m.push('turma');if(!ident.grupo)m.push('grupo');
+  function missing(){const m=[];if(!ident.nome||ident.nome.trim().split(/\s+/).length<2)m.push('nome e sobrenome');if(!ident.turma)m.push('turma');m.push(...equipe.falta());
     f.itens.forEach(it=>{if(it.k==='hdr')return;if(!String(draft[it.t]||'').trim())m.push('“'+it.t.slice(0,48)+(it.t.length>48?'…':'')+'”');});return m;}
   function payload(){if(!sendId){sendId=Date.now().toString(36)+Math.random().toString(36).slice(2,8);store.set('sid-'+code,sendId);}
     const ans={};f.itens.forEach(it=>{if(it.k!=='hdr')ans[it.t]=String(draft[it.t]||'').slice(0,MAXTXT);});
     const pv=store.get('prev-'+secId,null);if(pv)ans['Previsão inicial']=String(pv.text).slice(0,MAXTXT);
-    return {code:PORTAL.code(code),nome:ident.nome.trim(),escola:(PORTAL.escola?PORTAL.escola():''),turma:ident.turma,grupo:ident.grupo,id:sendId,ans};}
+    return {code:PORTAL.code(code),nome:ident.nome.trim(),escola:(PORTAL.escola?PORTAL.escola():''),turma:ident.turma,grupo:equipe.grupo(),id:sendId,ans:Object.assign(ans,equipe.ans())};}
   const url=()=>RECEIVER+'?d='+encodeURIComponent(b64url(JSON.stringify(payload())));
   const quando=()=>new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
   let busy=false;

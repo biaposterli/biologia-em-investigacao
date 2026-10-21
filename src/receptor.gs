@@ -7,6 +7,9 @@
  * Versão 2: guarda as respostas de cada estudante (aba "Estudantes") para ele continuar em outro
  * aparelho, entrando com o nome e uma senha de 4 números, gerada na primeira vez que ele escreve o nome.
  * Você vê as senhas no painel e nessa aba.
+ * Versão 3: em cada ficha o estudante diz se fez sozinho ou com colegas. A lista de colegas vem da aba
+ * "Estudantes" e da aba "Alunos" (só os nomes da mesma turma). Os colegas marcados vão na coluna
+ * "Colegas do grupo" e recebem a mesma nota no painel.
  *
  * Este código foi gerado na Área do professor do portal, já com o seu nome e a sua senha.
  * Não é preciso alterar nada.
@@ -17,7 +20,7 @@ const SENHA_PAINEL = __SENHA__;
 const MAX_TEXTO = 1200;
 const MAX_PERGUNTAS = 80;
 const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Escola', 'Turma', 'Grupo'];
-const VERSAO = 2;
+const VERSAO = 3;
 const ABA_AVAL = 'Avaliação';
 const ABA_EST = 'Estudantes';
 const CAB_EST = ['Chave', 'Nome completo', 'Escola', 'Turma', 'Grupo', 'Senha', 'Criado em', 'Atualizado em'];
@@ -55,6 +58,7 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     if (d && d.acao === 'nota') r = salvarNota(d);
+    else if (d && d.acao === 'colegas') r = colegas(d);
     else if (d && /^aluno-/.test(String(d.acao))) r = aluno(d);
     else r = salvar(d);
   } catch (err) {
@@ -155,6 +159,31 @@ function salvarNota(d) {
     lock.releaseLock();
   }
   return { ok: true };
+}
+
+// ---------- Colegas da turma (para o estudante marcar quem fez a ficha com ele) ----------
+// Devolve só nomes da mesma turma (e da mesma escola, quando houver), nunca senhas nem respostas.
+function chaveTurma(t) { return String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[\s°ºª.]/g, ''); }
+function colegas(d) {
+  const turma = chaveTurma(limpar(d.turma, 20));
+  const escola = chaveAluno('', limpar(d.escola, 80)).slice(1);
+  if (!turma) return { ok: true, nomes: [] };
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const achados = {};
+  function junta(nome, t, e) {
+    nome = limpar(nome, 120).trim();
+    if (nome.split(/\s+/).length < 2 || chaveTurma(t) !== turma) return;
+    const ke = chaveAluno('', e).slice(1);
+    if (escola && ke && ke !== escola) return;
+    const k = chaveAluno(nome, '');
+    if (!achados[k]) achados[k] = nome;
+  }
+  const est = ss.getSheetByName(ABA_EST);
+  if (est && est.getLastRow() > 1) est.getRange(2, 1, est.getLastRow() - 1, 5).getDisplayValues().forEach(function (r) { junta(r[1], r[3], r[2]); });
+  const al = ss.getSheetByName('Alunos');
+  if (al && al.getLastRow() > 1) al.getRange(2, 1, al.getLastRow() - 1, Math.max(2, Math.min(4, al.getLastColumn()))).getDisplayValues().forEach(function (r) { junta(r[0], r[1], r[3] || ''); });
+  const nomes = Object.keys(achados).map(function (k) { return achados[k]; }).sort(function (a, b) { return a.localeCompare(b, 'pt-BR'); }).slice(0, 300);
+  return { ok: true, nomes: nomes };
 }
 
 // ---------- Estudantes: entrar com nome e senha em qualquer aparelho ----------

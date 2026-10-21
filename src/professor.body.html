@@ -77,7 +77,7 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
           <div class="stack" style="gap:4px"><h2>Suas escolas e turmas</h2><p class="note">Marque as turmas de cada ano. O estudante escolhe a turma dele na ficha. Dá aula em mais de uma escola? Adicione cada uma: cada escola ganha o seu próprio link e QR code, e as fichas de todas chegam na mesma planilha, com a coluna “Escola”. No painel, você filtra por escola e turma.</p></div>
           <div id="escolas" class="stack" style="gap:16px"></div>
           <div class="row"><button type="button" class="btn" id="addEscola">+ Adicionar outra escola</button></div>
-          <label class="field" style="max-width:220px"><span class="label">Grupos por turma</span><input type="number" id="pGrupos" min="1" max="20" value="8" inputmode="numeric"></label>
+          <p class="note">Grupos não precisam ser cadastrados: em cada ficha, o estudante diz se fez sozinho ou marca os colegas que responderam com ele. A nota daquela ficha vale para todos os marcados.</p>
         </div>
       </section>
 
@@ -123,7 +123,7 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
       </div>
       <div class="panel stack" style="gap:8px">
         <span class="label">Como fica para o estudante</span>
-        <p class="note">No fim de cada aula, a ficha mostra para quem ela vai, a escolha da turma e do grupo, e o botão de envio.</p>
+        <p class="note">No fim de cada aula, a ficha mostra para quem ela vai, a escolha da turma, se fez sozinho ou com quais colegas, e o botão de envio.</p>
         <div id="previa"></div>
       </div>
     </aside>
@@ -166,7 +166,6 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
       escBox.append(box);});}
   $('#addEscola').onclick=()=>{C.escolas.push({nome:'',sel:[],outras:''});drawEscolas();save();const ins=escBox.querySelectorAll('input[type=text]');const last=escBox.lastElementChild&&escBox.lastElementChild.querySelector('input');if(last)last.focus();};
   drawEscolas();
-  $('#pGrupos').value=C.grupos;$('#pGrupos').oninput=e=>{const n=parseInt(e.target.value,10);C.grupos=isNaN(n)?8:Math.max(1,Math.min(20,n));save();};
   // 3. receptor
   const TPL=$('#tpl').textContent;
   const codigo=()=>TPL.replace('__PROFESSOR__',()=>JSON.stringify((C.nome||'').trim()||'o professor')).replace('__SENHA__',()=>JSON.stringify(C.senha));
@@ -179,7 +178,7 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
     if(!C.r){teste={st:'no',t:'Esse endereço não parece o URL de um app da Web do Apps Script. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'};update();return;}
     if(!P.standalone()){teste={st:'wait',t:'Dentro do Claude o portal não consegue falar com o Google. Toque em “Abrir o receptor em outra aba”: se aparecer “Receptor ativo”, está tudo certo.'};update();return;}
     teste={st:'wait',t:'Testando…'};update();
-    try{const r=await fetch(P.urlDoReceptor(C.r)+'?acao=teste');const j=await r.json();teste=j&&j.ok?((j.versao||1)>=2?{st:'ok',t:'Receptor funcionando. As fichas vão para a planilha de '+j.professor+', e cada estudante recebe uma senha para continuar em outro aparelho (você vê as senhas no painel).'}:{st:'wait',t:'Receptor funcionando, mas é a versão antiga: as fichas chegam, porém as senhas dos estudantes ainda não. Copie o código abaixo, cole no Apps Script no lugar do antigo e atualize em Implantar → Gerenciar implantações → Editar → Nova versão. O link da turma continua o mesmo.'}):{st:'no',t:'O endereço respondeu, mas não é este receptor. Confira o código colado no Apps Script.'};}
+    try{const r=await fetch(P.urlDoReceptor(C.r)+'?acao=teste');const j=await r.json();teste=j&&j.ok?((j.versao||1)>=3?{st:'ok',t:'Receptor funcionando. As fichas vão para a planilha de '+j.professor+', cada estudante recebe uma senha para continuar em outro aparelho (você vê as senhas no painel) e, nas fichas feitas em grupo, os estudantes escolhem os colegas na lista da turma.'}:{st:'wait',t:'Receptor funcionando, mas é uma versão antiga: as fichas chegam, porém '+((j.versao||1)>=2?'a lista de colegas para marcar o grupo ainda não aparece (os estudantes precisam escrever os nomes).':'as senhas dos estudantes e a lista de colegas ainda não.')+' Copie o código abaixo, cole no Apps Script no lugar do antigo e atualize em Implantar → Gerenciar implantações → Editar → Nova versão. O link da turma continua o mesmo.'}):{st:'no',t:'O endereço respondeu, mas não é este receptor. Confira o código colado no Apps Script.'};}
     catch(err){teste={st:'no',t:'Não consegui falar com o receptor. Confira se a implantação está como “Qualquer pessoa” e se o URL termina em /exec.'};}
     update();};
   // 4. link
@@ -232,7 +231,7 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
     pv.append(el('div',{class:'panel stack',style:'gap:10px;padding:14px;box-shadow:none;background:var(--bg)'},
       el('span',{class:'note'},'Esta ficha vai para ',el('strong',{},(C.nome||'').trim()||'(seu nome)'),(C.escolas[0].nome||'').trim()?' · '+C.escolas[0].nome.trim():''),
       el('span',{class:'label'},'Turma'),el('div',{class:'chips'},(C.escolas[0].turmas.length?C.escolas[0].turmas:['—']).slice(0,9).map(t=>el('span',{class:'chip',style:'cursor:default'},t)),C.escolas[0].turmas.length>9?el('span',{class:'note'},'+'+(C.escolas[0].turmas.length-9)):null),
-      el('span',{class:'label'},'Grupo'),el('span',{class:'note'},'1 a '+C.grupos+' ou “Sem grupo”'),
+      el('span',{class:'label'},'Como fez esta ficha'),el('div',{class:'chips'},el('span',{class:'chip',style:'cursor:default'},'Sozinho(a)'),el('span',{class:'chip',style:'cursor:default'},'Com colegas')),
       el('span',{class:'btn primary',style:'pointer-events:none;align-self:flex-start'},'Enviar para '+((C.nome||'').trim()||'…'))));
   }
   save();

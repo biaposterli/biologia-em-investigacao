@@ -175,7 +175,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     var out={};
     Object.keys(SITES).forEach(function(k){
       var pre=pfx(SITES[k].chave),o={};
-      try{for(var i=0;i<localStorage.length;i++){var c=localStorage.key(i);if(!c||c.indexOf(pre)!==0)continue;var r=c.slice(pre.length);if(r.charAt(0)==='@')continue;if(/^(draft|sent|sid|prev)-/.test(r))o[r]=localStorage.getItem(c);}}catch(e){}
+      try{for(var i=0;i<localStorage.length;i++){var c=localStorage.key(i);if(!c||c.indexOf(pre)!==0)continue;var r=c.slice(pre.length);if(r.charAt(0)==='@')continue;if(/^(draft|sent|sid|prev|equipe)-/.test(r))o[r]=localStorage.getItem(c);}}catch(e){}
       if(Object.keys(o).length)out[SITES[k].chave]=o;
     });
     return out;
@@ -186,7 +186,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     Object.keys(SITES).forEach(function(k){
       var ch=SITES[k].chave,o=dados&&dados[ch];if(!o||typeof o!=='object')return;var pre=pfx(ch);
       Object.keys(o).forEach(function(r){
-        if(!/^(draft|sent|sid|prev)-/.test(r)||typeof o[r]!=='string')return;
+        if(!/^(draft|sent|sid|prev|equipe)-/.test(r)||typeof o[r]!=='string')return;
         var cur=null;try{cur=localStorage.getItem(pre+r);}catch(e){}
         if(cur==null){try{localStorage.setItem(pre+r,o[r]);n++;}catch(e){}return;}
         if(/^draft-/.test(r)){try{var a=JSON.parse(cur)||{},b=JSON.parse(o[r])||{},mud=false;Object.keys(b).forEach(function(q){if(!String(a[q]||'').trim()&&String(b[q]||'').trim()){a[q]=b[q];mud=true;}});if(mud){localStorage.setItem(pre+r,JSON.stringify(a));n++;}}catch(e){}}
@@ -358,6 +358,97 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   // Rótulo da turma no painel: com a escola na frente quando houver mais de uma
   function rotuloTurma(escola,turma){escola=String(escola||'').trim();turma=String(turma||'').trim();return escola&&turma?escola+' · '+turma:turma;}
 
+  // ---------- Quem respondeu a ficha: sozinho ou com colegas ----------
+  // A escolha é feita em cada ficha e fica guardada só para ela ("equipe-Aula 03"): o grupo nunca é fixo.
+  // Os colegas marcados recebem a mesma nota no painel do professor; basta uma pessoa do grupo enviar.
+  var COLEGAS={};
+  function tipoFixo(tipo){return /avalia|sem nota/i.test(String(tipo||''));}
+  function tipoFicha(tipo){var t=String(tipo||'').trim();if(!tipoFixo(t)&&/^individual$/i.test(t))return 'Individual ou em grupo';return t;}
+  function chaveSite(){var s=site();return s?pfx(s.chave):'bi-'+ATUAL+'-';}
+  function listaColegas(t){
+    var k=escola()+'|'+t;if(COLEGAS[k])return COLEGAS[k];
+    var p=(async function(){
+      try{var j=await api('colegas',{turma:t});
+        if(j&&j.ok&&Array.isArray(j.nomes))return {nomes:j.nomes.map(function(n){return limpa(n,120);}).filter(nomeOk)};
+        return {nomes:[],erro:'versao'};
+      }catch(e){return {nomes:[],erro:(e&&e.erro)||'rede'};}
+    })();
+    COLEGAS[k]=p;p.then(function(r){if(r.erro)delete COLEGAS[k];});return p;
+  }
+  function equipe(o){
+    var key=chaveSite()+'equipe-'+o.code,kUlt='bi-equipe-ultima-'+ATUAL;
+    var fixo=tipoFixo(o.tipo);
+    var st=lsGet(key,null);if(!st||typeof st!=='object')st={m:'',c:[]};if(!Array.isArray(st.c))st.c=[];
+    var box=el('div',{class:'bi-eq',role:'group','aria-label':'Como você fez esta ficha'});
+    var lista=null,turmaLista=null,busca='',manual=false;
+    function eu(){return normNome(o.nome());}
+    function tem(n){var k=normNome(n);return st.c.some(function(x){return normNome(x)===k;});}
+    function mudou(){lsSet(key,st);if(st.m==='grupo'&&st.c.length)lsSet(kUlt,st.c.slice());if(o.onChange)o.onChange();}
+    function add(n){n=limpa(n,120);if(!n||tem(n)||normNome(n)===eu())return false;st.c.push(n);mudou();draw();return true;}
+    function rem(n){var k=normNome(n);st.c=st.c.filter(function(x){return normNome(x)!==k;});mudou();draw();}
+    function nota(t){return el('p',{class:'bi-eq-msg'},t);}
+    function draw(){
+      box.innerHTML='';
+      box.append(el('span',{class:'label'},'Como você fez esta ficha?'));
+      if(fixo){box.append(nota('Esta ficha é individual: cada estudante responde e envia a sua.'));return;}
+      box.append(o.seg([['so','Sozinho(a)'],['grupo','Com colegas']],st.m||null,function(v){st.m=v;mudou();draw();},{label:'Como você fez esta ficha'}));
+      if(st.m!=='grupo'){if(st.m==='so')box.append(nota('Só você recebe a nota desta ficha.'));return;}
+      box.append(nota('Marque quem respondeu esta ficha com você. Basta uma pessoa do grupo enviar: a nota vale para todos os marcados.'));
+      // Colegas já marcados
+      var on=el('div',{class:'bi-eq-chips','aria-label':'Colegas marcados'});
+      st.c.forEach(function(n){on.append(el('button',{type:'button',class:'chip','aria-pressed':'true',title:'Tirar '+n+' do grupo',onclick:function(){rem(n);}},n+'  ×'));});
+      if(!st.c.length)on.append(el('span',{class:'bi-eq-msg'},'Nenhum colega marcado ainda.'));
+      box.append(el('span',{class:'label'},'No meu grupo'),on);
+      var ult=lsGet(kUlt,null);
+      if(!st.c.length&&Array.isArray(ult)&&ult.length){
+        var u=ult.filter(function(n){return normNome(n)!==eu();});
+        if(u.length)box.append(el('button',{type:'button',class:'btn ghost sm bi-eq-ult',onclick:function(){u.forEach(function(n){if(!tem(n))st.c.push(n);});mudou();draw();}},'Repetir o grupo da última ficha: '+u.join(', ')));
+      }
+      // Lista da turma
+      var t=o.turma();
+      var area=el('div',{class:'bi-eq-lista'});box.append(area);
+      if(!t){area.append(nota('Escolha a sua turma acima para ver a lista de colegas.'));}
+      else if(!receiver()){manual=true;}
+      else{
+        if(turmaLista!==t){turmaLista=t;lista=null;listaColegas(t).then(function(r){if(turmaLista===t){lista=r;draw();}});}
+        if(!lista)area.append(nota('Carregando a lista da turma…'));
+        else if(lista.erro||!lista.nomes.length){manual=true;area.append(nota(lista.erro==='versao'?'A lista da turma ainda não está disponível (o professor precisa atualizar o receptor). Escreva o nome completo do colega abaixo.':lista.erro?'Não consegui carregar a lista da turma. Escreva o nome completo do colega abaixo.':'Ainda não há colegas desta turma na lista. Escreva o nome completo do colega abaixo.'));}
+        else{
+          var livres=lista.nomes.filter(function(n){return normNome(n)!==eu()&&!tem(n);});
+          var chips=el('div',{class:'bi-eq-chips','aria-label':'Colegas da turma'});
+          var pinta=function(){chips.innerHTML='';var q=normNome(busca);var v=livres.filter(function(n){return !q||normNome(n).indexOf(q)>=0;});
+            v.slice(0,40).forEach(function(n){chips.append(el('button',{type:'button',class:'chip',onclick:function(){add(n);}},'+ '+n));});
+            if(!v.length)chips.append(el('span',{class:'bi-eq-msg'},'Ninguém com esse nome na lista.'));
+            else if(v.length>40)chips.append(el('span',{class:'bi-eq-msg'},'E mais '+(v.length-40)+'. Procure pelo nome.'));}
+          area.append(el('span',{class:'label'},'Colegas da turma '+t));
+          if(livres.length>12){var b=el('input',{type:'search',class:'bi-eq-in',placeholder:'Procurar colega pelo nome','aria-label':'Procurar colega'});b.value=busca;b.oninput=function(){busca=b.value;pinta();};area.append(b);}
+          pinta();area.append(chips);
+        }
+      }
+      // Nome escrito à mão (colega que ainda não aparece na lista)
+      if(t){
+        if(!manual)box.append(el('button',{type:'button',class:'btn ghost sm bi-eq-ult',onclick:function(){manual=true;draw();}},'Não achou o colega? Escrever o nome'));
+        else{
+          var inp=el('input',{type:'text',class:'bi-eq-in',placeholder:'Nome e sobrenome do colega','aria-label':'Nome e sobrenome do colega',autocomplete:'off'});
+          var m=el('p',{class:'bi-eq-msg',role:'status'});
+          var go=function(){var n=inp.value.trim();if(!nomeOk(n)){m.textContent='Escreva nome e sobrenome do colega.';m.className='bi-eq-msg err';return;}if(normNome(n)===eu()){m.textContent='Esse é o seu nome. Marque só os colegas.';m.className='bi-eq-msg err';return;}if(!add(n)){m.textContent='Esse colega já está no grupo.';m.className='bi-eq-msg err';}};
+          inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();go();}});
+          box.append(el('div',{class:'bi-eq-row'},inp,el('button',{type:'button',class:'btn sm',onclick:go},'Adicionar')),m);
+        }
+      }
+    }
+    var ultT=o.turma(),ultN=eu();
+    window.addEventListener('bi-ident',function(){var t2=o.turma(),n2=eu();if(t2!==ultT||n2!==ultN){var mudouTurma=t2!==ultT;ultT=t2;ultN=n2;if(st.m==='grupo'&&(mudouTurma||tem(o.nome())))draw();}});
+    draw();
+    return {
+      el:box,
+      falta:function(){if(fixo)return [];if(!st.m)return ['se fez sozinho(a) ou com colegas'];if(st.m==='grupo'&&!st.c.length)return ['os colegas do grupo'];return [];},
+      grupo:function(){return fixo||st.m!=='grupo'?'Individual':'Em grupo';},
+      ans:function(){if(fixo)return {};return {'Colegas do grupo':st.m==='grupo'?st.c.filter(function(n){return normNome(n)!==eu();}).join('; '):''};},
+      colegas:function(){return st.m==='grupo'?st.c.slice():[];}
+    };
+  }
+
   // ---------- Faixa de navegação entre os sites ----------
   var CSS='.bi-strip{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;font-size:.8rem;margin:-2px 0 0;padding:0 0 2px}'+
   '.bi-strip::-webkit-scrollbar{display:none}'+
@@ -402,6 +493,14 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   '.bi-pin{width:7.5em!important;font-family:var(--f-mono,monospace);font-size:1.1rem;letter-spacing:.3em;text-align:center}'+
   '.bi-nuvem-msg{font-size:.88rem;color:var(--muted);margin:0}.bi-nuvem-msg:empty{display:none}.bi-nuvem-msg.err{color:var(--bad,#b03c35);font-weight:700}'+
   '.bi-toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:999px;font-weight:700;box-shadow:0 10px 30px -10px rgba(0,0,0,.5);max-width:calc(100% - 32px);text-align:center}'+
+  '.bi-eq{display:flex;flex-direction:column;gap:8px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}'+
+  '.bi-eq .seg{align-self:flex-start}'+
+  '.bi-eq-chips{display:flex;flex-wrap:wrap;gap:6px}'+
+  '.bi-eq-lista{display:flex;flex-direction:column;gap:6px}'+
+  '.bi-eq-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}'+
+  '.bi-eq-in{flex:1 1 220px;min-width:0}'+
+  '.bi-eq-ult{align-self:flex-start;text-align:left;white-space:normal}'+
+  '.bi-eq-msg{font-size:.88rem;color:var(--muted);margin:0}.bi-eq-msg:empty{display:none}.bi-eq-msg.err{color:var(--bad,#b03c35);font-weight:700}'+
   '.bi-rodape{border-top:1px solid var(--line);margin-top:8px}'+
   '.bi-rodape-in{max-width:1280px;margin:0 auto;padding:18px 16px calc(90px + env(safe-area-inset-bottom,0px))}'+
   '.bi-copy{margin:0;font-size:.82rem;line-height:1.45;color:var(--muted)}.bi-copy a{color:inherit;font-weight:700}';
@@ -451,7 +550,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   window.PORTAL={SITES:SITES,ORDER:ORDER,escola:escola,rotuloTurma:rotuloTurma,el:el,lsGet:lsGet,lsSet:lsSet,
     turma:turma,definirTurma:definirTurma,sairDaTurma:sairDaTurma,lerCodigo:lerCodigo,codigoDaTurma:codigoDaTurma,caixaCodigo:caixaCodigo,
     ident:ident,saveIdent:saveIdent,estudantes:estudantes,estudanteAtual:estudanteAtual,pfx:pfx,trocarEstudante:trocarEstudante,novoEstudante:novoEstudante,removerEstudante:removerEstudante,escolherEstudante:escolherEstudante,guardarNaNuvem:guardarNaNuvem,iniciais:iniciais,grupos:grupos,turmas:turmas,turmaCtl:turmaCtl,fichaBanner:fichaBanner,
-    site:site,code:code,codeFor:codeFor,receiver:receiver,sendLabel:sendLabel,offText:offText,
+    site:site,code:code,codeFor:codeFor,equipe:equipe,tipoFicha:tipoFicha,receiver:receiver,sendLabel:sendLabel,offText:offText,
     idDoReceptor:idDoReceptor,urlDoReceptor:urlDoReceptor,prof:prof,salvarProf:salvarProf,standalone:standalone,baseUrl:baseUrl,linkDaTurma:linkDaTurma,
     injectCss:injectCss,toast:toast};
 })();
