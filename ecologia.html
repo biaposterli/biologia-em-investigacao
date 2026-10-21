@@ -267,6 +267,27 @@ ul.struct li::before{content:"";position:absolute;left:3px;top:.55em;width:8px;h
 /* Botão flutuante que traz o menu de volta */
 .menu-flutuante{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:10px 16px;font-weight:700;box-shadow:var(--shadow);cursor:pointer;opacity:0;pointer-events:none;transform:translateY(10px);transition:opacity .2s,transform .2s}
 .menu-flutuante.visivel{opacity:1;pointer-events:auto;transform:none}
+/* Aula 2 · Atlas das relações */
+.rel-map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.rel-map{grid-template-columns:minmax(0,1fr)}}
+.rel-q{display:flex;flex-direction:column;gap:6px;background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--good);border-radius:12px;padding:10px 12px;min-width:0}
+.rel-q[data-g="id"],.rel-q[data-g="ed"]{border-top-color:var(--bad);border-top-style:double;border-top-width:5px}
+.rel-q-t{font-family:var(--f-display);font-weight:800;font-size:1rem;line-height:1.2}
+.rel-list{display:flex;flex-direction:column;gap:6px}
+.rel-btn{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);color:inherit;border-radius:10px;padding:8px 11px;cursor:pointer;font:inherit;font-weight:700}
+.rel-btn:hover{border-color:var(--tema)}
+.rel-btn[aria-pressed="true"]{border-color:var(--tema);background:var(--tema-soft);box-shadow:inset 4px 0 0 var(--tema)}
+.rel-btn.visto>span:first-child::after{content:" ✓";color:var(--good)}
+.rel-sin{font-family:var(--f-mono);font-weight:600;font-size:.85rem;background:var(--surface-2);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.rel-par{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.rel-ex{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.rel-alvo{display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;background:transparent;border:1px dashed var(--line);border-radius:10px;padding:8px;cursor:pointer;font:inherit;color:inherit}
+.rel-map.escolhendo .rel-alvo{border-color:var(--tema);border-style:solid;background:var(--tema-soft)}
+.rel-pool{min-height:44px;padding:8px;border-radius:12px;background:var(--surface-2)}
+.rel-sim .rel-btn{justify-content:flex-start}
+@media (max-width:640px){.rel-tab thead{display:none}.rel-tab tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid var(--line)}.rel-tab td{border:0!important;padding:1px 0!important}.rel-tab td:first-child{grid-column:1/-1;font-weight:700;color:var(--muted);padding-top:10px!important}.rel-tab td:first-child:empty{display:none}.rel-tab td:last-child{grid-column:1/-1}}
+.chip.rel-ok{border-color:var(--good);background:var(--good-soft);color:var(--ink)}
+.chip.rel-no{border-color:var(--bad);background:var(--bad-soft);color:var(--ink)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .fade{animation:fade .28s ease}
 @keyframes fade{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:none}}
@@ -296,7 +317,7 @@ ul.struct li::before{content:"";position:absolute;left:3px;top:.55em;width:8px;h
         <p class="lede">Simuladores, jogos e laboratórios virtuais para fazer no celular ou no computador. Cada aula tem a sua ferramenta e termina com a ficha de respostas.</p>
         <div class="hero-facts">
           <div><b>14</b><span>aulas</span></div>
-          <div><b>10</b><span>ferramentas</span></div>
+          <div><b>11</b><span>ferramentas</span></div>
           <div><b>9</b><span>lâminas no microscópio</span></div>
         </div>
         <p class="book-src"><strong>Sobre a numeração dos temas.</strong> Os Temas 20 a 24 seguem a organização do livro didático adotado: GODOY, L. P.; LOURENÇO, G. C. <i>360° Biologia: ensino médio, volume único</i>. 1. ed. São Paulo: FTD, 2024.</p>
@@ -308,6 +329,7 @@ ul.struct li::before{content:"";position:absolute;left:3px;top:.55em;width:8px;h
     <p class="note" style="padding-top:8px">Temas conforme GODOY, L. P.; LOURENÇO, G. C. <i>360° Biologia: ensino médio, volume único</i>. São Paulo: FTD, 2024.</p>
   </section>
   <section class="aula" id="detetive" hidden></section>
+  <section class="aula" id="relacoes" hidden></section>
   <section class="aula" id="microscopio" hidden></section>
   <section class="aula" id="quadrantes" hidden></section>
   <section class="aula" id="populacoes" hidden></section>
@@ -440,6 +462,7 @@ function ilu(key,cls='ilu'){const f=IL[key];const e=document.createElementNS(NS,
 // ================= Navegação =================
 const ICONS={
   detetive:'<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.3 15.3L21 21"/><path d="M8 10.5h5M10.5 8v5"/>',
+  relacoes:'<circle cx="6.5" cy="13.5" r="3.5"/><circle cx="17.5" cy="13.5" r="3.5"/><path d="M10 13.5h4"/><path d="M6.5 3.5v4M4.5 5.5h4"/><path d="M15.5 5.5h4"/>',
   microscopio:'<path d="M7.6 3.2l3.9 3.9-2.6 2.6-3.9-3.9z"/><path d="M10.2 8.4l3.2 3.2"/><path d="M5 14.5h6.5"/><path d="M4 21h15"/><path d="M13.6 21a6.2 6.2 0 0 0 2.1-10.6"/><path d="M8.3 21v-3h5"/>',
   quadrantes:'<rect x="3" y="3" width="18" height="18" rx="1.5"/><path d="M9 3v18M15 3v18M3 9h18M3 15h18"/><circle cx="6" cy="6" r=".9" fill="currentColor"/><circle cx="12.2" cy="11.6" r=".9" fill="currentColor"/><circle cx="17.6" cy="18" r=".9" fill="currentColor"/>',
   populacoes:'<path d="M4 3.5V20h16.5"/><path d="M6.5 17.5c4.5 0 5-10 9.5-10h4"/><path d="M6.5 17.5c2 0 3.2-2 4-5" stroke-dasharray="1.5 2"/>',
@@ -453,7 +476,8 @@ const ICONS={
 const icon=(id,size=24)=>{const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('width',size);e.setAttribute('height',size);e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','1.7');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.setAttribute('aria-hidden','true');e.innerHTML=ICONS[id]||'';return e;};
 const TEMAS={t20:'Tema 20 · Relações ecológicas e parasitismo',t21:'Tema 21 · Populações e comunidades',t22:'Tema 22 · Ciclos biogeoquímicos',t24:'Temas 20 a 24 · Saúde Única'};
 const TOOLS=[
-  {id:'detetive',n:'1–2',t:'t20',short:'A1–2',title:'Detetive ecológico',desc:'Oito cartões de casos: efeitos (+, −, 0), relação proposta e uma pista nova que pode mudar a hipótese.'},
+  {id:'detetive',n:'1',t:'t20',short:'A1',title:'Detetive ecológico',desc:'Introdução às relações ecológicas: oito cartões de casos, efeitos (+, −, 0), relação proposta e uma pista nova que pode mudar a hipótese.'},
+  {id:'relacoes',n:'2',t:'t20',short:'A2',title:'Atlas das relações',desc:'Os 14 tipos de relação em detalhe, um simulador dos sinais +, − e 0 e o resgate final de todas as relações.'},
   {id:'microscopio',n:'3',t:'t20',short:'A3',title:'Microscópio virtual',desc:'Ovos, cistos e trofozoítos desenhados com suas estruturas diagnósticas e no tamanho real em relação ao campo.'},
   {id:'quadrantes',n:'4',t:'t21',short:'A4',title:'Bandeja de quadrantes',desc:'Bandeja de 40 × 40 cm com sementes em três distribuições. Estime a população e compare com o total real.'},
   {id:'populacoes',n:'5–6',t:'t21',short:'A5–6',title:'Laboratório de populações',desc:'Balanço populacional, curvas J e S com capacidade de suporte que muda, e as estruturas etárias C e D.'},
@@ -574,7 +598,7 @@ function buildNav(){
   top.addEventListener('focusin',mostrar);
   if(btnMenu)btnMenu.onclick=mostrar;
 }
-// ================= Aulas 1–2: Detetive ecológico =================
+// ================= Aula 1: Detetive ecológico =================
 const REL={mutualismo:'Mutualismo',protocooperacao:'Protocooperação',comensalismo:'Comensalismo',epifitismo:'Inquilinismo (epifitismo)',competicao:'Competição',predacao:'Predação',parasitismo:'Parasitismo',sociedade:'Sociedade',colonia:'Colônia',insuficiente:'Faltam evidências para classificar'};
 const CARDS=[
  {id:'A',t:'Abelha e flor',txt:'Uma abelha obtém alimento de uma flor e ajuda a polinizar outra flor da mesma espécie.',p:['Abelha','Planta'],eff:['+','+'],same:'nao',rel:['mutualismo','protocooperacao'],
@@ -603,7 +627,7 @@ const CARDS=[
   pista:'Um pólipo separado do conjunto tem dificuldade de sobreviver sozinho.',pq:'O que isso indica sobre a dependência entre os indivíduos da colônia?'},
 ];
 INIT.detetive=root=>{
-  root.append(head('Aulas 1 e 2','Detetive ecológico','Escolha um cartão, registre as evidências e proponha uma relação. Depois revele uma pista nova e veja se a hipótese se sustenta.'));
+  root.append(head('Aula 1','Detetive ecológico','Escolha um cartão, registre as evidências e proponha uma relação. Depois revele uma pista nova e veja se a hipótese se sustenta.'));
   const scores=store.get('det-scores',[0,0,0,0,0,0]);
   const grid=h('div',{class:'cols wide-right'});root.append(grid);
   const left=h('div',{class:'stack'});const right=h('div',{class:'panel stack'});grid.append(left,right);
@@ -645,6 +669,260 @@ INIT.detetive=root=>{
     function pista(){out.innerHTML='';out.append(h('div',{class:'callout stack'},h('strong',{},'Pista nova: '+c.pista),h('span',{},c.pq)));}
   }
   open(CARDS[0]);CARDS[0].btn.style.borderColor='var(--accent)';
+  root.append(h('div',{class:'callout row',style:'justify-content:space-between'},h('span',{},h('strong',{},'Próxima aula: '),'cada tipo de relação em detalhe, um simulador e o resgate de todas as relações.'),h('button',{class:'btn sm','data-go':'relacoes'},'Atlas das relações →')));
+};
+
+// ================= Aula 2: Atlas das relações =================
+// Ilustrações dos tipos que ainda não tinham desenho (viewBox 0 0 120 90)
+IL.milho=()=>sky()+ground('#9bbf6a')+[14,28,42,56,70,84,98,110].map((x,i)=>`<g transform="translate(${x} 76)"><path d="M0,0 v-${30+(i%3)*4}" stroke="#5f8d3a" stroke-width="2.4"/><path d="M0,-12 q-8,-4 -11,-12 M0,-20 q8,-4 10,-12 M0,-6 q7,-2 9,-8" stroke="#6aa043" stroke-width="2" fill="none" stroke-linecap="round"/>${i%2?'':`<ellipse cx="2" cy="-17" rx="2" ry="5" fill="#e7c14a"/>`}</g>`).join('')+`<path d="M16,84 h96" stroke="#7a5634" stroke-width="1.2" stroke-dasharray="2 3"/>`;
+const mantis=(x,y,sc=1,flip=false,c='#6aa043')=>`<g transform="translate(${x} ${y}) scale(${flip?-sc:sc} ${sc})"><ellipse cx="-10" cy="0" rx="13" ry="4" fill="${c}" transform="rotate(-8 -10 0)"/><path d="M2,-2 L14,-16" stroke="${c}" stroke-width="3.2" stroke-linecap="round"/><path d="M13,-20 l6,2 l-4,5z" fill="${c}"/><circle cx="16" cy="-18" r="1.2" fill="#1e2a33"/><path d="M11,-12 l8,5 l-5,6 M8,-9 l7,6 l-5,5" stroke="${c}" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="M-4,2 l-4,10 M-12,2 l-2,10 M-18,1 l-6,9" stroke="${c}" stroke-width="1.4"/><path d="M16,-21 q4,-8 10,-10 M15,-21 q1,-8 6,-12" stroke="${c}" stroke-width=".8" fill="none"/></g>`;
+IL.louva=()=>sky('#e6efdc','#f4f0e2')+`<path d="M0,74 q30,-4 60,0 t60,0 v16 h-120z" fill="#9bbf6a"/><path d="M10,70 q50,-20 104,-6" stroke="#7a5634" stroke-width="3" fill="none"/>`+mantis(36,58,1.25,false)+mantis(88,60,.95,true,'#8fb563');
+IL.liquen=()=>`<rect width="120" height="90" fill="#8a6a4a"/>${[14,34,58,80,102].map(x=>`<path d="M${x},0 q-3,45 2,90" stroke="#6f5338" stroke-width="2" fill="none"/>`).join('')}${[[24,24,13],[40,58,10],[16,70,8],[56,30,7]].map(([x,y,r])=>`<path d="${[...Array(9)].map((_,k)=>{const a=k/9*6.283,rr=r*(k%2?.75:1.05);return (k?'L':'M')+(x+rr*Math.cos(a)).toFixed(1)+','+(y+rr*Math.sin(a)).toFixed(1);}).join('')}Z" fill="#b9c99a" stroke="#93a675" stroke-width="1"/>`).join('')}<circle cx="88" cy="50" r="27" fill="#f4f0e2" stroke="#2a2116" stroke-width="3"/>${[[72,40,104,46],[70,56,102,60],[76,66,98,36],[80,30,96,72]].map(([a,b,c,d])=>`<path d="M${a},${b} Q${(a+c)/2},${(b+d)/2-8} ${c},${d}" stroke="#c4a576" stroke-width="2" fill="none"/>`).join('')}${[[80,44],[92,42],[86,56],[98,56],[78,60],[94,66],[88,34]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3" fill="#4e9a4a"/>`).join('')}<path d="M68,70 l-10,12" stroke="#2a2116" stroke-width="5" stroke-linecap="round"/>`;
+IL.paguro=()=>`<rect width="120" height="90" fill="#bfe0ee"/><path d="M0,76 q30,-6 60,0 t60,0 v14 h-120z" fill="#e8d7a8"/><g transform="translate(58 58)"><path d="M-22,12 C-26,-8 -6,-22 14,-14 C26,-8 24,10 12,14 Z" fill="#e8c9a0" stroke="#a5835a" stroke-width="1.6"/><path d="M12,14 C2,4 -4,-6 6,-10 C14,-12 16,0 8,2" stroke="#a5835a" stroke-width="1.4" fill="none"/><path d="M14,8 l10,2 l4,-4 M14,12 l12,6 M12,4 l14,-2" stroke="#c45a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M24,4 q6,-3 8,2 q-4,2 -8,-2z" fill="#c45a3a"/><circle cx="20" cy="2" r="1.4" fill="#1e2a33"/></g><g transform="translate(46 40)"><rect x="-8" y="-4" width="16" height="10" rx="3" fill="#d96b8f"/>${[-7,-4,-1,2,5,8].map(d=>`<path d="M${d},-4 q${d/2},-10 ${d*1.2},-14" stroke="#e98fae" stroke-width="2" fill="none" stroke-linecap="round"/>`).join('')}</g>`;
+const cow=(x,y,sc=1)=>`<g transform="translate(${x} ${y}) scale(${sc})"><rect x="-22" y="-16" width="38" height="18" rx="7" fill="#efe7da" stroke="#7a5634" stroke-width="1.4"/><ellipse cx="-8" cy="-9" rx="6" ry="4" fill="#7a5634"/><ellipse cx="8" cy="-4" rx="4" ry="3" fill="#7a5634"/><path d="M14,-14 q10,-2 12,4 q2,8 -6,8 l-6,-2z" fill="#efe7da" stroke="#7a5634" stroke-width="1.4"/><path d="M18,-14 l-2,-5 M24,-12 l3,-5" stroke="#8a6a45" stroke-width="1.6"/><circle cx="21" cy="-8" r="1.2" fill="#1e2a33"/>${[-18,-10,4,12].map(px=>`<rect x="${px}" y="1" width="3" height="11" fill="#7a5634"/>`).join('')}<path d="M-22,-12 q-6,4 -4,12" stroke="#7a5634" stroke-width="1.4" fill="none"/></g>`;
+const egret=(x,y,sc=1)=>`<g transform="translate(${x} ${y}) scale(${sc})"><ellipse rx="8" ry="5" fill="#fbfbf6" stroke="#9aa3a0" stroke-width=".8"/><path d="M5,-2 q4,-10 2,-14" stroke="#fbfbf6" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="7" cy="-16" r="3" fill="#fbfbf6" stroke="#9aa3a0" stroke-width=".6"/><path d="M9,-16 l7,1 l-7,1.6z" fill="#e7b43a"/><path d="M-2,4 v9 M2,4 v9" stroke="#c9a03a" stroke-width="1.4"/></g>`;
+IL.garca=()=>sky()+ground('#9bbf6a')+cow(46,58,1.2)+egret(92,66,1.1)+`<g fill="#2a2116">${[[78,40],[84,32],[96,38],[72,30]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="2" ry="1.2"/><path d="M${x-2},${y-1} l-2,-2 M${x+2},${y-1} l2,-2" stroke="#2a2116" stroke-width=".6"/>`).join('')}</g>`;
+IL.buffel=()=>sky('#f5e2c4','#f4efe2')+sun(100,16,8)+`<path d="M0,74 q30,-4 60,0 t60,0 v16 h-120z" fill="#c9a26a"/>`+[...Array(16)].map((_,i)=>{const x=6+i*3.4;return `<path d="M${x},76 q${(i%3-1)*3},-18 ${(i%2?6:-5)},-${28+(i%4)*5}" stroke="${i%2?'#a6a35a':'#8f9145'}" stroke-width="1.8" fill="none"/><ellipse cx="${x+(i%2?6:-5)}" cy="${48-(i%4)*5}" rx="1.6" ry="4" fill="#b98a5a"/>`;}).join('')+plant(78,74,.8,true)+plant(98,74,.7,true)+`<g transform="translate(110 74)"><rect x="-3" y="-16" width="6" height="16" rx="3" fill="#7d9a5e"/></g>`;
+IL.lagarta=()=>sky('#e6efdc','#f4f0e2')+`<path d="M14,70 C20,26 76,8 106,20 C100,56 60,80 14,70 Z" fill="#6aac4a" stroke="#4e8a3a" stroke-width="1.6"/><path d="M14,70 L100,22" stroke="#4e8a3a" stroke-width="1.6"/><circle cx="104" cy="40" r="10" fill="#e6efdc"/><circle cx="86" cy="54" r="8" fill="#e6efdc"/><circle cx="60" cy="26" r="7" fill="#e6efdc"/>`+`<g>${[0,1,2,3,4,5].map(k=>`<circle cx="${50+k*7}" cy="${52-k*2}" r="4.4" fill="${k===5?'#3f7a30':'#8cc63f'}" stroke="#3f7a30" stroke-width=".8"/>`).join('')}<circle cx="86" cy="40" r="1" fill="#fff"/></g>`;
+IL.placa=()=>`<rect width="120" height="90" fill="#eef3f6"/><ellipse cx="60" cy="48" rx="46" ry="36" fill="#f6f1df" stroke="#9aa6ac" stroke-width="2.4"/><ellipse cx="60" cy="48" rx="42" ry="32" fill="#efe6c2"/>${[...Array(90)].map((_,i)=>{const r=seeded(i+11);const a=r()*6.283,q=.2+.8*Math.sqrt(r());const x=60+40*q*Math.cos(a),y=48+30*q*Math.sin(a);const d=Math.hypot((x-60)/1.25,y-48);return d<20?'':`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.5" fill="#d8b85a"/>`;}).join('')}<ellipse cx="60" cy="48" rx="23" ry="17" fill="none" stroke="#b9a988" stroke-width="1" stroke-dasharray="2 3"/><circle cx="60" cy="48" r="10" fill="#5f9a8a"/>${[...Array(10)].map((_,k)=>{const a=k/10*6.283;return `<circle cx="${(60+9*Math.cos(a)).toFixed(1)}" cy="${(48+9*Math.sin(a)).toFixed(1)}" r="3.4" fill="#7fb7a6"/>`;}).join('')}<circle cx="60" cy="48" r="5" fill="#3f7f70"/>`;
+const ant=(x,y,sc=1,rot=0)=>`<g transform="translate(${x} ${y}) rotate(${rot}) scale(${sc})"><ellipse cx="-7" cy="0" rx="4.5" ry="3.2" fill="#2a2116"/><ellipse cx="0" cy="0" rx="2.6" ry="2" fill="#2a2116"/><circle cx="5" cy="-.5" r="2.6" fill="#2a2116"/><path d="M7,-2 q3,-4 6,-3 M7,-1 q4,-2 6,0" stroke="#2a2116" stroke-width=".8" fill="none"/><path d="M-1,1 l-3,5 M0,1 l1,5 M1,1 l4,4 M-1,-1 l-3,-5 M0,-1 l1,-5 M1,-1 l4,-4" stroke="#2a2116" stroke-width=".9"/></g>`;
+IL.formiga=()=>sky('#e6efdc','#f4f0e2')+`<path d="M60,90 q-4,-40 6,-84" stroke="#5f8d3a" stroke-width="5" fill="none"/><path d="M62,46 q16,-8 26,-22" stroke="#5f8d3a" stroke-width="3" fill="none"/><path d="M88,24 q8,-10 18,-6 q-6,12 -18,6z" fill="#6aac4a"/>`+[[60,64],[62,52],[64,38],[60,26]].map(([x,y],i)=>`<ellipse cx="${x+(i%2?4:-4)}" cy="${y}" rx="4.4" ry="3" fill="#9bcf5a" stroke="#5f8d3a" stroke-width=".8"/>`).join('')+drop(52,74,.45,'#e7c98f')+ant(44,70,1.2,-70)+ant(78,44,1.1,110);
+IL.relacoes=()=>sky()+ground('#9bbf6a')+flower(26,46,'#e0648c',.9)+bee(40,30,.9,-10)+`<g transform="translate(70 60)"><path d="M-4,0 q-2,-24 0,-40 h8 q2,16 0,40z" fill="#7a5634"/><ellipse cx="0" cy="-44" rx="18" ry="12" fill="#5a9a46"/></g>`+dog(98,72,.9);
+
+const GRUPOS={
+  ih:{t:'Intraespecíficas harmônicas',d:'Mesma espécie · ninguém é prejudicado',c:'var(--good)'},
+  id:{t:'Intraespecíficas desarmônicas',d:'Mesma espécie · ao menos um é prejudicado',c:'var(--bad)'},
+  eh:{t:'Interespecíficas harmônicas',d:'Espécies diferentes · nenhuma é prejudicada',c:'var(--good)'},
+  ed:{t:'Interespecíficas desarmônicas',d:'Espécies diferentes · ao menos uma é prejudicada',c:'var(--bad)'},
+};
+const TIPOS=[
+ {id:'colonia',nome:'Colônia',g:'ih',p:['Indivíduo 1','Indivíduo 2'],s:['+','+'],il:'H',
+  def:'Indivíduos da mesma espécie vivem unidos fisicamente. Separados do conjunto, costumam ter dificuldade de sobreviver.',
+  ex:['Corais: pólipos unidos por um esqueleto calcário comum formam os recifes.','Caravela-portuguesa (<i>Physalia physalis</i>): há divisão de trabalho; alguns indivíduos capturam presas, outros digerem o alimento e outros se reproduzem.'],
+  obs:'Nem toda colônia tem divisão de trabalho: nos corais, os pólipos são parecidos entre si.'},
+ {id:'sociedade',nome:'Sociedade',g:'ih',p:['Indivíduo 1','Indivíduo 2'],s:['+','+'],il:'G',
+  def:'Indivíduos da mesma espécie vivem organizados e cooperam, com divisão de trabalho, mas não estão unidos fisicamente.',
+  ex:['Abelha-jandaíra (<i>Melipona subnitida</i>), abelha sem ferrão nativa da Caatinga: a rainha põe ovos; as operárias coletam néctar e pólen, constroem e defendem a colmeia.','Cupins: o rei e a rainha se reproduzem, os operários buscam alimento e cuidam do ninho, e os soldados defendem o cupinzeiro.'],
+  obs:'No dia a dia se fala em “colônia de abelhas”, mas em Ecologia elas formam uma sociedade: cada abelha é um indivíduo separado.'},
+ {id:'compintra',nome:'Competição intraespecífica',g:'id',p:['Indivíduo 1','Indivíduo 2'],s:['−','−'],il:'milho',
+  def:'Indivíduos da mesma espécie disputam um recurso limitado: alimento, água, luz, espaço, território ou parceiros para a reprodução.',
+  ex:['Pés de milho plantados muito próximos crescem menos e produzem espigas menores do que quando há espaço entre eles.','Machos de calango defendem um território e expulsam outros machos da mesma espécie.'],
+  obs:'Costuma ser intensa, porque indivíduos da mesma espécie precisam exatamente dos mesmos recursos. Ela ajuda a frear o crescimento da população (resistência do meio, Aulas 5 e 6).'},
+ {id:'canibalismo',nome:'Canibalismo',g:'id',p:['Quem come','Quem é comido'],s:['+','−'],il:'louva',
+  def:'Um indivíduo mata e come outro da mesma espécie.',
+  ex:['Em algumas espécies de louva-a-deus, a fêmea pode comer o macho durante ou depois do acasalamento.','Girinos de algumas espécies de anfíbios comem outros girinos da mesma espécie quando o alimento fica escasso.'],
+  obs:'Alguns livros tratam o canibalismo como uma forma de predação entre indivíduos da mesma espécie.'},
+ {id:'mutualismo',nome:'Mutualismo',g:'eh',p:['Fungo','Alga'],s:['+','+'],il:'liquen',
+  def:'As duas espécies se beneficiam e a associação é obrigatória: uma não sobrevive bem sem a outra.',
+  ex:['Líquen: o fungo abriga a alga (ou cianobactéria) e retém água e sais minerais; a alga faz fotossíntese e fornece açúcares ao fungo.','Cupins e microrganismos do intestino: os microrganismos digerem a celulose da madeira que o cupim come e recebem abrigo e alimento.'],
+  obs:'As bactérias dos nódulos das raízes das leguminosas (Aulas 8 e 9) também costumam ser citadas como exemplo de mutualismo.'},
+ {id:'protocooperacao',nome:'Protocooperação',g:'eh',p:['Caranguejo-ermitão','Anêmona'],s:['+','+'],il:'paguro',
+  def:'As duas espécies se beneficiam, mas a associação não é obrigatória: cada uma consegue viver sem a outra.',
+  ex:['Caranguejo-ermitão e anêmona-do-mar: a anêmona, presa à concha, protege o caranguejo com suas células urticantes; em troca, é levada a novos lugares e aproveita restos de alimento.','Anu-preto e gado: a ave come carrapatos e outros parasitos do couro do gado, que fica livre deles.'],
+  obs:'Alguns livros chamam essa relação de mutualismo facultativo. Só o nome muda: o critério é se a associação é obrigatória ou não.'},
+ {id:'comensalismo',nome:'Comensalismo',g:'eh',p:['Garça-vaqueira','Gado'],s:['+','0'],il:'garca',
+  def:'Uma espécie aproveita restos de alimento ou o alimento tornado disponível por outra, que não é beneficiada nem prejudicada.',
+  ex:['Garça-vaqueira e gado: ao pastar, o gado espanta insetos do capim, e a garça os captura. O gado não ganha nem perde.','Tubarão e rêmora: a rêmora se prende ao corpo do tubarão e come os restos das presas que ele captura.'],
+  obs:'Divergência entre fontes: como a rêmora também ganha transporte, alguns livros classificam esse caso como inquilinismo (ou forésia).'},
+ {id:'inquilinismo',nome:'Inquilinismo',g:'eh',p:['Bromélia','Árvore'],s:['+','0'],il:'E',
+  def:'Uma espécie usa outra como abrigo, suporte ou moradia, sem prejudicá-la e sem retirar alimento dela.',
+  ex:['Epifitismo: bromélias e orquídeas vivem sobre os galhos das árvores, onde recebem mais luz. Elas fazem a própria fotossíntese e não retiram seiva da árvore.','Peixe-agulha e pepino-do-mar: o peixe se abriga dentro do corpo do pepino-do-mar e sai para se alimentar.'],
+  obs:'Compare com a erva-de-passarinho, que também vive sobre árvores, mas retira delas água e sais minerais: isso é parasitismo.'},
+ {id:'compinter',nome:'Competição interespecífica',g:'ed',p:['Capim-buffel','Plantas nativas'],s:['−','−'],il:'buffel',
+  def:'Espécies diferentes disputam o mesmo recurso limitado (alimento, água, luz, espaço). As duas saem prejudicadas.',
+  ex:['Capim-buffel (<i>Cenchrus ciliaris</i>), gramínea africana trazida para pastagens, disputa água, luz e nutrientes com as plantas nativas da Caatinga.','Abelhas-africanizadas e abelhas nativas sem ferrão podem disputar o néctar e o pólen das mesmas flores.'],
+  obs:'Quanto mais parecidos os recursos que duas espécies usam, mais forte a competição. Se usam exatamente os mesmos, uma pode acabar eliminando a outra daquele local (princípio da exclusão competitiva).'},
+ {id:'predacao',nome:'Predação',g:'ed',p:['Predador','Presa'],s:['+','−'],il:'F',
+  def:'Um animal (o predador) captura, mata e come outro animal (a presa).',
+  ex:['Aves que capturam gafanhotos e outros insetos.','O carcará, que captura calangos e pequenos roedores na Caatinga.'],
+  obs:'Predadores ajudam a controlar o tamanho das populações de presas. Sem o predador, a presa pode se multiplicar demais.'},
+ {id:'herbivoria',nome:'Herbivoria',g:'ed',p:['Herbívoro','Planta'],s:['+','−'],il:'lagarta',
+  def:'Um animal se alimenta de partes de uma planta (folhas, brotos, frutos, raízes). Muitas vezes a planta não morre.',
+  ex:['Lagartas e gafanhotos comendo folhas.','Cabras pastando os brotos das plantas da Caatinga.'],
+  obs:'Alguns livros incluem a herbivoria dentro da predação; outros a tratam como uma relação própria.'},
+ {id:'parasitismo',nome:'Parasitismo',g:'ed',p:['Parasito','Hospedeiro'],s:['+','−'],il:'B',
+  def:'O parasito vive no corpo ou sobre o corpo do hospedeiro e retira dele alimento, geralmente sem matá-lo rapidamente.',
+  ex:['Ectoparasitos vivem sobre o hospedeiro (carrapatos, piolhos, pulgas). Endoparasitos vivem dentro dele (<i>Schistosoma mansoni</i>, a lombriga <i>Ascaris lumbricoides</i>).','Plantas parasitas: a erva-de-passarinho tem clorofila e retira do hospedeiro água e sais minerais (seiva bruta); o cipó-chumbo não tem clorofila e retira a seiva elaborada.'],
+  obs:'É o tema das Aulas 3 e 12, no microscópio e no ciclo da esquistossomose.'},
+ {id:'amensalismo',nome:'Amensalismo',g:'ed',p:['Fungo','Bactérias'],s:['0','−'],il:'placa',
+  def:'Uma espécie libera substâncias que inibem o crescimento ou a reprodução de outra, sem se alimentar dela. Também é chamado de antibiose.',
+  ex:['O fungo <i>Penicillium</i> produz penicilina, que impede o crescimento de muitas bactérias ao seu redor. Foi assim que Alexander Fleming descobriu o primeiro antibiótico, em 1928.','Maré vermelha: algumas algas microscópicas se multiplicam muito e liberam toxinas que podem matar peixes e outros animais marinhos.'],
+  obs:'Os sinais variam entre os livros: alguns usam 0 / −; outros + / −, porque a espécie que libera a substância fica com menos competidores.'},
+ {id:'esclavagismo',nome:'Esclavagismo',g:'ed',p:['Quem explora','Quem é explorado'],s:['+','−'],il:'formiga',
+  def:'Uma espécie se aproveita do trabalho, das atividades ou dos produtos de outra. Também é chamado de sinfilia.',
+  ex:['Algumas espécies de formiga invadem ninhos de outras espécies e levam as pupas; as operárias que nascem passam a trabalhar para as invasoras.','Formigas e pulgões: as formigas protegem os pulgões e “ordenham” deles um líquido açucarado, a melada.'],
+  obs:'Divergência entre fontes: como os pulgões também ganham proteção, muitos autores classificam formigas e pulgões como mutualismo ou protocooperação.'},
+];
+const TIPO=Object.fromEntries(TIPOS.map(t=>[t.id,t]));
+const sinais=(t,big)=>h('span',{class:'rel-sin'+(big?' big':''),'aria-label':'Sinais: '+t.s.join(' e ')},t.s[0]+' / '+t.s[1]);
+const CASOS=[
+ {k:'sociedade',txt:'Num formigueiro de saúvas, a rainha põe ovos, as operárias cortam folhas e os soldados defendem a entrada.'},
+ {k:'predacao',txt:'Uma jiboia captura, mata e engole um preá.'},
+ {k:'inquilinismo',txt:'Uma orquídea vive presa ao tronco de um cajueiro. Ela faz a própria fotossíntese e não retira seiva da árvore.'},
+ {k:'compintra',txt:'Dois bodes do mesmo rebanho disputam, com chifradas, o acesso às fêmeas.'},
+ {k:'amensalismo',txt:'Raízes de certas plantas liberam no solo substâncias que impedem a germinação de sementes de outras espécies por perto. A planta não se alimenta delas (é a alelopatia).'},
+ {k:'mutualismo',txt:'O boi não digere o capim sozinho: microrganismos do rúmen digerem a celulose e recebem abrigo e alimento. Esses microrganismos não vivem fora do rúmen.'},
+ {k:'parasitismo',txt:'Piolhos vivem no couro cabeludo de uma pessoa e se alimentam do seu sangue.'},
+ {k:'colonia',txt:'A alga <i>Volvox</i> forma esferas com centenas de células iguais, unidas, que se movem juntas na água.'},
+ {k:'comensalismo',txt:'Urubus comem os restos de uma presa abandonada por uma onça-parda. A onça não ganha nem perde nada com isso.'},
+ {k:'herbivoria',txt:'Um preá come brotos e folhas de plantas rasteiras, que depois voltam a brotar.'},
+ {k:'canibalismo',txt:'Num tanque com pouco alimento, peixes maiores passam a comer os filhotes da própria espécie.'},
+ {k:'protocooperacao',txt:'Peixes-limpadores retiram parasitos da pele e da boca de peixes maiores, que ficam parados para ser limpos. Os dois conseguem viver separados.'},
+ {k:'compinter',txt:'Na seca, cabras criadas soltas e veados-catingueiros comem os mesmos brotos, e os dois encontram menos alimento.'},
+ {k:'esclavagismo',txt:'Formigas de uma espécie invadem o ninho de outra, levam as pupas, e as operárias que nascem passam a buscar alimento para as invasoras.'},
+];
+// Sinais para o simulador: [espécie A, espécie B]
+const SIM_PRE=[
+ {id:'pp',s:[1,1],t:'+ / +',n:'Mutualismo ou protocooperação'},
+ {id:'pz',s:[1,0],t:'+ / 0',n:'Comensalismo ou inquilinismo'},
+ {id:'pn',s:[1,-1],t:'+ / −',n:'Predação, herbivoria, parasitismo ou esclavagismo'},
+ {id:'nn',s:[-1,-1],t:'− / −',n:'Competição'},
+ {id:'zn',s:[0,-1],t:'0 / −',n:'Amensalismo'},
+ {id:'zz',s:[0,0],t:'0 / 0',n:'Sem interação (controle)'},
+];
+function simInter(sA,sB,c,T=30){
+  // Modelo logístico com um termo de interação: dN/dt = r·N·(1 − N/K + sinal·c·N_outra/K_outra)
+  const rA=.6,KA=100,rB=.45,KB=70,dt=.05;let A=10,B=10,a=10,b=10;const pa=[[0,A]],pb=[[0,B]],qa=[[0,a]],qb=[[0,b]];
+  for(let i=1;i<=Math.round(T/dt);i++){
+    const dA=rA*A*(1-A/KA+sA*c*B/KB),dB=rB*B*(1-B/KB+sB*c*A/KA);A=Math.max(0,A+dA*dt);B=Math.max(0,B+dB*dt);
+    a=Math.max(0,a+rA*a*(1-a/KA)*dt);b=Math.max(0,b+rB*b*(1-b/KB)*dt);
+    if(i%10===0){const t=+(i*dt).toFixed(2);pa.push([t,A]);pb.push([t,B]);qa.push([t,a]);qb.push([t,b]);}
+  }
+  return {pa,pb,qa,qb,A,B,a,b};
+}
+INIT.relacoes=root=>{
+  root.append(head('Aula 2','Atlas das relações','Conheça cada tipo de relação ecológica, veja no simulador o que os sinais +, − e 0 fazem com as populações e termine com o resgate de todas as relações.'));
+  const tabs=h('div',{class:'tabs-in'});root.append(tabs);
+  const V={mapa:h('div',{class:'stack'}),sim:h('div',{class:'stack',hidden:true}),resgate:h('div',{class:'stack',hidden:true})};
+  tabs.append(seg([['mapa','1 · Mapa das relações'],['sim','2 · Simulador'],['resgate','3 · Resgate: todas as relações']],'mapa',v=>{Object.entries(V).forEach(([k,el])=>el.hidden=k!==v);if(v==='sim')drawSim();},{label:'Partes da aula'}));
+  root.append(V.mapa,V.sim,V.resgate);
+
+  // ---------- 1 · Mapa ----------
+  const vistos=store.get('rel-vistos',{});
+  V.mapa.append(h('div',{class:'callout stack',style:'gap:6px'},
+    h('strong',{},'Duas perguntas organizam todas as relações'),
+    h('span',{},'1. Os organismos são da mesma espécie? Sim: relação intraespecífica. Não: relação interespecífica.'),
+    h('span',{},'2. Alguém é prejudicado? Não: relação harmônica. Sim: relação desarmônica.')));
+  const grid=h('div',{class:'cols wide-right'});V.mapa.append(grid);
+  const mapa=h('div',{class:'rel-map'});const det=h('div',{class:'panel stack',id:'rel-det','aria-live':'polite'});grid.append(h('div',{class:'stack'},mapa,h('p',{class:'note',id:'rel-prog'})),det);
+  const btns={};
+  Object.entries(GRUPOS).forEach(([gk,G])=>{
+    const box=h('div',{class:'rel-q','data-g':gk},h('span',{class:'rel-q-t'},G.t),h('span',{class:'note'},G.d));
+    const list=h('div',{class:'rel-list'});box.append(list);
+    TIPOS.filter(t=>t.g===gk).forEach(t=>{const b=h('button',{type:'button',class:'rel-btn','aria-pressed':'false'},h('span',{},t.nome),sinais(t));b.onclick=()=>{abrir(t);if(window.innerWidth<860)det.scrollIntoView({behavior:'smooth',block:'start'});};btns[t.id]=b;list.append(b);});
+    mapa.append(box);
+  });
+  function prog(){const n=TIPOS.filter(t=>vistos[t.id]).length;$('#rel-prog',root).textContent=`Você já abriu ${n} de ${TIPOS.length} relações.`+(n===TIPOS.length?' Todas exploradas!':'');TIPOS.forEach(t=>btns[t.id].classList.toggle('visto',!!vistos[t.id]));}
+  function abrir(t){
+    vistos[t.id]=true;store.set('rel-vistos',vistos);prog();
+    Object.entries(btns).forEach(([k,b])=>b.setAttribute('aria-pressed',String(k===t.id)));
+    const G=GRUPOS[t.g];det.innerHTML='';
+    det.append(h('div',{class:'row'},h('span',{class:'pill ex'},G.t),h('h3',{},t.nome)));
+    det.append(h('div',{class:'det-hero'},ilu(t.il,'ilu'),h('div',{class:'stack',style:'gap:8px'},
+      h('div',{class:'rel-par'},t.p.map((p,i)=>h('div',{class:'stat'},h('span',{class:'note'},p),h('span',{class:'big-num'},t.s[i]),h('span',{class:'note'},{'+':'beneficiado','−':'prejudicado','0':'não é afetado'}[t.s[i]])))),
+      h('p',{style:'font-size:1.12rem;line-height:1.45'},t.def))));
+    det.append(h('span',{class:'label'},'Exemplos'),h('ul',{class:'rel-ex'},t.ex.map(e=>h('li',{html:e}))));
+    det.append(h('div',{class:'fb info'},h('strong',{},'Atenção: '),t.obs));
+  }
+  prog();abrir(TIPOS[0]);
+
+  // ---------- 2 · Simulador ----------
+  const st={pre:'nn',c:.5,sozinha:true};
+  const sg=h('div',{class:'cols wide-right'});V.sim.append(sg);
+  const L=h('div',{class:'panel stack'}),R=h('div',{class:'panel stack'});sg.append(L,R);
+  L.append(h('h3',{},'Simulador de interações'),h('p',{},'Duas espécies, A e B, vivem no mesmo lugar. Escolha os sinais da relação e compare cada população com o que aconteceria se ela vivesse sozinha.'));
+  L.append(h('span',{class:'label'},'Sinais da relação (A / B)'));
+  const pch=h('div',{class:'stack rel-sim',style:'gap:6px'});L.append(pch);
+  SIM_PRE.forEach(p=>{const b=h('button',{type:'button',class:'rel-btn','aria-pressed':String(p.id===st.pre)},h('span',{class:'rel-sin'},p.t),h('span',{},p.n));b.onclick=()=>{st.pre=p.id;$$('.rel-btn',pch).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawSim();};pch.append(b);});
+  const out=h('output',{},'');const rg=h('input',{type:'range',id:'rel-c',min:.1,max:.8,step:.1,value:st.c});rg.oninput=()=>{st.c=+rg.value;drawSim();};
+  L.append(h('div',{class:'slider-row'},h('label',{for:'rel-c'},'Intensidade da interação'),out,h('div',{style:'grid-column:1/-1'},rg)));
+  const sc=h('input',{type:'checkbox',id:'rel-soz',checked:true});sc.onchange=()=>{st.sozinha=sc.checked;drawSim();};
+  L.append(h('label',{class:'row'},sc,'Mostrar cada espécie vivendo sozinha (linhas tracejadas)'));
+  L.append(h('p',{class:'note'},h('strong',{},'Modelo simplificado. '),'As duas espécies começam com 10 indivíduos. Sozinhas, A chega a cerca de 100 e B a cerca de 70 (a capacidade de suporte de cada uma). O modelo só mostra o efeito do sinal: não representa nenhuma espécie real. Na natureza, um predador ou parasito sem a sua presa ou hospedeiro diminuiria, o que este modelo não mostra.'));
+  const svg=s('svg',{class:'chart',role:'img','aria-label':'Gráfico das populações das espécies A e B ao longo do tempo'});const read=h('div',{class:'stats'});const txt=h('div',{});
+  R.append(svg,read,txt);
+  const efeito=(junto,soz)=>{const d=(junto-soz)/soz;return d>.03?'+':d<-.03?'−':'0';};
+  function drawSim(){
+    out.textContent=fmt(st.c,1);const p=SIM_PRE.find(x=>x.id===st.pre);const r=simInter(p.s[0],p.s[1],st.c);
+    const series=[{name:'A junto com B',color:'var(--accent)',points:r.pa},{name:'B junto com A',color:'var(--ochre)',points:r.pb}];
+    if(st.sozinha)series.push({name:'A sozinha',color:'var(--accent)',dash:'6 5',width:1.6,points:r.qa},{name:'B sozinha',color:'var(--ochre)',dash:'2 4',width:1.6,points:r.qb});
+    lineChart(svg,{series,xMax:30,yMax:Math.max(110,r.A*1.08,r.B*1.08),xLabel:'Tempo (gerações)',yLabel:'Tamanho da população',xStep:5});
+    read.innerHTML='';
+    [['A',r.A,r.a],['B',r.B,r.b]].forEach(([n,j,z])=>{const pc=Math.round((j-z)/z*100);read.append(h('div',{class:'stat'},h('span',{class:'note'},'Espécie '+n+': junto × sozinha'),h('span',{class:'big-num'},(pc>0?'+':'')+pc+'%'),h('span',{class:'note'},'sinal na relação: '+efeito(j,z))));});
+    txt.innerHTML='';txt.append(h('p',{class:'fb info'},'Leitura do gráfico: o sinal de cada espécie aparece quando comparamos a linha cheia com a tracejada. Fica acima (+) quando a espécie se beneficia, abaixo (−) quando é prejudicada e igual (0) quando não é afetada.'));
+  }
+  // Desafio: qual é a relação?
+  const D=h('div',{class:'panel stack'});V.sim.append(D);
+  const pts=store.get('rel-mist',{ok:0,n:0});let mist=null;
+  const dsvg=s('svg',{class:'chart',role:'img','aria-label':'Gráfico de uma relação misteriosa entre as espécies A e B'});const dch=h('div',{class:'chips'});const dfb=h('div',{});const dsc=h('span',{class:'note'});
+  D.append(h('h3',{},'Desafio: qual é a relação?'),h('p',{},'O gráfico mostra uma relação escondida. Compare as linhas cheias com as tracejadas e escolha os sinais (A / B).'),h('div',{style:'max-width:720px;width:100%'},dsvg),dch,dfb,h('div',{class:'row'},h('button',{class:'btn primary',onclick:novo},'Nova relação misteriosa'),dsc));
+  function novo(){let p;do{p=SIM_PRE[ri(0,SIM_PRE.length-1)];}while(mist&&p.id===mist.id&&SIM_PRE.length>1);mist=p;const c=[.4,.5,.6,.7][ri(0,3)];const r=simInter(p.s[0],p.s[1],c);
+    lineChart(dsvg,{series:[{name:'A junto',color:'var(--accent)',points:r.pa},{name:'B junto',color:'var(--ochre)',points:r.pb},{name:'A sozinha',color:'var(--accent)',dash:'6 5',width:1.6,points:r.qa},{name:'B sozinha',color:'var(--ochre)',dash:'2 4',width:1.6,points:r.qb}],xMax:30,yMax:Math.max(110,r.A*1.08,r.B*1.08),xLabel:'Tempo (gerações)',yLabel:'Tamanho da população',xStep:5});
+    dch.innerHTML='';dfb.innerHTML='';let resp=false;
+    SIM_PRE.forEach(o=>{const b=h('button',{type:'button',class:'chip','aria-pressed':'false'},o.t);b.onclick=()=>{if(resp)return;resp=true;$$('.chip',dch).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const ok=o.id===p.id;pts.n++;if(ok)pts.ok++;store.set('rel-mist',pts);placar();
+      dfb.append(h('div',{class:'fb '+(ok?'ok':'no')},(ok?'Certo! ':'Ainda não. ')+'Os sinais são '+p.t+': '+p.n+'.'));};dch.append(b);});}
+  function placar(){dsc.textContent=pts.n?`Acertos: ${pts.ok} de ${pts.n}`:'';}
+  placar();novo();
+  drawSim();
+
+  // ---------- 3 · Resgate ----------
+  V.resgate.append(h('div',{class:'callout'},'Hora de reunir tudo o que vimos nas Aulas 1 e 2: as quatro categorias, os catorze tipos de relação e os sinais de cada um.'));
+  // 3a · Monte o mapa
+  const M=h('div',{class:'panel stack'});V.resgate.append(M);
+  M.append(h('h3',{},'1 · Monte o mapa'),h('p',{},'Toque em uma relação e depois na categoria em que ela se encaixa. Para devolver, toque de novo na relação.'));
+  const emb=[...TIPOS.map(t=>t.id)];{const r=seeded(23);for(let i=emb.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[emb[i],emb[j]]=[emb[j],emb[i]];}}
+  let lug=store.get('rel-lug',{});let sel=null;let conferido=false;
+  const pool=h('div',{class:'chips rel-pool'});const alvo=h('div',{class:'rel-map'});const mfb=h('div',{});
+  M.append(pool,alvo,h('div',{class:'row'},h('button',{class:'btn primary',onclick:conferir},'Conferir o mapa'),h('button',{class:'btn ghost sm',onclick:()=>{lug={};store.set('rel-lug',lug);sel=null;conferido=false;mfb.innerHTML='';desenha();}},'Recomeçar')),mfb);
+  const caixas={};
+  Object.entries(GRUPOS).forEach(([gk,G])=>{const lst=h('div',{class:'chips'});const bx=h('button',{type:'button',class:'rel-alvo','aria-label':'Colocar em '+G.t},h('span',{class:'rel-q-t'},G.t),h('span',{class:'note'},G.d));const wrap=h('div',{class:'rel-q','data-g':gk},bx,lst);
+    bx.onclick=()=>{if(!sel)return;lug[sel]=gk;store.set('rel-lug',lug);sel=null;conferido=false;mfb.innerHTML='';desenha();};caixas[gk]=lst;alvo.append(wrap);});
+  function chip(id){const t=TIPO[id];const ok=conferido&&lug[id]?(lug[id]===t.g):null;
+    const b=h('button',{type:'button',class:'chip'+(ok===true?' rel-ok':ok===false?' rel-no':''),'aria-pressed':String(sel===id)},(ok===true?'✓ ':ok===false?'✗ ':'')+t.nome);
+    b.onclick=()=>{if(lug[id]&&sel!==id){delete lug[id];store.set('rel-lug',lug);conferido=false;mfb.innerHTML='';sel=null;desenha();return;}sel=sel===id?null:id;desenha();};return b;}
+  function desenha(){pool.innerHTML='';Object.values(caixas).forEach(c=>c.innerHTML='');
+    emb.forEach(id=>{if(lug[id])caixas[lug[id]].append(chip(id));else pool.append(chip(id));});
+    if(!pool.children.length)pool.append(h('span',{class:'note'},'Todas as relações foram colocadas. Confira o mapa.'));
+    alvo.classList.toggle('escolhendo',!!sel);}
+  function conferir(){const falta=emb.filter(id=>!lug[id]).length;mfb.innerHTML='';
+    if(falta){mfb.append(h('p',{class:'fb no'},`Ainda faltam ${falta} relações para colocar no mapa.`));return;}
+    conferido=true;desenha();const ok=emb.filter(id=>lug[id]===TIPO[id].g).length;
+    mfb.append(h('div',{class:'fb '+(ok===emb.length?'ok':'info')},`${ok} de ${emb.length} no lugar certo.`+(ok===emb.length?' Mapa completo!':' As marcadas com ✗ estão na categoria errada: toque nelas para devolver e tente de novo. Na dúvida, volte à parte 1.')));}
+  desenha();
+
+  // 3b · Rodada final
+  const F=h('div',{class:'panel stack'});V.resgate.append(F);
+  F.append(h('h3',{},'2 · Rodada final: uma situação de cada tipo'),h('p',{},'São 14 situações novas, uma para cada relação. Classifique cada uma; a explicação aparece logo depois.'));
+  const fbox=h('div',{class:'stack'});F.append(fbox);
+  let rod=store.get('rel-rod',{i:0,res:[]});
+  function rodada(){fbox.innerHTML='';
+    if(rod.i>=CASOS.length){const ok=rod.res.filter(Boolean).length;store.set('rel-final',{ok,n:CASOS.length});
+      fbox.append(h('div',{class:'stats'},h('div',{class:'stat'},h('span',{class:'note'},'Resultado da rodada final'),h('span',{class:'big-num'},ok+'/'+CASOS.length),h('span',{class:'note'},'situações classificadas corretamente'))));
+      const errs=CASOS.filter((c,i)=>!rod.res[i]);
+      if(errs.length)fbox.append(h('div',{class:'fb info stack',style:'gap:4px'},h('strong',{},'Vale rever:'),h('span',{},errs.map(c=>TIPO[c.k].nome).join(', ')+'.')));
+      else fbox.append(h('p',{class:'fb ok'},'Você reconheceu todas as relações!'));
+      fbox.append(h('div',{class:'row'},h('button',{class:'btn',onclick:()=>{rod={i:0,res:[]};store.set('rel-rod',rod);rodada();}},'Fazer de novo'),h('button',{class:'btn ghost',onclick:()=>{const f=document.getElementById('ficha-relacoes');if(f)f.scrollIntoView({behavior:'smooth',block:'start'});}},'Ir para a ficha ↓')));
+      return;}
+    const c=CASOS[rod.i];
+    fbox.append(h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'pill ex'},'Situação '+(rod.i+1)+' de '+CASOS.length),h('span',{class:'note'},'Acertos até agora: '+rod.res.filter(Boolean).length)));
+    fbox.append(h('p',{style:'font-size:1.2rem;line-height:1.45',html:c.txt}));
+    const fb=h('div',{});let resp=false;
+    Object.entries(GRUPOS).forEach(([gk,G])=>{const ch=h('div',{class:'chips'});TIPOS.filter(t=>t.g===gk).forEach(t=>{const b=h('button',{type:'button',class:'chip','aria-pressed':'false'},t.nome);b.onclick=()=>{if(resp)return;resp=true;b.setAttribute('aria-pressed','true');const ok=t.id===c.k;rod.res[rod.i]=ok;const T=TIPO[c.k];
+        fb.append(h('div',{class:'fb '+(ok?'ok':'no')+' stack',style:'gap:4px'},h('strong',{},(ok?'Certo! ':'Não é '+t.nome+'. ')+'É '+T.nome+' ('+GRUPOS[T.g].t.toLowerCase()+', sinais '+T.s.join(' / ')+').'),h('span',{},T.def)),
+          h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{rod.i++;store.set('rel-rod',rod);rodada();}},rod.i+1<CASOS.length?'Próxima situação →':'Ver o resultado')));};ch.append(b);});
+      fbox.append(h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},G.t),ch));});
+    fbox.append(fb);}
+  rodada();
+
+  // 3c · Quadro-resumo
+  const Q=h('div',{class:'panel stack'});V.resgate.append(Q);
+  const tb=h('div',{class:'tbl-wrap',hidden:true});
+  Q.append(h('h3',{},'3 · Quadro-resumo de todas as relações'),h('p',{},'Use depois das partes 1 e 2 para conferir e estudar. Funciona bem no modo projetor.'),
+    h('button',{class:'btn',style:'align-self:flex-start',onclick:e=>{tb.hidden=!tb.hidden;e.currentTarget.textContent=tb.hidden?'Mostrar o quadro-resumo':'Esconder o quadro-resumo';}},'Mostrar o quadro-resumo'),tb);
+  const table=h('table',{class:'data rel-tab'},h('thead',{},h('tr',{},h('th',{},'Categoria'),h('th',{},'Relação'),h('th',{},'Sinais'),h('th',{},'Como reconhecer'))));
+  const tbody=h('tbody',{});Object.entries(GRUPOS).forEach(([gk,G])=>{TIPOS.filter(t=>t.g===gk).forEach((t,i)=>tbody.append(h('tr',{},h('td',{},i?'':G.t),h('td',{},h('strong',{},t.nome)),h('td',{class:'mono',style:'white-space:nowrap'},t.s.join(' / ')),h('td',{},t.def))));});
+  table.append(tbody);tb.append(table);
+  tb.append(h('p',{class:'note'},'+ beneficiado · − prejudicado · 0 não é afetado. Nas relações com dois sinais diferentes, o primeiro é de quem se beneficia (ou de quem libera a substância, no amensalismo).'));
 };
 
 // ================= Aula 3: Microscópio virtual =================
@@ -1222,9 +1500,10 @@ INIT.ciclos=root=>{
 // k: hdr (texto de apoio), mc (múltipla escolha, corrigida pela chave), num (número, corrigido com tolerância),
 //    txt (resposta curta), par (parágrafo, nota da professora). pts = pontos automáticos; man = pontos máximos da professora.
 const REL_OPTS=['Mutualismo ou protocooperação','Comensalismo','Inquilinismo (epifitismo)','Competição','Predação','Parasitismo','Sociedade','Colônia','Faltam evidências para classificar'];
+const REL2_OPTS=['Colônia','Sociedade','Competição intraespecífica','Canibalismo','Mutualismo','Protocooperação','Comensalismo','Inquilinismo','Competição interespecífica','Predação','Herbivoria','Parasitismo','Amensalismo','Esclavagismo'];
 const PAPEIS=['Parasito','Vetor','Hospedeiro intermediário','Hospedeiro definitivo','Reservatório'];
 const SPEC=[
- {code:'Aula 01',titulo:'Aulas 1 e 2 · Detetive ecológico',tipo:'Individual',
+ {code:'Aula 01',titulo:'Aula 1 · Detetive ecológico',tipo:'Individual',
   desc:'Envie as suas classificações dos cartões e o seu bilhete.',
   itens:[
    {k:'hdr',t:'Classifique a relação de cada cartão'},
@@ -1238,6 +1517,22 @@ const SPEC=[
    {k:'mc',t:'Cartão H · Corais',ch:REL_OPTS,key:'Colônia',pts:1},
    {k:'par',t:'Bilhete individual: escolha um cartão e justifique a classificação com uma evidência do cartão',man:2},
    {k:'par',t:'Que informação falta em um dos cartões? Como ela poderia mudar sua hipótese?',man:2},
+  ]},
+ {code:'Aula 02',titulo:'Aula 2 · Atlas das relações',tipo:'Individual',
+  desc:'Classifique as situações, explique as diferenças e registre o seu resultado no resgate.',
+  itens:[
+   {k:'hdr',t:'Qual é a relação ecológica em cada situação?'},
+   {k:'mc',t:'Algas microscópicas vivem dentro dos corais: fazem fotossíntese e cedem açúcares; o coral lhes dá abrigo. Sem as algas, o coral enfraquece e pode morrer.',ch:REL2_OPTS,key:'Mutualismo',pts:1},
+   {k:'mc',t:'Uma coruja captura e come um rato.',ch:REL2_OPTS,key:'Predação',pts:1},
+   {k:'mc',t:'Pássaros constroem ninhos nos galhos de uma árvore, sem prejudicá-la.',ch:REL2_OPTS,key:'Inquilinismo',pts:1},
+   {k:'mc',t:'Carrapatos-estrela fixam-se na pele de um cavalo e sugam o seu sangue.',ch:REL2_OPTS,key:'Parasitismo',pts:1},
+   {k:'mc',t:'Escorpiões-amarelos adultos comem escorpiões jovens da mesma espécie quando falta alimento.',ch:REL2_OPTS,key:'Canibalismo',pts:1},
+   {k:'mc',t:'Duas espécies de gafanhoto comem as mesmas folhas num pasto com pouca chuva, e as duas populações diminuem.',ch:REL2_OPTS,key:'Competição interespecífica',pts:1},
+   {k:'mc',t:'Um fungo libera uma substância que impede o crescimento de bactérias ao seu redor, sem se alimentar delas.',ch:REL2_OPTS,key:'Amensalismo',pts:1},
+   {k:'mc',t:'Pequenos peixes acompanham um tubarão e comem os restos das presas dele, sem afetá-lo.',ch:REL2_OPTS,key:'Comensalismo',pts:1},
+   {k:'par',t:'Qual é a diferença entre mutualismo e protocooperação? Dê um exemplo de cada.',man:2},
+   {k:'par',t:'No simulador, compare a competição (− / −) com o mutualismo (+ / +): o que aconteceu com cada população em relação à mesma espécie vivendo sozinha?',man:2},
+   {k:'num',t:'Acertos na rodada final do resgate (de 14)',help:'Use o botão acima para copiar o seu resultado da parte 3 da aula.'},
   ]},
  {code:'Aula 03',titulo:'Aula 3 · Parasitismo e observação',tipo:'Individual',
   desc:'Registro da observação ao microscópio e bilhete de saída.',
@@ -1351,7 +1646,7 @@ const SPEC=[
 const RECEIVER=PORTAL.receiver();
 // Fora do Claude (Cloudflare etc.) o envio é direto, sem abrir outra aba.
 const STANDALONE=(()=>{try{return window.top===window&&!window.claude;}catch(e){return false;}})();
-const FICHA_DE={detetive:'Aula 01',microscopio:'Aula 03',quadrantes:'Aula 04',populacoes:'Aula 05',sucessao:'Aula 07',ciclos:'Aula 08',experimento:'Aula 10',esquisto:'Aula 12',conselho:'Aula 13',quiz:'Aula 14'};
+const FICHA_DE={detetive:'Aula 01',relacoes:'Aula 02',microscopio:'Aula 03',quadrantes:'Aula 04',populacoes:'Aula 05',sucessao:'Aula 07',ciclos:'Aula 08',experimento:'Aula 10',esquisto:'Aula 12',conselho:'Aula 13',quiz:'Aula 14'};
 const MAXTXT=1000;
 function b64url(str){const b=btoa(unescape(encodeURIComponent(str)));return b.replace(/\+/g,'-').replace(/\//g,'_');}
 function getId(){return PORTAL.ident();}
@@ -1373,6 +1668,8 @@ function attachFicha(secId){
     h('label',{class:'stack',style:'gap:4px;flex:1 1 240px'},h('span',{class:'label'},'Nome completo'),nome),
     h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Turma'),turmaSeg)));box.append(equipe.el);
   // preenchimento automático
+  if(code==='Aula 02')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const r=store.get('rel-final',null);if(!r){fillMsg.textContent='Termine antes a rodada final do resgate, na parte 3 da aula.';return;}
+    draft['Acertos na rodada final do resgate (de 14)']=String(r.ok);fillMsg.textContent='Resultado copiado. Confira antes de enviar.';saveDraft();build();}},'Usar meu resultado do resgate'),(fillMsg=h('span',{class:'note'}))));
   if(code==='Aula 04')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const q=window.__quad;if(!q){fillMsg.textContent='Primeiro conte os quadrantes na bandeja acima.';return;}
     q.cs.slice(0,4).forEach((c,i)=>draft['Contagem do quadrante '+(i+1)]=String(c));draft['Densidade estimada (sementes por cm²)']=fmt(q.dens,3);draft['Total estimado na bandeja']=fmt(q.est);if(q.real!=null){draft['Total real contado']=String(q.real);draft['Diferença |estimativa − total real|']=fmt(Math.abs(q.est-q.real));}
     fillMsg.textContent=q.cs.length>4?'Usei os 4 primeiros quadrantes escolhidos.':'Dados da bandeja copiados. Confira antes de enviar.';saveDraft();build();}},'Usar os dados da bandeja'),(fillMsg=h('span',{class:'note'}))));
@@ -1679,6 +1976,13 @@ const AB={
    el.append(g,h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{if(pares.some(([k])=>!ans[k+0]||!ans[k+1])){out.innerHTML='';out.append(h('p',{class:'fb no'},'Marque o efeito para os dois organismos de todas as duplas.'));return;}const t=pares.map(([k,a,b])=>`${a} ${ans[k+0]||'?'} / ${b} ${ans[k+1]||'?'}`).join('; ');api.save(t);
      out.innerHTML='';let ok=0;pares.forEach(([k,,,x,y])=>{if(ans[k+0]===x&&ans[k+1]===y)ok++;});
      out.append(h('div',{class:'fb info'},`Você combinou ${ok} de ${pares.length} duplas com o que os biólogos observam. Hoje esses sinais ganham nomes: mutualismo, parasitismo, inquilinismo, predação, competição…`));}},'Registrar minha previsão')),out);}},
+ relacoes:{tempo:'5 min',titulo:'Juntas: maiores ou menores?',lede:'Duas espécies de capim disputam a mesma água num terreno seco. Antes do simulador, faça a sua previsão: comparado com cada uma crescendo sozinha, o que acontece com o tamanho das duas populações?',
+  render(el,api){
+   const ops=['As duas ficam maiores','As duas ficam menores','Uma fica maior e a outra menor','Nada muda'];
+   let esc=api.state('esc',null);const out=h('div',{});
+   const ch=h('div',{class:'chips'});ops.forEach(t=>{const b=h('button',{type:'button',class:'chip','aria-pressed':String(esc===t)},t);b.onclick=()=>{esc=t;api.setState('esc',t);$$('.chip',ch).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));};ch.append(b);});
+   const why=h('textarea',{rows:2,maxlength:300,placeholder:'Por quê? Escreva uma frase.','aria-label':'Justificativa da previsão'});why.value=api.state('why','');why.oninput=()=>api.setState('why',why.value);
+   el.append(ilu('buffel','ilu ilu-card'),ch,why,h('div',{class:'row'},h('button',{class:'btn primary',onclick:()=>{out.innerHTML='';if(!esc){out.append(h('p',{class:'fb no'},'Escolha uma das opções.'));return;}api.save(esc+(why.value.trim()?' · '+why.value.trim():''));out.append(h('div',{class:'fb info'},'Previsão registrada. Na parte 2 da aula, escolha “− / −” no simulador e veja se ela se confirma.'));}},'Registrar minha previsão')),out);}},
  microscopio:{tempo:'5 min',titulo:'Do tamanho de quê?',lede:'Coloque do MAIOR para o MENOR. Depois descubra quais desses o olho humano consegue ver sem microscópio.',
   render(el,api){
    const it=[{n:'Grão de areia',s:500},{n:'Ovo de Schistosoma mansoni',s:150},{n:'Espessura de um fio de cabelo',s:70},{n:'Ovo de Ascaris',s:60},{n:'Cisto de Giardia',s:10},{n:'Hemácia',s:7.5},{n:'Bactéria',s:2}];

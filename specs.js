@@ -2,9 +2,10 @@
 window.SPECS={};
 (function(){const store={get:(k,d)=>d,set:()=>{}};const fmt=(n)=>String(n);const TEO=[1,6,15,20,15,6,1];const QZ=[];
 const REL_OPTS=['Mutualismo ou protocooperação','Comensalismo','Inquilinismo (epifitismo)','Competição','Predação','Parasitismo','Sociedade','Colônia','Faltam evidências para classificar'];
+const REL2_OPTS=['Colônia','Sociedade','Competição intraespecífica','Canibalismo','Mutualismo','Protocooperação','Comensalismo','Inquilinismo','Competição interespecífica','Predação','Herbivoria','Parasitismo','Amensalismo','Esclavagismo'];
 const PAPEIS=['Parasito','Vetor','Hospedeiro intermediário','Hospedeiro definitivo','Reservatório'];
 const SPEC=[
- {code:'Aula 01',titulo:'Aulas 1 e 2 · Detetive ecológico',tipo:'Individual',
+ {code:'Aula 01',titulo:'Aula 1 · Detetive ecológico',tipo:'Individual',
   desc:'Envie as suas classificações dos cartões e o seu bilhete.',
   itens:[
    {k:'hdr',t:'Classifique a relação de cada cartão'},
@@ -18,6 +19,22 @@ const SPEC=[
    {k:'mc',t:'Cartão H · Corais',ch:REL_OPTS,key:'Colônia',pts:1},
    {k:'par',t:'Bilhete individual: escolha um cartão e justifique a classificação com uma evidência do cartão',man:2},
    {k:'par',t:'Que informação falta em um dos cartões? Como ela poderia mudar sua hipótese?',man:2},
+  ]},
+ {code:'Aula 02',titulo:'Aula 2 · Atlas das relações',tipo:'Individual',
+  desc:'Classifique as situações, explique as diferenças e registre o seu resultado no resgate.',
+  itens:[
+   {k:'hdr',t:'Qual é a relação ecológica em cada situação?'},
+   {k:'mc',t:'Algas microscópicas vivem dentro dos corais: fazem fotossíntese e cedem açúcares; o coral lhes dá abrigo. Sem as algas, o coral enfraquece e pode morrer.',ch:REL2_OPTS,key:'Mutualismo',pts:1},
+   {k:'mc',t:'Uma coruja captura e come um rato.',ch:REL2_OPTS,key:'Predação',pts:1},
+   {k:'mc',t:'Pássaros constroem ninhos nos galhos de uma árvore, sem prejudicá-la.',ch:REL2_OPTS,key:'Inquilinismo',pts:1},
+   {k:'mc',t:'Carrapatos-estrela fixam-se na pele de um cavalo e sugam o seu sangue.',ch:REL2_OPTS,key:'Parasitismo',pts:1},
+   {k:'mc',t:'Escorpiões-amarelos adultos comem escorpiões jovens da mesma espécie quando falta alimento.',ch:REL2_OPTS,key:'Canibalismo',pts:1},
+   {k:'mc',t:'Duas espécies de gafanhoto comem as mesmas folhas num pasto com pouca chuva, e as duas populações diminuem.',ch:REL2_OPTS,key:'Competição interespecífica',pts:1},
+   {k:'mc',t:'Um fungo libera uma substância que impede o crescimento de bactérias ao seu redor, sem se alimentar delas.',ch:REL2_OPTS,key:'Amensalismo',pts:1},
+   {k:'mc',t:'Pequenos peixes acompanham um tubarão e comem os restos das presas dele, sem afetá-lo.',ch:REL2_OPTS,key:'Comensalismo',pts:1},
+   {k:'par',t:'Qual é a diferença entre mutualismo e protocooperação? Dê um exemplo de cada.',man:2},
+   {k:'par',t:'No simulador, compare a competição (− / −) com o mutualismo (+ / +): o que aconteceu com cada população em relação à mesma espécie vivendo sozinha?',man:2},
+   {k:'num',t:'Acertos na rodada final do resgate (de 14)',help:'Use o botão acima para copiar o seu resultado da parte 3 da aula.'},
   ]},
  {code:'Aula 03',titulo:'Aula 3 · Parasitismo e observação',tipo:'Individual',
   desc:'Registro da observação ao microscópio e bilhete de saída.',
