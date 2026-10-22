@@ -286,6 +286,23 @@ ul.struct li::before{content:"";position:absolute;left:3px;top:.55em;width:8px;h
 .rel-map.escolhendo .rel-alvo{border-color:var(--tema);border-style:solid;background:var(--tema-soft)}
 .rel-pool{min-height:44px;padding:8px;border-radius:12px;background:var(--surface-2)}
 .rel-sim .rel-btn{justify-content:flex-start}
+.sim-passos{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
+.sim-par{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:860px){.sim-par{grid-template-columns:minmax(0,1fr)}}
+.sim-par.um{grid-template-columns:minmax(0,1fr)}
+.sim-esp{border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;background:var(--surface)}
+.sim-esp-h{display:flex;align-items:center;gap:10px}
+.sim-esp-h h4{font-size:1.1rem;margin-right:auto}
+.sim-sinal{font-family:var(--f-display);font-weight:800;font-size:1.7rem;line-height:1;min-width:2.2rem;text-align:center;padding:4px 8px;border-radius:10px;background:var(--surface-2);color:var(--muted)}
+.sim-sinal.mais{background:var(--good-soft);color:var(--good)}
+.sim-sinal.menos{background:var(--bad-soft);color:var(--bad)}
+.sim-veredito{font-size:.98rem;margin:0}
+.sim-leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.88rem;color:var(--muted)}
+.sim-leg span{display:inline-flex;align-items:center;gap:6px}
+.sim-leg i{display:inline-block;width:22px;height:0;border-top:3px solid currentColor}
+.sim-leg i.tr{border-top-style:dashed;border-top-width:2px}
+.rel-sim{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.sim-slider-ends{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted)}
 @media (max-width:640px){.rel-tab thead{display:none}.rel-tab tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:8px 0;border-bottom:1px solid var(--line)}.rel-tab td{border:0!important;padding:1px 0!important}.rel-tab td:first-child{grid-column:1/-1;font-weight:700;color:var(--muted);padding-top:10px!important}.rel-tab td:first-child:empty{display:none}.rel-tab td:last-child{grid-column:1/-1}}
 .chip.rel-ok{border-color:var(--good);background:var(--good-soft);color:var(--ink)}
 .chip.rel-no{border-color:var(--bad);background:var(--bad-soft);color:var(--ink)}
@@ -828,39 +845,82 @@ INIT.relacoes=root=>{
   prog();abrir(TIPOS[0]);
 
   // ---------- 2 · Simulador ----------
-  const st={pre:'nn',c:.5,sozinha:true};
+  const st={pre:'nn',c:.5};
+  // Um gráfico por espécie: linha cinza tracejada = vivendo sozinha; linha colorida = vivendo com a outra espécie.
+  // A área entre as duas fica verde (ganhou) ou vermelha (perdeu).
+  function parChart(svg,{junto,soz,cor,yMax}){
+    const peq=window.innerWidth<600,W=peq?360:640,H=peq?230:250,ml=46,mr=peq?92:150,mt=14,mb=42;
+    svg.innerHTML='';svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+    const yS=niceStep(yMax);const yTop=Math.ceil(yMax/yS)*yS;
+    const xs=v=>ml+(v/30)*(W-ml-mr),ys=v=>H-mb-(Math.min(v,yTop)/yTop)*(H-mt-mb);
+    const g=s('g');svg.append(g);
+    for(let v=0;v<=yTop+1e-9;v+=yS){g.append(s('line',{x1:ml,x2:W-mr,y1:ys(v),y2:ys(v),stroke:'var(--line)'}));g.append(s('text',{x:ml-8,y:ys(v)+4,'text-anchor':'end','font-size':13,fill:'var(--muted)'},fmt(v)));}
+    for(let v=0;v<=30;v+=10)g.append(s('text',{x:xs(v),y:H-mb+18,'text-anchor':'middle','font-size':13,fill:'var(--muted)'},fmt(v)));
+    g.append(s('line',{x1:ml,x2:W-mr,y1:H-mb,y2:H-mb,stroke:'var(--muted)','stroke-width':1.2}));
+    g.append(s('text',{x:(ml+W-mr)/2,y:H-6,'text-anchor':'middle','font-size':13,fill:'var(--ink)','font-weight':700},'Tempo (gerações)'));
+    g.append(s('text',{x:13,y:(mt+H-mb)/2,'text-anchor':'middle','font-size':13,fill:'var(--ink)','font-weight':700,transform:`rotate(-90 13 ${(mt+H-mb)/2})`},'Indivíduos'));
+    const fj=junto[junto.length-1][1],fs=soz[soz.length-1][1],d=(fj-fs)/fs;
+    const tipo=d>.03?'mais':d<-.03?'menos':'igual';
+    if(tipo!=='igual'){const area='M'+junto.map(p=>`${xs(p[0])},${ys(p[1])}`).join(' L')+' L'+[...soz].reverse().map(p=>`${xs(p[0])},${ys(p[1])}`).join(' L')+'Z';
+      g.append(s('path',{d:area,fill:tipo==='mais'?'var(--good)':'var(--bad)',opacity:.16}));}
+    const line=(pts,o)=>g.append(s('path',{d:pts.map((p,i)=>`${i?'L':'M'}${xs(p[0])},${ys(p[1])}`).join(' '),fill:'none','stroke-linejoin':'round',...o}));
+    line(soz,{stroke:'var(--muted)','stroke-width':2.2,'stroke-dasharray':'7 5'});
+    line(junto,{stroke:cor,'stroke-width':3.2});
+    // rótulos na ponta das linhas (no lugar da legenda)
+    const xe=xs(30)+10;let yj=ys(fj),yz=ys(fs);
+    if(tipo==='igual'){g.append(s('text',{x:xe,y:yj+4,'font-size':13,fill:'var(--ink)','font-weight':700},'as duas linhas'),s('text',{x:xe,y:yj+20,'font-size':13,fill:'var(--ink)','font-weight':700},'coincidem'));}
+    else{if(Math.abs(yj-yz)<30){const m=(yj+yz)/2,up=yj<yz;yj=m+(up?-15:15);yz=m+(up?15:-15);}
+      g.append(s('text',{x:xe,y:yj+4,'font-size':13,fill:cor,'font-weight':700},'com a outra'));
+      g.append(s('text',{x:xe,y:yz+4,'font-size':13,fill:'var(--muted)','font-weight':700},'sozinha'));}
+    g.append(s('circle',{cx:xs(30),cy:ys(fs),r:3.5,fill:'var(--muted)'}),s('circle',{cx:xs(30),cy:ys(fj),r:4.5,fill:cor}));
+    return {tipo,pc:Math.round(d*100)};
+  }
+  const SIN={mais:'+',menos:'−',igual:'0'};
+  function cartao(nome,cor){
+    const sinal=h('span',{class:'sim-sinal'},'?');const svg=s('svg',{class:'chart',role:'img','aria-label':'Gráfico da '+nome+': vivendo com a outra espécie e vivendo sozinha'});const ver=h('p',{class:'sim-veredito'});
+    const box=h('div',{class:'sim-esp'},h('div',{class:'sim-esp-h'},h('h4',{style:`color:${cor}`},nome),sinal),svg,ver);
+    return {box,svg,sinal,ver,cor,nome};
+  }
+  function mostra(C,r,revelar=true){
+    C.sinal.className='sim-sinal'+(revelar&&r.tipo!=='igual'?' '+r.tipo:'');C.sinal.textContent=revelar?SIN[r.tipo]:'?';
+    C.ver.innerHTML='';if(!revelar){C.ver.append(h('span',{class:'note'},'Compare a linha colorida com a cinza.'));return;}
+    const frase={mais:['Beneficiada: ','terminou com '+r.pc+'% a mais do que sozinha.'],menos:['Prejudicada: ','terminou com '+Math.abs(r.pc)+'% a menos do que sozinha.'],igual:['Não é afetada: ','termina igual a quando vive sozinha.']}[r.tipo];
+    C.ver.append(h('strong',{},frase[0]),frase[1]);
+  }
   const sg=h('div',{class:'cols wide-right'});V.sim.append(sg);
   const L=h('div',{class:'panel stack'}),R=h('div',{class:'panel stack'});sg.append(L,R);
-  L.append(h('h3',{},'Simulador de interações'),h('p',{},'Duas espécies, A e B, vivem no mesmo lugar. Escolha os sinais da relação e compare cada população com o que aconteceria se ela vivesse sozinha.'));
-  L.append(h('span',{class:'label'},'Sinais da relação (A / B)'));
-  const pch=h('div',{class:'stack rel-sim',style:'gap:6px'});L.append(pch);
+  L.append(h('h3',{},'Simulador de interações'),
+    h('p',{},'Duas espécies, A e B, vivem no mesmo lugar. Cada gráfico mostra uma espécie de duas formas: vivendo ',h('strong',{},'sozinha'),' e vivendo ',h('strong',{},'com a outra'),'.'),
+    h('ol',{class:'sim-passos'},h('li',{},'Escolha os sinais da relação.'),h('li',{},'Em cada gráfico, veja se a linha colorida terminou acima, abaixo ou junto da cinza.')));
+  L.append(h('span',{class:'label'},'1 · Sinais da relação (A / B)'));
+  const pch=h('div',{class:'rel-sim'});L.append(pch);
   SIM_PRE.forEach(p=>{const b=h('button',{type:'button',class:'rel-btn','aria-pressed':String(p.id===st.pre)},h('span',{class:'rel-sin'},p.t),h('span',{},p.n));b.onclick=()=>{st.pre=p.id;$$('.rel-btn',pch).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));drawSim();};pch.append(b);});
-  const out=h('output',{},'');const rg=h('input',{type:'range',id:'rel-c',min:.1,max:.8,step:.1,value:st.c});rg.oninput=()=>{st.c=+rg.value;drawSim();};
-  L.append(h('div',{class:'slider-row'},h('label',{for:'rel-c'},'Intensidade da interação'),out,h('div',{style:'grid-column:1/-1'},rg)));
-  const sc=h('input',{type:'checkbox',id:'rel-soz',checked:true});sc.onchange=()=>{st.sozinha=sc.checked;drawSim();};
-  L.append(h('label',{class:'row'},sc,'Mostrar cada espécie vivendo sozinha (linhas tracejadas)'));
+  const rg=h('input',{type:'range',id:'rel-c',min:.1,max:.8,step:.1,value:st.c});rg.oninput=()=>{st.c=+rg.value;drawSim();};
+  L.append(h('div',{class:'stack',style:'gap:2px'},h('label',{for:'rel-c',class:'label'},'Força da interação'),rg,h('div',{class:'sim-slider-ends'},h('span',{},'fraca'),h('span',{},'forte'))));
   L.append(h('p',{class:'note'},h('strong',{},'Modelo simplificado. '),'As duas espécies começam com 10 indivíduos. Sozinhas, A chega a cerca de 100 e B a cerca de 70 (a capacidade de suporte de cada uma). O modelo só mostra o efeito do sinal: não representa nenhuma espécie real. Na natureza, um predador ou parasito sem a sua presa ou hospedeiro diminuiria, o que este modelo não mostra.'));
-  const svg=s('svg',{class:'chart',role:'img','aria-label':'Gráfico das populações das espécies A e B ao longo do tempo'});const read=h('div',{class:'stats'});const txt=h('div',{});
-  R.append(svg,read,txt);
-  const efeito=(junto,soz)=>{const d=(junto-soz)/soz;return d>.03?'+':d<-.03?'−':'0';};
+  const leg=()=>h('div',{class:'sim-leg'},h('span',{style:'color:var(--muted)'},h('i',{class:'tr'}),'sozinha'),h('span',{style:'color:var(--ink)'},h('i',{}),'com a outra espécie'),h('span',{},h('i',{style:'border-top:10px solid var(--good-soft)'}),'ganhou'),h('span',{},h('i',{style:'border-top:10px solid var(--bad-soft)'}),'perdeu'));
+  const SA=cartao('Espécie A','var(--accent)'),SB=cartao('Espécie B','var(--ochre)');
+  const titSim=h('h3',{});
+  R.append(titSim,leg(),h('div',{class:'sim-par um'},SA.box,SB.box));
+  function yM(r){return Math.max(110,r.A*1.08,r.B*1.08);}
   function drawSim(){
-    out.textContent=fmt(st.c,1);const p=SIM_PRE.find(x=>x.id===st.pre);const r=simInter(p.s[0],p.s[1],st.c);
-    const series=[{name:'A junto com B',color:'var(--accent)',points:r.pa},{name:'B junto com A',color:'var(--ochre)',points:r.pb}];
-    if(st.sozinha)series.push({name:'A sozinha',color:'var(--accent)',dash:'6 5',width:1.6,points:r.qa},{name:'B sozinha',color:'var(--ochre)',dash:'2 4',width:1.6,points:r.qb});
-    lineChart(svg,{series,xMax:30,yMax:Math.max(110,r.A*1.08,r.B*1.08),xLabel:'Tempo (gerações)',yLabel:'Tamanho da população',xStep:5});
-    read.innerHTML='';
-    [['A',r.A,r.a],['B',r.B,r.b]].forEach(([n,j,z])=>{const pc=Math.round((j-z)/z*100);read.append(h('div',{class:'stat'},h('span',{class:'note'},'Espécie '+n+': junto × sozinha'),h('span',{class:'big-num'},(pc>0?'+':'')+pc+'%'),h('span',{class:'note'},'sinal na relação: '+efeito(j,z))));});
-    txt.innerHTML='';txt.append(h('p',{class:'fb info'},'Leitura do gráfico: o sinal de cada espécie aparece quando comparamos a linha cheia com a tracejada. Fica acima (+) quando a espécie se beneficia, abaixo (−) quando é prejudicada e igual (0) quando não é afetada.'));
+    const p=SIM_PRE.find(x=>x.id===st.pre);const r=simInter(p.s[0],p.s[1],st.c);const yMax=yM(r);
+    titSim.textContent=p.t+' · '+p.n;
+    mostra(SA,parChart(SA.svg,{junto:r.pa,soz:r.qa,cor:SA.cor,yMax}));
+    mostra(SB,parChart(SB.svg,{junto:r.pb,soz:r.qb,cor:SB.cor,yMax}));
   }
   // Desafio: qual é a relação?
   const D=h('div',{class:'panel stack'});V.sim.append(D);
   const pts=store.get('rel-mist',{ok:0,n:0});let mist=null;
-  const dsvg=s('svg',{class:'chart',role:'img','aria-label':'Gráfico de uma relação misteriosa entre as espécies A e B'});const dch=h('div',{class:'chips'});const dfb=h('div',{});const dsc=h('span',{class:'note'});
-  D.append(h('h3',{},'Desafio: qual é a relação?'),h('p',{},'O gráfico mostra uma relação escondida. Compare as linhas cheias com as tracejadas e escolha os sinais (A / B).'),h('div',{style:'max-width:720px;width:100%'},dsvg),dch,dfb,h('div',{class:'row'},h('button',{class:'btn primary',onclick:novo},'Nova relação misteriosa'),dsc));
-  function novo(){let p;do{p=SIM_PRE[ri(0,SIM_PRE.length-1)];}while(mist&&p.id===mist.id&&SIM_PRE.length>1);mist=p;const c=[.4,.5,.6,.7][ri(0,3)];const r=simInter(p.s[0],p.s[1],c);
-    lineChart(dsvg,{series:[{name:'A junto',color:'var(--accent)',points:r.pa},{name:'B junto',color:'var(--ochre)',points:r.pb},{name:'A sozinha',color:'var(--accent)',dash:'6 5',width:1.6,points:r.qa},{name:'B sozinha',color:'var(--ochre)',dash:'2 4',width:1.6,points:r.qb}],xMax:30,yMax:Math.max(110,r.A*1.08,r.B*1.08),xLabel:'Tempo (gerações)',yLabel:'Tamanho da população',xStep:5});
+  const DA=cartao('Espécie A','var(--accent)'),DB=cartao('Espécie B','var(--ochre)');
+  const dch=h('div',{class:'chips'});const dfb=h('div',{});const dsc=h('span',{class:'note'});
+  D.append(h('h3',{},'Desafio: qual é a relação?'),h('p',{},'Agora o sinal está escondido. Em cada gráfico, a linha colorida ficou acima, abaixo ou junto da cinza? Depois escolha os sinais (A / B).'),leg(),h('div',{class:'sim-par'},DA.box,DB.box),dch,dfb,h('div',{class:'row'},h('button',{class:'btn primary',onclick:novo},'Nova relação misteriosa'),dsc));
+  function novo(){let p;do{p=SIM_PRE[ri(0,SIM_PRE.length-1)];}while(mist&&p.id===mist.id&&SIM_PRE.length>1);mist=p;const c=[.4,.5,.6,.7][ri(0,3)];const r=simInter(p.s[0],p.s[1],c);const yMax=yM(r);
+    const ra=parChart(DA.svg,{junto:r.pa,soz:r.qa,cor:DA.cor,yMax}),rb=parChart(DB.svg,{junto:r.pb,soz:r.qb,cor:DB.cor,yMax});
+    mostra(DA,ra,false);mostra(DB,rb,false);
     dch.innerHTML='';dfb.innerHTML='';let resp=false;
     SIM_PRE.forEach(o=>{const b=h('button',{type:'button',class:'chip','aria-pressed':'false'},o.t);b.onclick=()=>{if(resp)return;resp=true;$$('.chip',dch).forEach(x=>x.setAttribute('aria-pressed',String(x===b)));const ok=o.id===p.id;pts.n++;if(ok)pts.ok++;store.set('rel-mist',pts);placar();
+      mostra(DA,ra);mostra(DB,rb);
       dfb.append(h('div',{class:'fb '+(ok?'ok':'no')},(ok?'Certo! ':'Ainda não. ')+'Os sinais são '+p.t+': '+p.n+'.'));};dch.append(b);});}
   function placar(){dsc.textContent=pts.n?`Acertos: ${pts.ok} de ${pts.n}`:'';}
   placar();novo();
