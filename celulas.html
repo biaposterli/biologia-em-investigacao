@@ -353,7 +353,7 @@ details.more summary{cursor:pointer;font-weight:700}
 .stage>.svgbox{max-height:460px}
 
 
-/* Aula 3 em partes */
+/* Aula 5 em partes */
 .partes{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
 .parte-btn{display:flex;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 11px;cursor:pointer;color:var(--ink);font:inherit}
 .parte-btn:hover{border-color:var(--tema)}
@@ -402,8 +402,8 @@ details.more summary{cursor:pointer;font-weight:700}
         <h1>Células em <span>ação</span></h1>
         <p class="lede">Simuladores, jogos e experimentos virtuais para estudar como as células se organizam, se dividem e obtêm energia. Tudo é feito no celular ou no computador: cada aula começa com uma previsão, tem uma ferramenta para investigar e termina com a ficha para enviar ao professor.</p>
         <div class="hero-facts">
-          <div><b>19</b><span>aulas</span></div>
-          <div><b>19</b><span>ferramentas</span></div>
+          <div><b>18</b><span>aulas</span></div>
+          <div><b>18</b><span>ferramentas</span></div>
           <div><b>3</b><span>temas</span></div>
         </div>
         <p class="book-src"><strong>Sobre a numeração dos temas.</strong> Os Temas 2, 3 e 4 seguem o livro didático adotado: GODOY, L. P.; LOURENÇO, G. C. <i>360° Biologia: ensino médio, volume único</i>. 1. ed. São Paulo: FTD, 2024. Tema 2 (Células, p. 24–37), Tema 3 (Núcleo e divisões celulares, p. 38–45) e Tema 4 (Metabolismo celular, p. 46–59).</p>
@@ -415,10 +415,9 @@ details.more summary{cursor:pointer;font-weight:700}
   </section>
   <section class="aula" id="niveis" hidden></section>
   <section class="aula" id="tipos" hidden></section>
-  <section class="aula" id="organelas" hidden></section>
   <section class="aula" id="cebola" hidden></section>
-  <section class="aula" id="eletronico" hidden></section>
   <section class="aula" id="funcoes" hidden></section>
+  <section class="aula" id="organelas" hidden></section>
   <section class="aula" id="membrana" hidden></section>
   <section class="aula" id="osmose" hidden></section>
   <section class="aula" id="figado" hidden></section>
@@ -502,7 +501,6 @@ const ICONS={
   niveis:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/>',
   tipos:'<rect x="3" y="8" width="13" height="8" rx="4"/><path d="M16 12c2 -2 3 2 5 0"/><path d="M7 12c1 -1.5 2.5 1.5 4 0"/>',
   organelas:'<ellipse cx="12" cy="12" rx="9.5" ry="8"/><circle cx="9" cy="11" r="2.8"/><path d="M14 9.5h4M14.5 12h3.5M15 14.5h3"/>',
-  eletronico:'<path d="M9 2.5h6v4.5H9z"/><path d="M12 7v3"/><path d="M8 10h8l-1.5 3h-5z"/><path d="M12 13v3.5"/><path d="M7 16.5h10"/><path d="M5 21h14"/><path d="M12 16.5V21"/><circle cx="12" cy="19" r=".6" fill="currentColor"/>',
   funcoes:'<rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M10 4v2.5h4V4"/><circle cx="12" cy="11.5" r="2.4"/><path d="M8.5 17c.6-1.7 2-2.6 3.5-2.6s2.9.9 3.5 2.6"/>',
   cebola:'<path d="M7.6 3.2l3.9 3.9-2.6 2.6-3.9-3.9z"/><path d="M10.2 8.4l3.2 3.2"/><path d="M5 14.5h6.5"/><path d="M4 21h15"/><path d="M13.6 21a6.2 6.2 0 0 0 2.1-10.6"/><path d="M8.3 21v-3h5"/>',
   membrana:'<circle cx="5" cy="8" r="1.6"/><circle cx="10" cy="8" r="1.6"/><circle cx="15" cy="8" r="1.6"/><circle cx="20" cy="8" r="1.6"/><circle cx="5" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/><circle cx="15" cy="16" r="1.6"/><circle cx="20" cy="16" r="1.6"/><path d="M5 9.6v2M10 9.6v2M15 9.6v2M20 9.6v2M5 14.4v-2M10 14.4v-2M15 14.4v-2M20 14.4v-2"/>',
@@ -526,23 +524,22 @@ const TEMAS={t2:'Tema 2 · Células',t3:'Tema 3 · Núcleo e divisões celulares
 const TOOLS=[
   {id:'niveis',n:'1',t:'t2',ap:'Teoria celular',title:'Zoom da vida',desc:'Do bode sertanejo à célula do coração: aproxime, ordene os níveis e julgue frases no Tribunal da Teoria Celular.'},
   {id:'tipos',n:'2',t:'t2',ap:'Quadro comparativo',title:'Detetive do nucleoide',desc:'Bactéria da coalhada, célula animal e célula da folha lado a lado. Monte o quadro presente, ausente ou depende.'},
-  {id:'organelas',n:'3',t:'t2',ap:'Percurso da proteína',title:'Fábrica de leite de cabra',desc:'Guie a caseína pela célula, entregue cinco proteínas em destinos diferentes, veja o citoesqueleto em ação e associe as 12 estruturas do livro às suas funções.'},
-  {id:'cebola',n:'4',t:'t2',ap:'Microscópio virtual',title:'Microscópio de luz',desc:'Cebola, bochecha e coalhada na mesma bancada: troque a objetiva até 100×, ajuste o foco, use corantes e compare o tamanho de uma célula vegetal, uma animal e uma bactéria.'},
-  {id:'eletronico',n:'5',t:'t2',ap:'Microscópio eletrônico',title:'E com elétrons?',desc:'MET e MEV em células da glândula mamária e do fígado da cabra. Monte um álbum com as 12 estruturas do livro e relacione as organelas à função de cada célula.'},
-  {id:'funcoes',n:'6',t:'t2',ap:'Crachás e jogos',title:'Crachás das organelas',desc:'Visite uma célula animal, uma vegetal e uma bacteriana e colecione o crachá de cada estrutura. Enigmas “Quem sou eu?”, diagrama de três conjuntos, o umbu que amadurece e o kit de sobrevivência da bactéria.'},
-  {id:'membrana',n:'7',t:'t2',ap:'Cartões de situações',title:'Porteiro da membrana',desc:'Partículas atravessando a bicamada, a bomba de sódio e potássio gastando ATP e um macrófago que engloba bactérias e as digere nos lisossomos.'},
-  {id:'osmose',n:'8',t:'t2',ap:'Experimento virtual',title:'Batata no sal',desc:'Experimento virtual de osmose com balança, réplicas e verificação de teste justo.'},
-  {id:'figado',n:'9',t:'t2',ap:'Experimento virtual',title:'O fígado e a água oxigenada',desc:'Teste o que os peroxissomos fazem com a água oxigenada e descubra o que isso tem a ver com machucados, remédios e álcool no nosso corpo.'},
-  {id:'nucleo',n:'10',t:'t3',ap:'Modelos de cromossomos',title:'Do novelo ao cromossomo',desc:'Explore o núcleo, condense o DNA até virar cromossomo e jogue “homólogos ou cromátides-irmãs?”.'},
-  {id:'mitose',n:'11',t:'t3',ap:'Simulador do ciclo celular',title:'Cicatrização em ação',desc:'Ciclo celular de uma célula 2n = 4, com contador de cromossomos e cromátides, enquanto a ferida fecha. Centríolos, fibras e o efeito da colchicina.'},
-  {id:'meiose',n:'12',t:'t3',ap:'Simulador da meiose',title:'Loteria dos gametas',desc:'Meiose com A/a e B/b, crossing-over e alinhamento sorteado. Produza 100 gametas e faça a fecundação.'},
-  {id:'duelo',n:'13',t:'t3',ap:'Quadro e situações',title:'Duelo mitose × meiose',desc:'Quadro comparativo, situações de cicatrização, gametas e tumores e a leitura crítica de um cartaz.'},
-  {id:'atp',n:'14',t:'t4',ap:'Cartões de processos',title:'Usina de ATP',desc:'Quebre glicose para carregar ADP em ATP e gaste a energia em trabalho celular. Classifique anabolismo e catabolismo.'},
-  {id:'fotossintese',n:'15',t:'t4',ap:'Fluxo da fotossíntese',title:'De onde vem o umbuzeiro?',desc:'Cloroplasto com controles de luz, CO₂ e água, e o experimento do oxigênio marcado.'},
-  {id:'respiracao',n:'16',t:'t4',ap:'Mapa de processos',title:'Mapa da respiração',desc:'Leve cada etapa ao lugar certo da célula, conheça as bactérias nitrificantes e veja a planta respirando dia e noite.'},
-  {id:'leveduras',n:'17',t:'t4',ap:'Experimento virtual',title:'Laboratório do pão',desc:'Garrafas virtuais A a D com balões, fita métrica e cronômetro. Variação entre réplicas e verificação de teste justo.'},
-  {id:'fermentacao',n:'18',t:'t4',ap:'Gráfico',title:'Do balão ao gráfico',desc:'Gráfico com os dados da aula 17, fermentação lática × alcoólica e “isto é fermentação?” com a mandioca.'},
-  {id:'revisao',n:'19',t:'t4',ap:'Quiz e autoavaliação',title:'Revisão integradora',desc:'Quiz com números diferentes dos da avaliação, “Célula sem…” com as 12 organelas e autoavaliação por objetivo.'},
+  {id:'cebola',n:'3',t:'t2',ap:'Microscópio virtual',title:'Microscópio de luz',desc:'Cebola, bochecha e coalhada na mesma bancada: troque a objetiva até 100×, ajuste o foco, use corantes e compare o tamanho de uma célula vegetal, uma animal e uma bactéria.'},
+  {id:'funcoes',n:'4',t:'t2',ap:'Crachás e jogos',title:'Crachás das organelas',desc:'Visite uma célula animal, uma vegetal e uma bacteriana e colecione o crachá de cada estrutura. Enigmas “Quem sou eu?”, diagrama de três conjuntos, o umbu que amadurece e o kit de sobrevivência da bactéria.'},
+  {id:'organelas',n:'5',t:'t2',ap:'Percurso da proteína',title:'Fábrica de leite de cabra',desc:'Guie a caseína pela célula, entregue cinco proteínas em destinos diferentes, veja o citoesqueleto em ação e associe as 12 estruturas do livro às suas funções.'},
+  {id:'membrana',n:'6',t:'t2',ap:'Cartões de situações',title:'Porteiro da membrana',desc:'Partículas atravessando a bicamada, a bomba de sódio e potássio gastando ATP e um macrófago que engloba bactérias e as digere nos lisossomos.'},
+  {id:'osmose',n:'7',t:'t2',ap:'Experimento virtual',title:'Batata no sal',desc:'Experimento virtual de osmose com balança, réplicas e verificação de teste justo.'},
+  {id:'figado',n:'8',t:'t2',ap:'Experimento virtual',title:'O fígado e a água oxigenada',desc:'Teste o que os peroxissomos fazem com a água oxigenada e descubra o que isso tem a ver com machucados, remédios e álcool no nosso corpo.'},
+  {id:'nucleo',n:'9',t:'t3',ap:'Modelos de cromossomos',title:'Do novelo ao cromossomo',desc:'Explore o núcleo, condense o DNA até virar cromossomo e jogue “homólogos ou cromátides-irmãs?”.'},
+  {id:'mitose',n:'10',t:'t3',ap:'Simulador do ciclo celular',title:'Cicatrização em ação',desc:'Ciclo celular de uma célula 2n = 4, com contador de cromossomos e cromátides, enquanto a ferida fecha. Centríolos, fibras e o efeito da colchicina.'},
+  {id:'meiose',n:'11',t:'t3',ap:'Simulador da meiose',title:'Loteria dos gametas',desc:'Meiose com A/a e B/b, crossing-over e alinhamento sorteado. Produza 100 gametas e faça a fecundação.'},
+  {id:'duelo',n:'12',t:'t3',ap:'Quadro e situações',title:'Duelo mitose × meiose',desc:'Quadro comparativo, situações de cicatrização, gametas e tumores e a leitura crítica de um cartaz.'},
+  {id:'atp',n:'13',t:'t4',ap:'Cartões de processos',title:'Usina de ATP',desc:'Quebre glicose para carregar ADP em ATP e gaste a energia em trabalho celular. Classifique anabolismo e catabolismo.'},
+  {id:'fotossintese',n:'14',t:'t4',ap:'Fluxo da fotossíntese',title:'De onde vem o umbuzeiro?',desc:'Cloroplasto com controles de luz, CO₂ e água, e o experimento do oxigênio marcado.'},
+  {id:'respiracao',n:'15',t:'t4',ap:'Mapa de processos',title:'Mapa da respiração',desc:'Leve cada etapa ao lugar certo da célula, conheça as bactérias nitrificantes e veja a planta respirando dia e noite.'},
+  {id:'leveduras',n:'16',t:'t4',ap:'Experimento virtual',title:'Laboratório do pão',desc:'Garrafas virtuais A a D com balões, fita métrica e cronômetro. Variação entre réplicas e verificação de teste justo.'},
+  {id:'fermentacao',n:'17',t:'t4',ap:'Gráfico',title:'Do balão ao gráfico',desc:'Gráfico com os dados da aula 16, fermentação lática × alcoólica e “isto é fermentação?” com a mandioca.'},
+  {id:'revisao',n:'18',t:'t4',ap:'Quiz e autoavaliação',title:'Revisão integradora',desc:'Quiz com números diferentes dos da avaliação, “Célula sem…” com as 12 organelas e autoavaliação por objetivo.'},
 ];
 const inited={};
 const INIT={};
@@ -833,7 +830,7 @@ INIT.tipos=root=>{
 };
 
 
-// ================= Aula 3: Fábrica de leite de cabra =================
+// ================= Aula 5: Fábrica de leite de cabra =================
 const ORG3_OLD={
  nucleo:{n:'Núcleo',x:210,y:228,f:'Guarda o DNA. O gene da caseína é copiado em RNA mensageiro, que sai pelos poros do envoltório nuclear.'},
  rer:{n:'Retículo endoplasmático rugoso',x:120,y:176,f:'Tem ribossomos aderidos. A caseína é produzida pelos ribossomos e entra no retículo.'},
@@ -859,7 +856,7 @@ function drawGland_OLD(){
   o+=`<g class="hot" data-o="liso" tabindex="0"><circle cx="340" cy="120" r="14" fill="#c9d36a" stroke="#7d8a2a" stroke-width="2"/>${[[-4,-3],[3,2],[-2,5]].map(([x,y])=>`<circle cx="${340+x}" cy="${120+y}" r="2" fill="#7d8a2a"/>`).join('')}</g>`;
   return o;
 }
-// ================= Aula 3 em partes (organelas do livro: membrana, citosol, citoesqueleto, núcleo, centríolos, ribossomos, RE granular e agranular, complexo golgiense, lisossomos, peroxissomo, mitocôndria) =================
+// ================= Aula 5 em partes (organelas do livro: membrana, citosol, citoesqueleto, núcleo, centríolos, ribossomos, RE granular e agranular, complexo golgiense, lisossomos, peroxissomo, mitocôndria) =================
 function tween(dur,f,done){const t0=performance.now();const st=t=>{const k=Math.min(1,(t-t0)/dur);const e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;f(e,k);if(k<1)requestAnimationFrame(st);else if(done)done();};requestAnimationFrame(st);}
 function moveAlong(el,pts,{dur=520,xa='cx',ya='cy'}={},done){const go=i=>{if(i>=pts.length){if(done)done();return;}const x0=+el.getAttribute(xa),y0=+el.getAttribute(ya);const[x,y]=pts[i];tween(dur,e=>{el.setAttribute(xa,x0+(x-x0)*e);el.setAttribute(ya,y0+(y-y0)*e);},()=>go(i+1));};go(0);}
 function bz(p,t){const[p0,p1,p2,p3]=p;const u=1-t;return[u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]];}
@@ -943,7 +940,7 @@ const ENC=[
   {p:'Depois de pronta, ela…',o:['…fica no citosol, onde ocorre a glicólise','…vai ao complexo golgiense','…sai da célula'],a:0,ok:'Fica no citosol. Ela não passa pelo retículo nem pelo complexo golgiense.',no:[null,'Ela já nasceu no lugar onde vai trabalhar.','A glicólise acontece dentro da célula.'],path:['CIT']}]},
  {id:'his',n:'Histona',sub:'proteína que enrola o DNA',cor:'#9c7fc0',steps:[
   {p:'Onde é fabricada a histona, a proteína em que o DNA se enrola?',o:[RL,RA],a:0,ok:'Em ribossomos livres ②, como a enzima da glicólise. Nenhuma proteína é fabricada dentro do núcleo.',no:[null,'Ela não vai para fora da célula nem para lisossomos.'],path:['RIB']},
-  {p:'Depois de pronta, ela…',o:['…fica no citosol','…entra no núcleo pelos poros do envoltório','…vai ao complexo golgiense'],a:1,ok:'Entra pelos poros do envoltório nuclear e se junta ao DNA, formando a cromatina (Aula 10).',no:['O DNA, onde ela trabalha, está dentro do núcleo.',null,'Ela não precisa ser empacotada: passa direto pelos poros.'],path:['PORE','NUC']}]},
+  {p:'Depois de pronta, ela…',o:['…fica no citosol','…entra no núcleo pelos poros do envoltório','…vai ao complexo golgiense'],a:1,ok:'Entra pelos poros do envoltório nuclear e se junta ao DNA, formando a cromatina (Aula 9).',no:['O DNA, onde ela trabalha, está dentro do núcleo.',null,'Ela não precisa ser empacotada: passa direto pelos poros.'],path:['PORE','NUC']}]},
 ];
 function parteEncomendas(){
   const done=store.get('enc-done',{});
@@ -1151,7 +1148,7 @@ function parteMicroscopio(p){
   const dica=h('button',{class:'btn ghost sm',onclick:()=>{const falta=BOOK12.filter(k=>!album.lac[k]&&!album.hep[k]);card.innerHTML='';if(!falta.length){card.append(h('strong',{},'Álbum completo!'),h('span',{},'Agora compare as duas amostras no quadro abaixo.'));return;}const k=falta[Math.random()*falta.length|0];const zz={citoesq:'×45.000',centriolo:'×45.000',ribossomo:'×45.000',rea:'×15.000 ou mais'}[k]||'×5.000 ou ×15.000';card.append(h('strong',{},'Pista'),h('span',{},'Procure '+ORGN[k].d+' Aumento sugerido: '+zz+'.'));if(k==='peroxissomo')card.append(h('span',{class:'note'},'Fica mais fácil na amostra de fígado.'));}},'Pista: o que falta?');
   draw();drawAlbum();
   p.append(h('div',{class:'panel stack'},h('h3',{},'Microscópio eletrônico: transmissão (MET) e varredura (MEV)'),
-    h('p',{class:'note'},'Na Aula 4, no microscópio de luz, você viu a parede, o núcleo e pouco mais. Ribossomos e o interior das organelas da Aula 3 são pequenos demais para a luz. O microscópio eletrônico usa elétrons em vez de luz. Compare duas células da mesma cabra: uma da glândula mamária, que produz leite, e uma do fígado.'),
+    h('p',{class:'note'},'Na Aula 3, no microscópio de luz, você viu a parede, o núcleo e pouco mais. Ribossomos e o interior das organelas da Aula 5 são pequenos demais para a luz. O microscópio eletrônico usa elétrons em vez de luz. Compare duas células da mesma cabra: uma da glândula mamária, que produz leite, e uma do fígado.'),
     h('div',{class:'row'},kindSeg,modeSeg),
     h('div',{class:'cols wide-left'},h('div',{class:'stack'},screen,h('div',{class:'row'},h('span',{class:'label'},'Aumento'),zoomSeg)),h('div',{class:'stack'},card,dica)),
     h('div',{class:'stack',style:'gap:8px'},h('div',{class:'row'},h('span',{class:'label'},'Meu álbum de organelas'),prog),albumBox,h('span',{class:'label'},'Outras estruturas'),extraBox),
@@ -1162,8 +1159,8 @@ function parteMicroscopio(p){
       key:[['Glândula mamária'],['Fígado'],['Fígado'],['Glândula mamária'],['Glândula mamária'],['Fígado'],['Fígado']],accept:{6:{0:['Fígado','Parecido nas duas']}},
       why:{'0-0':'a glândula tem pilhas enormes de bolsas pontilhadas ao redor do núcleo.','1-0':'no fígado há dezenas de áreas com tubinhos lisos.','2-0':'conte as bolsinhas cinza com miolo escuro no fígado.','3-0':'as vesículas com grãozinhos escuros ficam no topo da célula da glândula.','4-0':'repare nas esferas grandes e lisas no topo da célula da glândula.','5-0':'as rosetas escuras aparecem só no fígado.'},colW:'minmax(150px,1fr)'}),
     qq('A célula da glândula tem muito retículo granular e muitas vesículas de secreção. Isso combina com a função dela porque…',['…ela fabrica grande quantidade de proteína (caseína) para exportar','…ela precisa digerir bactérias','…ela guarda glicose'],0,'Estrutura e função andam juntas: quem exporta muita proteína tem muito retículo granular e muitas vesículas de secreção.'),
-    qq('O fígado tem muito retículo agranular e muitos peroxissomos. Qual hipótese explica isso?',['O fígado inativa muitas substâncias tóxicas e trabalha com lipídios e carboidratos','O fígado produz leite','O fígado não respira'],0,'É uma hipótese que dá para testar: na Aula 9 você vai investigar o que os peroxissomos do fígado fazem com a água oxigenada.'),
-    qq('Um ribossomo mede cerca de 25 nm. Por que ele não aparece no microscópio de luz que você usou na Aula 4?',['Porque é menor que o menor detalhe que a luz consegue separar (cerca de 0,2 µm = 200 nm)','Porque é transparente demais','Porque só existe em células animais'],0,'O microscópio de luz não separa detalhes menores que cerca de 200 nm. Com elétrons, detalhes de poucos nanômetros ficam visíveis.')));
+    qq('O fígado tem muito retículo agranular e muitos peroxissomos. Qual hipótese explica isso?',['O fígado inativa muitas substâncias tóxicas e trabalha com lipídios e carboidratos','O fígado produz leite','O fígado não respira'],0,'É uma hipótese que dá para testar: na Aula 8 você vai investigar o que os peroxissomos do fígado fazem com a água oxigenada.'),
+    qq('Um ribossomo mede cerca de 25 nm. Por que ele não aparece no microscópio de luz que você usou na Aula 3?',['Porque é menor que o menor detalhe que a luz consegue separar (cerca de 0,2 µm = 200 nm)','Porque é transparente demais','Porque só existe em células animais'],0,'O microscópio de luz não separa detalhes menores que cerca de 200 nm. Com elétrons, detalhes de poucos nanômetros ficam visíveis.')));
 }
 
 // ---------- Parte 3 · Lisossomos: faxina contra a mastite e autofagia ----------
@@ -1224,7 +1221,7 @@ function faxina(key){
 }
 function parteLisossomo(p){
   p.append(h('div',{class:'panel stack'},h('h3',{},'E o que é grande demais para atravessar?'),
-    h('p',{},'Bactérias, restos de células e gotas de líquido não passam pela bicamada nem pelas proteínas transportadoras. A célula as engloba com a própria membrana, formando uma vesícula: é a ',h('b',{},'endocitose'),'. Quando a partícula é sólida e grande, como uma bactéria, chama-se ',h('b',{},'fagocitose'),'; quando são gotinhas de líquido, ',h('b',{},'pinocitose'),'. O caminho inverso, em que uma vesícula se funde à membrana e despeja o conteúdo para fora, é a ',h('b',{},'exocitose'),', a mesma que libera a caseína na Aula 3. As duas gastam energia (ATP).'),
+    h('p',{},'Bactérias, restos de células e gotas de líquido não passam pela bicamada nem pelas proteínas transportadoras. A célula as engloba com a própria membrana, formando uma vesícula: é a ',h('b',{},'endocitose'),'. Quando a partícula é sólida e grande, como uma bactéria, chama-se ',h('b',{},'fagocitose'),'; quando são gotinhas de líquido, ',h('b',{},'pinocitose'),'. O caminho inverso, em que uma vesícula se funde à membrana e despeja o conteúdo para fora, é a ',h('b',{},'exocitose'),', a mesma que libera a caseína na Aula 5. As duas gastam energia (ATP).'),
     h('p',{class:'note'},'Depois de englobado, o material ainda precisa ser digerido. Quem faz isso são os lisossomos.')));
   p.append(faxina('bac'),faxina('aut'));
   p.append(h('div',{class:'panel stack'},h('h3',{},'Investigue'),
@@ -1323,7 +1320,7 @@ function trilhosVesiculas(p){
   function start(){if(running||!sv.isConnected)return;running=true;requestAnimationFrame(frame);}
   const presets=h('div',{class:'chips'},...[[0,'Sem colchicina'],[50,'Dose média'],[100,'Dose alta']].map(([v,l])=>h('button',{class:'chip',type:'button',onclick:()=>setC(v)},l)));
   p.append(h('div',{class:'panel stack'},h('h3',{},'Trilhos da célula: o citoesqueleto'),
-    h('p',{class:'note'},'Como as vesículas com caseína chegam até a membrana? Os microtúbulos do citoesqueleto (verdes) partem da região dos centríolos e funcionam como trilhos: proteínas motoras carregam as vesículas (amarelas) por eles até a membrana, onde elas liberam o conteúdo (o anel que pisca). O movimento é automático. A colchicina, substância extraída de uma planta, desmonta os microtúbulos. Aumente a dose e observe. Na Aula 11 você verá o que ela faz com uma célula em divisão.'),
+    h('p',{class:'note'},'Como as vesículas com caseína chegam até a membrana? Os microtúbulos do citoesqueleto (verdes) partem da região dos centríolos e funcionam como trilhos: proteínas motoras carregam as vesículas (amarelas) por eles até a membrana, onde elas liberam o conteúdo (o anel que pisca). O movimento é automático. A colchicina, substância extraída de uma planta, desmonta os microtúbulos. Aumente a dose e observe. Na Aula 10 você verá o que ela faz com uma célula em divisão.'),
     h('div',{class:'cols wide-left'},h('div',{class:'stage'},sv),h('div',{class:'stack'},h('div',{class:'slider-row'},h('span',{class:'label'},'Colchicina'),rd,sl),presets,mtc,mv,
       h('p',{class:'note'},'Observe três coisas: o comprimento dos microtúbulos, o movimento das vesículas e a forma da célula.'))),
     qq('Com colchicina, as vesículas param e a célula perde a forma alongada. O que isso mostra sobre o citoesqueleto?',['Ele sustenta a forma da célula e serve de caminho para organelas e vesículas','Ele produz as vesículas','Ele digere as vesículas'],0,'É a função do quadro do livro: sustentar, manter a forma e deslocar organelas e vesículas no interior da célula.'),
@@ -1348,7 +1345,7 @@ function trilhosDivisao(p){
   const goBtn=h('button',{class:'btn primary',onclick:()=>{out.innerHTML='';if(col){out.append(h('p',{class:'fb info'},'Nada acontece: sem microtúbulos, não há fibras do fuso. As cromátides-irmãs continuam juntas e espalhadas, e a célula fica parada nessa fase.'));return;}if(phase)return;phase=1;tween(1800,e=>drawDiv(e),()=>out.append(h('p',{class:'fb ok'},'As fibras que partem dos polos, onde estão os centríolos, puxam as cromátides-irmãs para lados opostos.')));}},'Separar as cromátides');
   drawDiv(0);
   p.append(h('div',{class:'panel stack'},h('h3',{},'Centríolos e as fibras da divisão'),
-    h('p',{class:'note'},'A mesma célula 2n = 4 do simulador acima, com os cromossomos alinhados no meio (metáfase). Os centríolos ficam nos polos e deles partem fibras feitas de microtúbulos, os mesmos “trilhos” do citoesqueleto da Aula 3. A colchicina desmonta os microtúbulos. Compare o que acontece com e sem ela.'),
+    h('p',{class:'note'},'A mesma célula 2n = 4 do simulador acima, com os cromossomos alinhados no meio (metáfase). Os centríolos ficam nos polos e deles partem fibras feitas de microtúbulos, os mesmos “trilhos” do citoesqueleto da Aula 5. A colchicina desmonta os microtúbulos. Compare o que acontece com e sem ela.'),
     h('div',{class:'row'},colSeg,goBtn),h('div',{class:'stage'},dv),out,
     qq('Para montar um cariótipo, os laboratórios tratam as células com colchicina antes de fotografar os cromossomos. Por quê?',['Para deixar muitas células paradas com os cromossomos bem condensados, sem se separarem','Para colorir os cromossomos','Para matar as bactérias da amostra'],0,'Sem fibras, a divisão não avança e as células se acumulam nessa fase, quando os cromossomos estão mais condensados e visíveis.'),
     qq('As células da maioria das plantas com flores não têm centríolos, mas se dividem normalmente. O que isso indica?',['Que as fibras da divisão podem se formar sem centríolos; nas células animais, os centríolos organizam essas fibras','Que plantas não fazem mitose','Que as plantas usam colchicina'],0,'Nas células animais, as fibras partem da região dos centríolos. Nas plantas, outras regiões da célula organizam os microtúbulos.')));
@@ -1375,12 +1372,12 @@ function celulaSem(p){
   const drawG=()=>{grid.innerHTML='';SEM.forEach((c,i)=>{const b=h('button',{class:'chip',type:'button','aria-pressed':String(cur===i)},(done[c.k]?'✓ ':'')+'Sem '+ORGN[c.k].n.toLowerCase());b.onclick=()=>{cur=i;drawG();show(i);};grid.append(b);});};
   const show=i=>{const c=SEM[i];box.innerHTML='';box.append(predQ(c.q,c.o,c.a,ORGN[c.k].n+': '+ORGN[c.k].f,ok=>{if(ok&&!done[c.k]){done[c.k]=1;store.set('sem-done',done);cnt.set(Object.keys(done).length+' de 12');drawG();}}));};
   drawG();
-  p.append(h('div',{class:'panel stack'},h('h3',{},'Célula sem…'),h('p',{class:'note'},'Revisão das organelas da unidade: escolha uma estrutura, “desligue” e preveja o que acontece. Vários casos são reais e retomam as Aulas 3 a 11 e 16.'),grid,box,cnt));
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Célula sem…'),h('p',{class:'note'},'Revisão das organelas da unidade: escolha uma estrutura, “desligue” e preveja o que acontece. Vários casos são reais e retomam as Aulas 3 a 10 e 15.'),grid,box,cnt));
 }
 function quemFazOQue(p){
   const NOMES=BOOK12.map(k=>ORGN[k].n).sort((a,b)=>a.localeCompare(b,'pt-BR'));
   const FUN=[['Envolve a célula e controla o que entra e o que sai','membrana'],['Meio em que as organelas ficam mergulhadas','citosol'],['Filamentos de proteína que dão forma e movem vesículas','citoesq'],['Guarda o DNA, separado pelo envoltório nuclear','nucleo'],['Formam as fibras às quais os cromossomos se ligam na divisão','centriolo'],['Fabricam proteínas, livres ou presos a membranas','ribossomo'],['Bolsas com ribossomos que produzem e armazenam proteínas','reg'],['Tubos sem ribossomos: lipídios e metabolismo de carboidratos','rea'],['Modifica, empacota e distribui proteínas','golgi'],['Digestão intracelular','lisossomo'],['Elimina compostos tóxicos, como a água oxigenada','peroxissomo'],['Etapas finais da respiração aeróbia','mitocondria']];
-  p.append(h('div',{class:'panel stack'},h('h3',{},'Quem faz o quê?'),h('p',{class:'note'},'As 12 estruturas do quadro do livro. Escolha a estrutura de cada função. Algumas você vai rever nas próximas aulas: no microscópio eletrônico (Aula 5), na faxina dos lisossomos (Aula 7) e no fígado (Aula 9).'),
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Quem faz o quê?'),h('p',{class:'note'},'As 12 estruturas do quadro do livro. Escolha a estrutura de cada função. Algumas você vai rever nas próximas aulas: na faxina dos lisossomos (Aula 6) e no fígado (Aula 8).'),
     quadro({storeKey:'org12',rows:FUN.map(f=>f[0]),cols:['Estrutura'],opts:NOMES,key:FUN.map(f=>[ORGN[f[1]].n]),colW:'minmax(170px,1.2fr)'})));
   p.append(h('div',{class:'panel stack'},h('h3',{},'Glândula da cabra × folha da jurema'),h('p',{class:'note'},'Onde cada estrutura aparece? Pense numa célula animal típica e numa célula da folha.'),
     classify({key:'animveg',cats:[['A','Só animal'],['V','Só vegetal'],['D','Nas duas']],items:[
@@ -1391,18 +1388,18 @@ function quemFazOQue(p){
       {t:'Centríolos',a:'A',why:'Presentes nas células animais; a maioria das plantas com flores não tem centríolos.'},
       {t:'Complexo golgiense',a:'D',why:'Nas duas. Na planta, também produz materiais da parede celular.'},
       {t:'Ribossomos e retículo endoplasmático',a:'D',why:'Toda célula eucariótica produz proteínas.'},
-      {t:'Peroxissomo',a:'D',why:'Nas duas. Na Aula 9, a batata também vai reagir à água oxigenada.'},
+      {t:'Peroxissomo',a:'D',why:'Nas duas. Na Aula 8, a batata também vai reagir à água oxigenada.'},
       {t:'Lisossomo',a:['A','D'],why:'Típico das células animais. Nas plantas, o vacúolo faz boa parte da digestão intracelular.'},
       {t:'Citoesqueleto',a:'D',why:'Sustentação e movimentos internos nas duas.'},
     ]})));
 }
 INIT.organelas=root=>{
-  root.append(head('Aula 3 · Tema 2, p. 28–30','Fábrica de leite de cabra','Como as organelas trabalham em conjunto? Uma célula da glândula mamária da cabra produz caseína, a principal proteína do leite (a do queijo de coalho), e a libera. Guie a proteína pela célula, descubra o destino de outras proteínas e veja o citoesqueleto transportando as vesículas.'));
+  root.append(head('Aula 5 · Tema 2, p. 28–30','Fábrica de leite de cabra','Como as organelas trabalham em conjunto? Uma célula da glândula mamária da cabra produz caseína, a principal proteína do leite (a do queijo de coalho), e a libera. Guie a proteína pela célula, descubra o destino de outras proteínas e veja o citoesqueleto transportando as vesículas.'));
   parteCaseina(root);trilhosVesiculas(root);quemFazOQue(root);
 };
 
 
-// ---------- Aula 9 · O fígado e a água oxigenada: aplicações no nosso corpo ----------
+// ---------- Aula 8 · O fígado e a água oxigenada: aplicações no nosso corpo ----------
 const HEP={
  pero:{n:'Peroxissomo',x:300,y:96,f:'Aqui a água oxigenada (H₂O₂) nasce e morre. Enzimas do peroxissomo quebram ácidos graxos e outras moléculas e, nessas reações, produzem H₂O₂. A catalase, no mesmo lugar, transforma o H₂O₂ em água e oxigênio antes que ele cause danos.'},
  mito:{n:'Mitocôndria',x:112,y:92,f:'Na respiração celular, uma pequena parte do oxigênio escapa da cadeia respiratória e forma compostos reativos, que viram H₂O₂. Quanto mais a célula trabalha, mais desses compostos aparecem.'},
@@ -1459,7 +1456,7 @@ function aulaFigadoCorpo(root){
   root.append(h('div',{class:'panel stack'},h('h3',{},'Por que a água oxigenada borbulha num machucado?'),
     h('div',{class:'row'},ms,pingo),h('div',{class:'stage'},fv),fo,
     qq('As bolhas mostram que a água oxigenada está matando os micróbios da ferida?',['Não necessariamente: as bolhas são o oxigênio liberado pela catalase das nossas próprias células','Sim, cada bolha é um micróbio morto','Sim, porque micróbios produzem oxigênio'],0,'As bolhas vêm da catalase, principalmente das nossas células. Elas não medem quantos micróbios morreram.'),
-    h('div',{class:'callout'},h('strong',{},'E na prática? '),'Hoje, para limpar machucados simples, a recomendação é lavar com água corrente e sabão. A água oxigenada também lesa as células que estão se dividindo para fechar a ferida, como as da Aula 11. Nosso próprio corpo, porém, usa o H₂O₂ como arma: células de defesa produzem esse composto para matar bactérias que englobaram (lembra da faxina da Aula 7?).')));
+    h('div',{class:'callout'},h('strong',{},'E na prática? '),'Hoje, para limpar machucados simples, a recomendação é lavar com água corrente e sabão. A água oxigenada também lesa as células que estão se dividindo para fechar a ferida, como as da Aula 10. Nosso próprio corpo, porém, usa o H₂O₂ como arma: células de defesa produzem esse composto para matar bactérias que englobaram (lembra da faxina da Aula 6?).')));
   // álcool e medicamentos
   root.append(h('div',{class:'panel stack'},h('h3',{},'O fígado, o álcool e os remédios'),
     h('p',{class:'note'},'Quando uma pessoa ingere álcool (etanol) ou toma um remédio, o sangue do intestino passa primeiro pelo fígado. Lá, várias partes da célula trabalham juntas.'),
@@ -1476,13 +1473,13 @@ function aulaFigadoCorpo(root){
     qq('O que você espera encontrar no sangue e nas células de uma pessoa com essa doença?',['Acúmulo de ácidos graxos de cadeia muito longa','Falta de DNA','Excesso de clorofila'],0,'Sem a quebra nos peroxissomos, esses lipídios se acumulam e danificam principalmente o sistema nervoso. É mais um exemplo de que cada organela tem um trabalho que as outras não substituem.')));
 }
 INIT.figado=root=>{
-  root.append(head('Aula 9 · Tema 2, p. 28–30','O fígado e a água oxigenada','O que os peroxissomos do fígado fazem com um composto tóxico? Na Aula 5 você viu no microscópio eletrônico que o fígado tem muitos peroxissomos. Agora teste essa observação num experimento e descubra como isso funciona no seu corpo.'));
+  root.append(head('Aula 8 · Tema 2, p. 28–30','O fígado e a água oxigenada','O que os peroxissomos do fígado fazem com um composto tóxico? As células do fígado têm muitos peroxissomos. Teste o que eles fazem num experimento e descubra como isso funciona no seu corpo.'));
   parteFigado(root);
   aulaFigadoCorpo(root);
 };
 
 
-// ================= Aula 4: Microscópio de luz (cebola, bochecha e coalhada) =================
+// ================= Aula 3: Microscópio de luz (cebola, bochecha e coalhada) =================
 // Cebola: epiderme interna da escama do bulbo, células alongadas (≈150–400 µm × 40–90 µm), em fileiras desencontradas.
 const ONION=(()=>{const r=seeded(2024);const rows=[];let y=0;const W=7000,Hh=7000;
   while(y<Hh){const hgt=48+r()*34;const cells=[];let x=-r()*300;while(x<W){const len=170+r()*230;cells.push({x,len,nx:r(),ny:r()>.5?1:-1,nr:r()});x+=len;}rows.push({y,hgt,cells,w1:r()*6.28,w2:r()*6.28});y+=hgt;}
@@ -1528,7 +1525,7 @@ const AMOSTRAS={
     medir:'Com a objetiva de 100×, ligue a régua (marcas a cada 10 µm). Veja quantos bacilos cabem entre duas marcas e multiplique por 18, o número de intervalos no diâmetro do campo.',
     disc:'Modelo didático baseado em medidas típicas de bactérias do ácido lático; não substitui a observação real. A objetiva de 100× exige óleo de imersão entre a lente e a lâmina.'}};
 INIT.cebola=root=>{
-  root.append(head('Aula 4 · Tema 2, p. 24–28 e 37','Microscópio de luz','O que conseguimos observar em uma célula? Três lâminas no mesmo microscópio: a película da cebola (célula vegetal), o raspado da bochecha (célula animal) e um esfregaço de coalhada (bactérias). Comece na menor objetiva, ajuste o foco e observe mais de uma área antes de concluir.'));
+  root.append(head('Aula 3 · Tema 2, p. 24–28 e 37','Microscópio de luz','O que conseguimos observar em uma célula? Três lâminas no mesmo microscópio: a película da cebola (célula vegetal), o raspado da bochecha (célula animal) e um esfregaço de coalhada (bactérias). Comece na menor objetiva, ajuste o foco e observe mais de uma área antes de concluir.'));
   let am='cebola',obj=4,prep='agua',cx=3500,cy=3500,focus=40,ideal={4:55,10:62,40:48,100:58},ruler=false;
   const box=h('div',{class:'eyepiece',role:'img','aria-label':'Campo do microscópio'});
   const spec=document.createElementNS(NS,'svg');spec.setAttribute('preserveAspectRatio','xMidYMid slice');
@@ -1663,26 +1660,20 @@ INIT.cebola=root=>{
     quickQ('Por que a micrografia do livro pode parecer diferente do esquema?',['Porque o esquema mostra estruturas que nem sempre se veem e usa cores convencionais','Porque o livro errou','Porque a micrografia é sempre colorida de verdade'],0,'Esquemas são modelos: simplificam, destacam e colorem. Confira se a micrografia informa escala, aumento e coloração.')));
 };
 
-// ================= Aula 5: E com elétrons? (microscópio eletrônico) =================
-INIT.eletronico=root=>{
-  root.append(head('Aula 5 · Tema 2, p. 28–30','E com elétrons?','O que o microscópio eletrônico mostra que a luz não mostra? No microscópio de luz da Aula 4, você viu a parede, o núcleo e pouco mais. Agora observe ao microscópio eletrônico duas células da mesma cabra, encontre as 12 estruturas do quadro do livro e relacione o que vê à função de cada célula.'));
-  parteMicroscopio(root);
-};
-
-// ================= Aula 6: Crachás das organelas (funções nas células animal, vegetal e bacteriana) =================
+// ================= Aula 4: Crachás das organelas (funções nas células animal, vegetal e bacteriana) =================
 // Crachá de cada estrutura: cargo (analogia), o que faz de verdade, em quais células trabalha e uma curiosidade.
 const CRA={
- membrana:{n:'Membrana plasmática',cargo:'Porteira',faz:'Envolve a célula, separa o meio interno do externo e controla o que entra e o que sai.',onde:'Animal, vegetal e bacteriana',cur:'Na Aula 7 você vai ver como ela deixa algumas substâncias passarem sozinhas e gasta energia para empurrar outras.'},
+ membrana:{n:'Membrana plasmática',cargo:'Porteira',faz:'Envolve a célula, separa o meio interno do externo e controla o que entra e o que sai.',onde:'Animal, vegetal e bacteriana',cur:'Na Aula 6 você vai ver como ela deixa algumas substâncias passarem sozinhas e gasta energia para empurrar outras.'},
  citosol:{n:'Citoplasma e citosol',cargo:'Chão de fábrica',faz:'O citoplasma é tudo o que fica entre a membrana e o material genético. O citosol é a parte líquida e gelatinosa dele, onde as organelas ficam mergulhadas e acontecem muitas reações, como o início da quebra da glicose.',onde:'Animal, vegetal e bacteriana',cur:'Na bactéria, que não tem organelas membranosas, quase todo o trabalho químico acontece no citosol.'},
  nucleo:{n:'Núcleo',cargo:'Arquivo central',faz:'Guarda o DNA, separado do citoplasma pelo envoltório nuclear, que tem poros. É do DNA que saem as instruções (em RNA) para fabricar as proteínas.',onde:'Animal e vegetal',cur:'O nucléolo, a manchinha escura dentro do núcleo, é onde os ribossomos começam a ser montados.'},
  ribossomo:{n:'Ribossomos',cargo:'Montadores de proteínas',faz:'Leem o RNA mensageiro e unem os aminoácidos na ordem certa, formando proteínas. Ficam soltos no citosol ou presos ao retículo endoplasmático granular.',onde:'Animal, vegetal e bacteriana (os da bactéria são menores)',cur:'Vários antibióticos atrapalham os ribossomos da bactéria e afetam bem menos os nossos: é uma das razões de funcionarem contra bactérias.'},
- reg:{n:'Retículo endoplasmático granular (rugoso)',cargo:'Linha de montagem de encomendas',faz:'Bolsas achatadas cobertas de ribossomos. As proteínas feitas ali vão para fora da célula, para a membrana ou para os lisossomos, e seguem em vesículas até o complexo golgiense.',onde:'Animal e vegetal',cur:'Na glândula mamária da cabra, ele é enorme: fabrica a caseína do leite (Aulas 3 e 5).'},
- rea:{n:'Retículo endoplasmático agranular (liso)',cargo:'Laboratório de lipídios e desintoxicação',faz:'Rede de tubos sem ribossomos. Produz lipídios, como os das membranas e alguns hormônios, e inativa substâncias tóxicas, como álcool e remédios.',onde:'Animal e vegetal',cur:'Nas células do fígado ele é muito desenvolvido e pode aumentar em quem usa álcool ou certos remédios com frequência (Aula 9).'},
+ reg:{n:'Retículo endoplasmático granular (rugoso)',cargo:'Linha de montagem de encomendas',faz:'Bolsas achatadas cobertas de ribossomos. As proteínas feitas ali vão para fora da célula, para a membrana ou para os lisossomos, e seguem em vesículas até o complexo golgiense.',onde:'Animal e vegetal',cur:'Na glândula mamária da cabra, ele é enorme: fabrica a caseína do leite (Aula 5).'},
+ rea:{n:'Retículo endoplasmático agranular (liso)',cargo:'Laboratório de lipídios e desintoxicação',faz:'Rede de tubos sem ribossomos. Produz lipídios, como os das membranas e alguns hormônios, e inativa substâncias tóxicas, como álcool e remédios.',onde:'Animal e vegetal',cur:'Nas células do fígado ele é muito desenvolvido e pode aumentar em quem usa álcool ou certos remédios com frequência (Aula 8).'},
  golgi:{n:'Complexo golgiense',cargo:'Agência dos correios',faz:'Pilha de bolsas achatadas. Recebe proteínas do retículo, modifica, empacota em vesículas e envia cada uma ao destino certo. Também forma os lisossomos.',onde:'Animal e vegetal',cur:'Na célula vegetal, ele produz substâncias que vão formar a parede celular.'},
  lisossomo:{n:'Lisossomos',cargo:'Equipe de reciclagem',faz:'Bolsinhas com enzimas digestivas. Digerem o que a célula englobou e também partes velhas da própria célula (autofagia).',onde:'Animal (nas plantas, o vacúolo faz boa parte desse trabalho)',cur:'Um macrófago só consegue destruir as bactérias que englobou porque os lisossomos se juntam à vesícula e as digerem.'},
  peroxissomo:{n:'Peroxissomos',cargo:'Brigada antitóxica',faz:'Bolsinhas com enzimas que quebram ácidos graxos e eliminam a água oxigenada (H₂O₂) formada nessas reações, transformando-a em água e oxigênio.',onde:'Animal e vegetal',cur:'Em sementes ricas em óleo, como as de girassol e mamona, peroxissomos especiais ajudam a transformar a gordura em açúcar para o broto crescer.'},
  mitocondria:{n:'Mitocôndrias',cargo:'Usina de energia',faz:'Realizam as etapas finais da respiração celular aeróbia: usam o gás oxigênio para tirar a energia da glicose e guardá-la em ATP.',onde:'Animal e vegetal',cur:'Têm DNA e ribossomos próprios, parecidos com os das bactérias. As plantas também têm mitocôndrias e respiram de dia e de noite.'},
- centriolo:{n:'Centríolos',cargo:'Organizadores das fibras',faz:'Par de cilindros formados por microtúbulos, um perpendicular ao outro. Organizam as fibras que separam os cromossomos na divisão celular e formam a base de cílios e flagelos.',onde:'Animal (a maioria das plantas com flores não tem)',cur:'A cauda do espermatozoide nasce de um centríolo. Você vai ver os centríolos em ação na mitose (Aula 11).'},
+ centriolo:{n:'Centríolos',cargo:'Organizadores das fibras',faz:'Par de cilindros formados por microtúbulos, um perpendicular ao outro. Organizam as fibras que separam os cromossomos na divisão celular e formam a base de cílios e flagelos.',onde:'Animal (a maioria das plantas com flores não tem)',cur:'A cauda do espermatozoide nasce de um centríolo. Você vai ver os centríolos em ação na mitose (Aula 10).'},
  vacuolo:{n:'Vacúolos',cargo:'Caixa-d’água e despensa',faz:'Guardam água, sais, açúcares, pigmentos e substâncias de defesa. Cheio de água, o vacúolo central empurra o citoplasma contra a parede e mantém a célula firme (túrgida).',onde:'Vegetal (o vacúolo central grande é típico das plantas)',cur:'O roxo de muitas flores e frutos vem de pigmentos guardados no vacúolo. Quando uma planta murcha, seus vacúolos perderam água.'},
  plasto:{n:'Plastos',cargo:'Cozinha solar e armazéns',faz:'Família de organelas das plantas. Cloroplastos têm clorofila e fazem fotossíntese; cromoplastos guardam pigmentos amarelos, laranja e vermelhos; leucoplastos não têm cor e armazenam substâncias como o amido.',onde:'Vegetal',cur:'Um tipo pode virar outro: quando o umbu amadurece, cloroplastos da casca viram cromoplastos. Experimente mais abaixo.'},
  parede:{n:'Parede celular',cargo:'Muralha',faz:'Camada rígida por fora da membrana. Sustenta e protege a célula e impede que ela estoure quando absorve muita água.',onde:'Vegetal (de celulose) e bacteriana (de peptidoglicano)',cur:'A penicilina impede a bactéria de montar a parede; sem ela, a bactéria estoura. Nossas células não têm parede, por isso não são atingidas.'},
@@ -1821,7 +1812,7 @@ function drawMandioca(lugol){
   o+=`<text x="440" y="246" text-anchor="middle" font-size="12.5" fill="${O6.ink}" font-weight="700">leucoplastos de uma célula da raiz de mandioca (ampliados)</text>`;
   return o;}
 INIT.funcoes=root=>{
-  root.append(head('Aula 6 · Tema 2, p. 26–30','Crachás das organelas','Quem trabalha em cada célula, e fazendo o quê? Visite uma célula da cabra, uma célula da folha e uma bactéria, colecione os crachás de cada estrutura, desvende enigmas e descubra quem trabalha em todas as células e quem é exclusivo de uma.'));
+  root.append(head('Aula 4 · Tema 2, p. 26–30','Crachás das organelas','Quem trabalha em cada célula, e fazendo o quê? Visite uma célula da cabra, uma célula da folha e uma bactéria, colecione os crachás de cada estrutura, desvende enigmas e descubra quem trabalha em todas as células e quem é exclusivo de uma.'));
   // 1. Explorador
   const vistos=store.get('cra-vistos',{});let cel='animal',sel=null,labels=true;
   const NOMEC={animal:'Célula animal',vegetal:'Célula vegetal (folha)',bact:'Célula bacteriana'};
@@ -1900,12 +1891,12 @@ INIT.funcoes=root=>{
       {t:'Fabricar a enzima que quebra a lactose do leite',a:'ribossomo',why:'Enzimas são proteínas, e proteínas são feitas pelos ribossomos.'},
       {t:'Guardar as instruções para fazer bactérias-filhas iguais a ela',a:'nucleoide',why:'O DNA fica no nucleoide e é copiado antes de a bactéria se dividir.'}]}),
     qq('Por que a penicilina mata bactérias, mas não destrói as células do nosso corpo?',['Porque impede a formação da parede celular, que nossas células não têm','Porque destrói o núcleo da bactéria','Porque desliga as mitocôndrias'],0,'A penicilina atrapalha a montagem da parede de peptidoglicano. Células animais não têm parede, e a bactéria não tem núcleo nem mitocôndrias.'),
-    qq('Uma célula da folha tem cloroplastos. Ela também precisa de mitocôndrias?',['Sim: os cloroplastos produzem glicose, e as mitocôndrias tiram a energia dela na respiração','Não: o cloroplasto substitui a mitocôndria','Só à noite'],0,'Fotossíntese e respiração são complementares. A planta respira o tempo todo, de dia e de noite (Aula 16).')));
+    qq('Uma célula da folha tem cloroplastos. Ela também precisa de mitocôndrias?',['Sim: os cloroplastos produzem glicose, e as mitocôndrias tiram a energia dela na respiração','Não: o cloroplasto substitui a mitocôndria','Só à noite'],0,'Fotossíntese e respiração são complementares. A planta respira o tempo todo, de dia e de noite (Aula 15).')));
 };
 
-// ================= Aula 7: Porteiro da membrana =================
+// ================= Aula 6: Porteiro da membrana =================
 INIT.membrana=root=>{
-  root.append(head('Aula 7 · Tema 2, p. 31–34','Porteiro da membrana','Como uma célula controla as trocas com o ambiente? Escolha uma substância, observe como ela atravessa a membrana e descubra quando a célula gasta ATP.'));
+  root.append(head('Aula 6 · Tema 2, p. 31–34','Porteiro da membrana','Como uma célula controla as trocas com o ambiente? Escolha uma substância, observe como ela atravessa a membrana e descubra quando a célula gasta ATP.'));
   const W=640,H=360,MX=320,MW=26;const cv=h('canvas',{width:W*2,height:H*2,'aria-label':'Simulação de partículas atravessando a membrana'});const ctx=cv.getContext('2d');ctx.scale(2,2);
   let mode='o2',carriers=true,atpOn=true,atpUsed=0,parts=[],raf=null,pumpFlash=0;
   const CH=[90,270],PUMP=180;
@@ -1983,13 +1974,13 @@ INIT.membrana=root=>{
 };
 
 
-// ================= Aula 8: Batata no sal =================
+// ================= Aula 7: Batata no sal =================
 const SAL=[0,1,2,5,10],TEMPO=[10,20,30,40],ESP=[0.5,1,1.5];
 function osmPct(c,t,esp,murcha){const c0=murcha?1.3:.9,gain=murcha?14:8;const eq=c<c0?gain*(1-c/c0):-30*(1-Math.exp(-(c-c0)/3.5));const tau=28*esp*esp;return eq*(1-Math.exp(-t/tau));}
 IL.hemNormal=()=>`<rect width="120" height="90" fill="#fbeeee"/><ellipse cx="60" cy="45" rx="32" ry="30" fill="#d9534f"/><ellipse cx="60" cy="45" rx="15" ry="14" fill="#e98b87"/>`;
 IL.hemInch=()=>`<rect width="120" height="90" fill="#fbeeee"/><circle cx="60" cy="45" r="36" fill="#e46b66"/><path d="M84,24 l10,-8 M90,40 l12,-2 M84,66 l10,8" stroke="#d9534f" stroke-width="3" stroke-linecap="round"/>`;
 IL.hemMurcha=()=>{let p='';for(let k=0;k<16;k++){const a=k/16*6.283,r1=24,r2=31;p+=`${k?'L':'M'}${60+Math.cos(a)*r2},${45+Math.sin(a)*r2} L${60+Math.cos(a+.2)*r1},${45+Math.sin(a+.2)*r1} `;}return `<rect width="120" height="90" fill="#fbeeee"/><path d="${p}Z" fill="#b8403b"/>`;};
-// ---------- Aula 8: recursos visuais (palitos, balança, dobra, lupa, desafio, cotidiano) ----------
+// ---------- Aula 7: recursos visuais (palitos, balança, dobra, lupa, desafio, cotidiano) ----------
 // Palito de batata dentro do copo: incha e fica reto quando ganha água; encolhe, enruga e tomba quando perde.
 function osmStrip(x,base,len,w,pct,dir=1,col='#f2deb0',stroke='#b9975a'){
   // o palito tomba para o lado (dir) só até a parede interna do copo; o resto da perda vira a ponta caindo para baixo
@@ -2074,7 +2065,7 @@ function osmCotidiano(){return h('div',{class:'panel stack'},h('h3',{},'Osmose n
     {t:'Soro fisiológico (0,9%) aplicado na veia',a:'I',why:'É isotônico em relação ao sangue: as hemácias não incham nem murcham.'}]}));}
 
 INIT.osmose=root=>{
-  root.append(head('Aula 8 · Tema 2, p. 32–36','Batata no sal','O sal altera a quantidade de água em um tecido vegetal? Monte os copos com palitos de batata, pese, acelere o tempo e veja os palitos mudarem. Depois teste a dobra, olhe as células na lupa e encare o desafio.'));
+  root.append(head('Aula 7 · Tema 2, p. 32–36','Batata no sal','O sal altera a quantidade de água em um tecido vegetal? Monte os copos com palitos de batata, pese, acelere o tempo e veja os palitos mudarem. Depois teste a dobra, olhe as células na lupa e encare o desafio.'));
   const cfg=store.get('osm-cfg',{A:{sal:0,tempo:20,esp:1},B:{sal:5,tempo:20,esp:1},murcha:false});
   let data=store.get('osm-sim',null);let phase=data&&data.fin?3:data?1:0;let mode='sim';
   const saveCfg=()=>store.set('osm-cfg',cfg);
@@ -2152,7 +2143,7 @@ INIT.osmose=root=>{
 };
 
 
-// ================= Cromossomos de cartão (usados nas aulas 10 a 13) =================
+// ================= Cromossomos de cartão (usados nas aulas 9 a 12) =================
 // Convenção do Apêndice 3: par longo A (materno) / a (paterno); par curto B (materno) / b (paterno).
 // Cores + marcas (pontos ou listras) + letras, para não depender só da cor.
 const CHR={M:{col:'#e3a04f',mark:'dots'},F:{col:'#6f9fd1',mark:'stripes'}};
@@ -2171,7 +2162,7 @@ function chromo({x,y,len,c,dup,label,cen=.36,splay=0,segs,segs2,lab=true}){
 const LEN={A:70,a:70,B:42,b:42};const ORI={A:'M',a:'F',B:'M',b:'F'};
 
 INIT.nucleo=root=>{
-  root.append(head('Aula 10 · Tema 3, p. 38–40','Do novelo ao cromossomo','DNA e cromossomo são coisas sem relação? Explore o núcleo, condense o DNA até ele virar cromossomo e treine a diferença entre homólogos e cromátides-irmãs.'));
+  root.append(head('Aula 9 · Tema 3, p. 38–40','Do novelo ao cromossomo','DNA e cromossomo são coisas sem relação? Explore o núcleo, condense o DNA até ele virar cromossomo e treine a diferença entre homólogos e cromátides-irmãs.'));
   // Núcleo explorável
   const NUC={env:['Envoltório nuclear','Duas membranas que separam o material genético do citoplasma. É contínuo com o retículo endoplasmático.'],poro:['Poros nucleares','Aberturas no envoltório que controlam a passagem de moléculas, como o RNA que sai para o citoplasma.'],nucleolo:['Nucléolo','Região densa onde se formam as subunidades dos ribossomos. Não tem membrana.'],plasma:['Nucleoplasma','O “líquido” interno do núcleo, onde ficam a cromatina e o nucléolo.'],crom:['Cromatina','DNA associado a proteínas (histonas), pouco condensado. É assim que o material genético fica na maior parte do tempo, na interfase.']};
   const nsv=svgEl('0 0 400 280',`<rect width="400" height="280" fill="#fbe9dd"/>
@@ -2223,7 +2214,7 @@ INIT.nucleo=root=>{
 };
 
 
-// ================= Aula 11: Cicatrização em ação (ciclo celular, 2n = 4) =================
+// ================= Aula 10: Cicatrização em ação (ciclo celular, 2n = 4) =================
 const SET=[['A','M'],['a','F'],['B','M'],['b','F']];
 const sc8=l=>LEN[l]*.62;
 function cellPhase(ph){
@@ -2251,7 +2242,7 @@ const FASES=[
  {k:'Citocinese',grp:'Divisão do citoplasma',cr:4,ct:4,pl:'2n',dna:'2C',t:'Citocinese: o citoplasma se divide. Resultado: duas células-filhas 2n = 4, iguais à célula-mãe. Contagem POR CÉLULA.'},
 ];
 INIT.mitose=root=>{
-  root.append(head('Aula 11 · Tema 3, p. 41–42','Cicatrização em ação','Como uma ferida pode cicatrizar? Acompanhe uma célula 2n = 4 pelo ciclo celular e veja a ferida fechar a cada divisão.'));
+  root.append(head('Aula 10 · Tema 3, p. 41–42','Cicatrização em ação','Como uma ferida pode cicatrizar? Acompanhe uma célula 2n = 4 pelo ciclo celular e veja a ferida fechar a cada divisão.'));
   let i=0,divs=store.get('mit-divs',0);const sv=document.createElementNS(NS,'svg');sv.setAttribute('viewBox','0 0 400 260');sv.setAttribute('class','svgbox');
   const strip=h('div',{class:'phase-strip'});const info=h('div',{class:'info-card'});
   const cCr=counter('Cromossomos (centrômeros)','4',true),cCt=counter('Cromátides','4'),cPl=counter('Ploidia','2n'),cDna=counter('Quantidade de DNA','2C');
@@ -2282,9 +2273,9 @@ INIT.mitose=root=>{
 };
 
 
-// ================= Aula 12: Loteria dos gametas (meiose, 2n = 4) =================
+// ================= Aula 11: Loteria dos gametas (meiose, 2n = 4) =================
 INIT.meiose=root=>{
-  root.append(head('Aula 12 · Tema 3, p. 43–44','Loteria dos gametas','Por que a fecundação não dobra o número de cromossomos a cada geração? Faça a meiose de uma célula 2n = 4 já duplicada, ligue o crossing-over e sorteie o alinhamento dos pares.'));
+  root.append(head('Aula 11 · Tema 3, p. 43–44','Loteria dos gametas','Por que a fecundação não dobra o número de cromossomos a cada geração? Faça a meiose de uma célula 2n = 4 já duplicada, ligue o crossing-over e sorteie o alinhamento dos pares.'));
   let st=0,cross=true,oA='A',oB='B',didCross=false;
   const L=l=>LEN[l]*.6;
   const STEPS=[
@@ -2347,7 +2338,7 @@ INIT.meiose=root=>{
 };
 
 
-// ================= Aula 13: Duelo mitose × meiose =================
+// ================= Aula 12: Duelo mitose × meiose =================
 IL.pele=()=>`<rect width="120" height="90" fill="#f6e3d3"/><rect width="120" height="26" fill="#dcecf5"/>${[...Array(7)].map((_,i)=>`<rect x="${i*17+2}" y="28" width="15" height="12" rx="3" fill="#e8b49a" stroke="#b07a5a"/>`).join('')}<path d="M48,26 l12,10 l12,-10" stroke="#c0392b" stroke-width="3" fill="none"/><rect y="56" width="120" height="34" fill="#f0d0b8"/>`;
 IL.esperma=()=>`<rect width="120" height="90" fill="#eef3f6"/>${[[30,30],[70,50],[50,70],[90,24]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="6" ry="4" fill="#7b5a9e"/><path d="M${x+6},${y} q8,-4 14,2 t14,0" stroke="#7b5a9e" stroke-width="1.6" fill="none"/>`).join('')}`;
 IL.raiz=()=>`<rect width="120" height="90" fill="#f4ecd8"/><rect y="20" width="120" height="70" fill="#b98a55"/><path d="M60,0 v24" stroke="#5b9a45" stroke-width="5"/><path d="M60,22 q-2,30 0,60" stroke="#efe3c4" stroke-width="5" fill="none"/><path d="M60,40 q-14,10 -24,24 M60,52 q14,8 22,22" stroke="#efe3c4" stroke-width="2.4" fill="none"/><circle cx="60" cy="80" r="4" fill="#d9822b"/>`;
@@ -2357,7 +2348,7 @@ IL.figado=()=>`<rect width="120" height="90" fill="#f4ecd8"/><path d="M14,40 q20
 IL.medula=()=>`<rect width="120" height="90" fill="#fbeeee"/><rect x="10" y="30" width="100" height="30" rx="15" fill="#efe3c4" stroke="#b9975a" stroke-width="2"/><rect x="24" y="36" width="72" height="18" rx="9" fill="#d9534f" opacity=".7"/>${[[30,20],[52,74],[80,18],[96,72]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="7" ry="6" fill="#d9534f"/><ellipse cx="${x}" cy="${y}" rx="3" ry="2.6" fill="#e98b87"/>`).join('')}`;
 IL.cartaz=()=>`<rect width="120" height="90" fill="#fff6dc"/><circle cx="96" cy="18" r="10" fill="#f2b640"/><text x="8" y="22" font-size="9" font-weight="800" fill="#8a3560">CARTAZ</text>`;
 INIT.duelo=root=>{
-  root.append(head('Aula 13 · Tema 3, p. 38–45','Duelo mitose × meiose','Toda divisão celular tem o mesmo resultado? Complete o quadro, resolva as situações e leia um cartaz com olhar crítico.'));
+  root.append(head('Aula 12 · Tema 3, p. 38–45','Duelo mitose × meiose','Toda divisão celular tem o mesmo resultado? Complete o quadro, resolva as situações e leia um cartaz com olhar crítico.'));
   const R=['Número de divisões','Células produzidas a partir de uma','Ploidia das células-filhas','Filhas geneticamente iguais à célula-mãe?','Pareamento de homólogos','Crossing-over','Para que serve no corpo humano'];
   const O=[['1','2'],['2','4'],['Igual à da célula-mãe','Metade da célula-mãe'],['Sim (salvo mutações)','Não'],['Ocorre','Não ocorre'],['Ocorre','Não ocorre'],['Crescimento, reposição e cicatrização','Formação de gametas']];
   root.append(h('div',{class:'panel stack'},h('h3',{},'Quadro comparativo'),
@@ -2389,10 +2380,10 @@ INIT.duelo=root=>{
 };
 
 
-// ================= Aula 14: Usina de ATP =================
+// ================= Aula 13: Usina de ATP =================
 IL.lagarta=()=>`<rect width="120" height="90" fill="#e6f0d8"/><g transform="translate(60 50) rotate(-15)"><path d="M-46,0 q46,-34 92,0 q-46,34 -92,0z" fill="#5b9a45"/><path d="M-46,0 h92" stroke="#3d7032" stroke-width="1.6"/><path d="M30,-10 q8,8 16,10" fill="#e6f0d8"/></g>${[0,1,2,3,4,5,6].map(i=>`<circle cx="${30+i*8}" cy="${56-Math.sin(i*.9)*4}" r="5.5" fill="${i===6?'#4a6a2a':'#9cc35a'}" stroke="#4a6a2a"/>`).join('')}`;
 INIT.atp=root=>{
-  root.append(head('Aula 14 · Tema 4, p. 46–47','Usina de ATP','Comer é suficiente para a célula usar a energia do alimento? Quebre glicose para recarregar ATP e gaste essa energia em trabalho celular.'));
+  root.append(head('Aula 13 · Tema 4, p. 46–47','Usina de ATP','Comer é suficiente para a célula usar a energia do alimento? Quebre glicose para recarregar ATP e gaste essa energia em trabalho celular.'));
   const MAX=12;let st=store.get('atp-st',{atp:4,gli:0,co2:0,calor:0,trab:0});const save=()=>store.set('atp-st',st);
   const sv=document.createElementNS(NS,'svg');sv.setAttribute('viewBox','0 0 520 220');sv.setAttribute('class','svgbox');
   const msg=h('div',{class:'info-card'},h('strong',{},'Comece quebrando uma glicose ou tente fazer um trabalho.'),h('span',{},'Cada ⚡ no desenho representa muitas moléculas de ATP.'));
@@ -2407,7 +2398,7 @@ INIT.atp=root=>{
     if(flash)o+=`<rect x="160" y="40" width="200" height="64" rx="10" fill="${flash}" opacity=".25"/>`;
     sv.innerHTML=o;cG.set(st.gli);cC.set(st.co2);cT.set(st.trab);cA.set(st.atp+' de '+MAX);}
   const cA=counter('ATP disponível','',true),cG=counter('Glicoses quebradas','0'),cC=counter('CO₂ liberado (unid.)','0'),cT=counter('Trabalhos feitos','0');
-  const TASKS=[['Contração muscular',3,'Proteínas do músculo usam ATP para deslizar e contrair.'],['Síntese de uma proteína',2,'Anabolismo: juntar aminoácidos consome energia do ATP.'],['Bomba de sódio e potássio',2,'Transporte ativo: 1 ATP a cada ciclo da bomba (lembra da aula 7?).'],['Produzir glicogênio (reserva)',2,'Anabolismo: guardar glicose em forma de reserva também gasta ATP.']];
+  const TASKS=[['Contração muscular',3,'Proteínas do músculo usam ATP para deslizar e contrair.'],['Síntese de uma proteína',2,'Anabolismo: juntar aminoácidos consome energia do ATP.'],['Bomba de sódio e potássio',2,'Transporte ativo: 1 ATP a cada ciclo da bomba (lembra da aula 6?).'],['Produzir glicogênio (reserva)',2,'Anabolismo: guardar glicose em forma de reserva também gasta ATP.']];
   const quebrar=()=>{if(st.atp>=MAX){msg.innerHTML='';msg.append(h('strong',{},'A “bateria” já está cheia.'),h('span',{},'As células mantêm pouco ATP pronto e o reciclam o tempo todo: gaste em algum trabalho.'));return;}
     st.gli++;st.co2+=6;st.atp=Math.min(MAX,st.atp+5);st.calor+=3;save();draw('#e58f4f');msg.innerHTML='';msg.append(h('strong',{},'Glicose quebrada: catabolismo'),h('span',{},'Parte da energia da glicose foi transferida para formar ATP a partir de ADP + fosfato; outra parte virou calor. Saíram CO₂ e água.'));};
   const tbtns=TASKS.map(([n,c,t])=>h('button',{class:'btn',onclick:()=>{if(st.atp<c){msg.innerHTML='';msg.append(h('strong',{},'ATP insuficiente!'),h('span',{},'Sem ATP, o trabalho para. É preciso quebrar glicose (ou outra molécula orgânica) para recarregar.'));draw('#b03c35');return;}
@@ -2432,13 +2423,13 @@ INIT.atp=root=>{
 };
 
 
-// ================= Aula 15: De onde vem o umbuzeiro? =================
+// ================= Aula 14: De onde vem o umbuzeiro? =================
 IL.solo=()=>`<rect width="120" height="90" fill="#f4ecd8"/><rect y="40" width="120" height="50" fill="#a87b4f"/>${(()=>{const r=seeded(4);let o='';for(let i=0;i<20;i++)o+=`<circle cx="${r()*120}" cy="${46+r()*40}" r="${1+r()*2.5}" fill="#6f4c2a"/>`;return o;})()}`;
 IL.agua=()=>`<rect width="120" height="90" fill="#e6f0f7"/><path d="M60,14 C74,34 82,46 82,58 a22,22 0 0 1 -44,0 C38,46 46,34 60,14z" fill="#3f86c6"/>`;
 IL.ar=()=>`<rect width="120" height="90" fill="#dcecf5"/>${[[30,30],[70,24],[50,58],[92,52]].map(([x,y])=>`<g transform="translate(${x} ${y})"><circle r="7" fill="#556459"/><circle cx="-11" r="5.5" fill="#d9534f"/><circle cx="11" r="5.5" fill="#d9534f"/></g>`).join('')}<text x="60" y="84" text-anchor="middle" font-size="10" font-weight="800" fill="#2a6497">CO₂ do ar</text>`;
 IL.luz=()=>`<rect width="120" height="90" fill="#fdf3d8"/>${P.sun(60,45,18)}`;
 INIT.fotossintese=root=>{
-  root.append(head('Aula 15 · Tema 4, p. 48–50','De onde vem o umbuzeiro?','De onde vem a matéria que permite uma planta crescer? Controle a luz, o CO₂ e a água de um cloroplasto e descubra como as duas etapas da fotossíntese dependem uma da outra.'));
+  root.append(head('Aula 14 · Tema 4, p. 48–50','De onde vem o umbuzeiro?','De onde vem a matéria que permite uma planta crescer? Controle a luz, o CO₂ e a água de um cloroplasto e descubra como as duas etapas da fotossíntese dependem uma da outra.'));
   root.append(h('div',{class:'panel stack'},h('h3',{},'Um experimento antigo'),h('div',{class:'cols'},
     h('div',{class:'info-card'},h('strong',{},'O salgueiro de van Helmont (século XVII)'),h('span',{},'Ele plantou uma muda de cerca de 2,3 kg num vaso com terra pesada e só regou com água por 5 anos. A árvore passou a pesar cerca de 77 kg, mas a terra perdeu só uns 57 g.'),h('span',{class:'note'},'Ele concluiu que a massa vinha da água. Hoje sabemos que boa parte da massa seca vem do carbono do CO₂ do ar, fixado na fotossíntese.')),
     quickQ('Qual parte da conclusão de van Helmont estava incompleta?',['Ele não considerou o ar (CO₂) como fonte de matéria','Ele pesou errado a terra','A planta não cresceu de verdade'],0,'Na época não se conhecia o papel dos gases. A água entra no processo, mas o carbono da matéria orgânica vem do CO₂.'))));
@@ -2485,7 +2476,7 @@ INIT.fotossintese=root=>{
 };
 
 
-// ================= Aula 16: Mapa da respiração =================
+// ================= Aula 15: Mapa da respiração =================
 IL.nitri=()=>`<rect width="120" height="90" fill="#f4ecd8"/><rect y="22" width="120" height="68" fill="#a87b4f"/>${[[24,46],[60,60],[96,44],[40,74],[84,76]].map(([x,y],i)=>`<rect x="${x-8}" y="${y-3}" width="16" height="6" rx="3" fill="${i%2?'#7e5aa8':'#a3601b'}"/>`).join('')}<text x="60" y="16" text-anchor="middle" font-size="9" font-weight="800" fill="#3b2a17">NH₃ → NO₂⁻ → NO₃⁻</text>`;
 function mitoMap(show){let o=`<rect width="520" height="280" fill="var(--surface-2)"/><rect x="10" y="10" width="500" height="260" rx="40" fill="#fbe9dd" stroke="#b07a5a" stroke-width="4"/><text x="40" y="44" font-size="15" font-weight="800" fill="#7a4e2a">CITOSOL</text>`;
   o+=`<ellipse cx="320" cy="146" rx="170" ry="92" fill="#f6c9a6" stroke="#a35a24" stroke-width="4"/><ellipse cx="320" cy="146" rx="158" ry="80" fill="#f9dcc4" stroke="#a35a24" stroke-width="3"/>`;
@@ -2495,7 +2486,7 @@ function mitoMap(show){let o=`<rect width="520" height="280" fill="var(--surface
   if(show.gli)o+=tag(90,110,'Glicólise','#2a6497');if(show.pir)o+=tag(250,128,'Oxidação do piruvato','#1d6b58');if(show.kre)o+=tag(320,176,'Ciclo de Krebs','#1d6b58');if(show.fos)o+=tag(384,108,'Fosforilação oxidativa','#8a3560');
   return o;}
 INIT.respiracao=root=>{
-  root.append(head('Aula 16 · Tema 4, p. 51–54','Mapa da respiração','Como obter energia sem luz e como usar a glicose? Compare quimiossíntese e fotossíntese, monte o mapa da respiração celular e acompanhe uma planta ao longo do dia.'));
+  root.append(head('Aula 15 · Tema 4, p. 51–54','Mapa da respiração','Como obter energia sem luz e como usar a glicose? Compare quimiossíntese e fotossíntese, monte o mapa da respiração celular e acompanhe uma planta ao longo do dia.'));
   const L_='Luz',Ox='Oxidação de substâncias inorgânicas';
   root.append(h('div',{class:'panel stack'},h('h3',{},'Produzir matéria orgânica sem luz'),
     h('div',{class:'det-hero'},ilu('nitri','ilu'),h('div',{class:'info-card'},h('strong',{},'Bactérias nitrificantes do solo'),h('span',{},'Elas oxidam a amônia (NH₃) a nitrito e o nitrito a nitrato. A energia liberada nessas reações é usada para fixar CO₂ e produzir matéria orgânica, sem luz. Isso é quimiossíntese. Em fontes hidrotermais do fundo do mar, outras bactérias oxidam compostos de enxofre.'))),
@@ -2529,7 +2520,7 @@ INIT.respiracao=root=>{
 };
 
 
-// ================= Aula 17: Laboratório do pão =================
+// ================= Aula 16: Laboratório do pão =================
 const COND=[['A','Controle','100 mL de água · 0 g de açúcar · 0 g de fermento',0],['B','Sem levedura','100 mL de água · 5 g de açúcar · 0 g de fermento',0],['C','Sem açúcar adicionado','100 mL de água · 0 g de açúcar · 2 g de fermento',2.4],['D','Levedura e açúcar','100 mL de água · 5 g de açúcar · 2 g de fermento',13]];
 const TEMPS=[['fria','Fria (≈ 15 °C)',.3],['morna','Morna (30–35 °C)',1],['quente','Muito quente (≈ 60 °C)',.03]];
 const NS_TXT='sem inflação mensurável';
@@ -2537,7 +2528,7 @@ function balloonC(vol){if(vol<35)return null;const r=Math.cbrt(3*vol/(4*Math.PI)
 function levStats(rows){// rows: {k,rep,v:[c0,c10,c20]} -> média por condição e tempo (null = sem inflação)
   const out={};COND.forEach(([k])=>{out[k]=[0,1,2].map(j=>{const vals=rows.filter(r=>r.k===k).map(r=>r.v[j]);const nums=vals.filter(v=>v!=null&&v!==''&&!isNaN(v));if(!vals.length)return undefined;if(!nums.length)return null;return nums.reduce((a,b)=>a+ +b,0)/nums.length;});});return out;}
 INIT.leveduras=root=>{
-  root.append(head('Aula 17 · Tema 4, p. 55 e 58','Laboratório do pão','O que faz a massa do pão crescer? Monte as garrafas virtuais A a D, coloque os balões e meça a circunferência aos 0, 10 e 20 minutos.'));
+  root.append(head('Aula 16 · Tema 4, p. 55 e 58','Laboratório do pão','O que faz a massa do pão crescer? Monte as garrafas virtuais A a D, coloque os balões e meça a circunferência aos 0, 10 e 20 minutos.'));
   const cfg=store.get('lev-cfg',{A:'morna',B:'morna',C:'morna',D:'morna'});let sim=store.get('lev-sim',null);let mode='sim';let clock=sim?sim.t:0;let anim=null;
   const bench=h('div',{class:'bench'});const warn=h('div',{});const ctrl=h('div',{class:'row'});const tbl=h('div',{});const clk=h('span',{class:'big-num mono'},'0 min');
   function newSim(){sim={t:0,cfg:{...cfg},f:{},data:{}};COND.forEach(([k])=>[1,2].forEach(r=>{sim.f[k+r]=Math.max(.5,1+gauss()*.15);sim.data[k+r]=[null,undefined,undefined];}));sim.data.measured=[true,false,false];clock=0;store.set('lev-sim',sim);}
@@ -2585,7 +2576,7 @@ INIT.leveduras=root=>{
 };
 
 
-// ================= Aula 18: Do balão ao gráfico =================
+// ================= Aula 17: Do balão ao gráfico =================
 IL.puba=()=>`<rect width="120" height="90" fill="#f4ecd8"/><path d="M24,30 h72 l-6,52 h-60z" fill="#cfe3ef" stroke="#6a7378" stroke-width="2"/>${[[40,58],[60,64],[78,56],[52,72],[70,74]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="11" ry="5" fill="#efe3c4" stroke="#b9975a" transform="rotate(${x%3*20-20} ${x} ${y})"/>`).join('')}${[[46,40],[64,36],[80,44]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2" fill="#fff" stroke="#6a7378" stroke-width=".6"/>`).join('')}`;
 IL.tipiti=()=>`<rect width="120" height="90" fill="#f4ecd8"/><path d="M54,6 h12 l4,64 h-20z" fill="#c9a26a" stroke="#8a6d3b" stroke-width="1.5"/>${[...Array(8)].map((_,i)=>`<path d="M52,${12+i*8} l16,6" stroke="#8a6d3b" stroke-width="1.2"/>`).join('')}<path d="M60,72 v10" stroke="#e8e0a8" stroke-width="3"/><ellipse cx="60" cy="84" rx="16" ry="4" fill="#e8e0a8"/>`;
 IL.forno=()=>`<rect width="120" height="90" fill="#f4ecd8"/><rect x="14" y="50" width="92" height="30" rx="4" fill="#a0603a"/><ellipse cx="60" cy="50" rx="46" ry="8" fill="#6a6f72"/><ellipse cx="60" cy="48" rx="38" ry="5" fill="#efe3c4"/><path d="M40,30 q4,-8 0,-14 M60,30 q4,-8 0,-14 M80,30 q4,-8 0,-14" stroke="#b9b2a6" stroke-width="2" fill="none"/>`;
@@ -2595,16 +2586,16 @@ function bacteriaMini(x,y){return `<rect x="${x-5}" y="${y-2}" width="10" height
 IL.pao=()=>`<rect width="120" height="90" fill="#f4ecd8"/>${P.bread(60,56,1.8)}`;
 IL.cuscuz=()=>`<rect width="120" height="90" fill="#f4ecd8"/><path d="M30,40 h60 v30 q0,8 -8,8 h-44 q-8,0 -8,-8z" fill="#9aa0a3"/><path d="M36,40 q24,-26 48,0z" fill="#f2c94c"/><path d="M50,24 q4,-8 0,-14 M70,24 q4,-8 0,-14" stroke="#b9b2a6" stroke-width="2" fill="none"/>`;
 INIT.fermentacao=root=>{
-  root.append(head('Aula 18 · Tema 4, p. 55–59','Do balão ao gráfico','Respiração e fermentação fornecem ATP da mesma forma? Transforme as medidas da aula 17 num gráfico, compare os processos e investigue a mandioca.'));
+  root.append(head('Aula 17 · Tema 4, p. 55–59','Do balão ao gráfico','Respiração e fermentação fornecem ATP da mesma forma? Transforme as medidas da aula 16 num gráfico, compare os processos e investigue a mandioca.'));
   const gr=document.createElementNS(NS,'svg');gr.setAttribute('class','chart');const gnote=h('div',{class:'stack',style:'gap:6px'});
   const COLS={A:'#8a8f94',B:'#2a6497',C:'#8a3560',D:'#a3601b'};
   function drawG(){const last=store.get('lev-last',null);gnote.innerHTML='';
-    if(!last||!last.rows||!last.rows.length){gr.innerHTML='';gnote.append(h('p',{class:'fb info'},'Ainda não há medidas da aula 17 neste aparelho. Faça o experimento virtual na Aula 17 e volte aqui.'),h('button',{class:'btn',onclick:()=>go('leveduras')},'Ir para a Aula 17'));return;}
+    if(!last||!last.rows||!last.rows.length){gr.innerHTML='';gnote.append(h('p',{class:'fb info'},'Ainda não há medidas da aula 16 neste aparelho. Faça o experimento virtual na Aula 16 e volte aqui.'),h('button',{class:'btn',onclick:()=>go('leveduras')},'Ir para a Aula 16'));return;}
     const st=levStats(last.rows);let mx=10;const series=[];const sem=[];
     COND.forEach(([k,n])=>{const pts=[0,10,20].map((t,j)=>[t,st[k][j]]);pts.forEach(([t,v])=>{if(v===null)sem.push(k+' aos '+t+' min');if(v)mx=Math.max(mx,v);});
       const num=pts.filter(p=>p[1]!=null&&p[1]!==undefined);if(num.length)series.push({name:k+' · '+n,color:COLS[k],points:num,dots:true});});
     if(series.length)lineChart(gr,{series,xMax:20,xStep:10,yMax:mx*1.15,xLabel:'tempo (min)',yLabel:'circunferência média (cm)',height:320});else gr.innerHTML='';
-    gnote.append(h('p',{class:'note'},'Fonte: '+(last.mode==='real'?'dados reais digitados na Aula 17':'experimento virtual da Aula 17')+'. Cada ponto é a média das réplicas.'));
+    gnote.append(h('p',{class:'note'},'Fonte: '+(last.mode==='real'?'dados reais digitados na Aula 16':'experimento virtual da Aula 16')+'. Cada ponto é a média das réplicas.'));
     if(sem.length)gnote.append(h('p',{class:'note'},'Sem inflação mensurável (não aparece como zero no gráfico): '+sem.join(', ')+'.'));}
   drawG();
   root.append(h('div',{class:'panel stack'},h('div',{class:'row',style:'justify-content:space-between'},h('h3',{},'Gráfico das garrafas'),h('button',{class:'btn sm',onclick:drawG},'Atualizar')),gr,gnote,
@@ -2640,7 +2631,7 @@ INIT.fermentacao=root=>{
 };
 
 
-// ================= Aula 19: Revisão integradora =================
+// ================= Aula 18: Revisão integradora =================
 const QZ=[
  ['A ideia de que seres vivos surgem espontaneamente da matéria sem vida contraria qual princípio da teoria celular?',['Todo ser vivo é formado por células','Toda célula se origina de outra célula','A célula é a unidade de função'],1,'Toda célula vem de outra célula preexistente.','pedra'],
  ['Qual nível de organização reúne diferentes tecidos que trabalham juntos?',['Célula','Órgão','Organismo','Tecido'],1,'Órgãos reúnem tecidos; sistemas reúnem órgãos.','celula'],
@@ -2662,7 +2653,7 @@ const QZ=[
 ];
 const OBJS=[['O1','Explico a teoria celular e ordeno os níveis de organização.','niveis'],['O2','Comparo bactéria, célula animal e vegetal e relaciono estruturas a funções.','tipos'],['O3','Explico difusão, osmose e transporte ativo.','osmose'],['O4','Relaciono DNA, cromatina e cromossomo e represento o ciclo celular.','mitose'],['O5','Comparo mitose e meiose, contando cromossomos e cromátides.','meiose'],['O6','Explico o papel do ATP e comparo fotossíntese, quimiossíntese, respiração e fermentação.','atp'],['O7','Formulo hipóteses, controlo variáveis e reconheço limites de um experimento.','leveduras'],['O8','Comunico explicações com base em evidências.','fermentacao']];
 INIT.revisao=root=>{
-  root.append(head('Aula 19 · Temas 2 a 4','Revisão integradora','Como estrutura, divisão e metabolismo se relacionam? Responda o quiz, leia a explicação de cada resposta e faça a autoavaliação.'));
+  root.append(head('Aula 18 · Temas 2 a 4','Revisão integradora','Como estrutura, divisão e metabolismo se relacionam? Responda o quiz, leia a explicação de cada resposta e faça a autoavaliação.'));
   let qi=0,resp=store.get('qz-resp',{});const qcard=h('div',{class:'panel stack',style:'padding:24px'});const qstats=h('div',{class:'stats'});
   function q(){const it=QZ[qi];const t=it[0],o=it[1],c=it[2],e=it[3];const done=Object.prototype.hasOwnProperty.call(resp,qi);qcard.innerHTML='';
     qcard.append(h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'eyebrow'},`Pergunta ${qi+1} de ${QZ.length}`),h('span',{class:'pill'+(done?' ok':'')},done?'Respondida':'Não respondida')));
@@ -2683,7 +2674,7 @@ INIT.revisao=root=>{
 };
 
 
-// ================= Ilustrações revisadas (Aulas 1 a 3) =================
+// ================= Ilustrações revisadas (Aulas 1 a 5) =================
 // Cabra Moxotó (raça do semiárido: pelagem creme, listra preta no dorso e na face)
 function goatPath(){return `M118,122 C140,108 200,103 258,105 C268,104 276,96 282,84 L290,70 C296,65 306,67 311,74 L333,99 C336,104 332,109 326,109 L317,110 C313,115 309,121 307,127 C303,142 297,153 291,161 L287,167 L285,224 L277,224 L274,176 L268,176 L266,224 L258,224 L255,172 C230,176 190,176 162,171 C160,180 158,188 160,196 L163,224 L155,224 L148,198 C146,190 145,182 145,175 L140,174 C138,184 136,192 138,200 L141,224 L133,224 L127,200 C119,182 113,152 118,122 Z`;}
 function goatFull(fill='#efe2c4',op=1){return `<g opacity="${op}"><path d="${goatPath()}" fill="${fill}" stroke="#8a7350" stroke-width="2" stroke-linejoin="round"/>
@@ -2806,7 +2797,7 @@ const CELLDRAW={
 };
 const PRESENT={bact:['parede','membrana','citoplasma','ribossomos','dna'],animal:['membrana','citoplasma','ribossomos','nucleo','dna','mitocondria'],vegetal:['parede','membrana','citoplasma','ribossomos','nucleo','dna','mitocondria','cloroplasto']};
 
-// Aula 3: célula secretora do alvéolo da glândula mamária (lactócito)
+// Aula 5: célula secretora do alvéolo da glândula mamária (lactócito)
 const ORG3={
  nucleo:{n:'Núcleo',x:210,y:238,f:'Fica na base da célula. Guarda o DNA; o gene da caseína é copiado em RNA mensageiro, que sai pelos poros do envoltório nuclear.'},
  rer:{n:'Retículo endoplasmático rugoso',x:100,y:214,f:'Bolsas achatadas cobertas de ribossomos, ligadas ao envoltório nuclear. A caseína é produzida pelos ribossomos e entra no retículo.'},
@@ -2868,17 +2859,7 @@ const SPEC=[
   {k:'mc',t:'Células da folha possuem mitocôndrias?',ch:['Sim','Não, porque fazem fotossíntese'],key:'Sim',pts:1},
   {k:'par',t:'Bilhete: por que uma bactéria é uma célula mesmo sem núcleo?',man:2},
   {k:'par',t:'Cite uma semelhança e uma diferença entre a bactéria da coalhada e uma célula da folha',man:2}]},
- {code:C1+'03',id:'organelas',titulo:'Aula 3 · Fábrica de leite de cabra',tipo:'Individual',desc:'Percurso da proteína, destinos das proteínas e citoesqueleto; comparação entre células animais e vegetais.',itens:[
-  {k:'mc',t:'Onde a caseína é produzida?',ch:['No núcleo','Nos ribossomos do retículo endoplasmático rugoso','No complexo golgiense','Nos lisossomos'],key:'Nos ribossomos do retículo endoplasmático rugoso',pts:1},
-  {k:'mc',t:'Qual estrutura modifica e empacota a caseína antes da secreção?',ch:['Mitocôndria','Retículo endoplasmático liso','Complexo golgiense','Lisossomo'],key:'Complexo golgiense',pts:1},
-  {k:'mc',t:'Como a caseína sai da célula?',ch:['Por difusão simples','Por exocitose: a vesícula se funde à membrana','Pelos poros do núcleo'],key:'Por exocitose: a vesícula se funde à membrana',pts:1},
-  {k:'mc',t:'Qual estrutura existe na célula vegetal e não existe na célula animal?',ch:['Mitocôndria','Parede celular','Ribossomo','Complexo golgiense'],key:'Parede celular',pts:1},
-  {k:'par',t:'Descreva o caminho da caseína, da produção até a secreção',man:2},
-  {k:'par',t:'Registre duas estruturas da célula vegetal e suas funções',man:2},
-  {k:'mc',t:'Onde é fabricada uma enzima que vai trabalhar no citosol?',ch:['Em ribossomos livres, no citosol','Em ribossomos aderidos ao retículo granular','No complexo golgiense'],key:'Em ribossomos livres, no citosol',pts:1},
-  {k:'mc',t:'Além de enviar proteínas para fora da célula, o complexo golgiense também:',ch:['Forma lisossomos e vesículas que ficam guardadas na célula','Produz ATP','Guarda o DNA'],key:'Forma lisossomos e vesículas que ficam guardadas na célula',pts:1},
-  {k:'mc',t:'Quando a colchicina desmonta os microtúbulos, o que acontece com as vesículas da célula?',ch:['Param de se deslocar, porque perdem os trilhos do citoesqueleto','Andam mais depressa','Viram lisossomos'],key:'Param de se deslocar, porque perdem os trilhos do citoesqueleto',pts:1}]},
- {code:C1+'04',id:'cebola',titulo:'Aula 4 · Microscópio de luz',tipo:'Individual',desc:'Roteiro de observação no microscópio virtual: cebola, bochecha e coalhada.',itens:[
+ {code:C1+'03',id:'cebola',titulo:'Aula 3 · Microscópio de luz',tipo:'Individual',desc:'Roteiro de observação no microscópio virtual: cebola, bochecha e coalhada.',itens:[
   {k:'txt',t:'Ampliação total usada (ocular × objetiva)',help:'Exemplo: 100× (10× × 10×). Se usou micrografia, escreva "micrografia".'},
   {k:'num',t:'Quantas células cabem, em fila, no diâmetro do campo (objetiva de 10×)?',opt:true},
   {k:'num',t:'Comprimento estimado de uma célula (µm)',opt:true},
@@ -2892,13 +2873,7 @@ const SPEC=[
   {k:'num',t:'Tamanho estimado de uma célula da bochecha (µm)',opt:true},
   {k:'num',t:'Comprimento estimado de uma bactéria da coalhada (µm)',opt:true},
   {k:'par',t:'Compare o tamanho das três células e explique por que as bactérias só ficaram nítidas na objetiva de 100×',man:2}]},
- {code:C1+'05',id:'eletronico',titulo:'Aula 5 · E com elétrons?',tipo:'Individual',desc:'Microscópio eletrônico: organelas da glândula mamária e do fígado.',itens:[
-  {k:'num',t:'Quantas das 12 estruturas do livro estão no seu álbum?',opt:true},
-  {k:'mc',t:'Qual microscópio permite ver as organelas no interior da célula?',ch:['Microscópio de luz','Microscópio eletrônico de varredura (MEV)','Microscópio eletrônico de transmissão (MET)'],key:'Microscópio eletrônico de transmissão (MET)',pts:1},
-  {k:'mc',t:'Por que um ribossomo (cerca de 25 nm) não aparece no microscópio de luz?',ch:['É menor que o menor detalhe que a luz consegue separar (cerca de 200 nm)','É transparente demais','Só existe em células animais'],key:'É menor que o menor detalhe que a luz consegue separar (cerca de 200 nm)',pts:1},
-  {k:'mc',t:'Qual das duas células tem mais retículo endoplasmático granular?',ch:['Glândula mamária','Fígado','Parecido nas duas'],key:'Glândula mamária',pts:1},
-  {k:'par',t:'No microscópio eletrônico, cite uma diferença entre as organelas da célula da glândula mamária e as da célula do fígado e explique como ela se relaciona com a função de cada célula',man:2}]},
- {code:C1+'06',id:'funcoes',titulo:'Aula 6 · Crachás das organelas',tipo:'Individual',desc:'Funções das estruturas das células animal, vegetal e bacteriana.',itens:[
+ {code:C1+'04',id:'funcoes',titulo:'Aula 4 · Crachás das organelas',tipo:'Individual',desc:'Funções das estruturas das células animal, vegetal e bacteriana.',itens:[
   {k:'num',t:'Crachás coletados na visita às três células (de 18)',opt:true},
   {k:'num',t:'Pontos no jogo “Quem sou eu?” (de 36)',opt:true},
   {k:'mc',t:'Qual estrutura existe nas células animal, vegetal e bacteriana?',ch:['Ribossomos','Mitocôndria','Núcleo','Parede celular'],key:'Ribossomos',pts:1},
@@ -2908,7 +2883,17 @@ const SPEC=[
   {k:'mc',t:'Qual organela digere o material que a célula animal englobou?',ch:['Lisossomo','Peroxissomo','Complexo golgiense','Centríolo'],key:'Lisossomo',pts:1},
   {k:'par',t:'Escreva o crachá de uma estrutura à sua escolha: nome, cargo (uma comparação), o que ela faz e em quais células trabalha',man:2},
   {k:'par',t:'Por que uma célula da folha precisa de mitocôndrias, se ela já tem cloroplastos?',man:2}]},
- {code:C1+'07',id:'membrana',titulo:'Aula 7 · Porteiro da membrana',tipo:'Individual',desc:'Cartões de situações e síntese sobre os transportes.',itens:[
+ {code:C1+'05',id:'organelas',titulo:'Aula 5 · Fábrica de leite de cabra',tipo:'Individual',desc:'Percurso da proteína, destinos das proteínas e citoesqueleto; comparação entre células animais e vegetais.',itens:[
+  {k:'mc',t:'Onde a caseína é produzida?',ch:['No núcleo','Nos ribossomos do retículo endoplasmático rugoso','No complexo golgiense','Nos lisossomos'],key:'Nos ribossomos do retículo endoplasmático rugoso',pts:1},
+  {k:'mc',t:'Qual estrutura modifica e empacota a caseína antes da secreção?',ch:['Mitocôndria','Retículo endoplasmático liso','Complexo golgiense','Lisossomo'],key:'Complexo golgiense',pts:1},
+  {k:'mc',t:'Como a caseína sai da célula?',ch:['Por difusão simples','Por exocitose: a vesícula se funde à membrana','Pelos poros do núcleo'],key:'Por exocitose: a vesícula se funde à membrana',pts:1},
+  {k:'mc',t:'Qual estrutura existe na célula vegetal e não existe na célula animal?',ch:['Mitocôndria','Parede celular','Ribossomo','Complexo golgiense'],key:'Parede celular',pts:1},
+  {k:'par',t:'Descreva o caminho da caseína, da produção até a secreção',man:2},
+  {k:'par',t:'Registre duas estruturas da célula vegetal e suas funções',man:2},
+  {k:'mc',t:'Onde é fabricada uma enzima que vai trabalhar no citosol?',ch:['Em ribossomos livres, no citosol','Em ribossomos aderidos ao retículo granular','No complexo golgiense'],key:'Em ribossomos livres, no citosol',pts:1},
+  {k:'mc',t:'Além de enviar proteínas para fora da célula, o complexo golgiense também:',ch:['Forma lisossomos e vesículas que ficam guardadas na célula','Produz ATP','Guarda o DNA'],key:'Forma lisossomos e vesículas que ficam guardadas na célula',pts:1},
+  {k:'mc',t:'Quando a colchicina desmonta os microtúbulos, o que acontece com as vesículas da célula?',ch:['Param de se deslocar, porque perdem os trilhos do citoesqueleto','Andam mais depressa','Viram lisossomos'],key:'Param de se deslocar, porque perdem os trilhos do citoesqueleto',pts:1}]},
+ {code:C1+'06',id:'membrana',titulo:'Aula 6 · Porteiro da membrana',tipo:'Individual',desc:'Cartões de situações e síntese sobre os transportes.',itens:[
   {k:'hdr',t:'Classifique o mecanismo de cada situação'},
   {k:'mc',t:'O₂ passando do alvéolo para o sangue',ch:MECH,key:'Difusão simples',pts:1},
   {k:'mc',t:'Glicose entrando na hemácia por proteína, a favor do gradiente',ch:MECH,key:'Difusão facilitada',pts:1},
@@ -2919,7 +2904,7 @@ const SPEC=[
   {k:'hdr',t:'Endocitose, exocitose e lisossomos'},
   {k:'mc',t:'Como um macrófago faz uma bactéria entrar na célula?',ch:['Por difusão simples','Pela bomba de sódio e potássio','Por fagocitose: a membrana envolve a bactéria e forma uma vesícula'],key:'Por fagocitose: a membrana envolve a bactéria e forma uma vesícula',pts:1},
   {k:'mc',t:'Depois que um macrófago engloba uma bactéria numa vesícula, o que acontece?',ch:['A vesícula se funde a um lisossomo, que libera enzimas digestivas','A bactéria vai para o núcleo','A vesícula vai para o retículo granular'],key:'A vesícula se funde a um lisossomo, que libera enzimas digestivas',pts:1}]},
- {code:C1+'08',id:'osmose',titulo:'Aula 8 · Batata no sal',tipo:'Individual',desc:'Investigação da osmose no experimento virtual. A: água; B: 5 g de sal em 100 mL. Use vírgula ou ponto nos decimais.',itens:[
+ {code:C1+'07',id:'osmose',titulo:'Aula 7 · Batata no sal',tipo:'Individual',desc:'Investigação da osmose no experimento virtual. A: água; B: 5 g de sal em 100 mL. Use vírgula ou ponto nos decimais.',itens:[
   {k:'par',t:'Hipótese e previsão para cada condição',man:1},
   ...OSM_PAIRS.flatMap(([a,b])=>[{k:'num',t:a,opt:true,cmp:true},{k:'num',t:b,opt:true,cmp:true}]),
   {k:'num',t:'Variação média em A (%)',pts:1,calc:{type:'pctmean',pairs:OSM_PAIRS.slice(0,3),tol:.6}},
@@ -2928,7 +2913,7 @@ const SPEC=[
   {k:'par',t:'Por que padronizamos formato, volume e tempo?',man:2},
   {k:'par',t:'Sua conclusão concorda com a hipótese? Cite medidas e uma limitação',man:2},
   {k:'par',t:'Se a diferença foi pequena ou inexistente, que ajustes melhorariam o teste?',man:1}]},
- {code:C1+'09',id:'figado',titulo:'Aula 9 · O fígado e a água oxigenada',tipo:'Individual',desc:'Experimento dos peroxissomos e aplicações no corpo.',itens:[
+ {code:C1+'08',id:'figado',titulo:'Aula 8 · O fígado e a água oxigenada',tipo:'Individual',desc:'Experimento dos peroxissomos e aplicações no corpo.',itens:[
   {k:'num',t:'Média da espuma no tubo A (fígado cru), em mm'},
   {k:'num',t:'Média da espuma no tubo B (fígado cozido), em mm'},
   {k:'mc',t:'Por que o fígado cozido quase não forma espuma com água oxigenada?',ch:['O calor desnaturou a catalase dos peroxissomos','O fígado cozido não tem água','A água oxigenada evaporou'],key:'O calor desnaturou a catalase dos peroxissomos',pts:1},
@@ -2936,7 +2921,7 @@ const SPEC=[
   {k:'mc',t:'Qual organela elimina compostos tóxicos, como a água oxigenada?',ch:['Lisossomo','Peroxissomo','Centríolo','Complexo golgiense'],key:'Peroxissomo',pts:1},
   {k:'mc',t:'Por que a água oxigenada borbulha num machucado e quase não borbulha na pele intacta?',ch:['Na ferida, células rompidas e sangue liberam catalase, que decompõe a água oxigenada','Os micróbios da ferida produzem o gás','A pele intacta absorve a água oxigenada'],key:'Na ferida, células rompidas e sangue liberam catalase, que decompõe a água oxigenada',pts:1},
   {k:'par',t:'Explique como os peroxissomos e o retículo agranular ajudam o fígado a proteger o corpo. Dê um exemplo do dia a dia',man:2}]},
- {code:C1+'10',id:'nucleo',titulo:'Aula 10 · Do novelo ao cromossomo',tipo:'Individual',desc:'Núcleo, cromatina e cromossomos.',itens:[
+ {code:C1+'09',id:'nucleo',titulo:'Aula 9 · Do novelo ao cromossomo',tipo:'Individual',desc:'Núcleo, cromatina e cromossomos.',itens:[
   {k:'mc',t:'O que é a cromatina?',ch:['Um cromossomo em forma de X','DNA associado a proteínas, pouco condensado','Uma organela do citoplasma'],key:'DNA associado a proteínas, pouco condensado',pts:1},
   {k:'num',t:'Quantas cromátides tem um cromossomo duplicado?',key:2,tol:0,pts:1},
   {k:'mc',t:'A e a (o par longo do modelo) são:',ch:['Cromátides-irmãs','Cromossomos homólogos','Cromossomos não homólogos'],key:'Cromossomos homólogos',pts:1},
@@ -2944,7 +2929,7 @@ const SPEC=[
   {k:'mc',t:'Onde se formam as subunidades dos ribossomos?',ch:['Nos poros nucleares','No nucléolo','No envoltório nuclear'],key:'No nucléolo',pts:1},
   {k:'par',t:'Todo cromossomo tem forma de X? Explique',man:2},
   {k:'par',t:'Legenda explicativa do seu modelo de cromossomos',man:2}]},
- {code:C1+'11',id:'mitose',titulo:'Aula 11 · Cicatrização em ação',tipo:'Individual',desc:'Simulação da mitose com 2n = 4.',itens:[
+ {code:C1+'10',id:'mitose',titulo:'Aula 10 · Cicatrização em ação',tipo:'Individual',desc:'Simulação da mitose com 2n = 4.',itens:[
   {k:'num',t:'Cromossomos na célula 2n = 4 antes da fase S',key:4,tol:0,pts:1},
   {k:'num',t:'Cromátides na célula depois da fase S',key:8,tol:0,pts:1},
   {k:'num',t:'Cromossomos em cada célula-filha após mitose e citocinese',key:4,tol:0,pts:1},
@@ -2954,7 +2939,7 @@ const SPEC=[
   {k:'par',t:'Explique a cicatrização de uma ferida usando o ciclo celular',man:2},
   {k:'hdr',t:'Centríolos e fibras da divisão'},
   {k:'mc',t:'Com colchicina, os microtúbulos se desmontam. O que acontece com uma célula em divisão?',ch:['Fica parada: sem fibras, as cromátides-irmãs não se separam','Divide-se mais rápido','Perde o núcleo'],key:'Fica parada: sem fibras, as cromátides-irmãs não se separam',pts:1}]},
- {code:C1+'12',id:'meiose',titulo:'Aula 12 · Loteria dos gametas',tipo:'Individual',desc:'Simulação da meiose com 2n = 4.',itens:[
+ {code:C1+'11',id:'meiose',titulo:'Aula 11 · Loteria dos gametas',tipo:'Individual',desc:'Simulação da meiose com 2n = 4.',itens:[
   {k:'num',t:'Cromossomos por célula após a meiose I (modelo 2n = 4)',key:2,tol:0,pts:1},
   {k:'num',t:'Cromátides por célula após a meiose I',key:4,tol:0,pts:1},
   {k:'num',t:'Cromossomos por célula após a meiose II',key:2,tol:0,pts:1},
@@ -2963,7 +2948,7 @@ const SPEC=[
   {k:'mc',t:'Onde ocorre a recombinação no modelo?',ch:['Na prófase I, entre cromátides não irmãs de homólogos','Na anáfase II','Na fase S'],key:'Na prófase I, entre cromátides não irmãs de homólogos',pts:1},
   {k:'par',t:'Como a fecundação restaura 2n?',man:2},
   {k:'par',t:'Indique duas limitações do modelo físico',man:2}]},
- {code:C1+'13',id:'duelo',titulo:'Aula 13 · Duelo mitose × meiose',tipo:'Individual',desc:'Quadro comparativo e situações.',itens:[
+ {code:C1+'12',id:'duelo',titulo:'Aula 12 · Duelo mitose × meiose',tipo:'Individual',desc:'Quadro comparativo e situações.',itens:[
   {k:'num',t:'Células produzidas na meiose de uma célula',key:4,tol:0,pts:1},
   {k:'mc',t:'Ploidia das células-filhas da mitose',ch:['Igual à da célula-mãe','Metade da célula-mãe'],key:'Igual à da célula-mãe',pts:1},
   {k:'mc',t:'Toda divisão celular produz células geneticamente diferentes?',ch:['Sim','Não: a mitose produz células geneticamente iguais (salvo mutações)'],key:'Não: a mitose produz células geneticamente iguais (salvo mutações)',pts:1},
@@ -2971,21 +2956,21 @@ const SPEC=[
   {k:'num',t:'Espécie com 2n = 10: cromossomos em cada célula após a meiose II',key:5,tol:0,pts:1},
   {k:'par',t:'Escolha uma situação (cicatrização, gametas ou tumor) e explique qual divisão está envolvida',man:2},
   {k:'par',t:'Cartaz: qual é a finalidade e que informação ele apresenta?',man:2}]},
- {code:C1+'14',id:'atp',titulo:'Aula 14 · Usina de ATP',tipo:'Individual',desc:'Anabolismo, catabolismo e ATP.',itens:[
+ {code:C1+'13',id:'atp',titulo:'Aula 13 · Usina de ATP',tipo:'Individual',desc:'Anabolismo, catabolismo e ATP.',itens:[
   {k:'mc',t:'Síntese de proteínas é:',ch:AC,key:'Anabolismo',pts:1},
   {k:'mc',t:'Degradação da glicose na respiração é:',ch:AC,key:'Catabolismo',pts:1},
   {k:'mc',t:'Produção de glicogênio (reserva) é:',ch:AC,key:'Anabolismo',pts:1},
   {k:'mc',t:'O ATP:',ch:['É a energia do alimento já pronta para uso','Transfere energia: forma-se no catabolismo e é usado no trabalho celular','É produzido do nada pela célula'],key:'Transfere energia: forma-se no catabolismo e é usado no trabalho celular',pts:1},
   {k:'par',t:'Comer é suficiente para a célula usar a energia do alimento? Explique',man:2},
   {k:'par',t:'Descreva a ligação entre catabolismo, ATP e anabolismo',man:2}]},
- {code:C1+'15',id:'fotossintese',titulo:'Aula 15 · De onde vem o umbuzeiro?',tipo:'Individual',desc:'Fluxo da fotossíntese.',itens:[
+ {code:C1+'14',id:'fotossintese',titulo:'Aula 14 · De onde vem o umbuzeiro?',tipo:'Individual',desc:'Fluxo da fotossíntese.',itens:[
   {k:'mc',t:'De onde vem a maior parte da massa seca de uma planta?',ch:['Do solo','Da água','Do CO₂ do ar','Da luz'],key:'Do CO₂ do ar',pts:1},
   {k:'mc',t:'Onde ocorre a etapa fotoquímica?',ch:['Tilacoides','Estroma','Mitocôndria'],key:'Tilacoides',pts:1},
   {k:'mc',t:'Onde o CO₂ é fixado?',ch:['Tilacoides','Estroma','Mitocôndria'],key:'Estroma',pts:1},
   {k:'mc',t:'O O₂ liberado vem:',ch:['Do CO₂','Da água','Da glicose'],key:'Da água',pts:1},
   {k:'mc',t:'A fixação do carbono ocorre só à noite?',ch:['Sim','Não: depende do ATP e do NADPH da etapa fotoquímica'],key:'Não: depende do ATP e do NADPH da etapa fotoquímica',pts:1},
   {k:'par',t:'Explique o efeito de pouca luz sobre as duas etapas',man:2}]},
- {code:C1+'16',id:'respiracao',titulo:'Aula 16 · Mapa da respiração',tipo:'Individual',desc:'Quimiossíntese e etapas da respiração.',itens:[
+ {code:C1+'15',id:'respiracao',titulo:'Aula 15 · Mapa da respiração',tipo:'Individual',desc:'Quimiossíntese e etapas da respiração.',itens:[
   {k:'mc',t:'Fonte de energia da quimiossíntese',ch:['Luz','Oxidação de substâncias inorgânicas','Glicose'],key:'Oxidação de substâncias inorgânicas',pts:1},
   {k:'mc',t:'Onde ocorre a glicólise?',ch:LOCAIS,key:'Citosol',pts:1},
   {k:'mc',t:'Onde ocorre o ciclo de Krebs?',ch:LOCAIS,key:'Matriz mitocondrial',pts:1},
@@ -2993,14 +2978,14 @@ const SPEC=[
   {k:'mc',t:'Qual é o papel do O₂ na respiração?',ch:['Quebrar a glicose','Receber elétrons no fim da cadeia, formando água','Produzir CO₂'],key:'Receber elétrons no fim da cadeia, formando água',pts:1},
   {k:'mc',t:'Plantas respiram durante o dia?',ch:['Sim, respiram o tempo todo','Não, só à noite'],key:'Sim, respiram o tempo todo',pts:1},
   {k:'par',t:'Compare quimiossíntese e respiração celular',man:2}]},
- {code:C1+'17',id:'leveduras',titulo:'Aula 17 · Laboratório do pão',tipo:'Individual',desc:'Investigação do metabolismo das leveduras no experimento virtual. Circunferências em cm (média das réplicas) ou “sem inflação mensurável”.',itens:[
+ {code:C1+'16',id:'leveduras',titulo:'Aula 16 · Laboratório do pão',tipo:'Individual',desc:'Investigação do metabolismo das leveduras no experimento virtual. Circunferências em cm (média das réplicas) ou “sem inflação mensurável”.',itens:[
   {k:'par',t:'Sua hipótese',man:1},
   ...['A','B','C','D'].flatMap(k=>[0,10,20].map(m=>({k:'txt',t:`${k} · ${m} min (cm)`,opt:true,cmp:true}))),
   {k:'mc',t:'Qual é a função da garrafa B (sem levedura)?',ch:['Verificar se a levedura é necessária para produzir gás','Verificar o efeito da temperatura','Aumentar a produção de gás'],key:'Verificar se a levedura é necessária para produzir gás',pts:1},
   {k:'mc',t:'A circunferência do balão mede diretamente a quantidade de CO₂?',ch:['Sim','Não: é um indicador indireto'],key:'Não: é um indicador indireto',pts:1},
   {k:'par',t:'Compare D com B e com C. Qual é a evidência para a sua conclusão?',man:2},
   {k:'par',t:'Seria possível algum gás resultar de respiração no início do teste? Explique o limite da montagem',man:2}]},
- {code:C1+'18',id:'fermentacao',titulo:'Aula 18 · Do balão ao gráfico',tipo:'Individual',desc:'Gráfico, comparação dos processos e aplicações.',itens:[
+ {code:C1+'17',id:'fermentacao',titulo:'Aula 17 · Do balão ao gráfico',tipo:'Individual',desc:'Gráfico, comparação dos processos e aplicações.',itens:[
   {k:'txt',t:'Condição com maior inflação no gráfico'},
   {k:'mc',t:'Qual fermentação libera CO₂?',ch:['Alcoólica','Lática','As duas'],key:'Alcoólica',pts:1},
   {k:'mc',t:'Produto da fermentação lática',ch:['Etanol e CO₂','Lactato, sem CO₂','Água e CO₂'],key:'Lactato, sem CO₂',pts:1},
@@ -3009,7 +2994,7 @@ const SPEC=[
   {k:'par',t:'Situação do pão: explique o crescimento da massa',man:2},
   {k:'par',t:'Situação do músculo: o que acontece num esforço intenso e rápido?',man:2},
   {k:'par',t:'Registre uma dúvida para a revisão'}]},
- {code:C1+'19',id:'revisao',titulo:'Aula 19 · Autoavaliação',tipo:'Individual (sem nota)',desc:'Autoavaliação da unidade.',itens:[
+ {code:C1+'18',id:'revisao',titulo:'Aula 18 · Autoavaliação',tipo:'Individual (sem nota)',desc:'Autoavaliação da unidade.',itens:[
   {k:'hdr',t:'Para cada objetivo, como você está?'},
   {k:'mc',t:'O1 · Teoria celular e níveis de organização',ch:SEMAF},
   {k:'mc',t:'O2 · Tipos de célula, estruturas e funções',ch:SEMAF},
@@ -3025,7 +3010,6 @@ const SPEC=[
 // Preenchimento automático a partir das ferramentas
 const FILL={
   funcoes:()=>{const v=store.get('cra-vistos',{}),q=store.get('qse',null);const d={};if(Object.keys(v).length)d['Crachás coletados na visita às três células (de 18)']=String(Object.keys(v).length);if(q&&q.done&&Object.keys(q.done).length)d['Pontos no jogo “Quem sou eu?” (de 36)']=String(q.pts);if(!Object.keys(d).length)return null;return {d,msg:'Crachás e pontos copiados.'};},
-  eletronico:()=>{const a=store.get('tem-album',null);if(!a)return null;const n=BOOK12.filter(k=>(a.lac||{})[k]||(a.hep||{})[k]).length;if(!n)return null;return {d:{'Quantas das 12 estruturas do livro estão no seu álbum?':String(n)},msg:'Número de estruturas do seu álbum copiado.'};},
   cebola:()=>{const e=store.get('ceb-est',null),m=store.get('mic-est',{});if(!e&&!m.bochecha&&!m.coalhada)return null;const d={};if(m.bochecha)d['Tamanho estimado de uma célula da bochecha (µm)']=fmt(m.bochecha.size,m.bochecha.size<10?1:0);if(m.coalhada)d['Comprimento estimado de uma bactéria da coalhada (µm)']=fmt(m.coalhada.size,1);if(!e)return {d,msg:'Estimativas do microscópio copiadas. Confira antes de enviar.'};Object.assign(d,{'Ampliação total usada (ocular × objetiva)':(e.obj*10)+'× (10× × '+e.obj+'×)','Quantas células cabem, em fila, no diâmetro do campo (objetiva de 10×)?':fmt(e.n,1),'Comprimento estimado de uma célula (µm)':String(e.size)});return {d,msg:'Estimativa do microscópio copiada (objetiva de '+e.obj+'×). Confira antes de enviar.'};},
   osmose:()=>{const l=store.get('osm-last',null);if(!l||!l.rows||!l.rows.length)return null;const d={};const pct=(a,b)=>{a=parseFloat(String(a).replace(',','.'));b=parseFloat(String(b).replace(',','.'));return a>0&&!isNaN(b)?(b-a)/a*100:null;};
     const S={A:[],B:[]};l.rows.forEach(r=>{const n=r.k+(r.i+1);if(r.ini!=null&&r.ini!=='')d[n+' · massa inicial (g)']=typeof r.ini==='number'?fmt(r.ini,2):String(r.ini);if(r.fin!=null&&r.fin!=='')d[n+' · massa final (g)']=typeof r.fin==='number'?fmt(r.fin,2):String(r.fin);const p=pct(r.ini,r.fin);if(p!=null)S[r.k].push(p);});
@@ -3158,8 +3142,6 @@ const AB={
     el.append(tapOrder(it,ord=>{api.save(ord.map(i=>it[i].n).join(' → '));},{label:'Toque na ordem que você imagina'}));}},
  cebola:{tempo:'5 min',titulo:'Quantas cabem em 1 milímetro?',lede:'Aposte: quantas células da película da cebola, enfileiradas pelo comprimento, cabem em 1 mm? Depois você vai medir no microscópio.',
   render:abQs([{t:'Minha aposta:',short:'Aposta',opts:['1','4','40','400','4.000']}])},
- eletronico:{tempo:'5 min',titulo:'Dá para ver um ribossomo?',lede:'Uma célula da glândula mamária da cabra mede cerca de 17 µm. Um ribossomo mede cerca de 25 nm, ou seja, 0,025 µm. O microscópio de luz da Aula 4 não separa detalhes menores que cerca de 0,2 µm.',
-  render:abQs([{t:'No microscópio de luz, o ribossomo aparece…',short:'Ribossomo na luz',opts:['…como um pontinho escuro','…não aparece','…só com corante']},{t:'Para ver o ribossomo, o que precisa mudar?',short:'O que mudar',opts:['Usar uma lente mais forte no mesmo microscópio','Usar algo com detalhe menor que a luz, como elétrons','Usar mais corante','Não sei']}])},
  funcoes:{tempo:'5 min',titulo:'Quem trabalha em todas?',lede:'Uma célula da cabra, uma célula da folha do umbuzeiro e uma bactéria da coalhada. Responda com o que você pensa agora.',
   render:abQs([{t:'Quantas estruturas trabalham nas três células ao mesmo tempo?',short:'Em comum',opts:['Nenhuma','Uma ou duas','Umas quatro','Quase todas']},{t:'A célula da folha, que tem cloroplastos, também tem mitocôndrias?',short:'Mitocôndrias na folha',opts:['Sim','Não','Não sei']}])},
  membrana:{tempo:'5 min',titulo:'O perfume na sala',lede:'Alguém abre um vidro de perfume num canto da sala, com portas e janelas fechadas e sem vento. Depois de um tempo…',
