@@ -754,13 +754,25 @@ function tileOf(i){if(TILES[i])return TILES[i];const S=LAMINAS[i];const c=docume
 let HI=null;function hiTileOf(i){const S=LAMINAS[i];const R=Math.min(3.4,Math.sqrt(16e6/(S.T[0]*S.T[1])));if(R<=S.R*1.05)return tileOf(i);if(HI&&HI.i===i)return HI.c;if(HI){HI.c.width=HI.c.height=0;}
   const c=document.createElement('canvas');c.width=Math.round(S.T[0]*R);c.height=Math.round(S.T[1]*R);const g=c.getContext('2d');g.setTransform(R,0,0,R,0,0);g.fillStyle=S.bg;g.fillRect(0,0,S.T[0],S.T[1]);try{S.gen(g,rng(1000+i*97),S.T,S.mode,S);}catch(e){console.error('lâmina',i,e);}c.R=R;HI={i,c};return c;}
 // Desenha uma vista de microscópio (campo circular) em um canvas qualquer
+const CANVAS_FILTER=(()=>{try{const c=document.createElement('canvas').getContext('2d');if(!('filter' in c))return false;c.filter='blur(2px)';return c.filter==='blur(2px)';}catch(e){return false;}})();
 function renderView(ctx,size,i,{obj=10,cx=null,cy=null,blur=0,bright=1,contrast=1,mask=true,scale=true}={}){const S=LAMINAS[i];const tile=obj>=100?hiTileOf(i):tileOf(i);const TR=tile.R;
   const fov=18000/obj;const k=size/fov;const px=cx??S.T[0]/2,py=cy??S.T[1]/2;
   const off=renderView.off||(renderView.off=document.createElement('canvas'));off.width=size;off.height=size;const o=off.getContext('2d');
   o.setTransform(1,0,0,1,0,0);o.fillStyle=S.bg;o.fillRect(0,0,size,size);
   o.imageSmoothingEnabled=true;o.imageSmoothingQuality='high';const pat=o.createPattern(tile,S.mode);const sc=k/TR;o.setTransform(sc,0,0,sc,size/2-px*k,size/2-py*k);o.fillStyle=pat;
   const x0=(px-fov/2)*TR,y0=(py-fov/2)*TR,w=fov*TR;if(S.mode==='repeat-x')o.fillRect(x0,0,w,tile.height);else if(S.mode==='repeat-y')o.fillRect(0,y0,tile.width,w);else o.fillRect(x0,y0,w,w);
-  ctx.save();ctx.clearRect(0,0,size,size);ctx.filter=`blur(${blur*size/600}px) brightness(${bright}) contrast(${contrast})`;ctx.drawImage(off,0,0);ctx.filter='none';
+  ctx.save();ctx.clearRect(0,0,size,size);
+  if(CANVAS_FILTER){ctx.filter=`blur(${blur*size/600}px) brightness(${bright}) contrast(${contrast})`;ctx.drawImage(off,0,0);ctx.filter='none';}
+  else{ // Safari (iPhone/iPad) não aplica ctx.filter: brilho/contraste por pixel e desfoque por redução e ampliação
+    o.setTransform(1,0,0,1,0,0);
+    if(bright!==1||contrast!==1){const im=o.getImageData(0,0,size,size),d=im.data,lut=new Uint8ClampedArray(256);for(let v=0;v<256;v++)lut[v]=((v/255*bright-.5)*contrast+.5)*255;for(let p=0;p<d.length;p+=4){d[p]=lut[d[p]];d[p+1]=lut[d[p+1]];d[p+2]=lut[d[p+2]];}o.putImageData(im,0,0);}
+    const b=blur*size/600;
+    if(b<.4)ctx.drawImage(off,0,0);
+    else{const sm=renderView.sm||(renderView.sm=document.createElement('canvas'));const s=Math.max(4,Math.round(size/(1+b*1.4)));sm.width=s;sm.height=s;const q=sm.getContext('2d');q.imageSmoothingEnabled=true;q.imageSmoothingQuality='high';
+      // reduz em etapas (mais suave) e amplia de volta
+      q.drawImage(off,0,0,s,s);if(s<size/3){const m=Math.round(Math.sqrt(s*size));const md=renderView.md||(renderView.md=document.createElement('canvas'));md.width=m;md.height=m;const mq=md.getContext('2d');mq.imageSmoothingQuality='high';mq.drawImage(off,0,0,m,m);q.clearRect(0,0,s,s);q.drawImage(md,0,0,s,s);}
+      ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(sm,0,0,s,s,0,0,size,size);}
+  }
   if(mask){const r0=size/2-1;const gr=ctx.createRadialGradient(size/2,size/2,r0*.72,size/2,size/2,r0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,.35)');ctx.fillStyle=gr;ctx.fillRect(0,0,size,size);
     ctx.beginPath();ctx.rect(0,0,size,size);ctx.arc(size/2,size/2,r0,0,TAU,true);ctx.fillStyle='#0b0f0d';ctx.fill('evenodd');}
   if(scale){const cand=[1,2,5,10,20,50,100,200,500,1000];const Lm=cand.find(v=>v*k>=size*.12)||1000;const bw=Lm*k;const bx=size*.5-bw/2,by=size*.86;ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(bx-6,by-16,bw+12,26);ctx.fillStyle='#111';ctx.fillRect(bx,by,bw,Math.max(3,size/150));ctx.font=`600 ${Math.round(size/38)}px sans-serif`;ctx.textAlign='center';ctx.fillText(Lm>=1000?(Lm/1000)+' mm':Lm+' µm',size/2,by-4);ctx.textAlign='start';}
