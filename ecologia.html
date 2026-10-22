@@ -164,6 +164,7 @@ svg text{font-family:var(--f-body)}
 .scope{align-items:center;background:linear-gradient(180deg,var(--surface) 0%,var(--surface-2) 100%)}
 .scope-view{position:relative;width:100%;max-width:440px}
 .scope-svg{width:100%;height:auto;display:block;filter:drop-shadow(0 16px 28px rgba(0,0,0,.28))}
+.scope-grain{position:absolute;left:1.5%;top:1.5%;width:97%;aspect-ratio:1;border-radius:50%;pointer-events:none;opacity:.08;mix-blend-mode:soft-light;background-size:96px 96px}
 .scope-prep{position:absolute;left:4px;bottom:4px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:.76rem;font-weight:700;color:var(--muted)}
 .scope-read{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%}
 @media (max-width:520px){.scope-read{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -942,102 +943,189 @@ const ORGS=[
  {id:'giardia-t',name:'Giardia duodenalis',forma:'trofozoíto',prep:'salina',size:15,w:24,rot:-14,
   grupo:'Protozoário flagelado',doenca:'Giardíase',medida:'12 a 15 × 6 a 8 µm',
   estruturas:['Forma de pera, com simetria bilateral','Disco ventral (adesivo) ocupando a metade anterior','Dois núcleos com cariossoma central','Dois axonemas longitudinais','Corpos medianos em forma de “garra de martelo”','Quatro pares de flagelos'],
-  trans:'Ingestão de cistos em água ou alimentos contaminados. O trofozoíto vive aderido à mucosa do intestino delgado e aparece sobretudo em fezes diarreicas.',
-  draw:g=>{const st='#5a6a53';
-   ['M-.6,-4.6 Q2.6,-3.6 3.9,-1.4 q2.2,1.8 4.4,5.6','M-.4,1.9 Q-1.9,2.9 -3.1,3.5 q-3.2,1.8 -4.6,5.8','M-.3,4.1 Q-.9,5.2 -1.3,5.7 q-1.5,3 -.9,6.4','M-.25,6.9 q-.6,3.4 .2,6.6'].forEach(d=>{g.append(s('path',{d,stroke:st,'stroke-width':.22,fill:'none'}));g.append(s('path',{d,stroke:st,'stroke-width':.22,fill:'none',transform:'scale(-1,1)'}));});
-   g.append(s('path',{d:'M0,-7.2 C4.5,-7.2 4.7,-2 3.5,1.6 C2.5,4.3 1.1,6.5 0,7.1 C-1.1,6.5 -2.5,4.3 -3.5,1.6 C-4.7,-2 -4.5,-7.2 0,-7.2Z',fill:'#dde4d3',stroke:'#66775e','stroke-width':.32}));
-   g.append(s('path',{d:'M0,-6.7 C3.7,-6.7 4,-3 3.3,-1.2 C2.4,.7 1.2,.4 0,-.2 C-1.2,.4 -2.4,.7 -3.3,-1.2 C-4,-3 -3.7,-6.7 0,-6.7Z',fill:'#ecf0e5',stroke:'#93a189','stroke-width':.26}));
-   [-1,1].forEach(sx=>{g.append(s('ellipse',{cx:sx*1.55,cy:-3.6,rx:1.05,ry:1.45,fill:'#f4f6ef',stroke:'#4b5a45','stroke-width':.28}));g.append(s('circle',{cx:sx*1.55,cy:-3.6,r:.42,fill:'#3f4d3a'}));});
-   [-1,1].forEach(sx=>g.append(s('path',{d:`M${sx*.35},-5.2 C${sx*.3},-1 ${sx*.45},3 ${sx*.25},6.9`,stroke:'#4b5a45','stroke-width':.24,fill:'none'})));
-   [-1,1].forEach(sx=>g.append(s('path',{d:`M${sx*.45},1.25 L${sx*1.75},1.05 q${sx*.35},-.05 ${sx*.42},.42`,stroke:'#33402f','stroke-width':.5,fill:'none','stroke-linecap':'round'})));}},
+  trans:'Ingestão de cistos em água ou alimentos contaminados. O trofozoíto vive aderido à mucosa do intestino delgado e aparece sobretudo em fezes diarreicas.',},
  {id:'giardia-c',name:'Giardia duodenalis',forma:'cisto',prep:'lugol',size:11,w:12,rot:20,
   grupo:'Protozoário flagelado',doenca:'Giardíase',medida:'8 a 12 × 7 a 10 µm',
   estruturas:['Forma oval, parede lisa e espessa','Citoplasma muitas vezes retraído, deixando espaço claro junto à parede','Quatro núcleos no cisto maduro, geralmente agrupados num polo','Axonemas e corpos medianos (fragmentos de disco) no interior'],
-  trans:'É a forma infectante e resistente no ambiente. Transmissão pela ingestão de cistos em água ou alimentos contaminados.',
-  draw:g=>{g.append(s('ellipse',{rx:4.7,ry:6,fill:'#f5e7b9',stroke:'#6d5622','stroke-width':.38}));
-   g.append(s('ellipse',{cx:.25,cy:.15,rx:3.95,ry:5.2,fill:'#d7ad55'}));granules(g,3.4,4.6,40,.08,.2,'#9c7428',.6,5,.25,.2);
-   [[-1.15,-3.1],[1.15,-3.1],[-1.05,-1.55],[1.15,-1.5]].forEach(([x,y])=>{g.append(s('circle',{cx:x,cy:y,r:.62,fill:'#ecd08a',stroke:'#5a3f10','stroke-width':.2}));g.append(s('circle',{cx:x,cy:y,r:.2,fill:'#4a320b'}));});
-   [-1,1].forEach(sx=>g.append(s('path',{d:`M${sx*.3},-.6 C${sx*.6},1.4 ${sx*-.1},2.8 ${sx*.35},4.6`,stroke:'#6b4d17','stroke-width':.2,fill:'none'})));
-   g.append(s('path',{d:'M-1.6,1.6 q.6,-.5 1.2,-.1 M.5,2.2 q.7,-.5 1.3,0',stroke:'#5a3f10','stroke-width':.32,fill:'none','stroke-linecap':'round'}));}},
+  trans:'É a forma infectante e resistente no ambiente. Transmissão pela ingestão de cistos em água ou alimentos contaminados.',},
  {id:'entamoeba',name:'Entamoeba histolytica / E. dispar',forma:'cisto',prep:'lugol',size:13,w:14,rot:0,
   grupo:'Protozoário (ameba)',doenca:'Amebíase',medida:'10 a 20 µm (geralmente 12 a 15 µm)',
   estruturas:['Esférico, com parede fina e refringente','Até quatro núcleos no cisto maduro','Cromatina periférica fina e regular, com cariossoma pequeno e central','Corpos cromatoides em bastão, de extremidades arredondadas (vistos melhor sem lugol ou em coloração permanente)'],
-  trans:'Ingestão de cistos em água ou alimentos contaminados. Ao microscópio comum, o cisto de E. histolytica não se distingue do de E. dispar, que não causa doença.',
-  draw:g=>{g.append(s('circle',{r:6.6,fill:'#f6e8b8',stroke:'#6b5420','stroke-width':.42}));g.append(s('circle',{r:6.1,fill:'#dcb866'}));granules(g,5.6,5.6,70,.07,.17,'#a07b2c',.55,9);
-   g.append(s('rect',{x:-3.4,y:-.35,width:4.4,height:1.15,rx:.57,fill:'#c79a45',opacity:.55}));
-   [[-2.4,-2.2],[2.5,-1.9],[-2.1,2.6],[2.7,2.3]].forEach(([x,y])=>{g.append(s('circle',{cx:x,cy:y,r:1.3,fill:'#efd592'}));g.append(s('circle',{cx:x,cy:y,r:1.22,fill:'none',stroke:'#4f3a0e','stroke-width':.22,'stroke-dasharray':'.14 .1'}));g.append(s('circle',{cx:x,cy:y,r:.26,fill:'#3f2c08'}));});}},
+  trans:'Ingestão de cistos em água ou alimentos contaminados. Ao microscópio comum, o cisto de E. histolytica não se distingue do de E. dispar, que não causa doença.',},
  {id:'leish',name:'Leishmania infantum',forma:'amastigotas em macrófago',prep:'giemsa',size:24,w:28,rot:0,
   grupo:'Protozoário (tripanossomatídeo)',doenca:'Leishmaniose visceral',medida:'amastigota de 2 a 5 µm; hemácia de cerca de 7,5 µm para comparar',
   estruturas:['Amastigotas ovais, sem flagelo livre','Núcleo grande, corado em vermelho-púrpura','Cinetoplasto em forma de bastão, violeta-escuro, ao lado do núcleo','Dentro de macrófagos (por exemplo, em aspirado de medula óssea); algumas livres após a ruptura da célula'],
-  trans:'Picada de fêmeas infectadas de flebotomíneos (mosquito-palha). Cães podem ser reservatórios urbanos; o contato cotidiano com eles não transmite a doença.',
-  draw:g=>{g.append(s('path',{d:blobPath(12.2,4,.1),fill:'#cfd6ee',stroke:'#8b8cc0','stroke-width':.28}));granules(g,10,10,60,.08,.2,'#9aa0cf',.5,12);
-   g.append(s('path',{d:blobPath(4.6,8,.08),transform:'translate(5.2,4.2) scale(1.05,.82)',fill:'#542a78'}));granules(g,4,3,40,.15,.35,'#3a1556',.7,6,5.2,4.2);
-   const am=(x,y,a)=>{const gg=s('g',{transform:`translate(${x},${y}) rotate(${a})`});gg.append(s('ellipse',{rx:1.65,ry:1.05,fill:'#b6c2ec',stroke:'#6b6fb0','stroke-width':.14}));gg.append(s('circle',{cx:-.5,cy:0,r:.6,fill:'#a1286e'}));gg.append(s('rect',{x:.55,y:-.5,width:.28,height:1,rx:.12,fill:'#2b0a3c'}));g.append(gg);};
-   [[-6.5,-5],[-2.8,-7.4],[1.2,-7.2],[-8.6,-.8],[-5,-1.6],[-1.4,-3.2],[-7.4,3.6],[-3.6,2.4],[3.6,-3.4],[7.2,-5.4],[-3.4,7.4],[.4,8],[-.6,.8]].forEach(([x,y],i)=>am(x,y,(i*53)%180));
-   [[15.5,-6],[14,9],[-14.5,8.5]].forEach(([x,y],i)=>am(x,y,i*70));}},
+  trans:'Picada de fêmeas infectadas de flebotomíneos (mosquito-palha). Cães podem ser reservatórios urbanos; o contato cotidiano com eles não transmite a doença.',},
  {id:'trichuris',name:'Trichuris trichiura',forma:'ovo',prep:'salina',size:53,w:54,rot:-8,
   grupo:'Helminto (nematódeo)',doenca:'Tricuríase',medida:'50 a 55 × 20 a 25 µm',
   estruturas:['Forma de barril ou de limão','Casca espessa e castanho-amarelada','Dois tampões polares hialinos, um em cada extremidade','Conteúdo não embrionado quando eliminado'],
-  trans:'Ingestão de ovos embrionados, que amadurecem no solo, por meio de alimentos, água ou mãos contaminadas.',
-  draw:g=>{const body='M-20,-3 C-18,-10 -10,-11.6 0,-11.6 C10,-11.6 18,-10 20,-3 L22.2,-2.4 L22.2,2.4 L20,3 C18,10 10,11.6 0,11.6 C-10,11.6 -18,10 -20,3 L-22.2,2.4 L-22.2,-2.4Z';
-   g.append(s('path',{d:body,fill:'#a96d27',stroke:'#6f4614','stroke-width':.5}));
-   g.append(s('path',{d:body,transform:'scale(.82,.74)',fill:'#dcb76d'}));granules(g,15,6.5,70,.25,.6,'#b58b3f',.6,21);
-   [-1,1].forEach(sx=>g.append(s('path',{d:`M${sx*21},-2.6 Q${sx*25.6},-2.8 ${sx*25.6},0 Q${sx*25.6},2.8 ${sx*21},2.6Z`,fill:'#f7f2df',stroke:'#b39a5f','stroke-width':.35})));}},
+  trans:'Ingestão de ovos embrionados, que amadurecem no solo, por meio de alimentos, água ou mãos contaminadas.',},
  {id:'taenia',name:'Taenia sp.',forma:'ovo',prep:'salina',size:33,w:34,rot:0,
   grupo:'Helminto (cestódeo)',doenca:'Teníase e cisticercose',medida:'30 a 35 µm',
   estruturas:['Esférico','Embrióforo espesso, castanho e com estrias radiais','Oncosfera (embrião hexacanto) no interior','Três pares de acúleos (ganchos)'],
-  trans:'Teníase: comer carne de porco ou de boi crua ou malpassada com cisticercos. Cisticercose: ingerir ovos de T. solium. Os ovos das duas espécies são iguais ao microscópio.',
-  draw:g=>{g.append(s('circle',{r:16.6,fill:'#8a5b26',stroke:'#5c3a14','stroke-width':.5}));
-   for(let i=0;i<120;i++){const t=i/120*6.283;g.append(s('line',{x1:12.6*Math.cos(t),y1:12.6*Math.sin(t),x2:16.4*Math.cos(t),y2:16.4*Math.sin(t),stroke:'#4d300f','stroke-width':.42}));}
-   g.append(s('circle',{r:12.2,fill:'#e7d4a6',stroke:'#7a5426','stroke-width':.45}));granules(g,10,10,60,.25,.6,'#c4a46a',.55,33);
-   const hook=s('path',{d:'M0,1.6 L0,-1.3 Q0,-2 .6,-2.2',stroke:'#3a2610','stroke-width':.32,fill:'none','stroke-linecap':'round'});
-   [[0,0,0],[-2.4,.5,-30],[2.4,.5,30]].forEach(([x,y,a])=>{[-.38,.38].forEach(dx=>{const hk=hook.cloneNode();hk.setAttribute('transform',`translate(${x},${y}) rotate(${a}) translate(${dx},0) ${dx<0?'scale(-1,1)':''}`);g.append(hk);});});}},
+  trans:'Teníase: comer carne de porco ou de boi crua ou malpassada com cisticercos. Cisticercose: ingerir ovos de T. solium. Os ovos das duas espécies são iguais ao microscópio.',},
  {id:'ascaris',name:'Ascaris lumbricoides',forma:'ovo fértil',prep:'salina',size:60,w:62,rot:12,
   grupo:'Helminto (nematódeo)',doenca:'Ascaridíase',medida:'45 a 75 × 35 a 50 µm',
   estruturas:['Oval ou arredondado','Camada externa mamilonada, corada de castanho pela bile','Casca interna espessa e lisa','Uma única célula no interior quando eliminado, com espaços claros nos polos'],
-  trans:'Ingestão de ovos embrionados presentes no solo, em alimentos ou nas mãos. O ovo precisa de algumas semanas no solo para ficar infectante.',
-  draw:g=>{g.append(s('path',{d:mammillated(26.5,20.2,34,2.8,17),fill:'#9b672a',stroke:'#6a4316','stroke-width':.5}));
-   g.append(s('ellipse',{rx:25.6,ry:19.3,fill:'#d4ad62',stroke:'#87601f','stroke-width':.5}));
-   g.append(s('ellipse',{rx:22.4,ry:16.2,fill:'#f2e3b8',stroke:'#a37b37','stroke-width':.45}));
-   g.append(s('ellipse',{rx:15,ry:13.2,fill:'#c8a05a'}));granules(g,13.8,12,110,.35,.9,'#9b7634',.55,4);}},
+  trans:'Ingestão de ovos embrionados presentes no solo, em alimentos ou nas mãos. O ovo precisa de algumas semanas no solo para ficar infectante.',},
  {id:'ancylo',name:'Ancilostomídeos (Necator / Ancylostoma)',forma:'ovo',prep:'salina',size:62,w:63,rot:-6,
   grupo:'Helminto (nematódeo)',doenca:'Ancilostomíase (amarelão)',medida:'60 a 75 × 35 a 40 µm',
   estruturas:['Oval, com polos arredondados','Casca fina, lisa e transparente','Espaço claro entre a casca e o embrião','Embrião em fase de mórula (4 a 8 blastômeros)'],
-  trans:'Larvas que se desenvolvem no solo penetram ativamente a pele, por exemplo ao andar descalço. Os ovos de Necator e de Ancylostoma não se distinguem ao microscópio.',
-  draw:g=>{g.append(s('ellipse',{rx:30.5,ry:19,fill:'#eef0e7',stroke:'#4f5650','stroke-width':.55}));
-   [[-11.5,-5],[-3.8,-6],[4.2,-5.6],[11.5,-4.5],[-11,5],[-3.4,6],[4.4,5.4],[11.4,4.4]].forEach(([x,y],i)=>{g.append(s('path',{d:blobPath(5.9,40+i,.07,4),transform:`translate(${x},${y})`,fill:'#c3c7b9',stroke:'#7a8075','stroke-width':.35}));granules(g,4.5,4.5,16,.25,.55,'#8f9586',.6,60+i,x,y);});}},
+  trans:'Larvas que se desenvolvem no solo penetram ativamente a pele, por exemplo ao andar descalço. Os ovos de Necator e de Ancylostoma não se distinguem ao microscópio.',},
  {id:'schisto',name:'Schistosoma mansoni',forma:'ovo',prep:'salina',size:150,w:156,rot:-10,
   grupo:'Helminto (trematódeo)',doenca:'Esquistossomose mansônica',medida:'114 a 180 × 45 a 70 µm',
   estruturas:['Oval e alongado, sem opérculo','Casca fina e amarelada','Espículo lateral grande, perto de um dos polos','Miracídio (larva ciliada) já formado no interior'],
-  trans:'Penetração ativa de cercárias pela pele no contato com água doce onde vivem caramujos Biomphalaria infectados. O ovo sai nas fezes e o miracídio eclode na água.',
-  draw:g=>{const sh={fill:'#f3e8c6',stroke:'#a68e52','stroke-width':.9};
-   g.append(s('path',{d:'M24,-27.8 Q40,-31 53,-41 Q49.5,-30 50,-21.2Z',...sh}));
-   g.append(s('ellipse',{rx:72,ry:29.2,...sh}));
-   g.append(s('ellipse',{rx:61,ry:23.5,fill:'#e2d1a0',stroke:'#a08a52','stroke-width':.5}));
-   for(let i=0;i<120;i++){const t=i/120*6.283;g.append(s('line',{x1:61*Math.cos(t),y1:23.5*Math.sin(t),x2:62.8*Math.cos(t),y2:25*Math.sin(t),stroke:'#a08a52','stroke-width':.35}));}
-   g.append(s('path',{d:'M-61,-4 Q-66,0 -61,4',fill:'#d8c690',stroke:'#a08a52','stroke-width':.5}));
-   g.append(s('ellipse',{cx:-40,cy:0,rx:10,ry:7.5,fill:'#d3bf86',stroke:'#a8935a','stroke-width':.4}));granules(g,8.5,6,30,.4,.9,'#b49e64',.6,8,-40,0);
-   granules(g,26,12,90,.4,1,'#bda874',.45,13,-2,0);
-   [[25,-6],[31,4],[37,-3],[42,6],[45,-8],[33,-11],[28,10],[39,12]].forEach(([x,y])=>{g.append(s('circle',{cx:x,cy:y,r:3,fill:'#ead9aa',stroke:'#a58f57','stroke-width':.35}));g.append(s('circle',{cx:x,cy:y,r:.9,fill:'#a58f57'}));});
-   [[-15,-13],[-15,13],[12,-15],[12,15]].forEach(([x,y])=>g.append(s('path',{d:`M${x-2},${y} q2,-1.4 4,0`,stroke:'#8c7645','stroke-width':.45,fill:'none'})));}},
+  trans:'Penetração ativa de cercárias pela pele no contato com água doce onde vivem caramujos Biomphalaria infectados. O ovo sai nas fezes e o miracídio eclode na água.',},
 ];
 const OBJS=[4,10,40,100];
-function makeDebris(kind){const r=seeded(kind==='sangue'?77:31);const L=[];const R=2300;
-  if(kind==='sangue'){for(let i=0;i<5200;i++)L.push({t:'rbc',x:(r()-.5)*2*R,y:(r()-.5)*2*R,z:r()});for(let i=0;i<300;i++)L.push({t:'plq',x:(r()-.5)*2*R,y:(r()-.5)*2*R});}
-  else{for(let i=0;i<260;i++)L.push({t:'gran',x:(r()-.5)*2*R,y:(r()-.5)*2*R,sz:4+r()*16,a:r()*180});for(let i=0;i<70;i++)L.push({t:'fib',x:(r()-.5)*2*R,y:(r()-.5)*2*R,len:60+r()*180,w:6+r()*10,a:r()*180});for(let i=0;i<40;i++)L.push({t:'bol',x:(r()-.5)*2*R,y:(r()-.5)*2*R,sz:15+r()*70});for(let i=0;i<120;i++)L.push({t:'cel',x:(r()-.5)*2*R,y:(r()-.5)*2*R,sz:20+r()*45,a:r()*180,sd:i});}
+// ===== Realismo das lâminas: gradientes, halos de refração, texturas e detritos do exame =====
+function pzDefs(){if(document.getElementById('pz-defs'))return;const sv=s('svg',{id:'pz-defs',width:0,height:0,'aria-hidden':'true',focusable:'false',style:'position:absolute;width:0;height:0;overflow:hidden'});const d=s('defs');sv.append(d);
+  const RG=(id,stops,o={})=>{const g=s('radialGradient',{id:'pz-'+id,cx:o.cx??'50%',cy:o.cy??'50%',r:o.r??'50%',fx:o.fx,fy:o.fy});stops.forEach(([of,c,op])=>g.append(s('stop',{offset:of,'stop-color':c,'stop-opacity':op??1})));d.append(g);};
+  RG('gt',[['0%','#f3f6ee'],['70%','#e2e9da'],['100%','#c8d2be']],{fx:'42%',fy:'36%'});
+  RG('lug',[['0%','#ecce82'],['72%','#d5a852'],['100%','#bd8a3a']],{fx:'40%',fy:'36%'});
+  RG('lugw',[['0%','#fcf6df'],['100%','#f0dfa8']]);
+  RG('mac',[['0%','#e1e6f7'],['78%','#c8cfeb'],['100%','#acb4dc']]);
+  RG('macn',[['0%','#7d4ca2'],['100%','#4a1e6a']],{fx:'40%',fy:'38%'});
+  RG('ama',[['0%','#d6def7'],['100%','#a8b4e5']]);
+  RG('rbc',[['0%','#f7d9de'],['30%','#f3cad1'],['70%','#e3a1ae'],['100%','#cd8395']]);
+  RG('brown',[['0%','#c48e45'],['65%','#9d6627'],['100%','#744515']],{fx:'36%',fy:'32%'});
+  RG('shell',[['0%','#e9cf8c'],['100%','#c69a50']],{fx:'38%',fy:'34%'});
+  RG('tan',[['0%','#efd8a6'],['100%','#d0a75e']],{fx:'40%',fy:'36%'});
+  RG('emb',[['0%','#dcb974'],['100%','#b2873f']],{fx:'40%',fy:'36%'});
+  RG('clear',[['0%','#fbfcf8'],['85%','#eff2ea'],['100%','#dde3d6']]);
+  RG('blast',[['0%','#d9ddd0'],['100%','#a6ad9b']],{fx:'36%',fy:'32%'});
+  RG('sch',[['0%','#f7eecf'],['80%','#ecdcab'],['100%','#d8c48a']]);
+  RG('mir',[['0%','#e9dbad'],['100%','#c9b277']],{fx:'45%',fy:'40%'});
+  RG('hl',[['0%','#ffffff',.6],['100%','#ffffff',0]]);
+  RG('bub',[['0%','#ffffff',.95],['52%','#f6f7f1',.25],['80%','#596055',.6],['100%','#262b24',.9]]);
+  RG('fat',[['0%','#fffcec',.95],['65%','#f4ecd2',.55],['100%','#7f7044',.85]]);
+  RG('oof',[['0%','#86795a',.32],['60%','#86795a',.14],['100%','#86795a',0]]);
+  RG('oofb',[['0%','#9b7fb0',.28],['100%','#9b7fb0',0]]);
+  // ruídos pré-calculados (imagens pequenas repetidas): granulação de câmera e manchas suaves de coloração
+  const img=(w,hh,fn)=>{const c=document.createElement('canvas');c.width=w;c.height=hh;const q=c.getContext('2d');const id=q.createImageData(w,hh);for(let y=0;y<hh;y++)for(let x=0;x<w;x++){const[v,al]=fn(x,y);const k=(y*w+x)*4;id.data[k]=id.data[k+1]=id.data[k+2]=v;id.data[k+3]=al;}q.putImageData(id,0,0);return c.toDataURL('image/png');};
+  const rr=seeded(4242);pzDefs.grain=img(128,128,()=>[Math.round(128+(rr()+rr()+rr()-1.5)*90),255]);
+  // mosaicos (padrões) que preenchem o fundo: hemácias em camada contínua e detritos finos das fezes
+  const tilePat=(id,T,fill)=>{const p=s('pattern',{id:'pz-'+id,patternUnits:'userSpaceOnUse',width:T,height:T});fill(p,(x,y,rr,fn)=>{for(const ox of[0,-T,T])for(const oy of[0,-T,T]){const X=x+ox,Y=y+oy;if(X+rr<0||X-rr>T||Y+rr<0||Y-rr>T)continue;fn(X,Y);}});d.append(p);};
+  tilePat('sangue',300,(p,W)=>{const r=seeded(501);const pts=[];const far=(x,y,m)=>pts.every(([a,b])=>{let dx=Math.abs(a-x),dy=Math.abs(b-y);dx=Math.min(dx,300-dx);dy=Math.min(dy,300-dy);return dx*dx+dy*dy>=m*m;});
+    for(let i=0;i<9000&&pts.length<1250;i++){const x=r()*300,y=r()*300;if(far(x,y,7.3))pts.push([x,y]);}
+    pts.forEach(([x,y])=>{const rr=3.5+r()*.45,e=.92+r()*.08,a=Math.round(r()*180);W(x,y,5,(X,Y)=>p.append(s('ellipse',{cx:X.toFixed(1),cy:Y.toFixed(1),rx:rr.toFixed(2),ry:(rr*e).toFixed(2),transform:`rotate(${a} ${X.toFixed(1)} ${Y.toFixed(1)})`,fill:'url(#pz-rbc)',stroke:'#b6738a','stroke-width':.16})));});
+    for(let i=0;i<40;i++){const x=r()*300,y=r()*300,sd=700+i;const bp=blobPath(.9,sd,.3,4);W(x,y,2,(X,Y)=>{const gg=s('g',{transform:`translate(${X.toFixed(1)},${Y.toFixed(1)})`});gg.append(s('path',{d:bp,fill:'#b392cc',opacity:.78}));granules(gg,.6,.5,5,.12,.22,'#4c2373',.9,sd);p.append(gg);});}});
+  [['sal',['#9a8a60','#7f7a52','#b0a27a'],'#ece5cc'],['lug',['#a07a32','#8a6a2a','#b8913f'],'#e8cf8a']].forEach(([k,cols,lv])=>tilePat('fez-'+k,700,(p,W)=>{const r=seeded(k==='sal'?601:602);
+    for(let i=0;i<620;i++){const x=r()*700,y=r()*700,sz=1.5+r()*r()*14,sd=900+i,a=Math.round(r()*180),c=cols[Math.floor(r()*3)],op=.2+r()*.4;const bp=blobPath(sz/2,sd,.35,5);W(x,y,sz,(X,Y)=>p.append(s('path',{d:bp,transform:`translate(${X.toFixed(1)},${Y.toFixed(1)}) rotate(${a})`,fill:c,'fill-opacity':op.toFixed(2),stroke:c,'stroke-width':.3,'stroke-opacity':Math.min(1,op*1.6).toFixed(2)})));}
+    for(let i=0;i<260;i++){const x=r()*700,y=r()*700,rr=.4+r()*.9;W(x,y,2,(X,Y)=>p.append(s('circle',{cx:X.toFixed(1),cy:Y.toFixed(1),r:rr.toFixed(2),fill:'#5f5536',opacity:.45})));}
+    for(let i=0;i<70;i++){const x=r()*700,y=r()*700,rr=.8+r()*3;W(x,y,rr+1,(X,Y)=>p.append(s('circle',{cx:X.toFixed(1),cy:Y.toFixed(1),r:rr.toFixed(2),fill:'url(#pz-fat)',stroke:'#5f5532','stroke-width':Math.max(.25,rr*.12).toFixed(2)})));}
+    for(let i=0;i<90;i++){const x=r()*700,y=r()*700,sz=3+r()*2.5,a=Math.round(r()*180);W(x,y,5,(X,Y)=>{p.append(s('ellipse',{cx:X.toFixed(1),cy:Y.toFixed(1),rx:(sz/2).toFixed(2),ry:(sz*.65).toFixed(2),transform:`rotate(${a} ${X.toFixed(1)} ${Y.toFixed(1)})`,fill:lv,stroke:'#5f5536','stroke-width':.3}));});}
+    for(let i=0;i<30;i++){const x=r()*700,y=r()*700,rr=6+r()*20;W(x,y,rr,(X,Y)=>p.append(s('circle',{cx:X.toFixed(1),cy:Y.toFixed(1),r:rr.toFixed(1),fill:'url(#pz-oof)'})));}}));
+  (document.body||document.documentElement).append(sv);
+  // converte os mosaicos vetoriais em imagem (uma vez): o redesenho a cada ajuste de foco fica bem mais leve
+  const grads=[...d.querySelectorAll('radialGradient')].map(e=>e.outerHTML).join('');
+  [['sangue',300,4],['fez-sal',700,3],['fez-lug',700,3]].forEach(([id,T,res])=>{const p=d.querySelector('#pz-'+id);const kids=[...p.childNodes].map(e=>e.outerHTML).join('');
+    const svgTxt=`<svg xmlns="http://www.w3.org/2000/svg" width="${T*res}" height="${T*res}" viewBox="0 0 ${T} ${T}"><defs>${grads}</defs>${kids}</svg>`;const im=new Image();
+    im.onload=()=>{try{const c=document.createElement('canvas');c.width=c.height=T*res;const q=c.getContext('2d');q.fillStyle={sangue:PREPS.giemsa.bg,'fez-sal':PREPS.salina.bg,'fez-lug':PREPS.lugol.bg}[id];q.fillRect(0,0,c.width,c.height);q.drawImage(im,0,0);const N=document.createElement('canvas');N.width=N.height=48;const nq=N.getContext('2d');const nd=nq.createImageData(48,48);const Wv=[...Array(6)].map((_,i)=>[1+(i%3),1+((i*2)%3),i*1.7+T*.01,.6+((i*37)%5)*.12]);for(let y=0;y<48;y++)for(let x=0;x<48;x++){let v=0,t=0;Wv.forEach(([a,b,ph,am])=>{v+=am*Math.sin((a*x+b*y)/48*6.283+ph);t+=am;});v=.5+.5*v/t;const kk=(y*48+x)*4,g2=Math.round(255-v*40);nd.data[kk]=g2;nd.data[kk+1]=Math.round(255-v*46);nd.data[kk+2]=Math.round(255-v*58);nd.data[kk+3]=255;}nq.putImageData(nd,0,0);q.globalCompositeOperation='multiply';q.imageSmoothingEnabled=true;q.drawImage(N,0,0,48,48,0,0,T*res,T*res);q.globalCompositeOperation='source-over';const url=c.toDataURL(id==='sangue'?'image/png':'image/png');p.replaceChildren(s('image',{href:url,width:T,height:T}));c.width=c.height=0;pzDefs.onReady&&pzDefs.onReady();}catch(e){}};
+    im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgTxt);});}
+const pzEl=(g,tag,a)=>{const e=s(tag,a);g.append(e);return e;};
+// forma com halo claro de refração por trás (o contorno brilhante típico de objetos não corados)
+function pzShape(g,tag,a,haloW=0,haloOp=.8){if(haloW){const c=s(tag,{...a,fill:'none',stroke:'#fffef4','stroke-width':(+a['stroke-width']||0)+haloW*.8,opacity:(haloOp*.5).toFixed(2)});g.append(c);}return pzEl(g,tag,a);}
+const pzSpec=(g,cx,cy,rx,ry)=>pzEl(g,'ellipse',{cx,cy,rx,ry,fill:'url(#pz-hl)'});
+// grânulos com tons variados
+function pzGran(g,a,b,n,rmin,rmax,cols,op,seed,cx=0,cy=0){const r=seeded(seed);for(let i=0;i<n;i++){const t=r()*6.283,q=Math.sqrt(r());g.append(s('circle',{cx:(cx+a*q*Math.cos(t)).toFixed(2),cy:(cy+b*q*Math.sin(t)).toFixed(2),r:(rmin+r()*(rmax-rmin)).toFixed(2),fill:cols[Math.floor(r()*cols.length)],opacity:(op*(.45+r()*.55)).toFixed(2)}));}}
+
+const DRAW2={
+ 'giardia-t':g=>{const st='#55654e';
+   ['M-.6,-4.6 Q2.6,-3.6 3.9,-1.4 q2.2,1.8 4.4,5.6','M-.4,1.9 Q-1.9,2.9 -3.1,3.5 q-3.2,1.8 -4.6,5.8','M-.3,4.1 Q-.9,5.2 -1.3,5.7 q-1.5,3 -.9,6.4','M-.25,6.9 q-.6,3.4 .2,6.6'].forEach(d=>{[1,-1].forEach(sx=>pzEl(g,'path',{d,stroke:st,'stroke-width':.15,fill:'none',opacity:.5,'stroke-linecap':'round',transform:sx<0?'scale(-1,1)':null}));});
+   const body='M0,-7.2 C4.5,-7.2 4.7,-2 3.5,1.6 C2.5,4.3 1.1,6.5 0,7.1 C-1.1,6.5 -2.5,4.3 -3.5,1.6 C-4.7,-2 -4.5,-7.2 0,-7.2Z';
+   pzShape(g,'path',{d:body,fill:'url(#pz-gt)',stroke:st,'stroke-width':.22},.9,.85);pzGran(g,3,5.6,70,.05,.12,['#7a876f','#a2ad97'],.45,7);
+   pzEl(g,'path',{d:'M0,-6.7 C3.7,-6.7 4,-3 3.3,-1.2 C2.4,.7 1.2,.4 0,-.2 C-1.2,.4 -2.4,.7 -3.3,-1.2 C-4,-3 -3.7,-6.7 0,-6.7Z',fill:'#ffffff','fill-opacity':.3,stroke:'#8d9a84','stroke-width':.2});
+   [-1,1].forEach(sx=>{pzEl(g,'ellipse',{cx:sx*1.55,cy:-3.6,rx:1.05,ry:1.45,fill:'#f2f5ed',stroke:'#4a5944','stroke-width':.22});pzEl(g,'circle',{cx:sx*1.55,cy:-3.55,r:.4,fill:'#3d4b38',opacity:.85});});
+   [-1,1].forEach(sx=>pzEl(g,'path',{d:`M${sx*.35},-5.2 C${sx*.3},-1 ${sx*.45},3 ${sx*.25},6.9`,stroke:'#4a5944','stroke-width':.2,fill:'none',opacity:.75}));
+   [-1,1].forEach(sx=>pzEl(g,'path',{d:`M${sx*.45},1.25 L${sx*1.75},1.05 q${sx*.35},-.05 ${sx*.42},.42`,stroke:'#323f2e','stroke-width':.46,fill:'none','stroke-linecap':'round'}));
+   pzSpec(g,-1.5,-4.8,2.2,1.4);},
+ 'giardia-c':g=>{pzShape(g,'ellipse',{rx:4.7,ry:6,fill:'url(#pz-lugw)',stroke:'#5a451a','stroke-width':.34},.9,.9);pzEl(g,'ellipse',{rx:4.42,ry:5.72,fill:'none',stroke:'#8c7036','stroke-width':.13,opacity:.6});
+   pzEl(g,'path',{d:blobPath(1,61,.05,5),transform:'translate(.3,.25) scale(3.85,5.05)',fill:'url(#pz-lug)'});pzGran(g,3.3,4.5,60,.06,.16,['#94681f','#7a5214','#c79a4a'],.55,5,.3,.2);
+   [[-1.15,-3.1],[1.15,-3.1],[-1.05,-1.55],[1.15,-1.5]].forEach(([x,y])=>{pzEl(g,'circle',{cx:x,cy:y,r:.64,fill:'#f0d895',stroke:'#5a3f10','stroke-width':.15});pzEl(g,'circle',{cx:x,cy:y,r:.21,fill:'#4a320b'});});
+   [-1,1].forEach(sx=>pzEl(g,'path',{d:`M${sx*.3},-.6 C${sx*.6},1.4 ${sx*-.1},2.8 ${sx*.35},4.6`,stroke:'#6b4d17','stroke-width':.18,fill:'none',opacity:.8}));
+   pzEl(g,'path',{d:'M-1.6,1.6 q.6,-.5 1.2,-.1 M.5,2.2 q.7,-.5 1.3,0',stroke:'#5a3f10','stroke-width':.3,fill:'none','stroke-linecap':'round'});pzSpec(g,-1.7,-3.4,1.7,1.2);},
+ 'entamoeba':g=>{pzShape(g,'circle',{r:6.6,fill:'#f8ecc3',stroke:'#6b5420','stroke-width':.36},1.1,.9);pzEl(g,'circle',{r:6.15,fill:'url(#pz-lug)'});
+   pzEl(g,'ellipse',{cx:-.6,cy:.9,rx:2.8,ry:2.1,fill:'#8a5818',opacity:.22});pzGran(g,5.6,5.6,90,.06,.16,['#a07b2c','#7c5a1a','#d0a95a'],.5,9);
+   pzEl(g,'rect',{x:-3.4,y:-.35,width:4.4,height:1.15,rx:.57,fill:'#b98a3a',opacity:.4});
+   [[-2.4,-2.2],[2.5,-1.9],[-2.1,2.6],[2.7,2.3]].forEach(([x,y],k)=>{pzEl(g,'circle',{cx:x,cy:y,r:1.3,fill:'#f0d895',opacity:.95});const r=seeded(40+k);for(let i=0;i<14;i++){const t=i/14*6.283+r()*.2;pzEl(g,'circle',{cx:(x+1.17*Math.cos(t)).toFixed(2),cy:(y+1.17*Math.sin(t)).toFixed(2),r:.13+r()*.06,fill:'#4f3a0e',opacity:.85});}pzEl(g,'circle',{cx:x+.05,cy:y-.03,r:.26,fill:'#3f2c08'});});
+   pzSpec(g,-2.6,-3.2,2.4,1.6);},
+ 'leish':g=>{pzEl(g,'path',{d:blobPath(12.2,4,.1),fill:'url(#pz-mac)',stroke:'#8a8cc0','stroke-width':.25});
+   const r=seeded(91);for(let i=0;i<9;i++){const t=r()*6.28,q=Math.sqrt(r())*9;pzEl(g,'circle',{cx:(q*Math.cos(t)).toFixed(2),cy:(q*Math.sin(t)).toFixed(2),r:(.5+r()*.9).toFixed(2),fill:'#eef0fb',opacity:.75});}
+   pzGran(g,10,10,90,.06,.18,['#8e96cc','#a9a2d6','#7b80bd'],.5,12);
+   pzEl(g,'path',{d:blobPath(4.6,8,.08),transform:'translate(5.2,4.2) scale(1.05,.82)',fill:'url(#pz-macn)'});pzGran(g,4,3,60,.12,.32,['#2e0f47','#3a1556','#9a74b8'],.7,6,5.2,4.2);
+   const am=(x,y,a)=>{const gg=s('g',{transform:`translate(${x},${y}) rotate(${a})`});gg.append(s('ellipse',{rx:2.05,ry:1.45,fill:'#f1f2fb',opacity:.6}));gg.append(s('ellipse',{rx:1.65,ry:1.05,fill:'url(#pz-ama)',stroke:'#6b6fb0','stroke-width':.12}));
+     gg.append(s('ellipse',{cx:-.5,cy:0,rx:.64,ry:.56,fill:'#a6286f',opacity:.92}));gg.append(s('circle',{cx:-.62,cy:-.12,r:.18,fill:'#6e1048'}));gg.append(s('rect',{x:.55,y:-.5,width:.3,height:1,rx:.13,fill:'#2b0a3c'}));g.append(gg);};
+   [[-6.5,-5],[-2.8,-7.4],[1.2,-7.2],[-8.6,-.8],[-5,-1.6],[-1.4,-3.2],[-7.4,3.6],[-3.6,2.4],[3.6,-3.4],[7.2,-5.4],[-3.4,7.4],[.4,8],[-.6,.8]].forEach(([x,y],i)=>am(x,y,(i*53)%180));
+   [[15.5,-6],[14,9],[-14.5,8.5]].forEach(([x,y],i)=>am(x,y,i*70));},
+ 'trichuris':g=>{const body='M-20,-3 C-18,-10 -10,-11.6 0,-11.6 C10,-11.6 18,-10 20,-3 L22.2,-2.4 L22.2,2.4 L20,3 C18,10 10,11.6 0,11.6 C-10,11.6 -18,10 -20,3 L-22.2,2.4 L-22.2,-2.4Z';
+   [-1,1].forEach(sx=>pzShape(g,'path',{d:`M${sx*21},-2.7 Q${sx*25.8},-2.9 ${sx*25.8},0 Q${sx*25.8},2.9 ${sx*21},2.7Z`,fill:'#faf6e7',stroke:'#b09658','stroke-width':.32},.9,.9));
+   pzShape(g,'path',{d:body,fill:'url(#pz-brown)',stroke:'#5c3810','stroke-width':.45},.9,.55);
+   pzEl(g,'path',{d:body,transform:'scale(.9,.84)',fill:'#c79550',opacity:.85});pzEl(g,'path',{d:body,transform:'scale(.8,.72)',fill:'url(#pz-emb)'});
+   pzGran(g,15,6.5,150,.2,.55,['#8f6428','#a57838','#e2c48a'],.55,21);pzEl(g,'ellipse',{cx:1,cy:.4,rx:7,ry:4.2,fill:'#8a5d22',opacity:.18});
+   [-1,1].forEach(sx=>pzEl(g,'path',{d:`M${sx*21.2},-1.8 Q${sx*24.4},0 ${sx*21.2},1.8`,stroke:'#cbb87e','stroke-width':.25,fill:'none'}));pzSpec(g,-7,-6.5,8,3);},
+ 'taenia':g=>{pzShape(g,'circle',{r:16.6,fill:'url(#pz-brown)',stroke:'#4b2d0d','stroke-width':.45},1,.5);
+   const r=seeded(33);let d='';for(let i=0;i<150;i++){const t=i/150*6.283+r()*.012,a=12.7+r()*.3,b=16.2+r()*.3;d+=`M${(a*Math.cos(t)).toFixed(2)},${(a*Math.sin(t)).toFixed(2)}L${(b*Math.cos(t)).toFixed(2)},${(b*Math.sin(t)).toFixed(2)}`;}
+   pzEl(g,'path',{d,stroke:'#3a220a','stroke-width':.4,opacity:.7});pzEl(g,'circle',{r:12.45,fill:'none',stroke:'#6b4718','stroke-width':.5});
+   pzEl(g,'circle',{r:12.15,fill:'url(#pz-tan)'});pzGran(g,10.5,10.5,110,.2,.55,['#b08a50','#c9a56a','#8f6a34'],.5,34);
+   const hook=s('path',{d:'M0,1.6 L0,-1.3 Q0,-2 .6,-2.2',stroke:'#3a2610','stroke-width':.32,fill:'none','stroke-linecap':'round'});
+   [[0,0,0],[-2.4,.5,-30],[2.4,.5,30]].forEach(([x,y,a])=>{[-.38,.38].forEach(dx=>{const hk=hook.cloneNode();hk.setAttribute('transform',`translate(${x},${y}) rotate(${a}) translate(${dx},0) ${dx<0?'scale(-1,1)':''}`);g.append(hk);});});
+   pzSpec(g,-6,-7.5,6,3.5);},
+ 'ascaris':g=>{pzShape(g,'path',{d:mammillated(26.5,20.2,34,2.8,17),fill:'url(#pz-brown)',stroke:'#573510','stroke-width':.45},1,.45);
+   const r=seeded(18);for(let i=0;i<190;i++){const t=r()*6.283,q=.25+Math.sqrt(r())*.73,x=24.6*q*Math.cos(t),y=18.6*q*Math.sin(t),rr=.6+r()*1;pzEl(g,'circle',{cx:x.toFixed(2),cy:y.toFixed(2),r:rr.toFixed(2),fill:'#6a4013',opacity:.3});pzEl(g,'circle',{cx:(x-rr*.3).toFixed(2),cy:(y-rr*.3).toFixed(2),r:(rr*.45).toFixed(2),fill:'#d9a85c',opacity:.28});}
+   pzEl(g,'ellipse',{rx:22.7,ry:16.5,fill:'url(#pz-shell)',stroke:'#8a5f20','stroke-width':.45});pzEl(g,'ellipse',{rx:21.2,ry:15,fill:'#f3e5bd',stroke:'#b08940','stroke-width':.3});
+   pzEl(g,'path',{d:blobPath(1,23,.04,5),transform:'scale(15,13.2)',fill:'url(#pz-emb)'});pzGran(g,13.6,11.8,170,.25,.75,['#8a6227','#a77c3c','#e0c68e'],.5,4);pzSpec(g,-9,-8,9,4.5);},
+ 'ancylo':g=>{pzShape(g,'ellipse',{rx:30.5,ry:19,fill:'url(#pz-clear)',stroke:'#3c443e','stroke-width':.5},1.2,.95);pzEl(g,'ellipse',{rx:30,ry:18.5,fill:'none',stroke:'#7d857a','stroke-width':.15,opacity:.7});
+   [[-11.5,-5],[-3.8,-6],[4.2,-5.6],[11.5,-4.5],[-11,5],[-3.4,6],[4.4,5.4],[11.4,4.4]].forEach(([x,y],i)=>{pzEl(g,'path',{d:blobPath(5.9,40+i,.07,4),transform:`translate(${x},${y})`,fill:'url(#pz-blast)',stroke:'#6f766a','stroke-width':.32});pzGran(g,4.6,4.6,26,.2,.5,['#8f9586','#787f70','#c8ccbf'],.55,60+i,x,y);});
+   pzSpec(g,-12,-12,12,4);},
+ 'schisto':g=>{pzShape(g,'path',{d:'M24,-27.8 Q40,-31 53,-41 Q49.5,-30 50,-21.2Z',fill:'url(#pz-sch)',stroke:'#9a8248','stroke-width':.8},1.6,.8);
+   pzShape(g,'ellipse',{rx:72,ry:29.2,fill:'url(#pz-sch)',stroke:'#9a8248','stroke-width':.8},1.8,.85);pzEl(g,'ellipse',{rx:70.6,ry:27.9,fill:'none',stroke:'#c4ae74','stroke-width':.35});
+   const r=seeded(55);let d='';for(let i=0;i<220;i++){const t=i/220*6.283,a=1+r()*.01,ll=1.4+r()*.9;d+=`M${(61*Math.cos(t)).toFixed(2)},${(23.5*Math.sin(t)).toFixed(2)}l${(Math.cos(t)*ll).toFixed(2)},${(Math.sin(t)*ll*.6).toFixed(2)}`;}
+   pzEl(g,'ellipse',{rx:61,ry:23.5,fill:'url(#pz-mir)',stroke:'#a08a52','stroke-width':.45});pzEl(g,'path',{d,stroke:'#a08a52','stroke-width':.3,opacity:.65});
+   pzEl(g,'path',{d:'M-61,-4 Q-66,0 -61,4',fill:'#d8c690',stroke:'#a08a52','stroke-width':.5});
+   pzEl(g,'ellipse',{cx:-40,cy:0,rx:10,ry:7.5,fill:'#d6c38c',stroke:'#a8935a','stroke-width':.35});pzGran(g,8.5,6,40,.35,.85,['#b49e64','#9a8450'],.6,8,-40,0);
+   pzGran(g,26,12,140,.35,.95,['#bda874','#a89260','#efe2b8'],.45,13,-2,0);
+   [[25,-6],[31,4],[37,-3],[42,6],[45,-8],[33,-11],[28,10],[39,12],[47,1]].forEach(([x,y])=>{pzEl(g,'circle',{cx:x,cy:y,r:3,fill:'#ecdcae',stroke:'#a58f57','stroke-width':.3});pzEl(g,'circle',{cx:x,cy:y,r:.95,fill:'#9c8550'});});
+   [[-15,-13],[-15,13],[12,-15],[12,15]].forEach(([x,y])=>pzEl(g,'path',{d:`M${x-2},${y} q2,-1.4 4,0 M${x-1.4},${y+.5} l1.4,-1 M${x},${y+.5} l1.4,-1`,stroke:'#8c7645','stroke-width':.4,fill:'none'}));
+   pzSpec(g,-22,-14,28,7);},
+};
+ORGS.forEach(o=>{if(DRAW2[o.id])o.draw=DRAW2[o.id];});
+
+// Detritos de fundo: fezes (salina ou lugol) e sangue (Giemsa). Caminhos calculados uma vez e guardados.
+function makeDebris(kind){const r=seeded(kind==='sangue'?77:31);const L=[];const R=2300;const P=()=>[(r()-.5)*2*R,(r()-.5)*2*R];
+  if(kind==='sangue'){}
+  else{for(let i=0;i<300;i++){const[x,y]=P();L.push({t:'amo',x,y,sz:4+r()*26,a:r()*180,sd:i+3,op:.18+r()*.32,tn:r()});}
+    for(let i=0;i<45;i++){const[x,y]=P();L.push({t:'veg',x,y,n:2+Math.floor(r()*4),w:22+r()*22,h:14+r()*14,a:r()*180,sk:(r()-.5)*.3});}
+    for(let i=0;i<22;i++){const[x,y]=P();L.push({t:'pel',x,y,len:70+r()*160,w:6+r()*7,a:r()*180,bd:(r()-.5)*30});}
+    for(let i=0;i<45;i++){const[x,y]=P();L.push({t:'fib',x,y,len:50+r()*150,w:6+r()*10,a:r()*180});}
+    for(let i=0;i<70;i++){const[x,y]=P();L.push({t:'ami',x,y,sz:6+r()*14,e:.75+r()*.25,a:r()*180});}
+    for(let i=0;i<60;i++){const[x,y]=P();L.push({t:'fat',x,y,sz:2+r()*10});}
+    for(let i=0;i<26;i++){const[x,y]=P();L.push({t:'bol',x,y,sz:15+r()*70});}
+    for(let i=0;i<180;i++){const[x,y]=P();L.push({t:'lev',x,y,sz:3+r()*2.5,a:r()*180});}
+    for(let i=0;i<90;i++){const[x,y]=P();L.push({t:'oof',x,y,sz:8+r()*40});}}
   return L;}
 const DEB={fezes:makeDebris('fezes'),sangue:makeDebris('sangue')};
-function drawDebris(g,kind,cx,cy,fov,clear){
-  const half=fov/2*1.05;
-  DEB[kind].forEach((d,i)=>{if(d.t==='rbc'&&fov>1500&&i%4)return;const x=d.x-cx,y=d.y-cy;if(Math.abs(x)>half+200||Math.abs(y)>half+200)return;if(Math.hypot(d.x,d.y)<clear)return;
-    if(d.t==='rbc'){if(Math.hypot(d.x,d.y)<clear+3)return;const gg=s('g',{transform:`translate(${d.x},${d.y})`});gg.append(s('circle',{r:3.75,fill:'#e4a0ad',stroke:'#c47d8c','stroke-width':.2}));gg.append(s('circle',{r:1.5,fill:'#f2cbd2'}));g.append(gg);}
-    else if(d.t==='plq')g.append(s('circle',{cx:d.x,cy:d.y,r:.8,fill:'#8e6aa8'}));
-    else if(d.t==='gran')g.append(s('rect',{x:d.x,y:d.y,width:d.sz,height:d.sz*.7,rx:d.sz*.3,transform:`rotate(${d.a} ${d.x} ${d.y})`,fill:'#b7a77d',opacity:.4}));
-    else if(d.t==='fib'){const gg=s('g',{transform:`translate(${d.x},${d.y}) rotate(${d.a})`,opacity:.35});gg.append(s('rect',{x:-d.len/2,y:-d.w/2,width:d.len,height:d.w,rx:d.w/2,fill:'#c9bb8c',stroke:'#8d7f55','stroke-width':1}));for(let k=-d.len/2+12;k<d.len/2;k+=14)gg.append(s('line',{x1:k,y1:-d.w/2,x2:k,y2:d.w/2,stroke:'#8d7f55','stroke-width':.8}));g.append(gg);}
-    else if(d.t==='bol'){g.append(s('circle',{cx:d.x,cy:d.y,r:d.sz/2,fill:'none',stroke:'#5f6656','stroke-width':Math.max(1,d.sz*.06),opacity:.45}));g.append(s('circle',{cx:d.x-d.sz*.15,cy:d.y-d.sz*.15,r:d.sz*.08,fill:'#ffffff',opacity:.7}));}
-    else if(d.t==='cel'){g.append(s('path',{d:blobPath(d.sz/2,d.sd,.18,5),transform:`translate(${d.x},${d.y}) rotate(${d.a})`,fill:'#d2c79e',stroke:'#9c8f62','stroke-width':.9,opacity:.35}));}
+function drawDebris(g,kind,cx,cy,fov,clear,prep){const half=fov/2*1.05;const lug=prep==='lugol';const lo=fov>2000; // aumento pequeno: detalhes finos não aparecem
+  DEB[kind].forEach((d,i)=>{if(d.t==='rbc'&&fov>1500&&i%4)return;const x=d.x-cx,y=d.y-cy;if(Math.abs(x)>half+250||Math.abs(y)>half+250)return;if(Math.hypot(d.x,d.y)<clear)return;
+    if(d.t==='rbc'){if(Math.hypot(d.x,d.y)<clear+3)return;g.append(s('ellipse',{cx:d.x,cy:d.y,rx:d.rr,ry:(d.rr*d.e).toFixed(2),transform:`rotate(${d.a.toFixed(0)} ${d.x} ${d.y})`,fill:'url(#pz-rbc)',stroke:'#b6738a','stroke-width':.16,'fill-opacity':.94}));}
+    else if(d.t==='plq'){d.p=d.p||blobPath(.9,d.sd,.3,4);const gg=s('g',{transform:`translate(${d.x},${d.y})`});gg.append(s('path',{d:d.p,fill:'#b392cc',opacity:.75}));granules(gg,.6,.5,5,.12,.22,'#4c2373',.9,d.sd);g.append(gg);}
+    else if(d.t==='oof')g.append(s('circle',{cx:d.x,cy:d.y,r:d.sz,fill:'url(#pz-oof)'}));
+    else if(d.t==='amo'){d.p=d.p||blobPath(d.sz/2,d.sd,.32,6);const col=lug?(d.tn<.5?'#a07a32':'#8a6a2a'):(d.tn<.5?'#9a8a60':'#7f7a52');g.append(s('path',{d:d.p,transform:`translate(${d.x},${d.y}) rotate(${d.a.toFixed(0)})`,fill:col,'fill-opacity':d.op.toFixed(2),stroke:col,'stroke-width':Math.max(.4,d.sz*.04),'stroke-opacity':(d.op*1.3).toFixed(2)}));}
+    else if(d.t==='veg'){const gg=s('g',{transform:`translate(${d.x},${d.y}) rotate(${d.a.toFixed(0)}) skewX(${(d.sk*40).toFixed(1)})`,opacity:.62});const fc=lug?'#ead386':'#e8e0b4',wc=lug?'#8a6a24':'#857a4a';
+      for(let k=0;k<d.n;k++){gg.append(s('rect',{x:k*d.w-d.n*d.w/2,y:-d.h/2,width:d.w,height:d.h,rx:2.5,fill:fc,stroke:wc,'stroke-width':1.8}));if(!lo)gg.append(s('rect',{x:k*d.w-d.n*d.w/2+2,y:-d.h/2+2,width:d.w-4,height:d.h-4,rx:1.5,fill:'none',stroke:'#ffffff','stroke-width':.8,opacity:.6}));}g.append(gg);}
+    else if(d.t==='pel'){const gg=s('g',{transform:`translate(${d.x},${d.y}) rotate(${d.a.toFixed(0)})`,opacity:.7});const p=`M${-d.len/2},${-d.w/2} Q0,${-d.w/2+d.bd*.2} ${d.len/2},${d.bd*.3} Q0,${d.w/2+d.bd*.2} ${-d.len/2},${d.w/2}Z`;
+      if(!lo)gg.append(s('path',{d:p,fill:'#f4efdc',stroke:'#fffef4','stroke-width':2.4,opacity:.8}));gg.append(s('path',{d:p,fill:lug?'#f0dfa8':'#f2eedb',stroke:'#7e7652','stroke-width':.9}));gg.append(s('path',{d:`M${-d.len/2+4},0 Q0,${d.bd*.2} ${d.len/2-6},${d.bd*.28}`,stroke:'#a49a70','stroke-width':.7,fill:'none'}));g.append(gg);}
+    else if(d.t==='fib'){const gg=s('g',{transform:`translate(${d.x},${d.y}) rotate(${d.a.toFixed(0)})`,opacity:.5});gg.append(s('rect',{x:-d.len/2,y:-d.w/2,width:d.len,height:d.w,rx:d.w/2.5,fill:lug?'#d9b366':'#cbbd8e',stroke:'#8b7d52','stroke-width':.9}));if(!lo)for(let k=-d.len/2+5;k<d.len/2;k+=4.2)gg.append(s('line',{x1:k,y1:-d.w/2+.6,x2:k+.8,y2:d.w/2-.6,stroke:'#7d6f46','stroke-width':.7,opacity:.7}));g.append(gg);}
+    else if(d.t==='ami'){const gg=s('g',{transform:`translate(${d.x},${d.y}) rotate(${d.a.toFixed(0)})`});const rx=d.sz/2,ry=rx*d.e;
+      if(lug){gg.append(s('ellipse',{rx,ry,fill:'#2f2a4f',stroke:'#1a1630','stroke-width':.5,opacity:.85}));gg.append(s('ellipse',{cx:-rx*.25,cy:-ry*.25,rx:rx*.35,ry:ry*.3,fill:'#6a6290',opacity:.5}));}
+      else{gg.append(s('ellipse',{rx:rx+.6,ry:ry+.6,fill:'none',stroke:'#ffffff','stroke-width':1.2,opacity:.8}));gg.append(s('ellipse',{rx,ry,fill:'#f7f5ec',stroke:'#7d7a68','stroke-width':.5}));gg.append(s('ellipse',{cx:-rx*.2,rx:rx*.6,ry:ry*.55,fill:'none',stroke:'#b0ac98','stroke-width':.35}));gg.append(s('ellipse',{cx:-rx*.32,rx:rx*.25,ry:ry*.22,fill:'none',stroke:'#b0ac98','stroke-width':.3}));}g.append(gg);}
+    else if(d.t==='fat')g.append(s('circle',{cx:d.x,cy:d.y,r:d.sz/2,fill:'url(#pz-fat)',stroke:'#5f5532','stroke-width':Math.max(.3,d.sz*.06)}));
+    else if(d.t==='bol')g.append(s('circle',{cx:d.x,cy:d.y,r:d.sz/2,fill:'url(#pz-bub)'}));
+    else if(d.t==='lev'){if(!lo)g.append(s('ellipse',{cx:d.x,cy:d.y,rx:d.sz/2+.35,ry:d.sz*.65+.35,transform:`rotate(${d.a.toFixed(0)} ${d.x} ${d.y})`,fill:'none',stroke:'#ffffff','stroke-width':.5,opacity:.8}));g.append(s('ellipse',{cx:d.x,cy:d.y,rx:d.sz/2,ry:d.sz*.65,transform:`rotate(${d.a.toFixed(0)} ${d.x} ${d.y})`,fill:lug?'#e8cf8a':'#ece5cc',stroke:'#5f5536','stroke-width':.3}));}
   });}
+
 INIT.microscopio=root=>{
+  pzDefs();
   root.append(head('Aula 3','Microscópio virtual','Cada organismo aparece com as estruturas usadas no diagnóstico e no tamanho real em relação ao campo de visão. Troque a objetiva, ajuste o foco e registre a ampliação total na ficha.'));
   root.append(h('p',{class:'callout'},'Ilustração esquemática, não é fotografia de microscopia. Na ficha, registre o organismo escolhido e a ampliação total usada no microscópio virtual.'));
   const grid=h('div',{class:'cols'});root.append(grid);
@@ -1046,7 +1134,7 @@ INIT.microscopio=root=>{
   const D=400;
   const svg=s('svg',{viewBox:`0 0 ${D} ${D}`,class:'scope-svg',role:'img','aria-label':'Campo de visão do microscópio'});
   const prepTag=h('span',{class:'scope-prep'});
-  L.append(h('div',{class:'scope-view'},svg,prepTag));
+  const grain=h('span',{class:'scope-grain','aria-hidden':'true'});L.append(h('div',{class:'scope-view'},svg,grain,prepTag));
   const ampl=h('div',{class:'scope-read'});L.append(ampl);
   const objSeg=seg(OBJS.map(o=>[o,o+'×']),obj,v=>{obj=v;target=Math.round(Math.random()*50-25);draw();},{label:'Objetiva'});
   L.append(h('div',{class:'row'},h('span',{class:'label'},'Objetiva'),objSeg,h('span',{class:'note'},'100× = imersão em óleo')));
@@ -1064,7 +1152,7 @@ INIT.microscopio=root=>{
     svg.innerHTML='';
     const fov=18000/obj;const k=D/fov;const P=PREPS[org.prep];
     const defs=s('defs');const cp=s('clipPath',{id:'campo'});cp.append(s('circle',{cx:D/2,cy:D/2,r:D/2-6}));defs.append(cp);
-    const blur=Math.abs(focus-target)/5;const f=s('filter',{id:'foco',x:'-20%',y:'-20%',width:'140%',height:'140%'});f.append(s('feGaussianBlur',{stdDeviation:blur.toFixed(2)}));defs.append(f);
+    const blur=Math.abs(focus-target)/5;const f=s('filter',{id:'foco',x:'-20%',y:'-20%',width:'140%',height:'140%'});f.append(s('feGaussianBlur',{stdDeviation:(blur+.22/k).toFixed(2)}));defs.append(f);
     const vg=s('radialGradient',{id:'vinheta',cx:'50%',cy:'50%',r:'50%'});vg.append(s('stop',{offset:'62%','stop-color':'#000','stop-opacity':0}));vg.append(s('stop',{offset:'100%','stop-color':'#000','stop-opacity':.42}));defs.append(vg);
     const lg=s('radialGradient',{id:'luz',cx:'44%',cy:'40%',r:'70%'});lg.append(s('stop',{offset:'0%','stop-color':'#ffffff','stop-opacity':.35}));lg.append(s('stop',{offset:'100%','stop-color':'#ffffff','stop-opacity':0}));defs.append(lg);
     svg.append(defs);
@@ -1072,7 +1160,8 @@ INIT.microscopio=root=>{
     const field=s('g',{'clip-path':'url(#campo)'});svg.append(field);
     field.append(s('rect',{width:D,height:D,fill:P.bg}));
     const world=s('g',{filter:'url(#foco)',transform:`translate(${D/2-dx*k},${D/2-dy*k}) scale(${k})`});field.append(world);
-    drawDebris(world,P.deb,dx,dy,fov,org.w*.62);
+    world.append(s('rect',{x:dx-fov*.6,y:dy-fov*.6,width:fov*1.2,height:fov*1.2,fill:P.deb==='sangue'?'url(#pz-sangue)':org.prep==='lugol'?'url(#pz-fez-lug)':'url(#pz-fez-sal)'}));
+    drawDebris(world,P.deb,dx,dy,fov,org.w*.62,org.prep);
     const og=s('g',{transform:`rotate(${org.rot})`});org.draw(og);world.append(og);
     field.append(s('rect',{width:D,height:D,fill:'url(#luz)'}));
     field.append(s('circle',{cx:D/2,cy:D/2,r:D/2-6,fill:'url(#vinheta)'}));
@@ -1089,7 +1178,7 @@ INIT.microscopio=root=>{
     info.append(h('p',{class:'note'},`Com a objetiva de ${obj}×, o organismo ocupa cerca de ${pct<1?fmt(pct,1):fmt(pct)}% do diâmetro do campo. `,pct<8?'Ainda está pequeno: tente uma objetiva maior.':pct>85?'Está maior que o campo: use uma objetiva menor ou mova a lâmina.':''));
     info.append(h('div',{class:'callout'},h('strong',{},'Para a ficha: '),`ampliação ${10*obj}× (ocular 10× × objetiva ${obj}×)`));
   }
-  draw();
+  draw();pzDefs.onReady=()=>draw();grain.style.backgroundImage=`url(${pzDefs.grain})`;
   // Régua de tamanhos
   const rp=h('div',{class:'panel stack'});root.append(rp);
   rp.append(h('h3',{},'Todos na mesma escala'),h('p',{class:'note'},'Do menor para o maior. A hemácia (≈ 7,5 µm) ajuda a comparar.'));
@@ -1099,7 +1188,7 @@ INIT.microscopio=root=>{
   rs.append(s('rect',{width:tot,height:H,rx:12,fill:'#efeadb'}));
   let x=20;const base=H-46;
   list.forEach(o=>{const cx=x+slot(o)/2;const g=s('g',{transform:`translate(${cx},${base-o.w*kk*.32}) scale(${kk}) rotate(${o.id==='schisto'?0:o.rot||0})`});
-    if(o.id==='rbc'){g.append(s('circle',{r:3.75,fill:'#e4a0ad',stroke:'#c47d8c','stroke-width':.2}));g.append(s('circle',{r:1.5,fill:'#f2cbd2'}));}else o.draw(g);rs.append(g);
+    if(o.id==='rbc'){g.append(s('circle',{r:3.75,fill:'url(#pz-rbc)',stroke:'#b6738a','stroke-width':.18}));}else o.draw(g);rs.append(g);
     rs.append(s('text',{x:cx,y:H-26,'text-anchor':'middle','font-size':12,'font-style':o.id==='rbc'?'normal':'italic',fill:'#1d2420'},o.id==='rbc'?'Hemácia':o.name.split(' (')[0].split(' / ')[0].replace(/^(\w)\w+ /,'$1. ')));
     rs.append(s('text',{x:cx,y:H-11,'text-anchor':'middle','font-size':11,fill:'#5b5f55'},o.forma));x+=slot(o)+gap;});
   rs.append(s('rect',{x:20,y:14,width:50*kk,height:4,rx:2,fill:'#1d2420'}));rs.append(s('text',{x:20+50*kk+8,y:20,'font-size':12,'font-weight':700,fill:'#1d2420'},'50 µm'));
