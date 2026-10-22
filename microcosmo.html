@@ -230,7 +230,9 @@ svg text{font-family:var(--f-body)}
 .lam-btn img{width:44px;height:44px;border-radius:50%;flex:none;background:#0b0f0d}
 .lam-btn[aria-pressed="true"]{border-color:var(--tema);background:var(--tema-soft);box-shadow:0 0 0 2px var(--tema) inset}
 .campo{background:#0b0f0d;border-radius:20px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
-.campo canvas{width:100%;max-width:560px;aspect-ratio:1;margin:0 auto;display:block;touch-action:none;cursor:grab;border-radius:50%}
+.campo-vis{position:relative;width:100%;max-width:560px;aspect-ratio:1;margin:0 auto;border-radius:50%;overflow:hidden}
+.campo canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab;border-radius:50%}
+.campo .campo-ov{position:absolute;inset:0;pointer-events:none;border-radius:0}
 .campo-top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#cfd8d2;font-family:var(--f-mono);font-size:.78rem}
 .ctl{display:flex;flex-direction:column;gap:3px}
 .ctl-box{background:var(--surface-2);border-radius:14px;padding:14px}
@@ -754,6 +756,11 @@ function tileOf(i){if(TILES[i])return TILES[i];const S=LAMINAS[i];const c=docume
 let HI=null;function hiTileOf(i){const S=LAMINAS[i];const R=Math.min(3.4,Math.sqrt(16e6/(S.T[0]*S.T[1])));if(R<=S.R*1.05)return tileOf(i);if(HI&&HI.i===i)return HI.c;if(HI){HI.c.width=HI.c.height=0;}
   const c=document.createElement('canvas');c.width=Math.round(S.T[0]*R);c.height=Math.round(S.T[1]*R);const g=c.getContext('2d');g.setTransform(R,0,0,R,0,0);g.fillStyle=S.bg;g.fillRect(0,0,S.T[0],S.T[1]);try{S.gen(g,rng(1000+i*97),S.T,S.mode,S);}catch(e){console.error('lâmina',i,e);}c.R=R;HI={i,c};return c;}
 // Desenha uma vista de microscópio (campo circular) em um canvas qualquer
+function viewOverlay(ctx,size,k,{mask=true,scale=true}={}){
+  if(mask){const r0=size/2-1;const gr=ctx.createRadialGradient(size/2,size/2,r0*.72,size/2,size/2,r0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,.35)');ctx.fillStyle=gr;ctx.fillRect(0,0,size,size);
+    ctx.beginPath();ctx.rect(0,0,size,size);ctx.arc(size/2,size/2,r0,0,TAU,true);ctx.fillStyle='#0b0f0d';ctx.fill('evenodd');}
+  if(scale){const cand=[1,2,5,10,20,50,100,200,500,1000];const Lm=cand.find(v=>v*k>=size*.12)||1000;const bw=Lm*k;const bx=size*.5-bw/2,by=size*.86;ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(bx-6,by-16,bw+12,26);ctx.fillStyle='#111';ctx.fillRect(bx,by,bw,Math.max(3,size/150));ctx.font=`600 ${Math.round(size/38)}px sans-serif`;ctx.textAlign='center';ctx.fillText(Lm>=1000?(Lm/1000)+' mm':Lm+' µm',size/2,by-4);ctx.textAlign='start';}
+}
 const CANVAS_FILTER=(()=>{try{const c=document.createElement('canvas').getContext('2d');if(!('filter' in c))return false;c.filter='blur(2px)';return c.filter==='blur(2px)';}catch(e){return false;}})();
 function renderView(ctx,size,i,{obj=10,cx=null,cy=null,blur=0,bright=1,contrast=1,mask=true,scale=true}={}){const S=LAMINAS[i];const tile=obj>=100?hiTileOf(i):tileOf(i);const TR=tile.R;
   const fov=18000/obj;const k=size/fov;const px=cx??S.T[0]/2,py=cy??S.T[1]/2;
@@ -762,20 +769,8 @@ function renderView(ctx,size,i,{obj=10,cx=null,cy=null,blur=0,bright=1,contrast=
   o.imageSmoothingEnabled=true;o.imageSmoothingQuality='high';const pat=o.createPattern(tile,S.mode);const sc=k/TR;o.setTransform(sc,0,0,sc,size/2-px*k,size/2-py*k);o.fillStyle=pat;
   const x0=(px-fov/2)*TR,y0=(py-fov/2)*TR,w=fov*TR;if(S.mode==='repeat-x')o.fillRect(x0,0,w,tile.height);else if(S.mode==='repeat-y')o.fillRect(0,y0,tile.width,w);else o.fillRect(x0,y0,w,w);
   ctx.save();ctx.clearRect(0,0,size,size);
-  if(CANVAS_FILTER){ctx.filter=`blur(${blur*size/600}px) brightness(${bright}) contrast(${contrast})`;ctx.drawImage(off,0,0);ctx.filter='none';}
-  else{ // Safari (iPhone/iPad) não aplica ctx.filter: brilho/contraste por pixel e desfoque por redução e ampliação
-    o.setTransform(1,0,0,1,0,0);
-    if(bright!==1||contrast!==1){const im=o.getImageData(0,0,size,size),d=im.data,lut=new Uint8ClampedArray(256);for(let v=0;v<256;v++)lut[v]=((v/255*bright-.5)*contrast+.5)*255;for(let p=0;p<d.length;p+=4){d[p]=lut[d[p]];d[p+1]=lut[d[p+1]];d[p+2]=lut[d[p+2]];}o.putImageData(im,0,0);}
-    const b=blur*size/600;
-    if(b<.4)ctx.drawImage(off,0,0);
-    else{const sm=renderView.sm||(renderView.sm=document.createElement('canvas'));const s=Math.max(4,Math.round(size/(1+b*1.4)));sm.width=s;sm.height=s;const q=sm.getContext('2d');q.imageSmoothingEnabled=true;q.imageSmoothingQuality='high';
-      // reduz em etapas (mais suave) e amplia de volta
-      q.drawImage(off,0,0,s,s);if(s<size/3){const m=Math.round(Math.sqrt(s*size));const md=renderView.md||(renderView.md=document.createElement('canvas'));md.width=m;md.height=m;const mq=md.getContext('2d');mq.imageSmoothingQuality='high';mq.drawImage(off,0,0,m,m);q.clearRect(0,0,s,s);q.drawImage(md,0,0,s,s);}
-      ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(sm,0,0,s,s,0,0,size,size);}
-  }
-  if(mask){const r0=size/2-1;const gr=ctx.createRadialGradient(size/2,size/2,r0*.72,size/2,size/2,r0);gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(0,0,0,.35)');ctx.fillStyle=gr;ctx.fillRect(0,0,size,size);
-    ctx.beginPath();ctx.rect(0,0,size,size);ctx.arc(size/2,size/2,r0,0,TAU,true);ctx.fillStyle='#0b0f0d';ctx.fill('evenodd');}
-  if(scale){const cand=[1,2,5,10,20,50,100,200,500,1000];const Lm=cand.find(v=>v*k>=size*.12)||1000;const bw=Lm*k;const bx=size*.5-bw/2,by=size*.86;ctx.fillStyle='rgba(255,255,255,.9)';ctx.fillRect(bx-6,by-16,bw+12,26);ctx.fillStyle='#111';ctx.fillRect(bx,by,bw,Math.max(3,size/150));ctx.font=`600 ${Math.round(size/38)}px sans-serif`;ctx.textAlign='center';ctx.fillText(Lm>=1000?(Lm/1000)+' mm':Lm+' µm',size/2,by-4);ctx.textAlign='start';}
+  if(CANVAS_FILTER&&(blur||bright!==1||contrast!==1)){ctx.filter=`blur(${blur*size/600}px) brightness(${bright}) contrast(${contrast})`;ctx.drawImage(off,0,0);ctx.filter='none';}else ctx.drawImage(off,0,0);
+  viewOverlay(ctx,size,k,{mask,scale});
   ctx.restore();return{fov,k};}
 const THUMBS={};function thumbOf(i,obj){const key=i+'-'+(obj||0);if(THUMBS[key])return THUMBS[key];const c=document.createElement('canvas');c.width=c.height=320;const S=LAMINAS[i];renderView(c.getContext('2d'),320,i,{obj:obj||(S.max===100?40:10),scale:true});return THUMBS[key]=c.toDataURL('image/jpeg',.82);}
 
@@ -798,9 +793,10 @@ function bancada(root,{ids,key}){
   allC.onchange=()=>{showAll=allC.checked;save();drawList();};
   lst.append(h('span',{class:'label'},'Lâminas'),items,h('label',{class:'row note',style:'flex-wrap:nowrap'},allC,'Mostrar todo o acervo (20)'));
   // campo
+  const ov=h('canvas',{width:600,height:600,class:'campo-ov','aria-hidden':'true'});
   const cv=h('canvas',{width:600,height:600,role:'img',tabindex:0,'aria-label':'Campo do microscópio. Arraste ou use as setas do teclado para mover a lâmina.'});
   const magT=h('span',{});const oilNote=h('p',{class:'callout',hidden:true},'Objetiva de imersão (100×): no microscópio real, pinga-se uma gota de óleo de imersão sobre a lâmina, e a objetiva toca o óleo. O campo fica pequeno (0,18 mm) e o foco é muito sensível: use só o micrométrico.');const fovT=h('span',{});const objBox=h('div',{class:'seg',role:'group','aria-label':'Objetiva'});
-  const campo=h('div',{class:'campo'},h('div',{class:'campo-top'},h('span',{},'◉ CAMPO DE OBSERVAÇÃO'),magT),cv,h('div',{class:'campo-top'},fovT,h('button',{class:'btn sm',style:'background:#1d2622;color:#e4ebe6;border-color:#334039',onclick:()=>{pan.x=0;pan.y=0;draw();}},'⌖ Centralizar')));
+  const campo=h('div',{class:'campo'},h('div',{class:'campo-top'},h('span',{},'◉ CAMPO DE OBSERVAÇÃO'),magT),h('div',{class:'campo-vis'},cv,ov),h('div',{class:'campo-top'},fovT,h('button',{class:'btn sm',style:'background:#1d2622;color:#e4ebe6;border-color:#334039',onclick:()=>{pan.x=0;pan.y=0;draw();}},'⌖ Centralizar')));
   const mid=h('div',{class:'stack',style:'gap:10px'},campo,h('div',{class:'row'},h('span',{class:'label'},'Objetiva'),objBox),h('p',{class:'note'},'Arraste o campo ou use as setas. Comece sempre pela menor objetiva.'),oilNote);
   // controles
   const status=h('p',{class:'fb info',style:'margin:0','aria-live':'polite'});
@@ -830,7 +826,11 @@ function bancada(root,{ids,key}){
   function select(i){sel=i;pan.x=0;pan.y=0;const v=store.get('visitadas',[]);if(!v.includes(i)){v.push(i);store.set('visitadas',v);}save();drawList();drawObj();drawInfo();draw();}
   function draw(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;render();});}
   function render(){const S=LAMINAS[sel];const err=Math.abs(coarse+fine*.35-(tgt(sel)+shift[obj]));const blur=Math.min(14,err*(.3+obj/60));
-    const g=cv.getContext('2d');const cx=S.T[0]/2+pan.x,cy=S.T[1]/2+pan.y;renderView(g,600,sel,{obj,cx,cy,blur,bright:.35+light/100*.9,contrast:contrast/100});
+    let g=cv.getContext('2d');const gv=ov.getContext('2d');const cx=S.T[0]/2+pan.x,cy=S.T[1]/2+pan.y;const bright=.35+light/100*.9,con=contrast/100;
+    // desfoque, brilho e contraste: no canvas quando o navegador permite; senão (Safari), por CSS no elemento, como no site Células
+    const fx=CANVAS_FILTER?{blur,bright,contrast:con}:{};const {k}=renderView(g,600,sel,{obj,cx,cy,...fx,mask:false,scale:false});
+    cv.style.filter=CANVAS_FILTER?'':`blur(${(blur*cv.clientWidth/600).toFixed(2)}px) brightness(${bright}) contrast(${con})`;
+    gv.clearRect(0,0,600,600);viewOverlay(gv,600,k);g=gv;
     if(labels){g.save();g.fillStyle='rgba(15,20,18,.86)';const n=S.est.length;const bh=26+n*24;g.beginPath();g.roundRect(150,120,300,bh,10);g.fill();g.fillStyle='#fff';g.font='600 17px sans-serif';S.est.forEach(([a],k)=>g.fillText('• '+a,170,148+k*24));g.restore();}
     magT.textContent=(obj*10)+'×';oilNote.hidden=obj!==100;fovT.textContent='Campo ≈ '+fmt(fovMM(obj),fovMM(obj)<1?2:1)+' mm';pos.textContent=`X ${Math.round(pan.x)} µm · Y ${Math.round(pan.y)} µm`;
     status.className='fb '+(blur<1.2?'ok':'info');status.textContent=blur<1.2?'Em foco. Explore a preparação.':err>6?'Fora de foco: use o macrométrico.':'Quase lá: ajuste o micrométrico.';}
