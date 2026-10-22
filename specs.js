@@ -174,7 +174,7 @@ const SPEC=[
   {k:'mc',t:'Onde é fabricada uma enzima que vai trabalhar no citosol?',ch:['Em ribossomos livres, no citosol','Em ribossomos aderidos ao retículo granular','No complexo golgiense'],key:'Em ribossomos livres, no citosol',pts:1},
   {k:'mc',t:'Além de enviar proteínas para fora da célula, o complexo golgiense também:',ch:['Forma lisossomos e vesículas que ficam guardadas na célula','Produz ATP','Guarda o DNA'],key:'Forma lisossomos e vesículas que ficam guardadas na célula',pts:1},
   {k:'mc',t:'Quando a colchicina desmonta os microtúbulos, o que acontece com as vesículas da célula?',ch:['Param de se deslocar, porque perdem os trilhos do citoesqueleto','Andam mais depressa','Viram lisossomos'],key:'Param de se deslocar, porque perdem os trilhos do citoesqueleto',pts:1}]},
- {code:C1+'04',id:'cebola',titulo:'Aula 4 · Microscópio da cebola',tipo:'Individual',desc:'Roteiro de observação no microscópio virtual.',itens:[
+ {code:C1+'04',id:'cebola',titulo:'Aula 4 · Microscópio de luz',tipo:'Individual',desc:'Roteiro de observação no microscópio virtual: cebola, bochecha e coalhada.',itens:[
   {k:'txt',t:'Ampliação total usada (ocular × objetiva)',help:'Exemplo: 100× (10× × 10×). Se usou micrografia, escreva "micrografia".'},
   {k:'num',t:'Quantas células cabem, em fila, no diâmetro do campo (objetiva de 10×)?',opt:true},
   {k:'num',t:'Comprimento estimado de uma célula (µm)',opt:true},
@@ -182,10 +182,19 @@ const SPEC=[
   {k:'par',t:'Uma estrutura observada, a evidência que permitiu identificá-la e uma estrutura do modelo que não foi distinguida',man:2},
   {k:'par',t:'Que diferenças entre a micrografia e o esquema resultam da ampliação ou das convenções de representação?',man:2},
   {k:'mc',t:'A ausência de núcleo visível permite afirmar que a célula é procariótica?',ch:['Sim','Não: não ver não prova que a estrutura não existe'],key:'Não: não ver não prova que a estrutura não existe',pts:1},
-  {k:'hdr',t:'Microscópio eletrônico'},
+  {k:'hdr',t:'Bochecha e coalhada'},
+  {k:'mc',t:'Em qual lâmina as células não têm núcleo?',ch:['Cebola','Bochecha','Coalhada (bactérias)'],key:'Coalhada (bactérias)',pts:1},
+  {k:'mc',t:'Qual estrutura aparece na célula da cebola e não existe na célula da bochecha?',ch:['Núcleo','Parede celular','Membrana plasmática'],key:'Parede celular',pts:1},
+  {k:'num',t:'Tamanho estimado de uma célula da bochecha (µm)',opt:true},
+  {k:'num',t:'Comprimento estimado de uma bactéria da coalhada (µm)',opt:true},
+  {k:'par',t:'Compare o tamanho das três células e explique por que as bactérias só ficaram nítidas na objetiva de 100×',man:2}]},
+ {code:C1+'05',id:'eletronico',titulo:'Aula 5 · E com elétrons?',tipo:'Individual',desc:'Microscópio eletrônico: organelas da glândula mamária e do fígado.',itens:[
+  {k:'num',t:'Quantas das 12 estruturas do livro estão no seu álbum?',opt:true},
   {k:'mc',t:'Qual microscópio permite ver as organelas no interior da célula?',ch:['Microscópio de luz','Microscópio eletrônico de varredura (MEV)','Microscópio eletrônico de transmissão (MET)'],key:'Microscópio eletrônico de transmissão (MET)',pts:1},
+  {k:'mc',t:'Por que um ribossomo (cerca de 25 nm) não aparece no microscópio de luz?',ch:['É menor que o menor detalhe que a luz consegue separar (cerca de 200 nm)','É transparente demais','Só existe em células animais'],key:'É menor que o menor detalhe que a luz consegue separar (cerca de 200 nm)',pts:1},
+  {k:'mc',t:'Qual das duas células tem mais retículo endoplasmático granular?',ch:['Glândula mamária','Fígado','Parecido nas duas'],key:'Glândula mamária',pts:1},
   {k:'par',t:'No microscópio eletrônico, cite uma diferença entre as organelas da célula da glândula mamária e as da célula do fígado e explique como ela se relaciona com a função de cada célula',man:2}]},
- {code:C1+'05',id:'membrana',titulo:'Aula 5 · Porteiro da membrana',tipo:'Individual',desc:'Cartões de situações e síntese sobre os transportes.',itens:[
+ {code:C1+'06',id:'membrana',titulo:'Aula 6 · Porteiro da membrana',tipo:'Individual',desc:'Cartões de situações e síntese sobre os transportes.',itens:[
   {k:'hdr',t:'Classifique o mecanismo de cada situação'},
   {k:'mc',t:'O₂ passando do alvéolo para o sangue',ch:MECH,key:'Difusão simples',pts:1},
   {k:'mc',t:'Glicose entrando na hemácia por proteína, a favor do gradiente',ch:MECH,key:'Difusão facilitada',pts:1},
@@ -196,7 +205,7 @@ const SPEC=[
   {k:'hdr',t:'Endocitose, exocitose e lisossomos'},
   {k:'mc',t:'Como um macrófago faz uma bactéria entrar na célula?',ch:['Por difusão simples','Pela bomba de sódio e potássio','Por fagocitose: a membrana envolve a bactéria e forma uma vesícula'],key:'Por fagocitose: a membrana envolve a bactéria e forma uma vesícula',pts:1},
   {k:'mc',t:'Depois que um macrófago engloba uma bactéria numa vesícula, o que acontece?',ch:['A vesícula se funde a um lisossomo, que libera enzimas digestivas','A bactéria vai para o núcleo','A vesícula vai para o retículo granular'],key:'A vesícula se funde a um lisossomo, que libera enzimas digestivas',pts:1}]},
- {code:C1+'06',id:'osmose',titulo:'Aula 6 · Batata no sal',tipo:'Individual',desc:'Investigação da osmose no experimento virtual. A: água; B: 5 g de sal em 100 mL. Use vírgula ou ponto nos decimais.',itens:[
+ {code:C1+'07',id:'osmose',titulo:'Aula 7 · Batata no sal',tipo:'Individual',desc:'Investigação da osmose no experimento virtual. A: água; B: 5 g de sal em 100 mL. Use vírgula ou ponto nos decimais.',itens:[
   {k:'par',t:'Hipótese e previsão para cada condição',man:1},
   ...OSM_PAIRS.flatMap(([a,b])=>[{k:'num',t:a,opt:true,cmp:true},{k:'num',t:b,opt:true,cmp:true}]),
   {k:'num',t:'Variação média em A (%)',pts:1,calc:{type:'pctmean',pairs:OSM_PAIRS.slice(0,3),tol:.6}},
@@ -205,7 +214,7 @@ const SPEC=[
   {k:'par',t:'Por que padronizamos formato, volume e tempo?',man:2},
   {k:'par',t:'Sua conclusão concorda com a hipótese? Cite medidas e uma limitação',man:2},
   {k:'par',t:'Se a diferença foi pequena ou inexistente, que ajustes melhorariam o teste?',man:1}]},
- {code:C1+'07',id:'figado',titulo:'Aula 7 · O fígado e a água oxigenada',tipo:'Individual',desc:'Experimento dos peroxissomos e aplicações no corpo.',itens:[
+ {code:C1+'08',id:'figado',titulo:'Aula 8 · O fígado e a água oxigenada',tipo:'Individual',desc:'Experimento dos peroxissomos e aplicações no corpo.',itens:[
   {k:'num',t:'Média da espuma no tubo A (fígado cru), em mm'},
   {k:'num',t:'Média da espuma no tubo B (fígado cozido), em mm'},
   {k:'mc',t:'Por que o fígado cozido quase não forma espuma com água oxigenada?',ch:['O calor desnaturou a catalase dos peroxissomos','O fígado cozido não tem água','A água oxigenada evaporou'],key:'O calor desnaturou a catalase dos peroxissomos',pts:1},
@@ -213,7 +222,7 @@ const SPEC=[
   {k:'mc',t:'Qual organela elimina compostos tóxicos, como a água oxigenada?',ch:['Lisossomo','Peroxissomo','Centríolo','Complexo golgiense'],key:'Peroxissomo',pts:1},
   {k:'mc',t:'Por que a água oxigenada borbulha num machucado e quase não borbulha na pele intacta?',ch:['Na ferida, células rompidas e sangue liberam catalase, que decompõe a água oxigenada','Os micróbios da ferida produzem o gás','A pele intacta absorve a água oxigenada'],key:'Na ferida, células rompidas e sangue liberam catalase, que decompõe a água oxigenada',pts:1},
   {k:'par',t:'Explique como os peroxissomos e o retículo agranular ajudam o fígado a proteger o corpo. Dê um exemplo do dia a dia',man:2}]},
- {code:C1+'08',id:'nucleo',titulo:'Aula 8 · Do novelo ao cromossomo',tipo:'Individual',desc:'Núcleo, cromatina e cromossomos.',itens:[
+ {code:C1+'09',id:'nucleo',titulo:'Aula 9 · Do novelo ao cromossomo',tipo:'Individual',desc:'Núcleo, cromatina e cromossomos.',itens:[
   {k:'mc',t:'O que é a cromatina?',ch:['Um cromossomo em forma de X','DNA associado a proteínas, pouco condensado','Uma organela do citoplasma'],key:'DNA associado a proteínas, pouco condensado',pts:1},
   {k:'num',t:'Quantas cromátides tem um cromossomo duplicado?',key:2,tol:0,pts:1},
   {k:'mc',t:'A e a (o par longo do modelo) são:',ch:['Cromátides-irmãs','Cromossomos homólogos','Cromossomos não homólogos'],key:'Cromossomos homólogos',pts:1},
@@ -221,7 +230,7 @@ const SPEC=[
   {k:'mc',t:'Onde se formam as subunidades dos ribossomos?',ch:['Nos poros nucleares','No nucléolo','No envoltório nuclear'],key:'No nucléolo',pts:1},
   {k:'par',t:'Todo cromossomo tem forma de X? Explique',man:2},
   {k:'par',t:'Legenda explicativa do seu modelo de cromossomos',man:2}]},
- {code:C1+'09',id:'mitose',titulo:'Aula 9 · Cicatrização em ação',tipo:'Individual',desc:'Simulação da mitose com 2n = 4.',itens:[
+ {code:C1+'10',id:'mitose',titulo:'Aula 10 · Cicatrização em ação',tipo:'Individual',desc:'Simulação da mitose com 2n = 4.',itens:[
   {k:'num',t:'Cromossomos na célula 2n = 4 antes da fase S',key:4,tol:0,pts:1},
   {k:'num',t:'Cromátides na célula depois da fase S',key:8,tol:0,pts:1},
   {k:'num',t:'Cromossomos em cada célula-filha após mitose e citocinese',key:4,tol:0,pts:1},
@@ -231,7 +240,7 @@ const SPEC=[
   {k:'par',t:'Explique a cicatrização de uma ferida usando o ciclo celular',man:2},
   {k:'hdr',t:'Centríolos e fibras da divisão'},
   {k:'mc',t:'Com colchicina, os microtúbulos se desmontam. O que acontece com uma célula em divisão?',ch:['Fica parada: sem fibras, as cromátides-irmãs não se separam','Divide-se mais rápido','Perde o núcleo'],key:'Fica parada: sem fibras, as cromátides-irmãs não se separam',pts:1}]},
- {code:C1+'10',id:'meiose',titulo:'Aula 10 · Loteria dos gametas',tipo:'Individual',desc:'Simulação da meiose com 2n = 4.',itens:[
+ {code:C1+'11',id:'meiose',titulo:'Aula 11 · Loteria dos gametas',tipo:'Individual',desc:'Simulação da meiose com 2n = 4.',itens:[
   {k:'num',t:'Cromossomos por célula após a meiose I (modelo 2n = 4)',key:2,tol:0,pts:1},
   {k:'num',t:'Cromátides por célula após a meiose I',key:4,tol:0,pts:1},
   {k:'num',t:'Cromossomos por célula após a meiose II',key:2,tol:0,pts:1},
@@ -240,7 +249,7 @@ const SPEC=[
   {k:'mc',t:'Onde ocorre a recombinação no modelo?',ch:['Na prófase I, entre cromátides não irmãs de homólogos','Na anáfase II','Na fase S'],key:'Na prófase I, entre cromátides não irmãs de homólogos',pts:1},
   {k:'par',t:'Como a fecundação restaura 2n?',man:2},
   {k:'par',t:'Indique duas limitações do modelo físico',man:2}]},
- {code:C1+'11',id:'duelo',titulo:'Aula 11 · Duelo mitose × meiose',tipo:'Individual',desc:'Quadro comparativo e situações.',itens:[
+ {code:C1+'12',id:'duelo',titulo:'Aula 12 · Duelo mitose × meiose',tipo:'Individual',desc:'Quadro comparativo e situações.',itens:[
   {k:'num',t:'Células produzidas na meiose de uma célula',key:4,tol:0,pts:1},
   {k:'mc',t:'Ploidia das células-filhas da mitose',ch:['Igual à da célula-mãe','Metade da célula-mãe'],key:'Igual à da célula-mãe',pts:1},
   {k:'mc',t:'Toda divisão celular produz células geneticamente diferentes?',ch:['Sim','Não: a mitose produz células geneticamente iguais (salvo mutações)'],key:'Não: a mitose produz células geneticamente iguais (salvo mutações)',pts:1},
@@ -248,21 +257,21 @@ const SPEC=[
   {k:'num',t:'Espécie com 2n = 10: cromossomos em cada célula após a meiose II',key:5,tol:0,pts:1},
   {k:'par',t:'Escolha uma situação (cicatrização, gametas ou tumor) e explique qual divisão está envolvida',man:2},
   {k:'par',t:'Cartaz: qual é a finalidade e que informação ele apresenta?',man:2}]},
- {code:C1+'12',id:'atp',titulo:'Aula 12 · Usina de ATP',tipo:'Individual',desc:'Anabolismo, catabolismo e ATP.',itens:[
+ {code:C1+'13',id:'atp',titulo:'Aula 13 · Usina de ATP',tipo:'Individual',desc:'Anabolismo, catabolismo e ATP.',itens:[
   {k:'mc',t:'Síntese de proteínas é:',ch:AC,key:'Anabolismo',pts:1},
   {k:'mc',t:'Degradação da glicose na respiração é:',ch:AC,key:'Catabolismo',pts:1},
   {k:'mc',t:'Produção de glicogênio (reserva) é:',ch:AC,key:'Anabolismo',pts:1},
   {k:'mc',t:'O ATP:',ch:['É a energia do alimento já pronta para uso','Transfere energia: forma-se no catabolismo e é usado no trabalho celular','É produzido do nada pela célula'],key:'Transfere energia: forma-se no catabolismo e é usado no trabalho celular',pts:1},
   {k:'par',t:'Comer é suficiente para a célula usar a energia do alimento? Explique',man:2},
   {k:'par',t:'Descreva a ligação entre catabolismo, ATP e anabolismo',man:2}]},
- {code:C1+'13',id:'fotossintese',titulo:'Aula 13 · De onde vem o umbuzeiro?',tipo:'Individual',desc:'Fluxo da fotossíntese.',itens:[
+ {code:C1+'14',id:'fotossintese',titulo:'Aula 14 · De onde vem o umbuzeiro?',tipo:'Individual',desc:'Fluxo da fotossíntese.',itens:[
   {k:'mc',t:'De onde vem a maior parte da massa seca de uma planta?',ch:['Do solo','Da água','Do CO₂ do ar','Da luz'],key:'Do CO₂ do ar',pts:1},
   {k:'mc',t:'Onde ocorre a etapa fotoquímica?',ch:['Tilacoides','Estroma','Mitocôndria'],key:'Tilacoides',pts:1},
   {k:'mc',t:'Onde o CO₂ é fixado?',ch:['Tilacoides','Estroma','Mitocôndria'],key:'Estroma',pts:1},
   {k:'mc',t:'O O₂ liberado vem:',ch:['Do CO₂','Da água','Da glicose'],key:'Da água',pts:1},
   {k:'mc',t:'A fixação do carbono ocorre só à noite?',ch:['Sim','Não: depende do ATP e do NADPH da etapa fotoquímica'],key:'Não: depende do ATP e do NADPH da etapa fotoquímica',pts:1},
   {k:'par',t:'Explique o efeito de pouca luz sobre as duas etapas',man:2}]},
- {code:C1+'14',id:'respiracao',titulo:'Aula 14 · Mapa da respiração',tipo:'Individual',desc:'Quimiossíntese e etapas da respiração.',itens:[
+ {code:C1+'15',id:'respiracao',titulo:'Aula 15 · Mapa da respiração',tipo:'Individual',desc:'Quimiossíntese e etapas da respiração.',itens:[
   {k:'mc',t:'Fonte de energia da quimiossíntese',ch:['Luz','Oxidação de substâncias inorgânicas','Glicose'],key:'Oxidação de substâncias inorgânicas',pts:1},
   {k:'mc',t:'Onde ocorre a glicólise?',ch:LOCAIS,key:'Citosol',pts:1},
   {k:'mc',t:'Onde ocorre o ciclo de Krebs?',ch:LOCAIS,key:'Matriz mitocondrial',pts:1},
@@ -270,14 +279,14 @@ const SPEC=[
   {k:'mc',t:'Qual é o papel do O₂ na respiração?',ch:['Quebrar a glicose','Receber elétrons no fim da cadeia, formando água','Produzir CO₂'],key:'Receber elétrons no fim da cadeia, formando água',pts:1},
   {k:'mc',t:'Plantas respiram durante o dia?',ch:['Sim, respiram o tempo todo','Não, só à noite'],key:'Sim, respiram o tempo todo',pts:1},
   {k:'par',t:'Compare quimiossíntese e respiração celular',man:2}]},
- {code:C1+'15',id:'leveduras',titulo:'Aula 15 · Laboratório do pão',tipo:'Individual',desc:'Investigação do metabolismo das leveduras no experimento virtual. Circunferências em cm (média das réplicas) ou “sem inflação mensurável”.',itens:[
+ {code:C1+'16',id:'leveduras',titulo:'Aula 16 · Laboratório do pão',tipo:'Individual',desc:'Investigação do metabolismo das leveduras no experimento virtual. Circunferências em cm (média das réplicas) ou “sem inflação mensurável”.',itens:[
   {k:'par',t:'Sua hipótese',man:1},
   ...['A','B','C','D'].flatMap(k=>[0,10,20].map(m=>({k:'txt',t:`${k} · ${m} min (cm)`,opt:true,cmp:true}))),
   {k:'mc',t:'Qual é a função da garrafa B (sem levedura)?',ch:['Verificar se a levedura é necessária para produzir gás','Verificar o efeito da temperatura','Aumentar a produção de gás'],key:'Verificar se a levedura é necessária para produzir gás',pts:1},
   {k:'mc',t:'A circunferência do balão mede diretamente a quantidade de CO₂?',ch:['Sim','Não: é um indicador indireto'],key:'Não: é um indicador indireto',pts:1},
   {k:'par',t:'Compare D com B e com C. Qual é a evidência para a sua conclusão?',man:2},
   {k:'par',t:'Seria possível algum gás resultar de respiração no início do teste? Explique o limite da montagem',man:2}]},
- {code:C1+'16',id:'fermentacao',titulo:'Aula 16 · Do balão ao gráfico',tipo:'Individual',desc:'Gráfico, comparação dos processos e aplicações.',itens:[
+ {code:C1+'17',id:'fermentacao',titulo:'Aula 17 · Do balão ao gráfico',tipo:'Individual',desc:'Gráfico, comparação dos processos e aplicações.',itens:[
   {k:'txt',t:'Condição com maior inflação no gráfico'},
   {k:'mc',t:'Qual fermentação libera CO₂?',ch:['Alcoólica','Lática','As duas'],key:'Alcoólica',pts:1},
   {k:'mc',t:'Produto da fermentação lática',ch:['Etanol e CO₂','Lactato, sem CO₂','Água e CO₂'],key:'Lactato, sem CO₂',pts:1},
@@ -286,7 +295,7 @@ const SPEC=[
   {k:'par',t:'Situação do pão: explique o crescimento da massa',man:2},
   {k:'par',t:'Situação do músculo: o que acontece num esforço intenso e rápido?',man:2},
   {k:'par',t:'Registre uma dúvida para a revisão'}]},
- {code:C1+'17',id:'revisao',titulo:'Aula 17 · Autoavaliação',tipo:'Individual (sem nota)',desc:'Autoavaliação da unidade.',itens:[
+ {code:C1+'18',id:'revisao',titulo:'Aula 18 · Autoavaliação',tipo:'Individual (sem nota)',desc:'Autoavaliação da unidade.',itens:[
   {k:'hdr',t:'Para cada objetivo, como você está?'},
   {k:'mc',t:'O1 · Teoria celular e níveis de organização',ch:SEMAF},
   {k:'mc',t:'O2 · Tipos de célula, estruturas e funções',ch:SEMAF},
