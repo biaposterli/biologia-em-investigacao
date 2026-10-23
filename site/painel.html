@@ -175,7 +175,7 @@ function notaClass(n){return n==null?'none':n>=7?'g':n>=5?'m':'b';}
 
 // ================= Estado =================
 const S={tabs:[],forms:[],resp:{},aval:{},avalRows:0,alunos:[],estudantes:[],errors:{},loadedAt:null,loading:false};
-const UI={verSenhas:false,buscaSenha:'',turmaSenha:'todas',view:'geral',turma:'todas',ativ:SPEC[0].code,status:'todos',busca:'',aluno:null,focus:null,conn:false};
+const UI={verSenhas:false,buscaSenha:'',turmaSenha:'todas',view:'geral',turma:'todas',escola:P.lsGet('bi-painel-escola','todas')||'todas',ativ:SPEC[0].code,status:'todos',busca:'',aluno:null,focus:null,conn:false};
 let CONN=null,DEMO=false;
 const dirty=new Set();
 
@@ -276,7 +276,23 @@ function students(){
   SPEC.forEach(f=>(S.part[f.code]||[]).forEach(r=>{if(!r.nk)return;const s=map.get(r.nk);if(s){if(!s.roster&&!r.membro){s.nome=r.nome;s.turma=r.turma||s.turma;}}else map.set(r.nk,{nk:r.nk,nome:r.nome,turma:r.turma,roster:false});}));
   return [...map.values()].sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
 }
-const turmaOk=t=>UI.turma==='todas'||String(t).trim()===UI.turma;
+// Escola: o rótulo da turma é "Escola · 1ºA" quando a ficha veio com escola (professor com mais de uma escola)
+const escolaDe=t=>{t=String(t||'').trim();const i=t.lastIndexOf(' · ');return i>=0?t.slice(0,i):'';};
+const semEscola=t=>{t=String(t||'').trim();const i=t.lastIndexOf(' · ');return i>=0?t.slice(i+3):t;};
+const escolaOk=t=>UI.escola==='todas'||escolaDe(t)===UI.escola;
+const turmaOk=t=>escolaOk(t)&&(UI.turma==='todas'||String(t).trim()===UI.turma);
+function escolasDe(ts){return [...new Set(ts.map(escolaDe))].sort((a,b)=>a===''?1:b===''?-1:a.localeCompare(b,'pt-BR'));}
+function setEscola(v){UI.escola=v;P.lsSet('bi-painel-escola',v);if(UI.turma!=='todas'&&!escolaOk(UI.turma))UI.turma='todas';if(UI.turmaSenha!=='todas'&&!escolaOk(UI.turmaSenha))UI.turmaSenha='todas';render();}
+// Seletor de escola (só aparece quando as fichas vêm de mais de uma escola) e de turma, com as turmas da escola escolhida
+const par=(l,e)=>h('span',{class:'row',style:'gap:8px;flex-wrap:nowrap;align-items:center'},h('span',{class:'label'},l),e);
+function seletores(ts,atual,muda){const es=escolasDe(ts);
+  if(UI.escola!=='todas'&&!es.includes(UI.escola))UI.escola='todas';
+  const out=[];
+  if(es.length>1){const se=h('select',{'aria-label':'Escola',id:'fEscola'},[['todas','Todas as escolas']].concat(es.map(e=>[e,e||'Sem escola informada'])).map(([v,n])=>h('option',{value:v,selected:v===UI.escola},n)));se.onchange=()=>setEscola(se.value);
+    out.push(par('Escola',se));}
+  const vis=ts.filter(escolaOk);const curto=UI.escola!=='todas';
+  const st=h('select',{'aria-label':'Turma',id:'fTurma'},[['todas',curto&&es.length>1?'Todas as turmas da escola':'Todas as turmas']].concat(vis.map(t=>[t,curto?semEscola(t):t])).map(([v,n])=>h('option',{value:v,selected:v===atual},n)));st.onchange=()=>muda(st.value);
+  out.push(par('Turma',st));return out;}
 
 // ================= Renderização =================
 function render(){
@@ -292,8 +308,7 @@ function render(){
 function turmasAll(){const t=new Set();S.alunos.forEach(a=>a.turma&&t.add(a.turma));ALL.forEach(f=>(S.resp[f.code]||[]).forEach(r=>r.turma&&t.add(r.turma)));return [...t].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}));}
 function turmaFilter(){const ts=turmasAll();if(UI.turma!=='todas'&&!ts.includes(UI.turma))UI.turma='todas';
   const ss=h('select',{'aria-label':'Módulo',id:'fSite'},Object.entries(SITES).map(([k,n])=>h('option',{value:k,selected:k===SITE},n)));ss.onchange=()=>setSite(ss.value);
-  const st=h('select',{'aria-label':'Turma',id:'fTurma'},[['todas','Todas as turmas']].concat(ts.map(t=>[t,t])).map(([v,n])=>h('option',{value:v,selected:v===UI.turma},n)));st.onchange=()=>{UI.turma=st.value;render();};
-  return h('div',{class:'row'},h('span',{class:'label'},'Módulo'),ss,h('span',{class:'label'},'Turma'),st);}
+  return h('div',{class:'row'},par('Módulo',ss),...seletores(ts,UI.turma,v=>{UI.turma=v;render();}));}
 
 function viewGeral(m){
   const st=students().filter(s=>turmaOk(s.turma));
@@ -439,10 +454,10 @@ function copy(text,btn){const done=()=>{const t=btn.textContent;btn.textContent=
 function viewSenhas(m){
   const ts=[...new Set(S.estudantes.map(e=>e.turma).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}));
   if(UI.turmaSenha!=='todas'&&!ts.includes(UI.turmaSenha))UI.turmaSenha='todas';
-  const st=h('select',{'aria-label':'Turma'},[['todas','Todas as turmas']].concat(ts.map(x=>[x,x])).map(([v,n])=>h('option',{value:v,selected:v===UI.turmaSenha},n)));st.onchange=()=>{UI.turmaSenha=st.value;render();};
+
   const busca=h('input',{type:'text',placeholder:'Buscar nome',value:UI.buscaSenha,'aria-label':'Buscar nome',style:'width:auto;min-width:180px'});
   const ver=h('button',{type:'button',class:'btn sm'},UI.verSenhas?'Ocultar senhas':'Mostrar senhas');ver.onclick=()=>{UI.verSenhas=!UI.verSenhas;render();};
-  m.append(h('div',{class:'row',style:'justify-content:space-between'},h('h2',{},'Senhas dos estudantes'),h('div',{class:'row'},h('span',{class:'label'},'Turma'),st,busca,ver)));
+  m.append(h('div',{class:'row',style:'justify-content:space-between'},h('h2',{},'Senhas dos estudantes'),h('div',{class:'row'},...seletores(ts,UI.turmaSenha,v=>{UI.turmaSenha=v;render();}),busca,ver)));
   m.append(h('p',{class:'note',style:'max-width:80ch'},'Na primeira vez que o estudante escreve o nome completo numa ficha, o portal gera uma senha de 4 números para ele. Com o nome e a senha, ele recupera as respostas em qualquer aparelho. Se alguém esquecer, informe a senha daqui. Para trocar uma senha, edite a coluna “Senha” na aba “Estudantes” da planilha.'));
   if(!S.tabs.includes('Estudantes')){
     // Diagnóstico: o receptor já é a versão com senhas?
@@ -465,7 +480,7 @@ function viewSenhas(m){
     mostra();return;}
   const tb=h('tbody');
   function fill(){tb.innerHTML='';const q=norm(UI.buscaSenha);
-    const rows=S.estudantes.filter(e=>(UI.turmaSenha==='todas'||e.turma===UI.turmaSenha)&&(!q||norm(e.nome).includes(q))).sort((a,b)=>a.turma.localeCompare(b.turma,'pt-BR',{numeric:true})||a.nome.localeCompare(b.nome,'pt-BR'));
+    const rows=S.estudantes.filter(e=>escolaOk(e.turma)&&(UI.turmaSenha==='todas'||e.turma===UI.turmaSenha)&&(!q||norm(e.nome).includes(q))).sort((a,b)=>a.turma.localeCompare(b.turma,'pt-BR',{numeric:true})||a.nome.localeCompare(b.nome,'pt-BR'));
     if(!rows.length)tb.append(h('tr',{},h('td',{colspan:'5',class:'note'},'Ninguém encontrado.')));
     rows.forEach(e=>tb.append(h('tr',{},h('td',{},h('b',{},e.nome)),h('td',{},e.turma||'—'),h('td',{class:'mono',style:'font-size:1rem;letter-spacing:.15em'},UI.verSenhas?e.senha:'••••'),h('td',{class:'note'},e.quando||e.criado))));}
   busca.oninput=()=>{UI.buscaSenha=busca.value;fill();};
@@ -502,20 +517,20 @@ function connect(){
 }
 function demoData(){
   const NOMES=['Ana Clara Souza','Bruno Lima','Camila Rocha','Davi Nascimento','Eduarda Alves','Felipe Moura','Gabriela Freitas','Heitor Santos','Isabela Costa','João Pedro Melo','Larissa Dias','Mateus Pereira'];
-  const TUR=['1ºA','1ºB','2ºA','3ºC'];const rnd=(()=>{let x=7;return()=>{x=(x*16807)%2147483647;return (x-1)/2147483646;};})();
+  const TUR=['1ºA','1ºB','2ºA','3ºC'];const ESC=i=>i%TUR.length<2?'EE Alfa':'EE Beta';const rnd=(()=>{let x=7;return()=>{x=(x*16807)%2147483647;return (x-1)/2147483646;};})();
   const pick=a=>a[Math.floor(rnd()*a.length)];
   const TXT=['Porque a célula realiza todas as funções vitais e se origina de outra célula.','Os dados mostram que o tratamento com cobertura reteve mais água do que o controle.','Observei a parede celular e o núcleo; não consegui distinguir as mitocôndrias.','A hipótese se confirmou em parte: as réplicas variaram, mas a tendência se manteve.','Faltam dados de mais réplicas para afirmar com segurança.'];
   const abas={},av=[['Chave','Atividade','Turma','Nome','Grupo','Pontos automáticos','Máximo automático','Pontos das abertas','Nota','Comentário','Atualizado em']];
-  const alunos=[['Nome completo','Turma','Grupo']];NOMES.forEach((n,i)=>alunos.push([n,TUR[i%TUR.length],String(1+i%4)]));abas['Alunos']=alunos;
-  ALL.forEach((f,fi)=>{const it=f.itens.filter(x=>x.k!=='hdr');const cab=['Carimbo de data/hora','Nome completo','Turma','Grupo'].concat(it.map(x=>x.t)).concat(['Colegas do grupo','ID do envio']);const rows=[cab];
+  const alunos=[['Nome completo','Turma','Grupo','Escola']];NOMES.forEach((n,i)=>alunos.push([n,TUR[i%TUR.length],String(1+i%4),ESC(i)]));abas['Alunos']=alunos;
+  ALL.forEach((f,fi)=>{const it=f.itens.filter(x=>x.k!=='hdr');const cab=['Carimbo de data/hora','Nome completo','Escola','Turma','Grupo'].concat(it.map(x=>x.t)).concat(['Colegas do grupo','ID do envio']);const rows=[cab];
     const emGrupo=fi%3===0;const coberto=new Set();
     NOMES.forEach((n,i)=>{if(coberto.has(i)||rnd()<.3)return;
       let col=[];if(emGrupo&&!/avalia|sem nota/i.test(f.tipo||'')){for(let j=i+4;j<NOMES.length&&col.length<2;j+=4)if(!coberto.has(j)){col.push(NOMES[j]);coberto.add(j);}}const d=new Date(2026,9,1+(fi%20),7+i%5,10+i*3);const ts=('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+':00';
-      const r=[ts,n,TUR[i%TUR.length],col.length?'Em grupo':'Individual'];
+      const r=[ts,n,ESC(i),TUR[i%TUR.length],col.length?'Em grupo':'Individual'];
       it.forEach(x=>{let v='';if(x.k==='mc')v=x.key&&rnd()<.72?x.key:pick(x.ch);else if(x.k==='num')v=x.key!=null&&rnd()<.7?String(x.key).replace('.',','):String(Math.round(rnd()*40));else if(x.k==='par')v=pick(TXT);else v='Exemplo de resposta curta';r.push(v);});
       r.push(col.join('; '),'demo'+fi+'-'+i);rows.push(r);});
     abas[f.code]=rows;});
-  const est=[['Chave','Nome completo','Escola','Turma','Grupo','Senha','Criado em','Atualizado em']];NOMES.slice(0,8).forEach((n,i)=>est.push([n.toLowerCase(),n,'',TUR[i%TUR.length],String(1+i%4),String(1000+Math.floor(rnd()*9000)),'01/10/2026 08:0'+i,'15/10/2026 10:'+(10+i)]));abas['Estudantes']=est;
+  const est=[['Chave','Nome completo','Escola','Turma','Grupo','Senha','Criado em','Atualizado em']];NOMES.slice(0,8).forEach((n,i)=>est.push([n.toLowerCase(),n,ESC(i),TUR[i%TUR.length],String(1+i%4),String(1000+Math.floor(rnd()*9000)),'01/10/2026 08:0'+i,'15/10/2026 10:'+(10+i)]));abas['Estudantes']=est;
   abas['Avaliação']=av;return abas;
 }
 // ================= Início =================
