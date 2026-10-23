@@ -182,7 +182,7 @@ const dirty=new Set();
 // ================= Conexão com o receptor do professor =================
 function connCfg(){const p=P.prof()||{};const c=P.lsGet('bi-painel-conn',null)||{};return {r:c.r||p.r||'',senha:c.senha||p.senha||''};}
 function errMsg(e){
-  if(e&&e.code==='senha')return 'A senha não confere. Ela está na Área do professor e também no código do Apps Script (SENHA_PAINEL).';
+  if(e&&e.code==='senha')return 'A senha não confere. Ela aparece na Área do professor e também na sua planilha, no menu “Biologia em Investigação → Ver nome e senha do painel” (nos receptores antigos, fica no código do Apps Script, em SENHA_PAINEL).';
   if(e&&e.code==='rede')return P.standalone()?'Não consegui falar com o receptor. Confira a internet e se a implantação está como “Qualquer pessoa”.':'Dentro do Claude o painel não consegue falar com o Google. Abra o painel pelo portal publicado (por exemplo, no Cloudflare) ou veja como ele funciona com dados de exemplo.';
   return (e&&e.message)||'Não foi possível ler a planilha.';}
 function setConn(state,text){const c=$('#conn');c.className='conn '+state;c.lastChild.textContent=text;}
@@ -205,7 +205,16 @@ async function loadAll(){
   S.loading=true;S.errors={};$('#btnRefresh').disabled=true;setConn('load',DEMO?'Montando exemplo…':'Lendo a planilha…');
   try{
     if(DEMO){applyData(S.demo||(S.demo=demoData()));SHEET_URL='';}
-    else{const j=await apiGet({acao:'dados',senha:CONN.senha});SHEET_URL=j.planilha||'';$('#sub').textContent='Biologia em Investigação · fichas de '+(j.professor||'professor');applyData(j.abas);}
+    else{let j;
+      try{j=await apiGet({acao:'dados',senha:CONN.senha});}
+      catch(e){
+        // Receptor novo que ainda não recebeu nome e senha (por exemplo, código trocado e a Área do professor não aberta depois): grava agora e lê de novo
+        if(!(e&&e.code==='configurar'))throw e;
+        const nome=String((P.prof()||{}).nome||'').trim();
+        let k;try{k=await fetch(P.urlDoReceptor(CONN.r),{method:'POST',body:JSON.stringify({acao:'configurar',professor:nome,senha:CONN.senha})}).then(r=>r.json());}catch(x){throw {code:'rede'};}
+        if(!k||!k.ok)throw {code:(k&&k.erro)||'erro',message:k&&k.texto};
+        j=await apiGet({acao:'dados',senha:CONN.senha});
+      }SHEET_URL=j.planilha||'';$('#sub').textContent='Biologia em Investigação · fichas de '+(j.professor||'professor');applyData(j.abas);}
     S.loadedAt=new Date();
     setConn(DEMO?'load':'ok',DEMO?'Dados de exemplo':'Atualizado às '+S.loadedAt.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}));
   }catch(e){S.errors.page=e&&e.code?e:{code:'rede'};S.loadedAt=null;setConn('err','Sem conexão');}
@@ -474,8 +483,15 @@ function connect(){
   go.onclick=()=>{const r=P.idDoReceptor(url.value);const sn=pw.value.trim();if(!r){msg.textContent='Esse endereço não parece o URL do receptor. Ele começa com https://script.google.com/macros/s/ e termina em /exec.';msg.style.color='var(--bad)';return;}if(sn.length<6){msg.textContent='Digite a senha do painel.';msg.style.color='var(--bad)';return;}
     CONN={r,senha:sn};P.lsSet('bi-painel-conn',CONN);DEMO=false;UI.conn=false;S.loadedAt=null;loadAll();};
   const demo=h('button',{class:'btn',type:'button'},'Ver com dados de exemplo');demo.onclick=()=>{DEMO=true;UI.conn=false;S.demo=null;loadAll();};
+  // Professor com uma planilha para cada escola: atalhos para trocar de planilha
+  const pf=P.prof()||{};const plans=[];
+  if(pf.modo==='varias'&&pf.planilhas==='cada'&&Array.isArray(pf.escolas))pf.escolas.forEach((E,i)=>{if(E&&E.r&&!plans.some(x=>x.r===E.r))plans.push({r:E.r,nome:String(E.nome||'').trim()||'Escola '+(i+1)});});
+  const escolher=plans.length>1?h('div',{class:'stack',style:'gap:8px'},h('span',{class:'label'},'Suas planilhas'),
+    h('div',{class:'row'},plans.map(x=>{const b=h('button',{class:'btn'+(CONN&&CONN.r===x.r?' primary':''),type:'button'},x.nome);
+      b.onclick=()=>{CONN={r:x.r,senha:pw.value.trim()||pf.senha||''};P.lsSet('bi-painel-conn',CONN);DEMO=false;UI.conn=false;S.loadedAt=null;loadAll();};return b;})),
+    h('p',{class:'note'},'Você usa uma planilha para cada escola. Escolha qual abrir; a senha do painel é a mesma.')):null;
   const box=h('div',{class:'empty',style:'max-width:760px'},
-    h('h2',{},'Conectar o painel à sua planilha'),
+    h('h2',{},'Conectar o painel à sua planilha'),escolher,
     h('p',{},'O painel lê as fichas na sua planilha pelo receptor que você criou na Área do professor. Informe o endereço do receptor e a senha do painel.'),
     !P.standalone()?h('div',{class:'warn'},'Você está vendo o painel dentro do Claude, onde ele não consegue falar com o Google. Para corrigir as fichas, abra o portal publicado. Aqui dá para ver como o painel funciona com dados de exemplo.'):null,
     h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'URL do receptor'),url),

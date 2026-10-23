@@ -140,6 +140,12 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
 .check li::before{content:"";width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none}
 .check li.ok::before{background:var(--good);border-color:var(--good);box-shadow:inset 0 0 0 3px var(--surface)}
 .out{display:flex;flex-direction:column;gap:12px}
+.opcoes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.opcao{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px 14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:3px;font:inherit;color:inherit}
+.opcao b{font-family:var(--f-display);font-size:1.05rem}.opcao span{font-size:.88rem;color:var(--muted)}
+.opcao:hover{border-color:var(--accent)}
+.opcao[aria-pressed="true"]{border-color:var(--accent);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--accent)}
+.rec-box{border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
 .msgbox{white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:.9rem;overflow-wrap:anywhere}
 </style>
 
@@ -172,35 +178,49 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
 
       <section class="step" id="s2"><span class="step-n">2</span>
         <div class="panel">
-          <div class="stack" style="gap:4px"><h2>Suas escolas e turmas</h2><p class="note">Marque as turmas de cada ano. O estudante escolhe a turma dele na ficha. Dá aula em mais de uma escola? Adicione cada uma: cada escola ganha o seu próprio link e QR code, e as fichas de todas chegam na mesma planilha, com a coluna “Escola”. No painel, você filtra por escola e turma.</p></div>
+          <div class="stack" style="gap:4px"><h2>Suas escolas e turmas</h2><p class="note">Marque as turmas de cada ano. O estudante escolhe a turma dele na ficha.</p></div>
+          <div class="opcoes" role="group" aria-label="Quantas escolas">
+            <button type="button" class="opcao" id="mUma" aria-pressed="true"><b>Dou aula em uma escola</b><span>Um link e um QR code para as suas turmas.</span></button>
+            <button type="button" class="opcao" id="mVarias" aria-pressed="false"><b>Dou aula em mais de uma escola</b><span>Cada escola ganha o seu próprio link e QR code.</span></button>
+          </div>
+          <div class="stack" id="ondeBox" style="gap:8px" hidden>
+            <span class="label">Onde chegam as fichas</span>
+            <div class="opcoes" role="group" aria-label="Planilhas">
+              <button type="button" class="opcao" id="pUma" aria-pressed="true"><b>Na mesma planilha</b><span>Recomendado. A coluna “Escola” separa as fichas, e no painel você filtra por escola e turma.</span></button>
+              <button type="button" class="opcao" id="pCada" aria-pressed="false"><b>Uma planilha para cada escola</b><span>Para quem usa uma conta Google diferente em cada escola ou prefere tudo separado. Cada planilha tem o seu receptor.</span></button>
+            </div>
+          </div>
           <div id="escolas" class="stack" style="gap:16px"></div>
-          <div class="row"><button type="button" class="btn" id="addEscola">+ Adicionar outra escola</button></div>
+          <div class="row" id="addRow" hidden><button type="button" class="btn" id="addEscola">+ Adicionar outra escola</button></div>
           <p class="note">Grupos não precisam ser cadastrados: em cada ficha, o estudante diz se fez sozinho ou marca os colegas que responderam com ele. A nota daquela ficha vale para todos os marcados.</p>
         </div>
       </section>
 
       <section class="step" id="s3"><span class="step-n">3</span>
         <div class="panel">
-          <div class="stack" style="gap:4px"><h2>Sua planilha e o receptor</h2><p class="note">O receptor é um pequeno programa na sua conta Google que grava cada ficha na sua planilha, uma aba por aula. Você faz isso uma vez só.</p></div>
+          <div class="stack" style="gap:4px"><h2 id="s3titulo">Sua planilha e o receptor</h2><p class="note">O receptor é um pequeno programa dentro da sua planilha do Google que grava cada ficha numa aba por aula. Você faz isso uma vez só. Depois, se mudar o seu nome ou a senha, o portal atualiza o receptor sozinho.</p></div>
           <div class="callout stack" style="gap:6px">
             <span class="label">Senha do painel</span>
             <div class="senha"><code id="senha">—</code><button type="button" class="btn sm ghost" id="novaSenha">Gerar outra senha</button></div>
-            <p class="note">Ela já vai dentro do código abaixo e protege o painel de avaliação. Anote: ela também fica visível no código, dentro do Apps Script.</p>
+            <p class="note" id="senhaInfo">Protege o painel de avaliação. O portal grava esta senha no receptor quando você cola o endereço. Se esquecer, ela aparece na sua planilha, no menu <b>Biologia em Investigação</b>.</p>
           </div>
-          <ol class="howto">
-            <li>Crie uma planilha nova no Google Planilhas (<a href="https://sheets.new" target="_blank" rel="noopener">sheets.new</a>) e dê um nome, por exemplo “Fichas · Biologia em Investigação”.</li>
-            <li>Na planilha, abra o menu <b>Extensões → Apps Script</b>.</li>
-            <li>Apague o que estiver no editor, cole o código (botão <b>Copiar código</b>) e clique em <b>Salvar</b>.</li>
-            <li>No topo do editor, escolha a função <kbd>autorizar</kbd> e clique em <b>Executar</b>. Autorize com a sua conta. Se aparecer “O Google não verificou este app”, clique em <b>Avançado</b> e depois em <b>Acessar</b>: o aviso aparece porque o programa é seu e não passou por revisão do Google.</li>
-            <li>Clique em <b>Implantar → Nova implantação</b>, na engrenagem escolha <b>App da Web</b>. Em “Executar como”, escolha <b>Eu</b>; em “Quem pode acessar”, <b>Qualquer pessoa</b>. Clique em <b>Implantar</b>.</li>
-            <li>Copie o URL do app da Web (termina em <span class="mono">/exec</span>) e cole no campo abaixo.</li>
-          </ol>
-          <div class="row"><button type="button" class="btn primary" id="copiaCodigo">Copiar código</button><span class="note" id="codigoInfo"></span></div>
-          <pre class="code" id="codigo" tabindex="0" aria-label="Código do receptor"></pre>
-          <label class="field"><span class="label">URL do app da Web</span><input type="url" id="pReceptor" placeholder="https://script.google.com/macros/s/…/exec" spellcheck="false" autocomplete="off"></label>
-          <div class="row"><button type="button" class="btn" id="testar">Testar o receptor</button><a class="btn ghost" id="abrirReceptor" target="_blank" rel="noopener" hidden>Abrir o receptor em outra aba</a></div>
-          <div class="status" id="recStatus" role="status"><i></i><span>Cole o URL para ligar as fichas à sua planilha.</span></div>
-          <p class="note">Mudou o seu nome, gerou outra senha ou passou a usar mais de uma escola depois de implantar? Cole o código de novo no Apps Script e atualize em <b>Implantar → Gerenciar implantações → Editar → Nova versão</b>. O endereço continua o mesmo.</p>
+          <ol class="howto" id="howto"></ol>
+          <div class="stack" id="codigoBox" style="gap:10px">
+            <div class="row"><button type="button" class="btn primary" id="copiaCodigo">Copiar código</button><span class="note">O código é o mesmo para todos os professores. Não precisa mudar nada nele.</span></div>
+            <pre class="code" id="codigo" tabindex="0" aria-label="Código do receptor"></pre>
+          </div>
+          <div id="recs" class="stack" style="gap:12px"></div>
+          <details id="antigo"><summary style="cursor:pointer;font-weight:700">Já tinha um receptor de antes?</summary>
+            <div class="stack" style="gap:8px;margin-top:8px">
+              <p class="note">Ele continua funcionando como está: as fichas, as notas e as senhas dos estudantes ficam onde estão. Se quiser que o portal passe a atualizar o seu nome e a senha sozinho, troque o código uma vez:</p>
+              <ol class="howto">
+                <li>Na planilha de sempre, abra <b>Extensões → Apps Script</b>, apague o código antigo, cole o novo (botão <b>Copiar código do receptor</b>) e clique em <b>Salvar</b>.</li>
+                <li>Clique em <b>Implantar → Gerenciar implantações</b>, no lápis (<b>Editar</b>), em “Versão” escolha <b>Nova versão</b> e clique em <b>Implantar</b>. Se pedir, autorize de novo.</li>
+                <li>Volte aqui e toque em <b>Testar o receptor</b>. O endereço e os links das turmas continuam os mesmos, e a senha do painel também.</li>
+              </ol>
+              <div><button type="button" class="btn sm" id="copiaCodigo2">Copiar código do receptor</button></div>
+            </div>
+          </details>
         </div>
       </section>
 
@@ -235,24 +255,25 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
  *
  * Recebe as fichas que os estudantes enviam pelos módulos e grava nesta planilha,
  * uma aba por módulo e aula (por exemplo "Ecologia · Aula 01").
- * Também entrega os dados ao Painel de avaliação, que só abre com a senha abaixo.
+ * Também entrega os dados ao Painel de avaliação, que só abre com a senha do painel.
  * Versão 2: guarda as respostas de cada estudante (aba "Estudantes") para ele continuar em outro
  * aparelho, entrando com o nome e uma senha de 4 números, gerada na primeira vez que ele escreve o nome.
  * Você vê as senhas no painel e nessa aba.
  * Versão 3: em cada ficha o estudante diz se fez sozinho ou com colegas. A lista de colegas vem da aba
  * "Estudantes" e da aba "Alunos" (só os nomes da mesma turma). Os colegas marcados vão na coluna
  * "Colegas do grupo" e recebem a mesma nota no painel.
+ * Versão 4: o código é o mesmo para todos os professores. O seu nome e a senha do painel são
+ * guardados nas propriedades deste projeto pela Área do professor do portal, logo depois que você
+ * cola o endereço do receptor. Para mudar o nome ou a senha não é preciso colar o código de novo.
+ * As abas e colunas da planilha são as mesmas das versões anteriores.
+ * Para ver a senha do painel, abra a planilha e use o menu "Biologia em Investigação".
  *
- * Este código foi gerado na Área do professor do portal, já com o seu nome e a sua senha.
- * Não é preciso alterar nada.
+ * Não é preciso alterar nada neste código.
  */
-const PROFESSOR = __PROFESSOR__;
-const SENHA_PAINEL = __SENHA__;
-
 const MAX_TEXTO = 1200;
 const MAX_PERGUNTAS = 80;
 const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Escola', 'Turma', 'Grupo'];
-const VERSAO = 3;
+const VERSAO = 4;
 const ABA_AVAL = 'Avaliação';
 const ABA_EST = 'Estudantes';
 const CAB_EST = ['Chave', 'Nome completo', 'Escola', 'Turma', 'Grupo', 'Senha', 'Criado em', 'Atualizado em'];
@@ -261,6 +282,19 @@ const PEDACO = 45000;
 const MAX_TENTATIVAS = 5;   // senhas erradas seguidas antes de esperar 15 minutos
 const CAB_AVAL = ['Chave', 'Atividade', 'Turma', 'Nome', 'Grupo', 'Pontos automáticos', 'Máximo automático',
   'Pontos das abertas', 'Nota', 'Comentário', 'Atualizado em'];
+
+// Nome do professor e senha do painel, guardados nas propriedades do projeto (valem só para esta planilha)
+let CFG = null;
+function cfg() {
+  if (CFG) return CFG;
+  const p = PropertiesService.getScriptProperties().getProperties();
+  const id = SpreadsheetApp.getActiveSpreadsheet().getId();
+  const vale = p.PLANILHA === id; // uma cópia da planilha não herda a configuração de outra
+  CFG = { professor: vale && p.PROFESSOR ? p.PROFESSOR : '', senha: vale && p.SENHA_PAINEL ? p.SENHA_PAINEL : '' };
+  return CFG;
+}
+function nomeProf() { return cfg().professor || 'o professor'; }
+function configurado() { return !!cfg().senha; }
 
 function codigoValido(c) {
   // Aceita qualquer módulo da coleção ("Ecologia · Aula 01", "Ciência · Aula 03"…), inclusive os que ainda vão surgir
@@ -271,9 +305,13 @@ function codigoValido(c) {
 // Também atende o painel (acao=dados) e o teste de conexão (acao=teste).
 function doGet(e) {
   const p = (e && e.parameter) || {};
-  if (p.acao === 'teste') return json({ ok: true, professor: PROFESSOR, versao: VERSAO });
+  if (p.acao === 'teste') {
+    const t = { ok: true, professor: nomeProf(), versao: VERSAO, configurado: configurado() };
+    if (p.senha != null) t.senhaOk = senhaOk(p.senha); // a Área do professor confere a senha sem baixar as fichas
+    return json(t);
+  }
   if (p.acao === 'dados') return json(dados(p.senha));
-  if (!p.d) return pagina('Receptor ativo', 'Este endereço recebe as fichas dos estudantes de ' + PROFESSOR + '. Está funcionando.', true);
+  if (!p.d) return pagina('Receptor ativo', 'Este endereço recebe as fichas dos estudantes de ' + nomeProf() + '. Está funcionando.', true);
   let d;
   try {
     d = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(p.d)).getDataAsString('UTF-8'));
@@ -290,6 +328,7 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     if (d && d.acao === 'nota') r = salvarNota(d);
+    else if (d && d.acao === 'configurar') r = configurar(d);
     else if (d && d.acao === 'colegas') r = colegas(d);
     else if (d && /^aluno-/.test(String(d.acao))) r = aluno(d);
     else r = salvar(d);
@@ -302,7 +341,32 @@ function doPost(e) {
 function json(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
-function senhaOk(s) { return typeof s === 'string' && s.length >= 6 && s === SENHA_PAINEL; }
+function senhaOk(s) { return configurado() && typeof s === 'string' && s.length >= 6 && s === cfg().senha; }
+function semSenha() {
+  return configurado() ? { ok: false, erro: 'senha', texto: 'Senha do painel incorreta.' }
+    : { ok: false, erro: 'configurar', texto: 'O receptor ainda não recebeu o nome e a senha. Abra a Área do professor no portal.' };
+}
+
+// Primeira configuração (vem da Área do professor ou do painel) e troca de nome ou de senha.
+// Depois da primeira vez, só muda quem informa a senha atual.
+function configurar(d) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    CFG = null;
+    const nova = String(d.senha == null ? '' : d.senha);
+    if (nova.length < 6 || nova.length > 64) return { ok: false, erro: 'senha-curta', texto: 'A senha do painel precisa ter pelo menos 6 caracteres.' };
+    if (configurado() && !senhaOk(String(d.senhaAtual == null ? '' : d.senhaAtual))) return { ok: false, erro: 'senha', texto: 'A senha atual do painel não confere.' };
+    const nome = limpar(d.professor, 60).replace(/\s+/g, ' ').trim() || cfg().professor;
+    const novo = { PLANILHA: SpreadsheetApp.getActiveSpreadsheet().getId(), SENHA_PAINEL: nova };
+    if (nome) novo.PROFESSOR = nome;
+    PropertiesService.getScriptProperties().setProperties(novo);
+    CFG = null;
+    return { ok: true, professor: nomeProf(), versao: VERSAO, configurado: true };
+  } finally {
+    lock.releaseLock();
+  }
+}
 
 function salvar(dados) {
   const nome = limpar(dados && dados.nome, 120).trim();
@@ -349,12 +413,12 @@ function salvar(dados) {
   } finally {
     lock.releaseLock();
   }
-  return { ok: true, status: 'salvo', titulo: 'Resposta enviada!', texto: PROFESSOR + ' já recebeu.' };
+  return { ok: true, status: 'salvo', titulo: 'Resposta enviada!', texto: nomeProf() + ' já recebeu.' };
 }
 
 // Dados para o Painel de avaliação
 function dados(senha) {
-  if (!senhaOk(senha)) return { ok: false, erro: 'senha', texto: 'Senha do painel incorreta.' };
+  if (!senhaOk(senha)) return semSenha();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const abas = {};
   ss.getSheets().forEach(function (sh) {
@@ -363,12 +427,12 @@ function dados(senha) {
     // Estudantes: só nome, turma, senha e datas (as respostas guardadas ficam fora do painel)
     if (n === ABA_EST) abas[n] = sh.getLastRow() ? sh.getRange(1, 1, sh.getLastRow(), CAB_EST.length).getDisplayValues() : [];
   });
-  return { ok: true, professor: PROFESSOR, planilha: ss.getUrl(), abas: abas };
+  return { ok: true, professor: nomeProf(), planilha: ss.getUrl(), abas: abas };
 }
 
 // Correção feita no painel: grava ou atualiza a linha do envio na aba Avaliação
 function salvarNota(d) {
-  if (!senhaOk(d.senha)) return { ok: false, erro: 'senha', texto: 'Senha do painel incorreta.' };
+  if (!senhaOk(d.senha)) return semSenha();
   const row = Array.isArray(d.linha) ? d.linha.slice(0, CAB_AVAL.length) : null;
   if (!row || row.length !== CAB_AVAL.length || !row[0] || !codigoValido(row[1])) return { ok: false, erro: 'dados', texto: 'Correção incompleta.' };
   const linha = row.map(function (v) { return seguro(limpar(v, 2000)); });
@@ -522,31 +586,64 @@ function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&
 
 /** Rode uma vez pelo editor (botão Executar) para autorizar o acesso a esta planilha antes de implantar. */
 function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetApp.getActiveSpreadsheet().getName()); }
+
+// Menu na planilha: mostra o nome e a senha do painel guardados neste receptor
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu('Biologia em Investigação').addItem('Ver nome e senha do painel', 'verConfiguracao').addToUi();
+}
+function verConfiguracao() {
+  const c = cfg();
+  SpreadsheetApp.getUi().alert('Biologia em Investigação', c.senha
+    ? 'Professor: ' + nomeProf() + '\nSenha do painel: ' + c.senha + '\n\nPara trocar, use a Área do professor no portal.'
+    : 'Este receptor ainda não foi ligado ao portal. Implante como App da Web e cole o endereço na Área do professor.', SpreadsheetApp.getUi().ButtonSet.OK);
+}
 </script>
 <script src="portal.js"></script>
 <script>
 (function(){
   const P=window.PORTAL,el=P.el,$=s=>document.querySelector(s);
+  // Planilha-modelo com o receptor já dentro (link de compartilhamento de uma planilha do Google).
+  // Enquanto estiver vazio, o professor cola o código numa planilha nova.
+  const MODELO='';
   const SERIES=['1º','2º','3º'],LETRAS=['A','B','C','D','E','F','G','H'];
   function novaSenha(){const a='abcdefghjkmnpqrstuvwxyz23456789';const r=new Uint32Array(10);crypto.getRandomValues(r);return Array.from(r,x=>a[x%a.length]).join('');}
   let C=Object.assign({nome:'',escolas:null,grupos:8,r:'',senha:'',base:''},P.prof()||{});
   // Configuração antiga (uma escola só) vira a primeira escola da lista
   if(!Array.isArray(C.escolas)||!C.escolas.length)C.escolas=[{nome:C.escola||'',sel:Array.isArray(C.sel)?C.sel:[],outras:C.outras||''}];
   delete C.escola;delete C.sel;delete C.outras;
+  if(C.modo!=='uma'&&C.modo!=='varias')C.modo=C.escolas.length>1?'varias':'uma';
+  if(C.planilhas!=='cada')C.planilhas='uma';
   if(!C.senha)C.senha=novaSenha();
+  const multi=()=>C.modo==='varias';
+  const cada=()=>multi()&&C.planilhas==='cada'&&C.escolas.length>1;
+  const rDe=E=>cada()?(E.r||''):C.r;
   const turmasDe=c=>(c.sel||[]).slice().sort((a,b)=>SERIES.indexOf(a.slice(0,2))-SERIES.indexOf(b.slice(0,2))||a.localeCompare(b,'pt-BR')).concat(String(c.outras||'').split(',').map(s=>s.trim()).filter(Boolean)).filter((t,i,arr)=>arr.indexOf(t)===i).slice(0,40);
-  function save(){C.escolas.forEach(e=>e.turmas=turmasDe(e));C.turmas=C.escolas[0].turmas;C.escola=C.escolas[0].nome;P.salvarProf(C);update();}
+  function save(){C.escolas.forEach(e=>e.turmas=turmasDe(e));C.turmas=C.escolas[0].turmas;C.escola=C.escolas[0].nome;
+    if(cada()&&C.escolas[0].r)C.r=C.escolas[0].r; // o painel abre primeiro a planilha da primeira escola
+    P.salvarProf(C);update();}
 
   // 1. nome
   $('#pNome').value=C.nome;
-  $('#pNome').oninput=e=>{C.nome=e.target.value;save();};
+  let tNome=null;
+  $('#pNome').oninput=e=>{C.nome=e.target.value;save();clearTimeout(tNome);tNome=setTimeout(()=>sincronizar(),1200);};
   // 2. escolas e turmas
   const escBox=$('#escolas');
-  function drawEscolas(){escBox.innerHTML='';const multi=C.escolas.length>1;
+  function marca(){$('#mUma').setAttribute('aria-pressed',String(!multi()));$('#mVarias').setAttribute('aria-pressed',String(multi()));
+    $('#pUma').setAttribute('aria-pressed',String(C.planilhas!=='cada'));$('#pCada').setAttribute('aria-pressed',String(C.planilhas==='cada'));
+    $('#ondeBox').hidden=!multi();$('#addRow').hidden=!multi();}
+  $('#mUma').onclick=()=>{if(!multi())return;
+    const extras=C.escolas.slice(1).filter(E=>(E.nome||'').trim()||(E.sel||[]).length||(E.outras||'').trim()||E.r);
+    if(extras.length&&!confirm('Ficar só com '+((C.escolas[0].nome||'').trim()||'a primeira escola')+'? As outras escolas saem desta lista, mas quem já entrou pelo link delas continua enviando as fichas normalmente.'))return;
+    C.modo='uma';C.escolas=C.escolas.slice(0,1);if(C.planilhas==='cada'&&C.escolas[0].r)C.r=C.escolas[0].r;marca();drawEscolas();drawRecs();save();};
+  $('#mVarias').onclick=()=>{if(multi())return;C.modo='varias';if(C.escolas.length<2)C.escolas.push({nome:'',sel:[],outras:''});marca();drawEscolas();drawRecs();save();
+    const ins=escBox.querySelectorAll('.escola-top input');if(ins[1])ins[1].focus();};
+  $('#pUma').onclick=()=>{C.planilhas='uma';marca();drawRecs();save();};
+  $('#pCada').onclick=()=>{C.planilhas='cada';if(!C.escolas[0].r)C.escolas[0].r=C.r;marca();drawRecs();save();};
+  function drawEscolas(){escBox.innerHTML='';const m=multi();
     C.escolas.forEach((E,ix)=>{const box=el('div',{class:'escola-box'});
-      const nm=el('input',{type:'text',maxlength:'80',placeholder:'EE Professor João Lima','aria-label':'Nome da escola '+(ix+1)});nm.value=E.nome||'';nm.oninput=e=>{E.nome=e.target.value;save();};
-      const top=el('div',{class:'escola-top'},el('label',{class:'field'},el('span',{class:'label'},multi?'Escola '+(ix+1):'Escola'+(multi?'':' (opcional se for só uma)')),nm));
-      if(multi)top.append(el('button',{type:'button',class:'btn ghost sm',onclick:()=>{if(!confirm('Remover '+(E.nome||'esta escola')+' da lista? O link dela deixa de aparecer aqui, mas quem já entrou continua enviando para a sua planilha.'))return;C.escolas.splice(ix,1);drawEscolas();save();}},'Remover escola'));
+      const nm=el('input',{type:'text',maxlength:'80',placeholder:ix?'EE Maria Rosa':'EE Professor João Lima','aria-label':'Nome da escola '+(ix+1)});nm.value=E.nome||'';nm.oninput=e=>{E.nome=e.target.value;save();if(cada())rotulos();};
+      const top=el('div',{class:'escola-top'},el('label',{class:'field'},el('span',{class:'label'},m?'Escola '+(ix+1):'Escola (opcional)'),nm));
+      if(m&&C.escolas.length>2)top.append(el('button',{type:'button',class:'btn ghost sm',onclick:()=>{if(!confirm('Remover '+(E.nome||'esta escola')+' da lista? O link dela deixa de aparecer aqui, mas quem já entrou continua enviando para a sua planilha.'))return;C.escolas.splice(ix,1);drawEscolas();drawRecs();save();}},'Remover escola'));
       box.append(top);
       SERIES.forEach(sr=>{const chips=el('div',{class:'chips',role:'group','aria-label':sr+' ano, escola '+(ix+1)});
         LETRAS.forEach(l=>{const t=sr+l;const b=el('button',{type:'button',class:'chip','aria-pressed':String((E.sel||[]).includes(t))},l);b.onclick=()=>{E.sel=E.sel||[];const on=E.sel.includes(t);E.sel=on?E.sel.filter(x=>x!==t):E.sel.concat(t);b.setAttribute('aria-pressed',String(!on));save();};chips.append(b);});
@@ -554,57 +651,137 @@ function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetAp
       const ou=el('input',{type:'text',maxlength:'200',placeholder:'2º Técnico, EJA 3'});ou.value=E.outras||'';ou.oninput=e=>{E.outras=e.target.value;save();};
       box.append(el('label',{class:'field'},el('span',{class:'label'},'Outras turmas (separe por vírgula)'),ou));
       escBox.append(box);});}
-  $('#addEscola').onclick=()=>{C.escolas.push({nome:'',sel:[],outras:''});drawEscolas();save();const ins=escBox.querySelectorAll('input[type=text]');const last=escBox.lastElementChild&&escBox.lastElementChild.querySelector('input');if(last)last.focus();};
-  drawEscolas();
-  // 3. receptor
-  const TPL=$('#tpl').textContent;
-  const codigo=()=>TPL.replace('__PROFESSOR__',()=>JSON.stringify((C.nome||'').trim()||'o professor')).replace('__SENHA__',()=>JSON.stringify(C.senha));
-  $('#novaSenha').onclick=()=>{C.senha=novaSenha();save();$('#codigoInfo').textContent='Senha nova. Se o receptor já estava implantado, cole o código de novo no Apps Script.';};
-  $('#copiaCodigo').onclick=e=>copiar(codigo(),e.currentTarget,$('#codigo'));
-  const rec=$('#pReceptor');if(C.r)rec.value=P.urlDoReceptor(C.r);
-  let teste=null;
-  rec.oninput=()=>{C.r=P.idDoReceptor(rec.value);teste=null;save();};
-  $('#testar').onclick=async()=>{
-    if(!C.r){teste={st:'no',t:'Esse endereço não parece o URL de um app da Web do Apps Script. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'};update();return;}
-    if(!P.standalone()){teste={st:'wait',t:'Dentro do Claude o portal não consegue falar com o Google. Toque em “Abrir o receptor em outra aba”: se aparecer “Receptor ativo”, está tudo certo.'};update();return;}
-    teste={st:'wait',t:'Testando…'};update();
-    try{const r=await fetch(P.urlDoReceptor(C.r)+'?acao=teste');const j=await r.json();teste=j&&j.ok?((j.versao||1)>=3?{st:'ok',t:'Receptor funcionando. As fichas vão para a planilha de '+j.professor+', cada estudante recebe uma senha para continuar em outro aparelho (você vê as senhas no painel) e, nas fichas feitas em grupo, os estudantes escolhem os colegas na lista da turma.'}:{st:'wait',t:'Receptor funcionando, mas é uma versão antiga: as fichas chegam, porém '+((j.versao||1)>=2?'a lista de colegas para marcar o grupo ainda não aparece (os estudantes precisam escrever os nomes).':'as senhas dos estudantes e a lista de colegas ainda não.')+' Copie o código abaixo, cole no Apps Script no lugar do antigo e atualize em Implantar → Gerenciar implantações → Editar → Nova versão. O link da turma continua o mesmo.'}):{st:'no',t:'O endereço respondeu, mas não é este receptor. Confira o código colado no Apps Script.'};}
-    catch(err){teste={st:'no',t:'Não consegui falar com o receptor. Confira se a implantação está como “Qualquer pessoa” e se o URL termina em /exec.'};}
-    update();};
+  $('#addEscola').onclick=()=>{C.escolas.push({nome:'',sel:[],outras:''});drawEscolas();drawRecs();save();const ins=escBox.querySelectorAll('.escola-top input');if(ins.length)ins[ins.length-1].focus();};
+
+  // 3. planilha e receptor
+  const CODIGO=$('#tpl').textContent;
+  $('#codigo').textContent=CODIGO;
+  $('#copiaCodigo').onclick=e=>copiar(CODIGO,e.currentTarget,$('#codigo'));
+  $('#copiaCodigo2').onclick=e=>copiar(CODIGO,e.currentTarget,$('#codigo'));
+  const modeloCopia=()=>{const m=String(MODELO).match(/\/d\/([\w-]{20,})/);return m?'https://docs.google.com/spreadsheets/d/'+m[1]+'/copy':'';};
+  function howto(){const ol=$('#howto');ol.innerHTML='';const cp=modeloCopia();const varias=cada();
+    const li=(...k)=>ol.append(el('li',{},...k));
+    if(cp){
+      li('Toque em ',el('a',{class:'btn sm primary',href:cp,target:'_blank',rel:'noopener',style:'vertical-align:baseline'},varias?'Criar uma planilha':'Criar minha planilha'),' e confirme em ',el('b',{},'Fazer uma cópia'),'. A planilha já vem com o receptor dentro.'+(varias?' Faça isso uma vez para cada escola, de preferência com a conta Google que você usa nela.':''));
+      li('Na planilha nova, abra o menu ',el('b',{},'Extensões → Apps Script'),'.');
+    }else{
+      li('Crie uma planilha nova no Google Planilhas (',el('a',{href:'https://sheets.new',target:'_blank',rel:'noopener'},'sheets.new'),')'+(varias?', uma para cada escola,':'')+' e dê um nome, por exemplo “Fichas · Biologia em Investigação”.');
+      li('Abra o menu ',el('b',{},'Extensões → Apps Script'),', apague o que estiver no editor, cole o código (botão ',el('b',{},'Copiar código'),', abaixo) e clique em ',el('b',{},'Salvar'),'.');
+    }
+    li('Clique em ',el('b',{},'Implantar → Nova implantação'),', na engrenagem escolha ',el('b',{},'App da Web'),' e, em “Quem pode acessar”, ',el('b',{},'Qualquer pessoa'),'. Clique em ',el('b',{},'Implantar'),'.');
+    li('Clique em ',el('b',{},'Autorizar acesso'),' e escolha a sua conta. Se aparecer “O Google não verificou este app”, clique em ',el('b',{},'Avançado'),' e depois em ',el('b',{},'Acessar'),': o aviso aparece porque o programa é seu e não passou por revisão do Google. Depois, ',el('b',{},'Permitir'),'.');
+    li('Copie o URL do app da Web (termina em ',el('span',{class:'mono'},'/exec'),') e cole '+(varias?'no campo da escola, abaixo':'abaixo')+'. O portal confere o receptor e grava nele o seu nome e a senha do painel.');
+    const cb=$('#codigoBox');if(cp){if(!cb.closest('details')){const d=el('details',{},el('summary',{style:'cursor:pointer;font-weight:700'},'Prefere montar a planilha do zero? Ver o código do receptor'));cb.parentNode.insertBefore(d,cb);d.append(cb);cb.style.marginTop='8px';}}
+  }
+
+  // Receptores: um só, ou um por escola
+  const TST={}; // resultado do último teste de cada receptor
+  const alvos=()=>cada()?C.escolas.map((E,i)=>({E,i,get label(){return 'Receptor · '+((E.nome||'').trim()||'Escola '+(i+1));},get:()=>E.r||'',set:r=>{E.r=r;}})):[{label:'URL do app da Web',get:()=>C.r,set:r=>{C.r=r;}}];
+  const recBox=$('#recs');let REC=[];
+  function rotulos(){REC.forEach(x=>{x.lab.textContent=x.a.label;});}
+  function drawRecs(){recBox.innerHTML='';REC=[];howto();
+    $('#s3titulo').textContent=cada()?'Suas planilhas e os receptores':'Sua planilha e o receptor';
+    alvos().forEach(a=>{
+      const inp=el('input',{type:'url',placeholder:'https://script.google.com/macros/s/…/exec',spellcheck:'false',autocomplete:'off'});
+      if(a.get())inp.value=P.urlDoReceptor(a.get());
+      const lab=el('span',{class:'label'},a.label);
+      const st=el('div',{class:'status',role:'status'},el('i'),el('span'));
+      const extra=el('div',{class:'stack',style:'gap:8px'});
+      const abrir=el('a',{class:'btn ghost sm',target:'_blank',rel:'noopener',hidden:true},'Abrir o receptor em outra aba');
+      const tb=el('button',{type:'button',class:'btn sm'},'Testar o receptor');
+      const x={a,inp,st,extra,abrir,lab};REC.push(x);
+      let t=null;
+      inp.oninput=()=>{const r=P.idDoReceptor(inp.value);a.set(r);save();clearTimeout(t);if(r)t=setTimeout(()=>verificar(x),500);};
+      tb.onclick=()=>verificar(x);
+      const wrap=cada()?el('div',{class:'rec-box'}):el('div',{class:'stack',style:'gap:10px'});
+      wrap.append(el('label',{class:'field'},lab,inp),el('div',{class:'row'},tb,abrir),st,extra);
+      recBox.append(wrap);
+    });
+    pinta();}
+  function pinta(){REC.forEach(x=>{const r=x.a.get();const T=(r&&TST[r])||(r?{st:'',t:'Endereço reconhecido. Toque em “Testar o receptor” para conferir.'}:(x.inp.value.trim()?{st:'no',t:'Esse endereço não parece o URL de um app da Web. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'}:{st:'',t:'Cole aqui o URL do app da Web.'}));
+    x.st.className='status '+T.st;x.st.lastChild.textContent=T.t;x.abrir.hidden=!r;if(r)x.abrir.href=P.urlDoReceptor(r);
+    x.extra.innerHTML='';if(T.pedeSenha)x.extra.append(pedeSenha(x));});}
+  function pedeSenha(x){const inp=el('input',{type:'text',placeholder:'senha do painel',spellcheck:'false',autocomplete:'off',style:'font-family:var(--f-mono);max-width:240px'});
+    const b=el('button',{type:'button',class:'btn sm primary'},'Usar esta senha');
+    b.onclick=async()=>{const v=inp.value.trim();if(v.length<6){inp.focus();return;}const r=x.a.get();
+      if(REC.length>1){ // várias planilhas: passa este receptor para a mesma senha das outras
+        let k=null;try{k=await post(r,{acao:'configurar',professor:nomeAtual(),senha:C.senha,senhaAtual:v});}catch(e){}
+        if(k&&k.ok){verificar(x);}else{TST[r]={st:'no',v:4,pedeSenha:true,t:'Essa senha também não confere com a deste receptor.'};pinta();}
+      }else{C.senha=v;save();verificarTodos();}};
+    return el('div',{class:'fb warn stack',style:'gap:8px'},el('span',{},'Este receptor já foi ligado ao portal com outra senha (talvez em outro computador). Digite a senha do painel dele. Ela aparece na planilha, no menu ',el('b',{},'Biologia em Investigação → Ver nome e senha do painel'),'.'),el('div',{class:'row'},inp,b));}
+  const nomeAtual=()=>(C.nome||'').trim();
+  async function post(r,obj){const res=await fetch(P.urlDoReceptor(r),{method:'POST',body:JSON.stringify(obj)});return res.json();}
+  async function verificar(x,opts){const r=x.a.get();opts=opts||{};
+    if(!r){pinta();return null;}
+    if(!P.standalone()){TST[r]={st:'wait',t:'Dentro do Claude o portal não consegue falar com o Google. Toque em “Abrir o receptor em outra aba”: se aparecer “Receptor ativo”, está tudo certo. Para o portal gravar o seu nome e a senha no receptor, abra esta página no portal publicado.'};pinta();return null;}
+    if(!opts.quieto){TST[r]={st:'wait',t:'Conferindo o receptor…'};pinta();}
+    let j;
+    try{const res=await fetch(P.urlDoReceptor(r)+'?'+new URLSearchParams({acao:'teste',senha:C.senha}),{cache:'no-store'});j=await res.json();}
+    catch(err){TST[r]={st:'no',t:'Não consegui falar com o receptor. Confira se a implantação está como “Qualquer pessoa” e se o URL termina em /exec.'};pinta();return null;}
+    if(!j||!j.ok){TST[r]={st:'no',t:'O endereço respondeu, mas não é um receptor do Biologia em Investigação. Confira o código colado no Apps Script.'};pinta();return null;}
+    const v=j.versao||1;
+    if(v>=4){
+      try{
+        let k=null;
+        if(!j.configurado)k=await post(r,{acao:'configurar',professor:nomeAtual(),senha:opts.nova||C.senha});
+        else if(opts.nova)k=await post(r,{acao:'configurar',professor:nomeAtual(),senha:opts.nova,senhaAtual:C.senha});
+        else if(nomeAtual()&&j.professor!==nomeAtual())k=await post(r,{acao:'configurar',professor:nomeAtual(),senha:C.senha,senhaAtual:C.senha});
+        else k=j.senhaOk?{ok:true,professor:j.professor}:{ok:false,erro:'senha'};
+        if(k&&k.ok){TST[r]={st:'ok',v,t:'Receptor ligado à planilha de '+(k.professor||j.professor)+'. O nome e a senha do painel já estão gravados nele. Cada estudante recebe uma senha para continuar em outro aparelho, e nas fichas em grupo a lista de colegas aparece para marcar.'};pinta();return {ok:true,v};}
+        if(k&&k.erro==='senha'){TST[r]={st:'no',v,pedeSenha:true,t:'A senha do painel guardada neste navegador não é a deste receptor.'};pinta();return {ok:false,v,erro:'senha'};}
+        TST[r]={st:'no',v,t:(k&&k.texto)||'O receptor não aceitou a configuração. Tente de novo.'};pinta();return {ok:false,v};
+      }catch(err){TST[r]={st:'no',v,t:'O receptor respondeu ao teste, mas não consegui gravar o nome e a senha. Tente de novo em instantes.'};pinta();return null;}
+    }
+    TST[r]=v>=3?{st:'ok',v,t:'Receptor funcionando, na versão anterior. Pode continuar com ele: as fichas, as notas e as senhas dos estudantes seguem iguais. Só uma diferença: nele, o nome e a senha do painel estão escritos no código. Para o portal passar a atualizá-los sozinho, veja “Já tinha um receptor de antes?”, abaixo.'}
+      :{st:'wait',v,t:'Receptor funcionando, mas é uma versão antiga: as fichas chegam, porém '+(v>=2?'a lista de colegas para marcar o grupo ainda não aparece (os estudantes precisam escrever os nomes).':'as senhas dos estudantes e a lista de colegas ainda não.')+' Para atualizar, veja “Já tinha um receptor de antes?”, abaixo. O link da turma continua o mesmo.'};
+    pinta();return {ok:true,v,antigo:true};}
+  function verificarTodos(o){return Promise.all(REC.map(x=>verificar(x,o)));}
+  // Nome mudou: grava nos receptores novos que já estão ligados (os antigos têm o nome no código)
+  function sincronizar(){if(!P.standalone())return;REC.forEach(x=>{const r=x.a.get();if(r&&TST[r]&&TST[r].v>=4&&TST[r].st==='ok')verificar(x,{quieto:true});});}
+  $('#novaSenha').onclick=async()=>{
+    const ligados=REC.filter(x=>x.a.get());
+    const antigos=ligados.filter(x=>{const T=TST[x.a.get()];return T&&T.v&&T.v<4;});
+    if(antigos.length&&!confirm('Seu receptor é da versão anterior e tem a senha atual escrita no código. Se gerar outra senha, o painel só volta a abrir depois que você trocar o código no Apps Script (veja “Já tinha um receptor de antes?”). Gerar mesmo assim?'))return;
+    const nova=novaSenha();
+    if(!ligados.length||!P.standalone()||antigos.length){C.senha=nova;save();$('#senhaInfo').textContent=ligados.length&&!antigos.length?'Senha nova. Abra esta página no portal publicado para gravá-la no receptor.':'Senha nova. Ela será gravada no receptor quando você colar o endereço dele.';return;}
+    $('#senhaInfo').textContent='Gravando a senha nova no receptor…';
+    const rs=await verificarTodos({nova});
+    if(rs.every(x=>x&&x.ok)){C.senha=nova;save();$('#senhaInfo').textContent='Senha nova gravada no receptor. Use-a para abrir o painel.';}
+    else{$('#senhaInfo').textContent='Não consegui gravar a senha nova em todos os receptores, por isso a senha continua a mesma.';verificarTodos();}
+  };
+
   // 4. link
   if(!P.standalone())$('#baseField').hidden=false;
   $('#pBase').value=C.base||'';$('#pBase').oninput=e=>{C.base=e.target.value.trim();save();};
 
   function qrSvg(text){try{const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:4,margin:2,scalable:true});}catch(e){return '';}}
   function copiar(text,btn,alvo){const done=()=>{const t=btn.textContent;btn.textContent='Copiado';setTimeout(()=>btn.textContent=t,1600);};
-    const sel=()=>{if(!alvo)return;const r=document.createRange();r.selectNodeContents(alvo);const s=getSelection();s.removeAllRanges();s.addRange(r);btn.textContent='Selecionado: use Ctrl+C';setTimeout(()=>btn.textContent='Copiar',2400);};
+    const sel=()=>{if(!alvo)return;const r=document.createRange();r.selectNodeContents(alvo);const s=getSelection();s.removeAllRanges();s.addRange(r);const t=btn.textContent;btn.textContent='Selecionado: use Ctrl+C';setTimeout(()=>btn.textContent=t,2400);};
     try{navigator.clipboard.writeText(text).then(done).catch(sel);}catch(e){sel();}}
   function projetar(link,esc){const o=el('div',{class:'overlay',role:'dialog','aria-label':'QR code da turma'},el('h2',{},'Turma de '+((C.nome||'').trim()||'professor')+(esc?' · '+esc:'')),el('div',{class:'qr'}),el('span',{class:'link'},link),el('button',{type:'button',class:'btn',onclick:()=>o.remove()},'Fechar'));o.querySelector('.qr').innerHTML=qrSvg(link);o.addEventListener('click',e=>{if(e.target===o)o.remove();});document.body.append(o);}
 
   function update(){
     C.escolas.forEach(e=>e.turmas=turmasDe(e));
-    const multi=C.escolas.length>1;
-    const okNome=!!(C.nome||'').trim(),okT=C.escolas.every(e=>e.turmas.length>0)&&(!multi||C.escolas.every(e=>(e.nome||'').trim())),okR=!!C.r;
+    const m=multi();
+    const okNome=!!(C.nome||'').trim(),okT=C.escolas.every(e=>e.turmas.length>0)&&(!m||C.escolas.every(e=>(e.nome||'').trim())),okR=C.escolas.every(E=>!!rDe(E));
     const nT=C.escolas.reduce((a,e)=>a+e.turmas.length,0);
     $('#s1').classList.toggle('done',okNome);$('#s2').classList.toggle('done',okT);$('#s3').classList.toggle('done',okR);
-    $('#senha').textContent=C.senha;$('#codigo').textContent=codigo();
-    const ab=$('#abrirReceptor');ab.hidden=!okR;if(okR)ab.href=P.urlDoReceptor(C.r);
-    const st=$('#recStatus');const T=teste||(okR?{st:'ok',t:'Endereço reconhecido. Use “Testar o receptor” para conferir.'}:(rec.value.trim()?{st:'no',t:'Esse endereço não parece o URL de um app da Web. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'}:{st:'',t:'Cole o URL para ligar as fichas à sua planilha.'}));
-    st.className='status '+T.st;st.lastChild.textContent=T.t;
+    $('#senha').textContent=C.senha;
     // saída
     const out=$('#saida');out.innerHTML='';
     const pronto=okNome&&okT&&okR;$('#s4').classList.toggle('done',pronto);
-    if(!pronto){out.append(el('p',{class:'fb warn'},'Complete '+[!okNome&&'o seu nome',!okT&&(multi?'o nome e as turmas de cada escola':'as turmas'),!okR&&'o URL do receptor'].filter(Boolean).join(', ')+' para gerar o link da turma.'));}
+    if(!pronto){out.append(el('p',{class:'fb warn'},'Complete '+[!okNome&&'o seu nome',!okT&&(m?'o nome e as turmas de cada escola':'as turmas'),!okR&&(cada()?'o URL do receptor de cada escola':'o URL do receptor')].filter(Boolean).join(', ')+' para gerar o link da turma.'));}
     else C.escolas.forEach(E=>{
-      const blk=multi?el('div',{class:'link-escola'},el('h3',{},E.nome)):out;if(multi)out.append(blk);
-      const PE={nome:C.nome,escola:E.nome,r:C.r,turmas:E.turmas,grupos:C.grupos,base:C.base};
-      const cod=P.codigoDaTurma({n:C.nome,e:E.nome,r:C.r,t:E.turmas,g:C.grupos});const link=P.linkDaTurma(PE);
+      const blk=m?el('div',{class:'link-escola'},el('h3',{},E.nome)):out;if(m)out.append(blk);
+      const r=rDe(E);
+      const PE={nome:C.nome,escola:E.nome,r,turmas:E.turmas,grupos:C.grupos,base:C.base};
+      const cod=P.codigoDaTurma({n:C.nome,e:E.nome,r,t:E.turmas,g:C.grupos});const link=P.linkDaTurma(PE);
       if(link){
         const linkEl=el('span',{class:'link'},link);
         blk.append(el('div',{class:'row',style:'align-items:flex-start;gap:18px'},el('div',{class:'qr'}),el('div',{class:'stack',style:'gap:10px;flex:1 1 240px;min-width:0'},el('span',{class:'label'},'Link da turma'),linkEl,
           el('div',{class:'row'},el('button',{type:'button',class:'btn primary sm',onclick:e=>copiar(link,e.currentTarget,linkEl)},'Copiar link'),el('button',{type:'button',class:'btn sm',onclick:()=>projetar(link,E.nome)},'Projetar QR code'),el('a',{class:'btn sm ghost',href:link,target:'_blank',rel:'noopener'},'Abrir como estudante')))));
         blk.querySelector('.qr').innerHTML=qrSvg(link);
-        const msg=(multi?E.nome+'\n':'')+'Turma, para usar os módulos de Biologia e enviar as fichas para mim, abram este link no celular:\n'+link;
+        const msg=(m?E.nome+'\n':'')+'Turma, para usar os módulos de Biologia e enviar as fichas para mim, abram este link no celular:\n'+link;
         const mEl=el('div',{class:'msgbox'},msg);
         blk.append(el('div',{class:'stack',style:'gap:6px'},el('span',{class:'label'},'Mensagem pronta para enviar'),mEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(msg,e.currentTarget,mEl)},'Copiar mensagem'))));
       }else{
@@ -615,7 +792,7 @@ function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetAp
     });
     // situação
     const ck=$('#check');ck.innerHTML='';
-    [['Nome',okNome],[(multi?'Escolas e turmas ('+C.escolas.length+' escolas, '+nT+' turmas)':'Turmas'+(okT?' ('+nT+')':'')),okT],['Receptor da planilha',okR],['Link da turma',pronto]].forEach(([t,ok])=>ck.append(el('li',{class:ok?'ok':''},t)));
+    [['Nome',okNome],[(m?'Escolas e turmas ('+C.escolas.length+' escolas, '+nT+' turmas)':'Turmas'+(okT?' ('+nT+')':'')),okT],[cada()?'Receptores das planilhas':'Receptor da planilha',okR],[m?'Links das turmas':'Link da turma',pronto]].forEach(([t,ok])=>ck.append(el('li',{class:ok?'ok':''},t)));
     // prévia
     const pv=$('#previa');pv.innerHTML='';
     pv.append(el('div',{class:'panel stack',style:'gap:10px;padding:14px;box-shadow:none;background:var(--bg)'},
@@ -624,7 +801,9 @@ function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetAp
       el('span',{class:'label'},'Como fez esta ficha'),el('div',{class:'chips'},el('span',{class:'chip',style:'cursor:default'},'Sozinho(a)'),el('span',{class:'chip',style:'cursor:default'},'Com colegas')),
       el('span',{class:'btn primary',style:'pointer-events:none;align-self:flex-start'},'Enviar para '+((C.nome||'').trim()||'…'))));
   }
-  save();
+  marca();drawEscolas();drawRecs();save();
+  // Ao abrir a página, confere em silêncio os receptores já colados
+  if(P.standalone())REC.forEach(x=>{if(x.a.get())verificar(x,{quieto:true});});
 })();
 </script>
 

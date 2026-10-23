@@ -3,24 +3,25 @@
  *
  * Recebe as fichas que os estudantes enviam pelos módulos e grava nesta planilha,
  * uma aba por módulo e aula (por exemplo "Ecologia · Aula 01").
- * Também entrega os dados ao Painel de avaliação, que só abre com a senha abaixo.
+ * Também entrega os dados ao Painel de avaliação, que só abre com a senha do painel.
  * Versão 2: guarda as respostas de cada estudante (aba "Estudantes") para ele continuar em outro
  * aparelho, entrando com o nome e uma senha de 4 números, gerada na primeira vez que ele escreve o nome.
  * Você vê as senhas no painel e nessa aba.
  * Versão 3: em cada ficha o estudante diz se fez sozinho ou com colegas. A lista de colegas vem da aba
  * "Estudantes" e da aba "Alunos" (só os nomes da mesma turma). Os colegas marcados vão na coluna
  * "Colegas do grupo" e recebem a mesma nota no painel.
+ * Versão 4: o código é o mesmo para todos os professores. O seu nome e a senha do painel são
+ * guardados nas propriedades deste projeto pela Área do professor do portal, logo depois que você
+ * cola o endereço do receptor. Para mudar o nome ou a senha não é preciso colar o código de novo.
+ * As abas e colunas da planilha são as mesmas das versões anteriores.
+ * Para ver a senha do painel, abra a planilha e use o menu "Biologia em Investigação".
  *
- * Este código foi gerado na Área do professor do portal, já com o seu nome e a sua senha.
- * Não é preciso alterar nada.
+ * Não é preciso alterar nada neste código.
  */
-const PROFESSOR = __PROFESSOR__;
-const SENHA_PAINEL = __SENHA__;
-
 const MAX_TEXTO = 1200;
 const MAX_PERGUNTAS = 80;
 const FIXAS = ['Carimbo de data/hora', 'Nome completo', 'Escola', 'Turma', 'Grupo'];
-const VERSAO = 3;
+const VERSAO = 4;
 const ABA_AVAL = 'Avaliação';
 const ABA_EST = 'Estudantes';
 const CAB_EST = ['Chave', 'Nome completo', 'Escola', 'Turma', 'Grupo', 'Senha', 'Criado em', 'Atualizado em'];
@@ -29,6 +30,19 @@ const PEDACO = 45000;
 const MAX_TENTATIVAS = 5;   // senhas erradas seguidas antes de esperar 15 minutos
 const CAB_AVAL = ['Chave', 'Atividade', 'Turma', 'Nome', 'Grupo', 'Pontos automáticos', 'Máximo automático',
   'Pontos das abertas', 'Nota', 'Comentário', 'Atualizado em'];
+
+// Nome do professor e senha do painel, guardados nas propriedades do projeto (valem só para esta planilha)
+let CFG = null;
+function cfg() {
+  if (CFG) return CFG;
+  const p = PropertiesService.getScriptProperties().getProperties();
+  const id = SpreadsheetApp.getActiveSpreadsheet().getId();
+  const vale = p.PLANILHA === id; // uma cópia da planilha não herda a configuração de outra
+  CFG = { professor: vale && p.PROFESSOR ? p.PROFESSOR : '', senha: vale && p.SENHA_PAINEL ? p.SENHA_PAINEL : '' };
+  return CFG;
+}
+function nomeProf() { return cfg().professor || 'o professor'; }
+function configurado() { return !!cfg().senha; }
 
 function codigoValido(c) {
   // Aceita qualquer módulo da coleção ("Ecologia · Aula 01", "Ciência · Aula 03"…), inclusive os que ainda vão surgir
@@ -39,9 +53,13 @@ function codigoValido(c) {
 // Também atende o painel (acao=dados) e o teste de conexão (acao=teste).
 function doGet(e) {
   const p = (e && e.parameter) || {};
-  if (p.acao === 'teste') return json({ ok: true, professor: PROFESSOR, versao: VERSAO });
+  if (p.acao === 'teste') {
+    const t = { ok: true, professor: nomeProf(), versao: VERSAO, configurado: configurado() };
+    if (p.senha != null) t.senhaOk = senhaOk(p.senha); // a Área do professor confere a senha sem baixar as fichas
+    return json(t);
+  }
   if (p.acao === 'dados') return json(dados(p.senha));
-  if (!p.d) return pagina('Receptor ativo', 'Este endereço recebe as fichas dos estudantes de ' + PROFESSOR + '. Está funcionando.', true);
+  if (!p.d) return pagina('Receptor ativo', 'Este endereço recebe as fichas dos estudantes de ' + nomeProf() + '. Está funcionando.', true);
   let d;
   try {
     d = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(p.d)).getDataAsString('UTF-8'));
@@ -58,6 +76,7 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     if (d && d.acao === 'nota') r = salvarNota(d);
+    else if (d && d.acao === 'configurar') r = configurar(d);
     else if (d && d.acao === 'colegas') r = colegas(d);
     else if (d && /^aluno-/.test(String(d.acao))) r = aluno(d);
     else r = salvar(d);
@@ -70,7 +89,32 @@ function doPost(e) {
 function json(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
-function senhaOk(s) { return typeof s === 'string' && s.length >= 6 && s === SENHA_PAINEL; }
+function senhaOk(s) { return configurado() && typeof s === 'string' && s.length >= 6 && s === cfg().senha; }
+function semSenha() {
+  return configurado() ? { ok: false, erro: 'senha', texto: 'Senha do painel incorreta.' }
+    : { ok: false, erro: 'configurar', texto: 'O receptor ainda não recebeu o nome e a senha. Abra a Área do professor no portal.' };
+}
+
+// Primeira configuração (vem da Área do professor ou do painel) e troca de nome ou de senha.
+// Depois da primeira vez, só muda quem informa a senha atual.
+function configurar(d) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    CFG = null;
+    const nova = String(d.senha == null ? '' : d.senha);
+    if (nova.length < 6 || nova.length > 64) return { ok: false, erro: 'senha-curta', texto: 'A senha do painel precisa ter pelo menos 6 caracteres.' };
+    if (configurado() && !senhaOk(String(d.senhaAtual == null ? '' : d.senhaAtual))) return { ok: false, erro: 'senha', texto: 'A senha atual do painel não confere.' };
+    const nome = limpar(d.professor, 60).replace(/\s+/g, ' ').trim() || cfg().professor;
+    const novo = { PLANILHA: SpreadsheetApp.getActiveSpreadsheet().getId(), SENHA_PAINEL: nova };
+    if (nome) novo.PROFESSOR = nome;
+    PropertiesService.getScriptProperties().setProperties(novo);
+    CFG = null;
+    return { ok: true, professor: nomeProf(), versao: VERSAO, configurado: true };
+  } finally {
+    lock.releaseLock();
+  }
+}
 
 function salvar(dados) {
   const nome = limpar(dados && dados.nome, 120).trim();
@@ -117,12 +161,12 @@ function salvar(dados) {
   } finally {
     lock.releaseLock();
   }
-  return { ok: true, status: 'salvo', titulo: 'Resposta enviada!', texto: PROFESSOR + ' já recebeu.' };
+  return { ok: true, status: 'salvo', titulo: 'Resposta enviada!', texto: nomeProf() + ' já recebeu.' };
 }
 
 // Dados para o Painel de avaliação
 function dados(senha) {
-  if (!senhaOk(senha)) return { ok: false, erro: 'senha', texto: 'Senha do painel incorreta.' };
+  if (!senhaOk(senha)) return semSenha();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const abas = {};
   ss.getSheets().forEach(function (sh) {
@@ -131,12 +175,12 @@ function dados(senha) {
     // Estudantes: só nome, turma, senha e datas (as respostas guardadas ficam fora do painel)
     if (n === ABA_EST) abas[n] = sh.getLastRow() ? sh.getRange(1, 1, sh.getLastRow(), CAB_EST.length).getDisplayValues() : [];
   });
-  return { ok: true, professor: PROFESSOR, planilha: ss.getUrl(), abas: abas };
+  return { ok: true, professor: nomeProf(), planilha: ss.getUrl(), abas: abas };
 }
 
 // Correção feita no painel: grava ou atualiza a linha do envio na aba Avaliação
 function salvarNota(d) {
-  if (!senhaOk(d.senha)) return { ok: false, erro: 'senha', texto: 'Senha do painel incorreta.' };
+  if (!senhaOk(d.senha)) return semSenha();
   const row = Array.isArray(d.linha) ? d.linha.slice(0, CAB_AVAL.length) : null;
   if (!row || row.length !== CAB_AVAL.length || !row[0] || !codigoValido(row[1])) return { ok: false, erro: 'dados', texto: 'Correção incompleta.' };
   const linha = row.map(function (v) { return seguro(limpar(v, 2000)); });
@@ -290,3 +334,14 @@ function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&
 
 /** Rode uma vez pelo editor (botão Executar) para autorizar o acesso a esta planilha antes de implantar. */
 function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetApp.getActiveSpreadsheet().getName()); }
+
+// Menu na planilha: mostra o nome e a senha do painel guardados neste receptor
+function onOpen() {
+  SpreadsheetApp.getUi().createMenu('Biologia em Investigação').addItem('Ver nome e senha do painel', 'verConfiguracao').addToUi();
+}
+function verConfiguracao() {
+  const c = cfg();
+  SpreadsheetApp.getUi().alert('Biologia em Investigação', c.senha
+    ? 'Professor: ' + nomeProf() + '\nSenha do painel: ' + c.senha + '\n\nPara trocar, use a Área do professor no portal.'
+    : 'Este receptor ainda não foi ligado ao portal. Implante como App da Web e cole o endereço na Área do professor.', SpreadsheetApp.getUi().ButtonSet.OK);
+}
