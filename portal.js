@@ -232,9 +232,15 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     var b=JSON.stringify(Object.assign({acao:acao,escola:escola()},corpo));
     var r;try{r=await fetch(url,{method:'POST',body:b,keepalive:!!keep&&b.length<60000});}catch(e){throw {erro:'rede',texto:'Sem conexão com a planilha do professor. Confira a internet.'};}
     var j;try{j=await r.json();}catch(e){throw {erro:'rede',texto:'A planilha do professor não respondeu.'};}
+    if(j&&typeof j.professor==='string')novoNome(j.professor);
     if(j&&j.ok===false&&j.status==='incompleto')throw {erro:'versao',texto:'O professor ainda precisa atualizar o receptor para ativar as senhas.'};
     return j||{};
   }
+  // Receptor v4: o nome do professor vem da planilha. Se ele mudou o nome, a turma guardada no aparelho acompanha.
+  function novoNome(nm){var t=turma();nm=limpa(nm,60);if(!t||!nm||nm==='o professor'||nm===t.n)return;t.n=nm;definirTurma(t);}
+  function conferirNome(){var c=turma();if(!c||!standalone())return;var ck=lsGet('bi-nome-ck',null)||{},agora=Date.now();
+    if(ck.r===c.r&&agora-(ck.t||0)<6*3600e3)return;lsSet('bi-nome-ck',{r:c.r,t:agora}); // no máximo uma consulta a cada 6 horas
+    fetch(urlDoReceptor(c.r)+'?acao=teste',{cache:'no-store'}).then(function(r){return r.json();}).then(function(j){if(j&&j.ok&&j.versao>=4&&j.configurado)novoNome(j.professor);}).catch(function(){});}
   function nuvem(){var e=estudanteAtual();return e&&e.nuvem&&e.nuvem.senha?e.nuvem:null;}
   var enviando=false,CRIANDO=false,SENHA_NOVA='';
   function avisar(){try{window.dispatchEvent(new Event('bi-nuvem'));}catch(e){}}
@@ -567,6 +573,7 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     if(window.PORTAL_SITE)strip();
     if(window.__biTurmaNova){var c=turma();if(c)toast('Você entrou na turma de '+c.n+'.');}
     if(window.PORTAL_SITE)setTimeout(irParaFicha,0);
+    setTimeout(conferirNome,1500);
     try{var nm=sessionStorage.getItem(K_NUVEM_MSG);if(nm){sessionStorage.removeItem(K_NUVEM_MSG);toast(nm);}}catch(e){}
     // Guarda as fichas na planilha do professor de tempos em tempos e ao sair da página
     if(window.PORTAL_SITE||window.PORTAL_ESTUDANTE){

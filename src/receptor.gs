@@ -83,6 +83,8 @@ function doPost(e) {
   } catch (err) {
     r = { ok: false, status: 'erro', titulo: 'Não foi possível ler o envio', texto: 'Tente enviar de novo.' };
   }
+  // O aparelho do estudante atualiza o nome do professor, se ele tiver mudado
+  if (r && typeof r === 'object' && r.professor == null && cfg().professor) r.professor = cfg().professor;
   return json(r);
 }
 

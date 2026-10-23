@@ -210,13 +210,13 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
             <pre class="code" id="codigo" tabindex="0" aria-label="Código do receptor"></pre>
           </div>
           <div id="recs" class="stack" style="gap:12px"></div>
-          <details id="antigo"><summary style="cursor:pointer;font-weight:700">Já tinha um receptor de antes?</summary>
+          <details id="antigo"><summary style="cursor:pointer;font-weight:700">Já tinha um receptor de antes? Troque o código uma vez</summary>
             <div class="stack" style="gap:8px;margin-top:8px">
               <p class="note">Ele continua funcionando como está: as fichas, as notas e as senhas dos estudantes ficam onde estão. Se quiser que o portal passe a atualizar o seu nome e a senha sozinho, troque o código uma vez:</p>
               <ol class="howto">
                 <li>Na planilha de sempre, abra <b>Extensões → Apps Script</b>, apague o código antigo, cole o novo (botão <b>Copiar código do receptor</b>) e clique em <b>Salvar</b>.</li>
                 <li>Clique em <b>Implantar → Gerenciar implantações</b>, no lápis (<b>Editar</b>), em “Versão” escolha <b>Nova versão</b> e clique em <b>Implantar</b>. Se pedir, autorize de novo.</li>
-                <li>Volte aqui e toque em <b>Testar o receptor</b>. O endereço e os links das turmas continuam os mesmos, e a senha do painel também.</li>
+                <li>Volte aqui e toque em <b>Atualizar receptor</b>. O endereço e os links das turmas continuam os mesmos, e a senha do painel também.</li>
               </ol>
               <div><button type="button" class="btn sm" id="copiaCodigo2">Copiar código do receptor</button></div>
             </div>
@@ -237,6 +237,8 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
       <div class="panel stack" style="gap:12px">
         <span class="label">Situação</span>
         <ul class="check" id="check"></ul>
+        <button type="button" class="btn" id="atualizar">Atualizar receptor</button>
+        <p class="note" id="atualizarMsg" role="status">Mudou o nome, a senha ou as escolas? Toque em Atualizar: o portal grava tudo no receptor sem apagar nenhuma ficha.</p>
         <a class="btn primary" href="painel.html">Abrir o painel de avaliação</a>
       </div>
       <div class="panel stack" style="gap:8px">
@@ -335,6 +337,8 @@ function doPost(e) {
   } catch (err) {
     r = { ok: false, status: 'erro', titulo: 'Não foi possível ler o envio', texto: 'Tente enviar de novo.' };
   }
+  // O aparelho do estudante atualiza o nome do professor, se ele tiver mudado
+  if (r && typeof r === 'object' && r.professor == null && cfg().professor) r.professor = cfg().professor;
   return json(r);
 }
 
@@ -700,7 +704,8 @@ function verConfiguracao() {
     pinta();}
   function pinta(){REC.forEach(x=>{const r=x.a.get();const T=(r&&TST[r])||(r?{st:'',t:'Endereço reconhecido. Toque em “Testar o receptor” para conferir.'}:(x.inp.value.trim()?{st:'no',t:'Esse endereço não parece o URL de um app da Web. Ele começa com https://script.google.com/macros/s/ e termina em /exec.'}:{st:'',t:'Cole aqui o URL do app da Web.'}));
     x.st.className='status '+T.st;x.st.lastChild.textContent=T.t;x.abrir.hidden=!r;if(r)x.abrir.href=P.urlDoReceptor(r);
-    x.extra.innerHTML='';if(T.pedeSenha)x.extra.append(pedeSenha(x));});}
+    x.extra.innerHTML='';if(T.pedeSenha)x.extra.append(pedeSenha(x));});
+    const velho=REC.some(x=>{const T=TST[x.a.get()];return T&&T.v&&T.v<4;});const d=$('#antigo');d.classList.toggle('callout',velho);if(velho)d.open=true;}
   function pedeSenha(x){const inp=el('input',{type:'text',placeholder:'senha do painel',spellcheck:'false',autocomplete:'off',style:'font-family:var(--f-mono);max-width:240px'});
     const b=el('button',{type:'button',class:'btn sm primary'},'Usar esta senha');
     b.onclick=async()=>{const v=inp.value.trim();if(v.length<6){inp.focus();return;}const r=x.a.get();
@@ -736,6 +741,16 @@ function verConfiguracao() {
       :{st:'wait',v,t:'Receptor funcionando, mas é uma versão antiga: as fichas chegam, porém '+(v>=2?'a lista de colegas para marcar o grupo ainda não aparece (os estudantes precisam escrever os nomes).':'as senhas dos estudantes e a lista de colegas ainda não.')+' Para atualizar, veja “Já tinha um receptor de antes?”, abaixo. O link da turma continua o mesmo.'};
     pinta();return {ok:true,v,antigo:true};}
   function verificarTodos(o){return Promise.all(REC.map(x=>verificar(x,o)));}
+  $('#atualizar').onclick=async()=>{const msg=$('#atualizarMsg'),b=$('#atualizar');
+    if(!REC.some(x=>x.a.get())){msg.textContent='Cole primeiro o endereço do receptor, no passo 3.';return;}
+    if(!P.standalone()){msg.textContent='Dentro do Claude o portal não consegue falar com o Google. Abra esta página no portal publicado e toque em Atualizar.';return;}
+    b.disabled=true;msg.textContent='Atualizando…';
+    const rs=await verificarTodos();b.disabled=false;
+    const antigos=rs.filter(x=>x&&x.antigo).length,falhas=rs.filter(x=>!x||!x.ok).length,n=rs.length;
+    if(antigos){msg.textContent=(n>1?'Um dos receptores é':'O seu receptor é')+' da versão anterior, que tem o nome escrito no próprio código. Falta só trocar o código uma vez (veja os passos em “Já tinha um receptor de antes?”, no passo 3). Depois disso, este botão atualiza tudo sozinho. As escolas novas já funcionam: os links estão no passo 4.';
+      const d=$('#antigo');d.open=true;d.scrollIntoView({behavior:'smooth',block:'center'});return;}
+    if(falhas){msg.textContent='Não consegui atualizar '+(n>1?'todos os receptores':'o receptor')+'. Veja o aviso no passo 3.';return;}
+    msg.textContent='Tudo atualizado: '+(n>1?'os '+n+' receptores já têm':'o receptor já tem')+' o nome '+nomeAtual()+' e a senha do painel. As fichas antigas continuam na planilha, e os estudantes passam a ver o nome novo quando abrirem os módulos.';};
   // Nome mudou: grava nos receptores novos que já estão ligados (os antigos têm o nome no código)
   function sincronizar(){if(!P.standalone())return;REC.forEach(x=>{const r=x.a.get();if(r&&TST[r]&&TST[r].v>=4&&TST[r].st==='ok')verificar(x,{quieto:true});});}
   $('#novaSenha').onclick=async()=>{
