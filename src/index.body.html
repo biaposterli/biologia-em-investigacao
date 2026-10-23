@@ -94,12 +94,12 @@
     <div class="stack" style="gap:20px">
       <span class="eyebrow" style="color:var(--muted)">Biologia · Ensino Médio · 1º ao 3º ano</span>
       <h1>Biologia em <span><b class="c1">in</b><b class="c2">ves</b><b class="c3">tiga</b><b class="c4">ção</b></span></h1>
-      <p class="lede">Cinco sites com simuladores, jogos, laboratórios virtuais e fichas de aula. O estudante faz tudo no celular ou no computador e envia a ficha, que chega na planilha do professor da turma.</p>
+      <p class="lede"><span id="nMods">Sete</span> módulos com simuladores, jogos, laboratórios virtuais e fichas de aula. O estudante faz tudo no celular ou no computador e envia a ficha, que chega na planilha do professor da turma.</p>
       <div class="facts">
-        <div><b class="mono">5</b><span>sites</span></div>
-        <div><b class="mono">65</b><span>aulas</span></div>
-        <div><b class="mono">60</b><span>fichas com correção</span></div>
-        <div><b class="mono">12/36</b><span>temas do livro</span></div>
+        <div><b class="mono" id="stMods">7</b><span>módulos</span></div>
+        <div><b class="mono" id="stAulas">80</b><span>aulas</span></div>
+        <div><b class="mono">68</b><span>fichas com correção</span></div>
+        <div><b class="mono" id="stTemas">18/36</b><span>temas do livro</span></div>
       </div>
     </div>
     <aside class="turma-card" id="turmaCard" aria-live="polite"></aside>
@@ -212,6 +212,9 @@
     {nome:'Evolução em Investigação',temas:[31,32,33,34],desc:'Ideias evolucionistas de Lamarck, Darwin e Wallace, teoria sintética da evolução, especiação e evolução humana.'},
     {nome:'Biotecnologia e Sociedade',temas:[35,36],desc:'Matrizes energéticas, bioenergia e saneamento básico; engenharia genética, OGMs, vacinas, terapia gênica, clonagem e biologia sintética.'}];
   const grupoDe={};OBRAS.forEach(o=>o.temas.forEach(t=>grupoDe[t]=o.nome));
+  // Números da abertura calculados a partir dos módulos prontos
+  {const ext=['zero','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze'];const nm=P.ORDER.length,set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
+   set('stMods',nm);set('stAulas',P.ORDER.reduce((a,k)=>a+((INFO[k]&&INFO[k].aulas)||0),0));set('stTemas',Object.keys(PRONTO).length+'/36');const w=ext[nm]||String(nm);set('nMods',w[0].toUpperCase()+w.slice(1));}
   const mapa=document.getElementById('mapa');
   UNI.forEach((u,i)=>{const row=el('div',{class:'temas'});
     for(let k=1;k<=6;k++){const t=i*6+k,s=PRONTO[t];
