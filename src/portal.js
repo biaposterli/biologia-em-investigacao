@@ -17,9 +17,11 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
     eco:{id:'eco',nome:'Ecologia em Investigação',curto:'Ecologia',file:'ecologia.html',cor:'#1d6b58',chave:'eco'},
     cel:{id:'cel',nome:'Células em Ação',curto:'Células',file:'celulas.html',cor:'#a3601b',chave:'cel'},
     gen:{id:'gen',nome:'Genética em Investigação',curto:'Genética',file:'genetica.html',cor:'#a3336b',chave:'gen'},
-    mic:{id:'mic',nome:'Microcosmo',curto:'Microcosmo',file:'microcosmo.html',cor:'#2c58a5',chave:'micro'}
+    mic:{id:'mic',nome:'Microcosmo',curto:'Microcosmo',file:'microcosmo.html',cor:'#2c58a5',chave:'micro'},
+    div:{id:'div',nome:'Diversidade em Investigação',curto:'Diversidade',file:'diversidade.html',cor:'#a8322d',chave:'div'},
+    pla:{id:'pla',nome:'Plantas em Ação',curto:'Plantas',file:'plantas.html',cor:'#356f2a',chave:'pla'}
   };
-  var ORDER=['cie','mic','cel','eco','gen'];
+  var ORDER=['cie','mic','cel','div','pla','eco','gen'];
   var K_TURMA='bi-turma',K_ID='bi-ident',K_PROF='bi-prof',K_PERFIS='bi-perfis',K_QUEM='bi-quem';
 
   function lsGet(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}

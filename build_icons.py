@@ -25,6 +25,10 @@ ICONS = {
   'ecologia': frame('#1d6b58',
      f'<path d="M32 54V34" {W}/><path d="M32 36c-11 0-17-7-17-19 11 0 17 7 17 19z" fill="#fff"/>'
      f'<path d="M32 31c0-10 6-16 19-16 0 10-7 16-19 16z" fill="#fff" opacity=".8"/>'),
+  'diversidade': frame('#a8322d',
+     f'<path d="M32 54V36M32 36L20 22M32 36l12-14" {W}/><circle cx="18" cy="16" r="5" fill="#fff"/><circle cx="46" cy="16" r="5" fill="#fff"/><circle cx="32" cy="36" r="3.5" fill="#fff"/>'),
+  'plantas': frame('#356f2a',
+     f'<path d="M32 54V20" {W}/><path d="M32 44c-10 0-15-5-15-13 10 0 15 5 15 13z" fill="#fff"/><path d="M32 33c0-9 5-14 15-14 0 9-6 14-15 14z" fill="#fff" opacity=".85"/>'),
   'genetica': frame('#a3336b',
      f'<path d="M22 9c0 16 20 16 20 23s-20 7-20 23" {W}/><path d="M42 9c0 16-20 16-20 23s20 7 20 23" {W}/>'
      '<path d="M25 18h14M25 46h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'),

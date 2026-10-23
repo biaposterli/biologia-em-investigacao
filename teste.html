@@ -14,7 +14,7 @@ iframe{width:360px;height:300px;border:1px solid #ccc;position:absolute;left:-99
 <table id="t"><tr><th>Site</th><th>Arquivo</th><th>Abre?</th><th>Detalhe</th></tr></table>
 <pre id="info"></pre>
 <script>
-const SITES=[['Ciência em Investigação','ciencia.html'],['Células em Ação','celulas.html'],['Microcosmo','microcosmo.html'],['Ecologia em Investigação','ecologia.html'],['Genética em Investigação','genetica.html'],['Área do professor','professor.html'],['Painel','painel.html']];
+const SITES=[['Ciência em Investigação','ciencia.html'],['Células em Ação','celulas.html'],['Microcosmo','microcosmo.html'],['Diversidade em Investigação','diversidade.html'],['Plantas em Ação','plantas.html'],['Ecologia em Investigação','ecologia.html'],['Genética em Investigação','genetica.html'],['Área do professor','professor.html'],['Painel','painel.html']];
 const t=document.getElementById('t');
 document.getElementById('info').textContent='Endereço: '+location.href+'\nNavegador: '+navigator.userAgent+'\nData: '+new Date().toLocaleString('pt-BR');
 SITES.forEach(([n,f])=>{
