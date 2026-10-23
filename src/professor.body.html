@@ -300,7 +300,7 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
     b.disabled=true;msg.textContent='Atualizando…';
     const rs=await verificarTodos();b.disabled=false;
     const antigos=rs.filter(x=>x&&x.antigo).length,falhas=rs.filter(x=>!x||!x.ok).length,n=rs.length;
-    if(antigos){msg.textContent=(n>1?'Um dos receptores é':'O seu receptor é')+' da versão anterior, que tem o nome escrito no próprio código. Falta só trocar o código uma vez (veja os passos em “Já tinha um receptor de antes?”, no passo 3). Depois disso, este botão atualiza tudo sozinho. As escolas novas já funcionam: os links estão no passo 4.';
+    if(antigos){msg.textContent=(n>1?'Um dos receptores é':'O seu receptor é')+' da versão anterior, que tem o nome escrito no próprio código. Falta só trocar o código uma vez (veja os passos em “Já tinha um receptor de antes?”, no passo 3). Depois disso, este botão atualiza tudo sozinho. As escolas novas já funcionam: os links estão no passo 4. Já trocou o código e esta mensagem continua? Então o Google ainda está rodando a versão antiga: em Implantar → Gerenciar implantações, clique no lápis, escolha “Nova versão” e Implantar. Se você usou “Nova implantação”, o endereço mudou: cole o endereço novo no passo 3.';
       const d=$('#antigo');d.open=true;d.scrollIntoView({behavior:'smooth',block:'center'});return;}
     if(falhas){msg.textContent='Não consegui atualizar '+(n>1?'todos os receptores':'o receptor')+'. Veja o aviso no passo 3.';return;}
     msg.textContent='Tudo atualizado: '+(n>1?'os '+n+' receptores já têm':'o receptor já tem')+' o nome '+nomeAtual()+' e a senha do painel. As fichas antigas continuam na planilha, e os estudantes passam a ver o nome novo quando abrirem os módulos.';};
