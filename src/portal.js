@@ -540,9 +540,9 @@ window.__biErros=[];try{addEventListener('error',function(e){window.__biErros.pu
   function strip(){
     var top=document.querySelector('header.top .top-in');if(!top||top.querySelector('.bi-strip'))return;
     var cur=window.PORTAL_SITE;
-    var nav=el('nav',{class:'bi-strip','aria-label':'Sites da coleção'},el('a',{href:'index.html',class:'bi-home'},'← Biologia em Investigação'),el('span',{class:'bi-sep','aria-hidden':'true'}));
+    var nav=el('nav',{class:'bi-strip','aria-label':'Módulos da coleção'},el('a',{href:'index.html',class:'bi-home'},'← Biologia em Investigação'),el('span',{class:'bi-sep','aria-hidden':'true'}));
     ORDER.forEach(function(k){var s=SITES[k];nav.append(el('a',{href:s.file,'aria-current':k===cur?'page':null},el('i',{style:'background:'+s.cor,'aria-hidden':'true'}),s.nome));});
-    var eu=el('a',{href:'estudante.html',class:'bi-eu',title:'Minha página: minhas fichas em todos os sites'});
+    var eu=el('a',{href:'estudante.html',class:'bi-eu',title:'Minha página: minhas fichas em todos os módulos'});
     function drawEu(){var n=estudanteAtual().nome;eu.innerHTML='';eu.append(el('span',{class:'bi-av','aria-hidden':'true'},iniciais(n)),nomeCurto(n)?'Minha página · '+nomeCurto(n):'Minha página');}
     drawEu();window.addEventListener('bi-ident',drawEu);
     nav.append(eu);

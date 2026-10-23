@@ -623,7 +623,7 @@ INIT.mendel=root=>{
 
 // ================= Aula 2: A loteria dos alelos =================
 INIT.loteria=root=>{
-  root.append(head('Aula 2 · Livro p. 326–330','A loteria dos alelos','Modelo: gene autossômico, alelos A e a, dominância completa, gametas com a mesma probabilidade. Cada saco virtual é um genitor Aa: uma ficha A e uma ficha a. O site retira uma ficha de cada saco, registra e devolve.'));
+  root.append(head('Aula 2 · Livro p. 326–330','A loteria dos alelos','Modelo: gene autossômico, alelos A e a, dominância completa, gametas com a mesma probabilidade. Cada saco virtual é um genitor Aa: uma ficha A e uma ficha a. O módulo retira uma ficha de cada saco, registra e devolve.'));
   const grid=h('div',{class:'cols wl'});root.append(grid);
   let draws=store.get('lot-draws',[]);let anim=false;
   const L=panel();const R=panel();grid.append(L,R);
@@ -2223,7 +2223,7 @@ extend('heredo',root=>{
     draw(true);const mm=R[C.m].ok?C.m:(R.rec.ok?'rec':'dom');out.append(h('p',{class:'note'},`Embaixo de cada símbolo: genótipos possíveis no modelo ${mm==='rec'?'recessivo (a = alelo da característica)':'dominante (A = alelo da característica)'}. Verde = certo; âmbar = mais de uma possibilidade.`));};
   nova.onclick=()=>{C=make();out.innerHTML='';draw(false);qs();};
   draw(false);qs();
-  root.append(sim('Gerador de heredogramas','Casos fictícios novos a cada toque, gerados por sorteio de alelos. Um locus, dois alelos, penetrância completa, sem mutações novas. II-4 vem de outra família.',sv,qBox,h('div',{class:'row'},check,nova),out,model('O site testa todas as combinações de genótipos possíveis para decidir se um modelo é compatível.')));
+  root.append(sim('Gerador de heredogramas','Casos fictícios novos a cada toque, gerados por sorteio de alelos. Um locus, dois alelos, penetrância completa, sem mutações novas. II-4 vem de outra família.',sv,qBox,h('div',{class:'row'},check,nova),out,model('O módulo testa todas as combinações de genótipos possíveis para decidir se um modelo é compatível.')));
 });
 
 // ---------- Aula 3: Descendentes da F2 ----------
@@ -2722,7 +2722,7 @@ extend('abo',root=>{
       h('span',{},'Por que as hemácias se juntam? Cada anticorpo do soro tem dois sítios de ligação. Quando a hemácia tem o antígeno correspondente, o mesmo anticorpo se prende a duas hemácias vizinhas e forma pontes entre elas. Sem o antígeno, as hemácias continuam soltas.')));};
   root.append(sim('A aglutinação ao microscópio','Três amostras fictícias, cada uma com uma gota de soro anti-A e outra de anti-B. Comece na objetiva de 10× para ver os grumos e passe para 40× para conferir se as hemácias estão soltas ou presas umas às outras.',
     h('div',{class:'mf'},sc,h('div',{class:'stack'},h('div',{class:'row'},amSeg),h('div',{class:'row'},reSeg),atual,h('span',{class:'label'},'Registro'),tab,h('span',{class:'label'},'Qual é o grupo de cada amostra?'),grBox,h('div',{},h('button',{class:'btn primary',type:'button',onclick:conferir},'Conferir')),out)),
-    model('Desenho gerado pelo site, em escala aproximada (hemácia ≈ 7,5 µm). Não é fotografia. Na aula não se fazem testes com sangue.')));
+    model('Desenho gerado pelo módulo, em escala aproximada (hemácia ≈ 7,5 µm). Não é fotografia. Na aula não se fazem testes com sangue.')));
 });
 
 // ---------- Aula 16: da mutação à forma da hemácia ----------
@@ -2757,7 +2757,7 @@ extend('mutacao',root=>{
   drawC();if(aberto)perguntas();
   root.append(sim('Da mutação à forma da hemácia','Três esfregaços de sangue corados, de três pessoas fictícias. Use a objetiva de 100×, ajuste o foco e conte as hemácias normais e em foice em vários campos de cada lâmina.',
     h('div',{class:'mf'},sc,h('div',{class:'stack'},h('div',{class:'row'},lamSeg),h('div',{class:'mf-count'},btnN,btnF),info,h('div',{class:'row'},desf,zer),h('span',{class:'label'},'Sua contagem'),resumo,h('div',{},revBtn),revel,pq)),
-    model('Desenho gerado pelo site, em escala aproximada (hemácia ≈ 7,5 µm). Não é fotografia nem serve para diagnóstico. Também aparecem plaquetas (pontos roxos) e, às vezes, um leucócito.')),molec);
+    model('Desenho gerado pelo módulo, em escala aproximada (hemácia ≈ 7,5 µm). Não é fotografia nem serve para diagnóstico. Também aparecem plaquetas (pontos roxos) e, às vezes, um leucócito.')),molec);
 });
 
 // ================= Início =================

@@ -81,7 +81,7 @@ const SPEC=[
    {k:'par',t:'Proponha uma intervenção para B ou C e um indicador de acompanhamento',man:2},
   ]},
  {code:'Aula 08',titulo:'Aulas 8 e 9 · Ciclos do carbono e do nitrogênio',tipo:'Individual',
-  desc:'Depois de montar os modelos dos ciclos no site.',
+  desc:'Depois de montar os modelos dos ciclos no módulo.',
   itens:[
    {k:'mc',t:'Qual processo retira CO₂ da atmosfera?',ch:['Respiração','Combustão','Fotossíntese','Decomposição'],key:'Fotossíntese',pts:1},
    {k:'mc',t:'A queima de combustíveis fósseis leva carbono de onde para onde?',ch:['Da atmosfera para os oceanos','Dos reservatórios de longa duração para a atmosfera','Dos produtores para os consumidores','Da atmosfera para as rochas'],key:'Dos reservatórios de longa duração para a atmosfera',pts:1},

@@ -147,7 +147,7 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
   <div class="wrap top-in">
     <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 4.5A9.5 9.5 0 0 0 4.5 14H14z" fill="var(--cel)"/><path d="M14 4.5A9.5 9.5 0 0 1 23.5 14H14z" fill="var(--mic)"/><path d="M4.5 14A9.5 9.5 0 0 0 14 23.5V14z" fill="var(--eco)"/><path d="M23.5 14A9.5 9.5 0 0 1 14 23.5V14z" fill="var(--gen)"/></svg>Biologia em Investigação</a>
     <nav aria-label="Seções">
-      <a href="index.html#sites">Sites</a>
+      <a href="index.html#sites">Módulos</a>
       <a href="professor.html" aria-current="page">Área do professor</a>
       <a href="painel.html">Painel de avaliação</a>
     </nav>
@@ -233,8 +233,8 @@ kbd{font-family:var(--f-mono);font-size:.82em;background:var(--surface-2);border
 <script type="text/plain" id="tpl">/**
  * Biologia em Investigação · receptor das fichas
  *
- * Recebe as fichas que os estudantes enviam pelos sites e grava nesta planilha,
- * uma aba por site e aula (por exemplo "Ecologia · Aula 01").
+ * Recebe as fichas que os estudantes enviam pelos módulos e grava nesta planilha,
+ * uma aba por módulo e aula (por exemplo "Ecologia · Aula 01").
  * Também entrega os dados ao Painel de avaliação, que só abre com a senha abaixo.
  * Versão 2: guarda as respostas de cada estudante (aba "Estudantes") para ele continuar em outro
  * aparelho, entrando com o nome e uma senha de 4 números, gerada na primeira vez que ele escreve o nome.
@@ -263,7 +263,7 @@ const CAB_AVAL = ['Chave', 'Atividade', 'Turma', 'Nome', 'Grupo', 'Pontos autom�
   'Pontos das abertas', 'Nota', 'Comentário', 'Atualizado em'];
 
 function codigoValido(c) {
-  // Aceita qualquer site da coleção ("Ecologia · Aula 01", "Ciência · Aula 03"…), inclusive os que ainda vão surgir
+  // Aceita qualquer módulo da coleção ("Ecologia · Aula 01", "Ciência · Aula 03"…), inclusive os que ainda vão surgir
   return typeof c === 'string' && /^[A-Za-zÀ-ÿ ]{2,40} · Aula \d{2}$/.test(c);
 }
 
@@ -278,7 +278,7 @@ function doGet(e) {
   try {
     d = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(p.d)).getDataAsString('UTF-8'));
   } catch (err) {
-    return pagina('Não foi possível ler o envio', 'Volte ao site e toque em Enviar de novo.', false);
+    return pagina('Não foi possível ler o envio', 'Volte ao módulo e toque em Enviar de novo.', false);
   }
   const r = salvar(d);
   return pagina(r.titulo, r.texto, r.ok, d);
@@ -604,14 +604,14 @@ function autorizar() { Logger.log('Autorizado para a planilha: ' + SpreadsheetAp
         blk.append(el('div',{class:'row',style:'align-items:flex-start;gap:18px'},el('div',{class:'qr'}),el('div',{class:'stack',style:'gap:10px;flex:1 1 240px;min-width:0'},el('span',{class:'label'},'Link da turma'),linkEl,
           el('div',{class:'row'},el('button',{type:'button',class:'btn primary sm',onclick:e=>copiar(link,e.currentTarget,linkEl)},'Copiar link'),el('button',{type:'button',class:'btn sm',onclick:()=>projetar(link,E.nome)},'Projetar QR code'),el('a',{class:'btn sm ghost',href:link,target:'_blank',rel:'noopener'},'Abrir como estudante')))));
         blk.querySelector('.qr').innerHTML=qrSvg(link);
-        const msg=(multi?E.nome+'\n':'')+'Turma, para usar os sites de Biologia e enviar as fichas para mim, abram este link no celular:\n'+link;
+        const msg=(multi?E.nome+'\n':'')+'Turma, para usar os módulos de Biologia e enviar as fichas para mim, abram este link no celular:\n'+link;
         const mEl=el('div',{class:'msgbox'},msg);
         blk.append(el('div',{class:'stack',style:'gap:6px'},el('span',{class:'label'},'Mensagem pronta para enviar'),mEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(msg,e.currentTarget,mEl)},'Copiar mensagem'))));
       }else{
         blk.append(el('p',{class:'fb warn'},'Informe o endereço do portal publicado (acima) para gerar o link e o QR code. Enquanto isso, os estudantes podem entrar com o código da turma.'));
       }
       const cEl=el('div',{class:'msgbox mono',style:'font-size:.78rem'},cod);
-      blk.append(el('details',{},el('summary',{style:'cursor:pointer;font-weight:700'},'Código da turma (para colar no site)'),el('div',{class:'stack',style:'gap:8px;margin-top:8px'},el('p',{class:'note'},'Quem não conseguir abrir o link pode colar este código no quadro “Entre na sua turma”, na página inicial, ou no topo de qualquer ficha.'),cEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(cod,e.currentTarget,cEl)},'Copiar código')))));
+      blk.append(el('details',{},el('summary',{style:'cursor:pointer;font-weight:700'},'Código da turma (para colar no portal)'),el('div',{class:'stack',style:'gap:8px;margin-top:8px'},el('p',{class:'note'},'Quem não conseguir abrir o link pode colar este código no quadro “Entre na sua turma”, na página inicial, ou no topo de qualquer ficha.'),cEl,el('div',{},el('button',{type:'button',class:'btn sm',onclick:e=>copiar(cod,e.currentTarget,cEl)},'Copiar código')))));
     });
     // situação
     const ck=$('#check');ck.innerHTML='';

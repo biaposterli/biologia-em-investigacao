@@ -707,7 +707,7 @@ INIT.caixa=root=>{
   const sel=seg([['A','Caixa A'],['B','Caixa B'],['C','Caixa C']],cx,v=>{cx=v;store.set('cx-cur',v);draw();},{label:'Caixa'});
   root.append(h('div',{class:'cols wide-right'},
     panel(h('span',{class:'label'},'Escolha a caixa'),sel,stage,h('div',{class:'row',style:'justify-content:space-between'},h('span',{class:'label'},'Testes'),somBtn),tbtns,
-      SOM.ok()?h('p',{class:'note'},'🎧 Use fone de ouvido: o som mostra o que acontece lá dentro. Ao inclinar, ele vai de um lado para o outro. Sem som no celular? Aumente o volume pelos botões laterais.'):null,model('A massa de cada caixa vazia é 50 g. Os sons são sintetizados pelo próprio site a partir do material e do movimento de cada objeto.')),
+      SOM.ok()?h('p',{class:'note'},'🎧 Use fone de ouvido: o som mostra o que acontece lá dentro. Ao inclinar, ele vai de um lado para o outro. Sem som no celular? Aumente o volume pelos botões laterais.'):null,model('A massa de cada caixa vazia é 50 g. Os sons são sintetizados pelo próprio módulo a partir do material e do movimento de cada objeto.')),
     panel(h('h3',{},'Caderno de observações'),log,h('h3',{},'Quadro de suspeitos'),h('p',{class:'note'},'Toque num objeto para descartá-lo quando uma observação não combinar com ele.'),board,h('div',{class:'row'},chk),bmsg)));
   root.append(panel(h('h3',{},'Conclusão'),h('p',{class:'note'},'Use só o que as observações permitem afirmar. Às vezes a resposta mais honesta é “ainda não dá para saber”.'),cBox,peekOut));
   // Observação ou inferência?

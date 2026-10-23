@@ -164,7 +164,7 @@ footer{padding-block:34px 40px}
   <div class="wrap top-in">
     <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 4.5A9.5 9.5 0 0 0 4.5 14H14z" fill="var(--cel)"/><path d="M14 4.5A9.5 9.5 0 0 1 23.5 14H14z" fill="var(--mic)"/><path d="M4.5 14A9.5 9.5 0 0 0 14 23.5V14z" fill="var(--eco)"/><path d="M23.5 14A9.5 9.5 0 0 1 14 23.5V14z" fill="var(--gen)"/></svg>Biologia em Investigação</a>
     <nav aria-label="Seções">
-      <a href="index.html#sites">Sites</a>
+      <a href="index.html#sites">Módulos</a>
       <a href="estudante.html" aria-current="page">Minha página</a>
     </nav>
   </div>
@@ -177,7 +177,7 @@ footer{padding-block:34px 40px}
   </section>
 
   <div class="sec-head">
-    <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">Minhas fichas</span><h2>Todas as aulas, em todos os sites</h2></div>
+    <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">Minhas fichas</span><h2>Todas as aulas, em todos os módulos</h2></div>
     <div class="filtro" role="group" aria-label="Mostrar" id="filtro"></div>
   </div>
   <div class="blocos" id="blocos"></div>
@@ -224,7 +224,7 @@ footer{padding-block:34px 40px}
     const e=P.estudanteAtual();const nome=String(e.nome||'').trim();eu.innerHTML='';
     eu.append(el('div',{class:'row',style:'gap:14px;flex-wrap:nowrap'},el('span',{class:'eu-av','aria-hidden':'true'},P.iniciais(nome)),el('span',{class:'eyebrow',style:'color:var(--muted)'},'Minha página')),
       el('h1',{},el('small',{},nome?'Olá,':'Olá!'),nome||'Escreva o seu nome ao lado'),
-      el('p',{class:'lede'},'Aqui estão as fichas de todos os sites: o que você já enviou, o que está pela metade e o que ainda falta. Toque numa aula para continuar de onde parou.'),
+      el('p',{class:'lede'},'Aqui estão as fichas de todos os módulos: o que você já enviou, o que está pela metade e o que ainda falta. Toque numa aula para continuar de onde parou.'),
       el('div',{class:'facts'},
         el('div',{class:'f-ok'},el('b',{class:'mono'},String(cont.ok)),el('span',{},'fichas enviadas')),
         el('div',{class:'f-and'},el('b',{class:'mono'},String(cont.and)),el('span',{},'em andamento')),
@@ -268,7 +268,7 @@ footer{padding-block:34px 40px}
           el('div',{class:'ficha-t'},el('b',{},String(f.titulo||f.code).replace(/^Aulas?\s[\d e]+·\s*/,'')),el('span',{class:'st '+si.st},el('i',{'aria-hidden':'true'}),ROT[si.st]),el('span',{class:'note'},det)),
           el('a',{class:'btn sm'+(si.st==='and'||si.st==='mud'?' primary':''),href},si.st==='ok'?'Ver':si.st==='nova'?'Abrir':'Continuar')));
       });
-      if(!vis.length)ul.append(el('li',{class:'vazio'},FILTRO==='ok'?'Nenhuma ficha enviada neste site ainda.':'Tudo enviado neste site.'));
+      if(!vis.length)ul.append(el('li',{class:'vazio'},FILTRO==='ok'?'Nenhuma ficha enviada neste módulo ainda.':'Tudo enviado neste módulo.'));
       blocos.append(el('section',{class:'bloco','data-s':d.sid,'aria-label':s.nome},
         el('div',{class:'bloco-h'},el('h3',{},s.nome),el('span',{class:'barra',role:'img','aria-label':env+' de '+d.fichas.length+' enviadas'},el('i',{style:'width:'+Math.round(100*env/d.fichas.length)+'%'})),el('span',{class:'note mono'},env+'/'+d.fichas.length+' enviadas')),
         ul));

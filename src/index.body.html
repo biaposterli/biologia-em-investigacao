@@ -81,7 +81,7 @@
   <div class="wrap top-in">
     <a class="brand" href="index.html"><svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 4.5A9.5 9.5 0 0 0 4.5 14H14z" fill="var(--cel)"/><path d="M14 4.5A9.5 9.5 0 0 1 23.5 14H14z" fill="var(--mic)"/><path d="M4.5 14A9.5 9.5 0 0 0 14 23.5V14z" fill="var(--eco)"/><path d="M23.5 14A9.5 9.5 0 0 1 14 23.5V14z" fill="var(--gen)"/></svg>Biologia em Investigação</a>
     <nav aria-label="Seções">
-      <a href="#sites">Sites</a>
+      <a href="#sites">Módulos</a>
       <a href="estudante.html">Minha página</a>
       <a href="professor.html">Área do professor</a>
       <a href="painel.html">Painel de avaliação</a>
@@ -106,7 +106,7 @@
   </section>
 
   <div class="sec-head" id="sites">
-    <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">A coleção</span><h2>Escolha o site da aula</h2></div>
+    <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">A coleção</span><h2>Escolha o módulo da aula</h2></div>
     <p class="note" style="max-width:46ch">Os temas seguem o livro <i>360° Biologia</i> (FTD, 2024). Cada aula traz a pergunta para começar, a ferramenta e a ficha.</p>
   </div>
   <div class="sites" id="siteGrid"></div>
@@ -114,10 +114,10 @@
   <section id="construcao" aria-labelledby="obraT">
     <div class="sec-head">
       <div class="stack" style="gap:6px"><span class="eyebrow" style="color:var(--muted)">Os 36 temas do livro</span><h2 id="obraT">O que já existe e o que vem aí</h2></div>
-      <p class="note" style="max-width:48ch">A coleção vai cobrir todos os temas do livro <i>360° Biologia</i>. Os sites marcados como em construção ainda estão sendo planejados. O Microcosmo atende vários temas como laboratório de microscopia.</p>
+      <p class="note" style="max-width:48ch">A coleção vai cobrir todos os temas do livro <i>360° Biologia</i>. Os módulos marcados como em construção ainda estão sendo planejados. O Microcosmo atende vários temas como laboratório de microscopia.</p>
     </div>
     <div class="mapa" id="mapa"></div>
-    <div class="legend"><span><i style="background:var(--eco);border-color:var(--eco)"></i>Tema com site pronto (na cor do site)</span><span><i style="background-image:repeating-linear-gradient(135deg,transparent 0 4px,var(--line) 4px 5px);border-style:dashed"></i>Em construção</span></div>
+    <div class="legend"><span><i style="background:var(--eco);border-color:var(--eco)"></i>Tema com módulo pronto (na cor do módulo)</span><span><i style="background-image:repeating-linear-gradient(135deg,transparent 0 4px,var(--line) 4px 5px);border-style:dashed"></i>Em construção</span></div>
     <div class="obras" id="obras"></div>
   </section>
 
@@ -173,7 +173,7 @@
     const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 76 76');svg.setAttribute('aria-hidden','true');svg.innerHTML=ICON[k];
     grid.append(el('a',{class:'site',href:s.file,'data-s':k},
       el('div',{class:'site-page '+i.papel},svg,el('div',{class:'site-n'},el('small',{},'aulas'),String(i.aulas))),
-      el('div',{class:'site-body'},el('span',{class:'eyebrow'},i.tema),el('h3',{},s.nome),el('p',{},i.desc),el('span',{class:'site-go'},'Abrir o site →'))));
+      el('div',{class:'site-body'},el('span',{class:'eyebrow'},i.tema),el('h3',{},s.nome),el('p',{},i.desc),el('span',{class:'site-go'},'Abrir o módulo →'))));
   });
 
   const card=document.getElementById('turmaCard');
@@ -182,13 +182,13 @@
     if(c){
       card.append(el('span',{class:'eyebrow',style:'color:var(--good)'},'Sua turma'),
         el('div',{class:'turma-who'},el('span',{class:'av','aria-hidden':'true'},(c.n.replace(/^(prof\.?ª?|prof(essora|essor)?)\s+/i,'')[0]||'P').toUpperCase()),el('div',{},el('b',{},c.n),c.e?el('span',{class:'note'},c.e):null)),
-        el('p',{},'As fichas que você enviar vão para a planilha de '+c.n+'. Escolha um site abaixo e responda a ficha no fim de cada aula.'),
+        el('p',{},'As fichas que você enviar vão para a planilha de '+c.n+'. Escolha um módulo abaixo e responda a ficha no fim de cada aula.'),
         el('a',{class:'btn primary',href:'estudante.html',style:'align-self:flex-start'},'Minha página: minhas fichas'),
         c.t.length?el('div',{class:'stack',style:'gap:6px'},el('span',{class:'label'},'Turmas'),el('div',{class:'tlist'},c.t.map(t=>el('span',{},t)))):null,
         el('div',{class:'row'},el('button',{type:'button',class:'btn sm',onclick:troca},'Trocar de turma'),el('button',{type:'button',class:'btn sm ghost',onclick:()=>{P.sairDaTurma();draw();}},'Sair da turma')));
     }else{
       card.append(el('span',{class:'eyebrow',style:'color:var(--muted)'},'Para estudantes'),el('h2',{},'Entre na sua turma'),
-        el('p',{class:'note'},'Abra o link que o seu professor compartilhou ou cole aqui o código da turma. Sem turma, você usa todos os sites normalmente; só o envio das fichas fica desligado.'),
+        el('p',{class:'note'},'Abra o link que o seu professor compartilhou ou cole aqui o código da turma. Sem turma, você usa todos os módulos normalmente; só o envio das fichas fica desligado.'),
         P.caixaCodigo(()=>setTimeout(draw,700)),
         el('a',{class:'btn sm ghost',href:'estudante.html',style:'align-self:flex-start'},'Minha página: minhas fichas'));
     }

@@ -1,8 +1,8 @@
 /**
  * Biologia em Investigação · receptor das fichas
  *
- * Recebe as fichas que os estudantes enviam pelos sites e grava nesta planilha,
- * uma aba por site e aula (por exemplo "Ecologia · Aula 01").
+ * Recebe as fichas que os estudantes enviam pelos módulos e grava nesta planilha,
+ * uma aba por módulo e aula (por exemplo "Ecologia · Aula 01").
  * Também entrega os dados ao Painel de avaliação, que só abre com a senha abaixo.
  * Versão 2: guarda as respostas de cada estudante (aba "Estudantes") para ele continuar em outro
  * aparelho, entrando com o nome e uma senha de 4 números, gerada na primeira vez que ele escreve o nome.
@@ -31,7 +31,7 @@ const CAB_AVAL = ['Chave', 'Atividade', 'Turma', 'Nome', 'Grupo', 'Pontos autom�
   'Pontos das abertas', 'Nota', 'Comentário', 'Atualizado em'];
 
 function codigoValido(c) {
-  // Aceita qualquer site da coleção ("Ecologia · Aula 01", "Ciência · Aula 03"…), inclusive os que ainda vão surgir
+  // Aceita qualquer módulo da coleção ("Ecologia · Aula 01", "Ciência · Aula 03"…), inclusive os que ainda vão surgir
   return typeof c === 'string' && /^[A-Za-zÀ-ÿ ]{2,40} · Aula \d{2}$/.test(c);
 }
 
@@ -46,7 +46,7 @@ function doGet(e) {
   try {
     d = JSON.parse(Utilities.newBlob(Utilities.base64DecodeWebSafe(p.d)).getDataAsString('UTF-8'));
   } catch (err) {
-    return pagina('Não foi possível ler o envio', 'Volte ao site e toque em Enviar de novo.', false);
+    return pagina('Não foi possível ler o envio', 'Volte ao módulo e toque em Enviar de novo.', false);
   }
   const r = salvar(d);
   return pagina(r.titulo, r.texto, r.ok, d);

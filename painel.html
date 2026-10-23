@@ -282,9 +282,9 @@ function render(){
 }
 function turmasAll(){const t=new Set();S.alunos.forEach(a=>a.turma&&t.add(a.turma));ALL.forEach(f=>(S.resp[f.code]||[]).forEach(r=>r.turma&&t.add(r.turma)));return [...t].sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}));}
 function turmaFilter(){const ts=turmasAll();if(UI.turma!=='todas'&&!ts.includes(UI.turma))UI.turma='todas';
-  const ss=h('select',{'aria-label':'Site',id:'fSite'},Object.entries(SITES).map(([k,n])=>h('option',{value:k,selected:k===SITE},n)));ss.onchange=()=>setSite(ss.value);
+  const ss=h('select',{'aria-label':'Módulo',id:'fSite'},Object.entries(SITES).map(([k,n])=>h('option',{value:k,selected:k===SITE},n)));ss.onchange=()=>setSite(ss.value);
   const st=h('select',{'aria-label':'Turma',id:'fTurma'},[['todas','Todas as turmas']].concat(ts.map(t=>[t,t])).map(([v,n])=>h('option',{value:v,selected:v===UI.turma},n)));st.onchange=()=>{UI.turma=st.value;render();};
-  return h('div',{class:'row'},h('span',{class:'label'},'Site'),ss,h('span',{class:'label'},'Turma'),st);}
+  return h('div',{class:'row'},h('span',{class:'label'},'Módulo'),ss,h('span',{class:'label'},'Turma'),st);}
 
 function viewGeral(m){
   const st=students().filter(s=>turmaOk(s.turma));
@@ -297,7 +297,7 @@ function viewGeral(m){
     h('div',{class:'stat'},h('b',{},pend),h('span',{},'envios aguardando correção')),
     h('div',{class:'stat'},h('b',{},SPEC.filter(f=>(S.resp[f.code]||[]).some(r=>turmaOk(r.turma))).length+'/'+SPEC.length),h('span',{},'atividades com envios'))));
   m.append(h('div',{class:'legend'},h('span',{class:'cell g'},'8,5'),'nota final (0 a 10)',h('span',{class:'cell m pend'},'6,0'),'parcial: falta corrigir as respostas abertas',h('span',{class:'cell g grp'},'9,0'),'ficha feita em grupo (a nota vale para todos)',h('span',{class:'cell none'},'—'),'sem envio'));
-  if(!st.length){m.append(h('div',{class:'empty'},h('h3',{},'Nenhum envio ainda'),h('p',{},'Assim que os estudantes enviarem as fichas deste site, cada um aparece aqui numa linha. Para ver também quem ainda não enviou, crie na sua planilha uma aba “Alunos” com a lista da turma (coluna A nome completo, B turma).'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener'},'Abrir a planilha'):null));return;}
+  if(!st.length){m.append(h('div',{class:'empty'},h('h3',{},'Nenhum envio ainda'),h('p',{},'Assim que os estudantes enviarem as fichas deste módulo, cada um aparece aqui numa linha. Para ver também quem ainda não enviou, crie na sua planilha uma aba “Alunos” com a lista da turma (coluna A nome completo, B turma).'),SHEET_URL?h('a',{class:'btn',href:SHEET_URL,target:'_blank',rel:'noopener'},'Abrir a planilha'):null));return;}
   const t=h('table');const hr=h('tr',{},h('th',{},'Estudante'),h('th',{},'Turma'));SPEC.forEach(f=>hr.append(h('th',{class:'c',title:f.titulo},SHORT[f.code])));hr.append(h('th',{class:'c'},'Média'));t.append(h('thead',{},hr));
   const tb=h('tbody');
   const latest={};SPEC.forEach(f=>latest[f.code]=latestBy(S.part[f.code]||[],r=>r.nk));
