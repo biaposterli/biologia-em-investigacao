@@ -353,6 +353,17 @@ details.more summary{cursor:pointer;font-weight:700}
 .stage>.svgbox{max-height:460px}
 
 
+/* Aula 5 · Laboratório da fábrica */
+.lab-bars{display:grid;gap:8px}
+.lab-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 8px;align-items:center;font-size:.86rem}
+.lab-bar b{font-family:var(--f-mono);font-size:.8rem;font-weight:600}
+.lab-bt{grid-column:1/-1;height:9px;border-radius:99px;background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+.lab-bt i{display:block;height:100%;border-radius:99px;transition:width .35s,background .35s}
+.lab-hud{align-items:center;gap:8px;flex-wrap:wrap}
+.lab-legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.8rem;color:var(--muted)}
+.lab-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px;border:1px solid rgba(0,0,0,.25)}
+.lab-lv{color:var(--bad);margin-left:2px}
+.lab-sel{filter:drop-shadow(0 0 2px #e0a300) drop-shadow(0 0 5px #e0a300)}
 /* Aula 5 em partes */
 .partes{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
 .parte-btn{display:flex;gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 11px;cursor:pointer;color:var(--ink);font:inherit}
@@ -1393,9 +1404,240 @@ function quemFazOQue(p){
       {t:'Citoesqueleto',a:'D',why:'Sustentação e movimentos internos nas duas.'},
     ]})));
 }
+// ---------- Parte · Laboratório da fábrica: o estudante interfere nas organelas e vê o resultado ----------
+const LAB_ORG=[
+ {k:'nucleo',n:'Núcleo',faz:'Guarda o DNA e copia em RNA os genes das proteínas da fábrica: a caseína e as enzimas que produzem a lactose e a gordura.',int:'Bloqueador da cópia do DNA em RNA (actinomicina D)',bx:176,by:212},
+ {k:'ribossomo',n:'Ribossomos',faz:'Leem o RNA e fabricam a caseína. Na glândula, ficam presos ao retículo granular.',int:'Bloqueador dos ribossomos (cicloheximida)',bx:44,by:164},
+ {k:'reg',n:'Retículo granular',faz:'Recebe a caseína recém-fabricada, dobra a proteína no formato certo e a envia em vesículas ao complexo golgiense.',int:'Trava do dobramento das proteínas (tunicamicina)',bx:146,by:244},
+ {k:'golgi',n:'Complexo golgiense',faz:'Modifica a caseína (acrescenta fosfato), produz a lactose e empacota tudo em vesículas de secreção.',int:'Desmontador do complexo golgiense (brefeldina A)',bx:264,by:138},
+ {k:'citoesq',n:'Citoesqueleto',faz:'Os microtúbulos (linhas verdes) servem de trilhos para as vesículas chegarem à membrana.',int:'Desmontador de microtúbulos (colchicina)',bx:192,by:62},
+ {k:'mito',n:'Mitocôndrias',faz:'Fazem as etapas finais da respiração aeróbia e fornecem ATP para todas as outras etapas.',int:'Veneno da respiração (cianeto)',bx:94,by:104},
+ {k:'rea',n:'Retículo agranular',faz:'Produz os lipídios que formam as gotas de gordura do leite.',int:'Enzima da gordura com defeito (mutação no gene)',bx:374,by:156},
+ {k:'lisossomo',n:'Lisossomos',faz:'Digerem partes velhas da própria célula (autofagia) e devolvem o material para ser reaproveitado.',int:'Falta de uma enzima digestiva (doença de depósito lisossômico)',bx:170,by:182},
+ {k:'peroxissomo',n:'Peroxissomos',faz:'Com a catalase, transformam a água oxigenada (H₂O₂), produzida em várias reações, em água e oxigênio.',int:'Bloqueador da catalase (aminotriazol)',bx:392,by:90},
+];
+const LAB_LV=[['1','Normal'],['0.5','Metade'],['0','Parado']];
+const LAB_EXP=[
+ {t:'Ribossomos parados',set:{ribossomo:0},wait:10,speed:1,q:'Os ribossomos vão parar (cicloheximida). O que você espera ver?',
+  o:['A caseína do leite cai, e quase nada se acumula no retículo ou no golgiense','A caseína fica parada dentro do complexo golgiense','Nada muda, porque o núcleo continua mandando RNA'],a:0,
+  why:'Os ribossomos ficam no começo da linha de montagem: sem eles, a caseína nem chega a ser fabricada, então não há o que se acumular depois. Repare no RNA (roxo) parado sobre o retículo, esperando ribossomos. Com o tempo, a lactose e o volume também caem e, mais devagar, a gordura: as enzimas que produzem a lactose e a gordura também são proteínas fabricadas pelos ribossomos e precisam ser repostas.'},
+ {t:'Golgiense desmontado',set:{golgi:0},wait:10,speed:1,q:'O complexo golgiense vai ser desmontado (brefeldina A). O que acontece?',
+  o:['A caseína se acumula antes do golgiense, e o volume de leite também cai','Só a gordura do leite diminui','A caseína sai normalmente, só que mais devagar'],a:0,
+  why:'A caseína chega do retículo e fica parada na entrada do golgiense. O volume de leite também despenca: a lactose é produzida dentro do golgiense, e é ela que puxa água para o leite, por osmose (você vai ver isso na Aula 6). A gordura quase não muda, porque sai por outro caminho.'},
+ {t:'Sem trilhos',set:{citoesq:0},wait:10,speed:1,q:'Os microtúbulos vão ser desmontados (colchicina). Onde as vesículas com caseína e lactose vão ficar?',
+  o:['Acumuladas perto do complexo golgiense, já prontas, sem chegar à membrana','Dentro do núcleo','Elas vão chegar à membrana mais depressa'],a:0,
+  why:'As vesículas continuam sendo produzidas, mas sem os trilhos ficam paradas perto do golgiense. Caseína e lactose deixam de sair, e o volume cai. A gordura, que neste modelo sai por outro mecanismo, continua saindo.'},
+ {t:'Sem respiração',set:{mito:0},wait:12,speed:1,q:'As mitocôndrias vão parar de respirar (cianeto). Qual etapa da fábrica para?',
+  o:['Todas ficam lentas ao mesmo tempo','Só a saída da gordura','Nenhuma: a célula tem ATP guardado para vários dias'],a:0,
+  why:'Fabricar proteínas, empacotar e transportar vesículas gastam ATP. Sem as mitocôndrias, sobra só o pouco ATP da glicólise, feita no citosol, e a fábrica inteira desacelera ao mesmo tempo. Se durar muito, a célula morre.'},
+ {t:'Sem gordura',set:{rea:0},wait:8,speed:1,q:'O retículo agranular vai parar de produzir lipídios. O que acontece com o leite?',
+  o:['Sai quase sem gordura, mas com caseína e lactose normais','A caseína fica presa no retículo','A célula fica sem ATP'],a:0,
+  why:'Cada organela tem a sua parte do trabalho. Os lipídios da gordura do leite vêm do retículo agranular e seguem um caminho próprio, então o resto da fábrica continua funcionando normalmente.'},
+ {t:'Sem catalase',set:{peroxissomo:0},wait:30,speed:4,q:'A catalase dos peroxissomos vai ser bloqueada (aminotriazol). O que acontece primeiro?',
+  o:['A água oxigenada se acumula, e o leite só diminui depois, quando a célula começa a ser danificada','A caseína para na mesma hora','A gordura do leite dobra'],a:0,
+  why:'A água oxigenada é produzida o tempo todo, em várias reações. Sem catalase, ela se acumula e danifica membranas, proteínas e DNA. O leite não cai na hora: cai quando a saúde da célula já está baixa. É um efeito indireto.'},
+ {t:'Lisossomo sem enzima',set:{lisossomo:0},wait:40,speed:4,q:'Falta uma enzima digestiva nos lisossomos. O que você espera ver?',
+  o:['Material não digerido se acumula aos poucos e, com o tempo, prejudica a célula','O leite fica sem gordura imediatamente','Nada, porque o lisossomo não participa da produção do leite'],a:0,
+  why:'O lisossomo não está na rota do leite, mas faz a faxina da célula. Sem ele, partes velhas não são recicladas e se acumulam (o material marrom). É o que acontece nas doenças de depósito lisossômico: o efeito é lento, mas atinge a célula toda.'},
+];
+const LAB_CASO=[
+ {set:{reg:0},speed:1,hist:'A cabra Estrela começou a produzir leite com pouca proteína. No começo, o volume e a gordura parecem normais.',a:'reg',
+  why:'Pistas: o RNA chega e os ribossomos trabalham, mas a caseína se acumula dentro do retículo granular e quase não chega ao golgiense. Com tanta proteína parada, a célula ainda diminui a fabricação e começa a sofrer.'},
+ {set:{citoesq:0},speed:1,hist:'O leite da cabra Pipoca está ralo e com pouca proteína, mas a gordura está normal.',a:'citoesq',
+  why:'Pistas: as vesículas ficam prontas e se acumulam perto do complexo golgiense, sem chegar à membrana. Os trilhos (microtúbulos verdes) sumiram.'},
+ {set:{ribossomo:0},speed:1,hist:'A cabra Jurema produz leite quase sem caseína.',a:'ribossomo',
+  why:'Pistas: o RNA (roxo) sai do núcleo e fica parado sobre o retículo, mas nenhuma caseína amarela é fabricada. Se o problema fosse no núcleo, nem o RNA apareceria.'},
+ {set:{rea:0},speed:1,hist:'O queijo feito com o leite da cabra Bolota ficou sem gordura nenhuma.',a:'rea',
+  why:'Pistas: caseína e lactose saem normalmente; só as gotas de gordura deixaram de se formar, perto do retículo agranular.'},
+ {set:{golgi:0},speed:1,hist:'A cabra Mel quase não produz leite: o volume caiu e a proteína também.',a:'golgi',
+  why:'Pistas: a caseína para na entrada do complexo golgiense e a lactose deixa de ser produzida, por isso o volume cai. A gordura continua saindo.'},
+ {set:{mito:.5},speed:1,hist:'Tudo na célula da cabra Fumaça parece mais lento.',a:'mito',
+  why:'Pistas: nenhuma etapa travou sozinha; todas ficaram mais lentas juntas, e o ATP está baixo. Quem fornece ATP para todas as etapas são as mitocôndrias.'},
+ {set:{peroxissomo:0},speed:4,hist:'A cabra Canela produziu leite normal por um tempo, mas depois a produção começou a cair. O tempo está acelerado.',a:'peroxissomo',
+  why:'Pistas: a água oxigenada (pontinhos vermelhos) subiu antes de tudo, e só depois a saúde da célula e o leite caíram. A rota do leite em si não travou em nenhum ponto.'},
+ {set:{nucleo:0},speed:1,hist:'A cabra Cacau deixou de produzir caseína. Depois de algumas horas, o volume de leite também caiu, e por último a gordura.',a:'nucleo',
+  why:'Pistas: não sai mais RNA (roxo) do núcleo, então não há nada para os ribossomos lerem. A caseína some sem acúmulo em lugar nenhum, e depois a lactose e a gordura caem, porque as enzimas que as produzem também dependem de genes copiados no núcleo.'},
+];
+function drawLabBase(){
+  const r=seeded(21);let o=`<rect width="420" height="300" fill="#f6efe3"/>`;
+  o+=`<rect x="0" y="0" width="420" height="34" fill="#e8f1f7"/><text x="12" y="14" font-size="10.5" fill="#2a6497" font-weight="700">luz do alvéolo (o leite segue pelos ductos)</text>`;
+  for(let i=0;i<26;i++)o+=`<circle cx="${(16+r()*390).toFixed(1)}" cy="${(18+r()*12).toFixed(1)}" r="1.6" fill="#8a7a9a"/>`;
+  o+=`<rect x="0" y="36" width="26" height="244" fill="#f1dccb"/><rect x="394" y="36" width="26" height="244" fill="#f1dccb"/>`;
+  o+=`<rect x="26" y="40" width="368" height="240" fill="#fbe9dd"/>`;
+  o+=`<rect x="0" y="282" width="420" height="18" fill="#e6d3c3"/><path d="M0,282 H420" stroke="#9a7a5a" stroke-width="3"/><text x="300" y="296" font-size="9.5" fill="#6b5240">lâmina basal</text>`;
+  o+=`<g class="hot" data-o="membrana" tabindex="0"><path d="M26,40 H394" stroke="#b07a5a" stroke-width="12" stroke-opacity=".001"/>${[...Array(22)].map((_,i)=>{const x=36+i*16;return (x>310&&x<350)?'':`<path d="M${x},40 v-7 a3,3 0 0 1 6,0 v7" fill="#fbe9dd" stroke="#b07a5a" stroke-width="1.6"/>`;}).join('')}<path d="M26,40 H394" stroke="#b07a5a" stroke-width="2.6"/><path d="M26,40 V280 M394,40 V280" stroke="#b07a5a" stroke-width="2.6"/><path d="M26,42 v10 M394,42 v10" stroke="#3b2a17" stroke-width="5"/></g>`;
+  o+=`<g class="hot" data-o="rer" tabindex="0">${[0,1,2,3,4].map(i=>`<path d="M${44+i*2},${176+i*14} C${80},${168+i*14} ${118},${172+i*14} ${150-i*4},${186+i*12}" fill="none" stroke="#4a8a7a" stroke-width="5" stroke-linecap="round"/>`).join('')}${[0,1,2,3].map(i=>`<path d="M${290+i*4},${190+i*14} C${320},${182+i*14} ${350},${186+i*14} ${378-i*2},${196+i*12}" fill="none" stroke="#4a8a7a" stroke-width="5" stroke-linecap="round"/>`).join('')}${(()=>{let d='';for(let i=0;i<70;i++){const left=i<40;const row=left?i%5:i%4;const t=r();const x=left?46+t*100:292+t*84;const y=(left?172+row*14:186+row*14)+Math.sin(t*3)*4;d+=`<circle cx="${x.toFixed(1)}" cy="${(y-1).toFixed(1)}" r="1.5" fill="#3a2a6a"/>`;}return d;})()}<path d="M150,186 C160,200 164,214 160,226" fill="none" stroke="#4a8a7a" stroke-width="4"/></g>`;
+  o+=`<g class="hot" data-o="nucleo" tabindex="0"><ellipse cx="210" cy="238" rx="56" ry="30" fill="#e3d6f0"/><ellipse cx="210" cy="238" rx="56" ry="30" fill="none" stroke="#6b4a90" stroke-width="2"/><ellipse cx="210" cy="238" rx="60" ry="34" fill="none" stroke="#6b4a90" stroke-width="2" stroke-dasharray="16 5"/>${[[190,232,8,4],[232,246,9,4],[214,224,5,3]].map(([x,y,a,b])=>`<ellipse cx="${x}" cy="${y}" rx="${a}" ry="${b}" fill="#9c7fc0" opacity=".8"/>`).join('')}<circle cx="222" cy="238" r="8" fill="#6f4f9a"/></g>`;
+  o+=`<g class="hot" data-o="golgi" tabindex="0">${[0,1,2,3,4].map(i=>`<path d="M${168+i*3},${170-i*8} q${42-i*3},${-16+i} ${84-i*6},0" fill="none" stroke="#d17a8f" stroke-width="4.6" stroke-linecap="round"/>`).join('')}${[[164,170],[256,168],[176,134],[246,132]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3.4" fill="#f2c4cf" stroke="#d17a8f" stroke-width="1.2"/>`).join('')}</g>`;
+  o+=`<g class="hot" data-o="rel" tabindex="0"><rect x="312" y="140" width="52" height="42" fill="#fbe9dd" opacity=".01"/><path d="M318,160 q10,-8 20,0 t20,0 M322,174 q8,6 16,0 t18,2 M330,150 q6,-6 14,-2" fill="none" stroke="#7fae9e" stroke-width="3.6" stroke-linecap="round"/></g>`;
+  o+=`<g class="hot" data-o="mito" tabindex="0">${[[72,120,20],[120,72,-15],[356,234,10],[60,254,0],[300,236,-20]].map(([x,y,a])=>`<g transform="translate(${x} ${y}) rotate(${a})"><ellipse rx="20" ry="9" fill="#e58f4f" stroke="#a35a24" stroke-width="1.8"/><path d="M-13,-7 v9 M-6,7 v-9 M1,-7 v9 M8,7 v-9 M14,-5 v7" stroke="#a35a24" stroke-width="1.4"/></g>`).join('')}</g>`;
+  o+=`<g class="hot" data-o="liso" tabindex="0"><circle cx="156" cy="196" r="9" fill="#c9d36a" stroke="#7d8a2a" stroke-width="1.6"/>${[[-3,-2],[3,2],[-1,4]].map(([x,y])=>`<circle cx="${156+x}" cy="${196+y}" r="1.6" fill="#7d8a2a"/>`).join('')}</g>`;
+  o+=`<g class="hot" data-o="pero" tabindex="0">${[[140,130],[376,104],[264,210]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="8" fill="#b9c27a" stroke="#6d7a2a" stroke-width="1.5"/><rect x="${x-3}" y="${y-2.2}" width="6" height="4.4" fill="#4d5a1a"/>`).join('')}</g>`;
+  return o;
+}
+function laboratorioFabrica(p){
+  const R0=3,RL=2.6,RF=1,CAP=1.3,VEL=110,NB=34,NW=28;
+  const TUBE=[64,104,144,184,224,262,296],MT0=[232,116];
+  const sv=svgEl('0 0 420 300',drawLabBase(),'svgbox','Célula da glândula mamária em funcionamento; as organelas podem ser alteradas');
+  const tint=s('rect',{x:26,y:40,width:368,height:240,fill:'#5a4a4a',opacity:0,'pointer-events':'none'});
+  const mtG=s('g',{class:'hot','data-o':'citoesq',tabindex:0});
+  const mtHit=s('path',{d:TUBE.map(x=>`M${MT0[0]},${MT0[1]} L${x},48`).join(' '),stroke:'#000','stroke-opacity':'.001','stroke-width':10,fill:'none'});
+  const mtL=TUBE.map(()=>s('path',{stroke:'#4a8a7a','stroke-width':1.6,'stroke-linecap':'round',fill:'none',opacity:.7}));
+  mtG.append(mtHit,...mtL);
+  const hpG=s('g',{'pointer-events':'none'}),wG=s('g',{'pointer-events':'none'}),partG=s('g',{'pointer-events':'none'}),badG=s('g',{'pointer-events':'none'}),fx=s('g',{'pointer-events':'none'});
+  const rb=seeded(7);const BUB=[...Array(NB)].map(()=>s('circle',{cx:(40+rb()*340).toFixed(1),cy:(56+rb()*214).toFixed(1),r:1.9,fill:'#d0453f',opacity:0}));hpG.append(...BUB);
+  const rw=seeded(33);const WAS=[...Array(NW)].map((_,i)=>{const near=i<12;const x=near?156+(rw()-.5)*44:44+rw()*330,y=near?196+(rw()-.5)*30:60+rw()*200;return s('path',{d:`M${x.toFixed(1)},${y.toFixed(1)} l3,-2 l3,2 l-1,3 l-4,1z`,fill:'#6b4a2a',opacity:0});});wG.append(...WAS);
+  const deadG=s('g',{'pointer-events':'none',opacity:0});deadG.innerHTML=`<rect x="70" y="120" width="280" height="54" rx="10" fill="#17231d" opacity=".82"/><text x="210" y="143" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">A célula morreu</text><text x="210" y="161" text-anchor="middle" font-size="10.5" fill="#fff">Toque em “Tudo normal” para recomeçar</text>`;
+  sv.insertBefore(tint,sv.querySelector('[data-o="membrana"]').nextSibling);
+  sv.append(mtG,wG,hpG,partG,badG,fx,deadG);
+  const ST={rib:{x:126,y:180,max:14},rer:{x:82,y:208},gol:{x:200,y:190},glc:{x:262,y:182,max:5},mic:{x:232,y:106}};
+  Object.values(ST).forEach(st=>{st.q=[];st.tok=0;});
+  const FIX={rib:'ribossomo',rer:'reg',gol:'golgi',glc:'golgi',mic:'citoesq'};
+  let lv,t,A,H,hp,W,E,F,mt,ema,sp,parts,dead,speed=1,paused=false,lock=false,watch=null,sel='nucleo',lastUi=0;
+  const pt=(x,y,ty,to,extra)=>Object.assign({x,y,ty,to,tx:x,ty2:y,el:null},extra||{});
+  function goTo(pp,x,y){pp.tx=x;pp.ty2=y;}
+  function enqueue(st,pp){if(st.max&&st.q.length>=st.max){kill(pp);return;}st.q.push(pp);pp.wait=true;slots(st);}
+  function slots(st){st.q.forEach((pp,i)=>{const r=3.6*Math.sqrt(i),a=i*2.4;goTo(pp,st.x+r*Math.cos(a),st.y+r*Math.sin(a)*(st===ST.mic?.7:1));});}
+  function kill(pp){pp.dead=true;}
+  function release(id,pp){pp.wait=false;
+    if(id==='rib'){pp.ty='cas';pp.to='rer';goTo(pp,ST.rer.x,ST.rer.y);}
+    else if(id==='rer'){pp.to='gol';goTo(pp,ST.gol.x,ST.gol.y);}
+    else if(id==='gol'){pp.to='mic';goTo(pp,ST.mic.x,ST.mic.y);}
+    else if(id==='glc'){pp.ty='lac';pp.to='mic';goTo(pp,ST.mic.x,ST.mic.y);}
+    else if(id==='mic'){pp.to=null;pp.exit=true;const j=Math.floor(Math.random()*TUBE.length);goTo(pp,TUBE[j]+(Math.random()-.5)*8,46);}}
+  function reset(){
+    (parts||[]).forEach(pp=>pp.el&&pp.el.remove());parts=[];Object.values(ST).forEach(st=>{st.q=[];st.tok=0;});
+    lv={};LAB_ORG.forEach(o=>lv[o.k]=1);t=0;A=1;H=1;hp=.1;W=.1;E=1;F=1;mt=1;dead=false;sp={cas:0,glc:0,fat:0};ema={cas:R0,lac:RL,fat:RF};watch=null;
+    for(let i=0;i<180;i++)step(.05);t=0;ema={cas:R0,lac:RL,fat:RF};
+  }
+  function step(dt){
+    if(dead){const d0=Math.exp(-dt/4);ema.cas*=d0;ema.lac*=d0;ema.fat*=d0;return;}t+=dt;
+    const Hf=H>.6?1:Math.max(.05,H/.6);
+    const aT=lv.mito===1?1:lv.mito===.5?.6:.12;A+=(aT-A)*Math.min(1,dt/1.2);
+    E+=(lv.nucleo*lv.ribossomo*lv.reg-E)*Math.min(1,dt/10);
+    F+=(lv.nucleo*lv.ribossomo*lv.reg-F)*Math.min(1,dt/14);
+    mt+=(lv.citoesq-mt)*Math.min(1,dt/1.5);
+    const k=A*Hf,ers=ST.rer.q.length+ST.gol.q.length;
+    const cap={rib:CAP*R0*lv.ribossomo*k*(ers>12?.35:1),rer:CAP*R0*lv.reg*k,gol:CAP*R0*lv.golgi*k,glc:CAP*RL*lv.golgi*E*k,mic:CAP*(R0+RL)*lv.citoesq*k};
+    if(parts.length<320){
+      sp.cas+=R0*lv.nucleo*k*dt;while(sp.cas>=1){sp.cas--;const a=Math.PI*(1.05+Math.random()*.35);parts.push(pt(210+58*Math.cos(a),238+32*Math.sin(a),'rna','rib',{}));const q=parts[parts.length-1];goTo(q,ST.rib.x,ST.rib.y);}
+      sp.glc+=RL*dt;while(sp.glc>=1){sp.glc--;const y=96+Math.random()*60;const q=pt(392,y,'glc','glc',{});goTo(q,ST.glc.x,ST.glc.y);parts.push(q);}
+      sp.fat+=RF*lv.rea*F*k*dt;while(sp.fat>=1){sp.fat--;const q=pt(330+Math.random()*20,166,'fat',null,{exit:true,y0:166});goTo(q,322+Math.random()*18,44);parts.push(q);}
+    }
+    for(const id in ST){const st=ST[id];st.tok=Math.min(st.tok+cap[id]*dt,st.q.length?2:1);let ch=false;while(st.tok>=1&&st.q.length){st.tok--;release(id,st.q.shift());ch=true;}if(ch)slots(st);}
+    const dd=VEL*dt;
+    for(const pp of parts){if(pp.dead)continue;const dx=pp.tx-pp.x,dy=pp.ty2-pp.y,L=Math.hypot(dx,dy);const v=pp.ty==='fat'?dd*.45:dd;
+      if(L>v){pp.x+=dx/L*v;pp.y+=dy/L*v;continue;}
+      pp.x=pp.tx;pp.y=pp.ty2;if(pp.wait)continue;
+      if(pp.to){enqueue(ST[pp.to],pp);pp.to=null;}
+      else if(pp.exit){pp.exit=false;pp.leave=true;const key=pp.ty==='cas'?'cas':pp.ty==='lac'?'lac':'fat';ema[key]+=1/4;goTo(pp,pp.x+(Math.random()-.5)*20,16);pp.pulse=true;}
+      else if(pp.leave){pp.dead=true;}}
+    parts=parts.filter(pp=>{if(pp.dead&&pp.el){pp.el.remove();}return !pp.dead;});
+    const dec=Math.exp(-dt/4);ema.cas*=dec;ema.lac*=dec;ema.fat*=dec;
+    const hT=Math.min(1.2,(.06+.04*A)/(.08+.92*lv.peroxissomo));hp+=(hT-hp)*Math.min(1,dt/3);
+    W+=(.025-.25*lv.lisossomo*W)*dt;W=Math.max(0,Math.min(1,W));
+    const dmg=.03*Math.max(0,hp-.25)+.035*Math.max(0,W-.4)+.0015*Math.max(0,ers-10)+.15*Math.max(0,.35-A);
+    H+=dmg>0?-dmg*dt:.03*(1-H)*dt;H=Math.max(0,Math.min(1,H));
+    if(H<=.08){dead=true;H=0;}
+  }
+  const COL={rna:['#6f4f9a','none',2.2],cas:['#f2c94c','#8a5d1a',3.2],glc:['#9cc3e0','none',2.2],lac:['#cfe3f3','#2a6497',3],fat:['#fff1c2','#c99a30',3]};
+  function render(){
+    for(const pp of parts){if(!pp.el){pp.el=s('circle',{});partG.append(pp.el);pp.cty=null;}
+      if(pp.cty!==pp.ty){const c=COL[pp.ty];pp.el.setAttribute('fill',c[0]);pp.el.setAttribute('stroke',c[1]);pp.el.setAttribute('stroke-width',1.2);pp.el.setAttribute('r',c[2]);pp.cty=pp.ty;}
+      if(pp.ty==='fat')pp.el.setAttribute('r',(3+4*Math.max(0,Math.min(1,(166-pp.y)/110))).toFixed(1));
+      pp.el.setAttribute('cx',pp.x.toFixed(1));pp.el.setAttribute('cy',pp.y.toFixed(1));
+      if(pp.pulse){pp.pulse=false;pulse(pp.x,42);}}
+    mtL.forEach((el,i)=>{const L=Math.max(0,mt);el.setAttribute('d',L>.03?`M${MT0[0]},${MT0[1]} L${(MT0[0]+(TUBE[i]-MT0[0])*L*(.86+.14*((i*3)%5)/4)).toFixed(1)},${(MT0[1]+(48-MT0[1])*L*(.86+.14*((i*3)%5)/4)).toFixed(1)}`:'');});
+    const nb=Math.round(Math.min(1,hp)*NB);BUB.forEach((b,i)=>b.setAttribute('opacity',i<nb?.85:0));
+    const nw=Math.round(Math.max(0,Math.min(1,(W-.12)/.88))*NW);WAS.forEach((b,i)=>b.setAttribute('opacity',i<nw?.9:0));
+    tint.setAttribute('opacity',((1-H)*.42).toFixed(3));deadG.setAttribute('opacity',dead?1:0);
+  }
+  function pulse(x,y){if(fx.childNodes.length>8)return;const c0=s('circle',{cx:x,cy:y,r:3,fill:'none',stroke:'#d1a03a','stroke-width':1.6});fx.append(c0);tween(500,e=>{c0.setAttribute('r',3+8*e);c0.setAttribute('opacity',1-e);},()=>c0.remove());}
+  // ---- painel ----
+  function bar(label,color){const fill=h('i',{style:'background:'+color+';width:0%'});const val=h('b',{},'');const e=h('div',{class:'lab-bar'},h('span',{},label),val,h('div',{class:'lab-bt'},fill));e.set=(v,txt)=>{fill.style.width=Math.max(0,Math.min(100,v*100)).toFixed(0)+'%';val.textContent=txt;};e.col=c=>fill.style.background=c;return e;}
+  const bVol=bar('Volume de leite','#5b9bd5'),bCas=bar('Caseína no leite','#e0b030'),bFat=bar('Gordura no leite','#e8c46a'),bAtp=bar('ATP disponível','#3f8f5e'),bHp=bar('Água oxigenada (H₂O₂)','#d0453f'),bW=bar('Material não digerido','#8a6440'),bH=bar('Saúde da célula','#3f8f5e');
+  const pct=v=>Math.round(v*100)+'%';
+  const clock=h('span',{class:'mono'},'0 h');
+  const watchTxt=h('span',{class:'note'},'');
+  function ui(){
+    bVol.set(ema.lac/RL/1.2,pct(ema.lac/RL));bCas.set(ema.cas/R0/1.2,pct(ema.cas/R0));bFat.set(ema.fat/RF/1.2,pct(ema.fat/RF));
+    bAtp.set(A,pct(A));bHp.set(Math.min(1,hp),hp<.2?'normal':hp<.45?'alta':'muito alta');bW.set(W,W<.25?'normal':W<.6?'alto':'muito alto');
+    bH.set(H,dead?'morta':pct(H));bH.col(H>.6?'#3f8f5e':H>.3?'#d1a03a':'#c0504d');
+    clock.textContent=Math.floor(t)+' h';
+    watchTxt.textContent=watch?'Observando… faltam '+Math.max(1,Math.ceil(watch.at-t))+' h de simulação':'';
+  }
+  // ---- controles ----
+  const orgChips=h('div',{class:'chips tight'});const det=h('div',{class:'info-card'});
+  const HOT2K={nucleo:'nucleo',rer:'reg',golgi:'golgi',citoesq:'citoesq',mito:'mito',rel:'rea',liso:'lisossomo',pero:'peroxissomo'};
+  const K2HOT={nucleo:'nucleo',ribossomo:'rer',reg:'rer',golgi:'golgi',citoesq:'citoesq',mito:'mito',rea:'rel',lisossomo:'liso',peroxissomo:'pero'};
+  function select(k){sel=k;changed();}
+  function drawChips(){orgChips.innerHTML='';LAB_ORG.forEach(o=>{const v=lv[o.k];const tag=lock||v===1?'':v===.5?' ½':' ✕';
+    const b=h('button',{class:'chip',type:'button','aria-pressed':String(sel===o.k)},o.n,tag?h('b',{class:'lab-lv'},tag):null);b.onclick=()=>select(o.k);orgChips.append(b);});}
+  function drawDet(){const o=LAB_ORG.find(x=>x.k===sel);det.innerHTML='';
+    const sg=seg(LAB_LV,lock?'x':String(lv[sel]),v=>{if(lock)return;lv[sel]=+v;changed();},{label:'Funcionamento: '+o.n});sg.style.gridTemplateColumns='repeat(3,1fr)';
+    if(lock||dead)$$('button',sg).forEach(b=>b.disabled=true);
+    det.append(h('strong',{},o.n),h('span',{},o.faz),h('span',{class:'note'},'Interferência: '+o.int),sg);if(lock)det.append(h('span',{class:'note'},'Caso secreto em andamento: os controles estão travados. Resolva o caso abaixo.'));}
+  function setBadges(){badG.innerHTML='';if(lock)return;LAB_ORG.forEach(o=>{const v=lv[o.k];if(v===1)return;const c=v===0?'#c0504d':'#d1a03a';
+    badG.innerHTML+=`<circle cx="${o.bx}" cy="${o.by}" r="8" fill="${c}" stroke="#fff" stroke-width="1.5"/><text x="${o.bx}" y="${o.by+3.6}" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">${v===0?'✕':'½'}</text>`;});}
+  function highlight(){$$('.lab-sel',sv).forEach(e=>e.classList.remove('lab-sel'));if(lock)return;const e=sv.querySelector(`[data-o="${K2HOT[sel]}"]`);if(e)e.classList.add('lab-sel');}
+  function changed(){drawChips();drawDet();setBadges();highlight();}
+  $$('.hot',sv).forEach(g=>{const act=()=>{const hk=g.dataset.o;let k=HOT2K[hk];if(!k)return;if(hk==='rer'&&sel==='reg')k='ribossomo';select(k);};
+    g.addEventListener('click',act);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});});
+  const spSeg=seg([['1','Tempo normal'],['4','Tempo 4×']],'1',v=>{speed=+v;},{label:'Velocidade da simulação'});spSeg.style.gridTemplateColumns='repeat(2,1fr)';
+  const setSpeed=v=>{speed=v;spSeg.set(String(v));};
+  const pauseBtn=h('button',{class:'btn ghost sm',type:'button',onclick:()=>{paused=!paused;pauseBtn.textContent=paused?'Continuar':'Pausar';}},'Pausar');
+  const normBtn=h('button',{class:'btn ghost sm',type:'button',onclick:()=>{endCase();reset();setSpeed(1);changed();expBody.innerHTML='';diagBody.innerHTML='';drawExpList();drawCaseList();}},'Tudo normal');
+  const legend=h('div',{class:'lab-legend'},...[['#6f4f9a','RNA'],['#f2c94c','caseína'],['#9cc3e0','glicose'],['#cfe3f3','lactose'],['#fff1c2','gordura'],['#d0453f','água oxigenada'],['#6b4a2a','material não digerido']].map(([c,t])=>h('span',{},h('i',{style:'background:'+c}),t)));
+  // ---- experimentos guiados ----
+  const expDone=store.get('lab-exp',{});const expList=h('div',{class:'chips'});const expBody=h('div',{class:'stack'});
+  const expCnt=counter('experimentos feitos',Object.keys(expDone).length+' de '+LAB_EXP.length);
+  function drawExpList(){expList.innerHTML='';LAB_EXP.forEach((e,i)=>{const b=h('button',{class:'chip',type:'button'},(expDone[i]?'✓ ':'')+e.t);b.onclick=()=>startExp(i);expList.append(b);});}
+  function startExp(i){const e=LAB_EXP[i];endCase();reset();setSpeed(1);paused=false;pauseBtn.textContent='Pausar';changed();expBody.innerHTML='';
+    const out=h('div',{class:'stack'});const ch=h('div',{class:'chips'});let chosen=null;
+    e.o.map((o,j)=>[o,j]).sort(()=>Math.random()-.5).forEach(([o,j])=>{const b=h('button',{class:'chip',type:'button','aria-pressed':'false'},o);b.onclick=()=>{if(chosen!==null)return;chosen=j;b.setAttribute('aria-pressed','true');$$('.chip',ch).forEach(x=>x.disabled=true);
+      Object.assign(lv,e.set);sel=Object.keys(e.set)[0];setSpeed(e.speed);changed();
+      out.append(h('p',{class:'fb info'},'Previsão registrada. Agora observe a célula e o painel; o resultado aparece aqui embaixo.'));if(innerWidth<760)sv.scrollIntoView({behavior:'smooth',block:'start'});
+      watch={at:t+e.wait,fn:()=>{out.append(h('p',{class:'fb '+(chosen===e.a?'ok':'no')},(chosen===e.a?'Sua previsão se confirmou! ':'O resultado foi diferente da sua previsão. ')+e.why));
+        expDone[i]=1;store.set('lab-exp',expDone);expCnt.set(Object.keys(expDone).length+' de '+LAB_EXP.length);drawExpList();
+        out.append(h('span',{class:'note'},'Quer testar outra coisa? Mude os controles à vontade ou toque em “Tudo normal”.'));}};};ch.append(b);});
+    expBody.append(h('p',{class:'ficha-q'},e.q),ch,watchTxt,out);}
+  // ---- diagnóstico ----
+  const diagDone=store.get('lab-diag',{});const caseList=h('div',{class:'chips'});const diagBody=h('div',{class:'stack'});
+  const diagCnt=counter('casos resolvidos',Object.keys(diagDone).length+' de '+LAB_CASO.length);
+  function drawCaseList(){caseList.innerHTML='';LAB_CASO.forEach((c,i)=>{const b=h('button',{class:'chip',type:'button'},(diagDone[i]?'✓ ':'')+'Caso '+(i+1));b.onclick=()=>startCase(i);caseList.append(b);});}
+  function endCase(){lock=false;}
+  function startCase(i){const c=LAB_CASO[i];reset();Object.assign(lv,c.set);lock=true;setSpeed(c.speed);paused=false;pauseBtn.textContent='Pausar';sel='nucleo';changed();diagBody.innerHTML='';
+    const out=h('div',{});const ch=h('div',{class:'chips'});let solved=false;
+    LAB_ORG.forEach(o=>{const b=h('button',{class:'chip',type:'button','aria-pressed':'false'},o.n);b.onclick=()=>{if(solved)return;out.innerHTML='';
+      if(o.k===c.a){solved=true;b.setAttribute('aria-pressed','true');out.append(h('p',{class:'fb ok'},'Diagnóstico certo: '+o.n+'. '+c.why));diagDone[i]=1;store.set('lab-diag',diagDone);diagCnt.set(Object.keys(diagDone).length+' de '+LAB_CASO.length);drawCaseList();lock=false;sel=c.a;changed();
+        if(i<LAB_CASO.length-1)out.append(h('button',{class:'btn primary sm',type:'button',style:'margin-top:8px',onclick:()=>startCase(i+1)},'Próximo caso'));}
+      else{b.disabled=true;out.append(h('p',{class:'fb no'},'Ainda não é '+o.n.toLowerCase()+'. Observe onde as moléculas se acumulam, o que continua saindo no leite e como estão o ATP, a água oxigenada e o material não digerido.'));}};ch.append(b);});
+    diagBody.append(h('div',{class:'callout'},h('strong',{},'Caso '+(i+1)+'. '),c.hist,h('span',{},' Observe a célula e o painel antes de responder.')),h('p',{class:'ficha-q'},'Qual estrutura está com defeito?'),ch,out);}
+  const modeBox=h('div',{class:'stack'});
+  const expPane=h('div',{class:'stack'},h('p',{class:'note'},'Escolha um experimento, faça a sua previsão e observe o que acontece. A simulação mostra o resultado depois de algumas horas.'),expList,expBody,expCnt);
+  const diagPane=h('div',{class:'stack',hidden:true},h('p',{class:'note'},'Cada caso é uma cabra com um problema escondido em uma organela. Os controles ficam travados: observe a célula e o painel e descubra qual estrutura falhou.'),caseList,diagBody,diagCnt);
+  const modeSeg=seg([['exp','Experimentos guiados'],['diag','Diagnóstico']],'exp',v=>{expPane.hidden=v!=='exp';diagPane.hidden=v!=='diag';if(v==='exp'&&lock){endCase();reset();setSpeed(1);changed();diagBody.innerHTML='';}},{label:'Modo'});modeSeg.style.gridTemplateColumns='repeat(2,1fr)';
+  modeBox.append(modeSeg,expPane,diagPane);
+  // ---- laço ----
+  let running=false,last=0;
+  const frame=now=>{if(!sv.isConnected){running=false;return;}requestAnimationFrame(frame);if(sv.closest('[hidden]')){last=now;return;}
+    let dtR=Math.min(.05,(now-(last||now))/1000);last=now;if(!paused){let simDt=dtR*speed;while(simDt>1e-6){const d=Math.min(.05,simDt);step(d);simDt-=d;}}
+    if(watch&&t>=watch.at){const f=watch.fn;watch=null;f();}
+    if(dead&&watch){const f=watch.fn;watch=null;f();}
+    render();if(now-lastUi>200){lastUi=now;ui();}};
+  reset();changed();drawExpList();drawCaseList();render();ui();
+  p.append(h('div',{class:'panel stack'},h('h3',{},'Laboratório da fábrica'),
+    h('p',{class:'note'},'Agora é você quem mexe na fábrica. Escolha uma organela, na lista ou tocando nela na célula, mude o funcionamento dela e acompanhe no painel o leite produzido e a saúde da célula. Cada bolinha é uma molécula. Repare onde elas se acumulam: o acúmulo aparece logo antes da etapa que travou.'),
+    h('div',{class:'cols wide-left'},h('div',{class:'stack'},h('div',{class:'stage'},sv),legend),
+      h('div',{class:'stack'},h('div',{class:'row lab-hud'},h('span',{class:'label'},'Tempo'),clock,pauseBtn,normBtn),spSeg,h('div',{class:'lab-bars'},bVol,bCas,bFat,bAtp,bHp,bW,bH))),
+    h('span',{class:'label'},'Organelas'),orgChips,det,
+    h('h4',{},'Investigue'),modeBox,
+    disclaimer('Modelo simplificado: as taxas e os tempos são ilustrativos. Na célula real, caseína e lactose viajam juntas nas mesmas vesículas, e as interferências agem por mecanismos mais complexos.')));
+  running=true;requestAnimationFrame(frame);
+}
 INIT.organelas=root=>{
   root.append(head('Aula 5 · Tema 2, p. 28–30','Fábrica de leite de cabra','Como as organelas trabalham em conjunto? Uma célula da glândula mamária da cabra produz caseína, a principal proteína do leite (a do queijo de coalho), e a libera. Guie a proteína pela célula, descubra o destino de outras proteínas e veja o citoesqueleto transportando as vesículas.'));
-  parteCaseina(root);trilhosVesiculas(root);quemFazOQue(root);
+  parteCaseina(root);trilhosVesiculas(root);laboratorioFabrica(root);quemFazOQue(root);
 };
 
 
@@ -1811,6 +2053,85 @@ function drawMandioca(lugol){
   const r=seeded(81);for(let i=0;i<20;i++){const x=302+(i%5)*66+(Math.floor(i/5)%2)*14,y=66+Math.floor(i/5)*42;o+=`<ellipse cx="${x}" cy="${y}" rx="24" ry="15" fill="#fffdf6" stroke="#c9bfa0" stroke-width="1.5"/>`;for(let k=0;k<4;k++){const gx=x-12+r()*24,gy=y-6+r()*12;o+=`<ellipse cx="${o6r(gx)}" cy="${o6r(gy)}" rx="${o6r(4+r()*3)}" ry="${o6r(3+r()*2)}" fill="${lugol?'#2d2a63':'#efe6c8'}" stroke="${lugol?'#1b1840':'#d6caa0'}" stroke-width="1"/>`;}}
   o+=`<text x="440" y="246" text-anchor="middle" font-size="12.5" fill="${O6.ink}" font-weight="700">leucoplastos de uma célula da raiz de mandioca (ampliados)</text>`;
   return o;}
+// Microscópio da raiz de mandioca: parênquima de reserva com leucoplastos cheios de amido; o lugol cora o amido
+const MAND=(()=>{const P=130,N=42,r=seeded(57);const V=[];
+  for(let i=0;i<=N;i++){V[i]=[];for(let j=0;j<=N;j++)V[i][j]=[i*P+(i&&i<N?(r()-.5)*P*.5:0),j*P+(j&&j<N?(r()-.5)*P*.5:0)];}
+  const cells=[];
+  for(let i=0;i<N;i++)for(let j=0;j<N;j++){const a=V[i][j],b=V[i+1][j],c=V[i+1][j+1],d=V[i][j+1];
+    const at=(u,v)=>[a[0]*(1-u)*(1-v)+b[0]*u*(1-v)+c[0]*u*v+d[0]*(1-u)*v,a[1]*(1-u)*(1-v)+b[1]*u*(1-v)+c[1]*u*v+d[1]*(1-u)*v];
+    const nc=at(.3+r()*.4,.3+r()*.4);const nu=[nc[0],nc[1],12+r()*3,9+r()*2.5];
+    const g=[];const n=55+(r()*30|0);for(let k=0;k<n;k++){const[x,y]=at(.1+r()*.8,.1+r()*.8);const gr=2.5+r()*r()*8.5;if(Math.hypot((x-nu[0])/(nu[2]+gr+1.5),(y-nu[1])/(nu[3]+gr+1.5))<1)continue;g.push([x,y,gr,0,.78+r()*.22]);}
+    cells.push({p:[a,b,c,d],cx:(a[0]+c[0])/2,cy:(a[1]+c[1])/2,g,nu});}
+  const solto=[];for(let k=0;k<900;k++)solto.push([200+r()*(N*P-400),200+r()*(N*P-400),2.5+r()*r()*8.5,0,.78+r()*.22]);
+  return {P,W:N*P,cells,solto,bolhas:[[2900,1900,150],[1500,3900,90]]};})();
+function micMandioca(){
+  let obj=4,cx=MAND.W/2,cy=MAND.W/2,focus=40,ideal={4:55,10:62,40:48},stain=0,anim=false;
+  const box=h('div',{class:'eyepiece',role:'img','aria-label':'Campo do microscópio com a raiz de mandioca'});
+  const spec=document.createElementNS(NS,'svg');spec.setAttribute('preserveAspectRatio','xMidYMid slice');
+  const over=document.createElementNS(NS,'svg');over.setAttribute('viewBox','0 0 100 100');over.classList.add('vign');
+  over.innerHTML=`<circle cx="50" cy="50" r="50" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="3"/>`;
+  box.append(spec,over);
+  const fov=()=>18000/obj;const SW={4:.9,10:1.1,40:1.8};
+  const grain=(x,y,rr,a,e)=>{const ry=(rr*e).toFixed(1),R=rr.toFixed(1);return `M${(x-rr).toFixed(1)},${y.toFixed(1)}a${R},${ry} 0 1,0 ${(2*rr).toFixed(1)},0a${R},${ry} 0 1,0 ${(-2*rr).toFixed(1)},0`;};
+  function render(){
+    const F=fov(),x0=cx-F/2,y0=cy-F/2,sw=SW[obj];spec.setAttribute('viewBox',`${x0} ${y0} ${F} ${F}`);
+    const front=stain>=1?-1e9:x0+F-F*1.35*stain;const isDark=x=>x>front;
+    let o=`<rect x="${x0}" y="${y0}" width="${F}" height="${F}" fill="#eef0e6"/>`;
+    if(stain>0)o+=`<rect x="${Math.max(x0,front)}" y="${y0}" width="${Math.max(0,x0+F-Math.max(x0,front))}" height="${F}" fill="#f1dfa8"/>`;
+    const vis=c=>Math.abs(c.cx-cx)<F/2+MAND.P&&Math.abs(c.cy-cy)<F/2+MAND.P;
+    let wallsA='',wallsB='',fillA='',fillB='',gA='',gB='',hil='',nuA='',nuB='',nl='';
+    MAND.cells.forEach(c=>{if(!vis(c))return;const d='M'+c.p.map(q=>q[0].toFixed(1)+','+q[1].toFixed(1)).join('L')+'Z';const dk=isDark(c.cx);
+      if(dk)wallsB+=d;else wallsA+=d;
+      if(obj===4){if(dk)fillB+=d;else fillA+=d;}
+      else{c.g.forEach(([x,y,rr,a,e])=>{const s=grain(x,y,rr,a,e);if(isDark(x))gB+=s;else{gA+=s;if(obj===40&&rr>4)hil+=grain(x,y,rr*.16,0,1);}});
+        const[nx,ny,nrx,nry]=c.nu;const s=grain(nx,ny,nrx,0,nry/nrx);if(isDark(nx))nuB+=s;else nuA+=s;if(obj===40)nl+=grain(nx+2,ny-1,3,0,1);}});
+    if(obj>=10)MAND.solto.forEach(([x,y,rr,a,e])=>{if(Math.abs(x-cx)>F/2+20||Math.abs(y-cy)>F/2+20)return;const s=grain(x,y,rr,a,e);if(isDark(x))gB+=s;else gA+=s;});
+    if(fillA)o+=`<path d="${fillA}" fill="#dcdfcf"/>`;
+    if(fillB)o+=`<path d="${fillB}" fill="#3a3866" fill-opacity=".7"/>`;
+    if(obj>=10){if(wallsA)o+=`<path d="${wallsA}" fill="#e4e6d8"/>`;if(wallsB)o+=`<path d="${wallsB}" fill="#ecd598"/>`;}
+    if(nuA)o+=`<path d="${nuA}" fill="#cfd3c3" stroke="#8d9483" stroke-width="${sw*.8}" vector-effect="non-scaling-stroke"/>`;
+    if(nuB)o+=`<path d="${nuB}" fill="#c38b33" stroke="#6e4410" stroke-width="${sw*.8}" vector-effect="non-scaling-stroke"/>`;
+    if(nl)o+=`<path d="${nl}" fill="${stain>=1?'#6e4410':'#a3a996'}"/>`;if(gA)o+=`<path d="${gA}" fill="#fbfbf6" stroke="#8d9483" stroke-width="${sw*.7}" vector-effect="non-scaling-stroke"/>`;
+    if(hil)o+=`<path d="${hil}" fill="#a2a896"/>`;
+    if(gB)o+=`<path d="${gB}" fill="#2b2a5e" stroke="#16153a" stroke-width="${sw*.6}" vector-effect="non-scaling-stroke"/>`;
+    if(wallsA)o+=`<path d="${wallsA}" fill="none" stroke="#8e9784" stroke-width="${sw}" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
+    if(wallsB)o+=`<path d="${wallsB}" fill="none" stroke="#a87c3a" stroke-width="${sw}" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
+    MAND.bolhas.forEach(([bx,by,br])=>{if(Math.abs(bx-cx)>F/2+br||Math.abs(by-cy)>F/2+br)return;o+=`<circle cx="${bx}" cy="${by}" r="${br}" fill="#f7f9f5" stroke="#2e332c" stroke-width="${br*.16}"/><circle cx="${bx-br*.15}" cy="${by-br*.15}" r="${br*.35}" fill="#fff"/>`;});
+    spec.innerHTML=o;
+    const blur=Math.abs(focus-ideal[obj])*({4:.05,10:.09,40:.16}[obj]);spec.style.filter=blur>.15?`blur(${blur.toFixed(2)}px)`:'';
+    rd.obj.set(obj+'×');rd.tot.set(fmt(obj*10)+'×');rd.fov.set(F>=1000?fmt(F/1000,F%1000?2:1)+' mm':fmt(F)+' µm');rd.foc.set(blur<.4?'nítido':blur<1.2?'quase':'desfocado');
+    dica.textContent=dicaTxt();
+  }
+  function dicaTxt(){const lug=stain>=1;
+    if(anim)return 'O lugol está se espalhando por baixo da lamínula…';
+    if(lug)return obj===4?'Até no menor aumento dá para ver: o interior das células ficou escuro. Aumente para ver o que escureceu.':obj===10?'Os grãos ficaram azul-escuros, quase pretos, dentro das células e também os soltos. As paredes ficaram amareladas e o núcleo, castanho.':'Cada grão escuro é amido guardado num leucoplasto. O iodo do lugol reage com o amido e forma essa cor azul-escura: é o teste do amido. O núcleo fica castanho, com o nucléolo mais escuro: ele não é de amido.';
+    if(obj===4)return 'Um mosaico de células grandes, de paredes finas, com o interior granuloso. Centralize uma região e aumente.';
+    if(obj===10)return 'Cada célula está cheia de grãos claros e brilhantes, e entre eles há uma mancha cinzenta e lisa: o núcleo. Há também grãos soltos, que saíram das células cortadas. O que serão esses grãos?';
+    return 'Grãos arredondados, de contorno escuro, muitos com um pontinho no meio (o hilo). O núcleo aparece como uma mancha clara e lisa, com o nucléolo dentro; sem corante, ele tem pouco contraste. A membrana do leucoplasto que envolve cada grão é fina demais para aparecer. Pingue lugol para testar se é amido.';}
+  const rd={obj:counter('Objetiva','4×'),tot:counter('Ampliação total (10 × objetiva)','40×',true),fov:counter('Diâmetro do campo','4,5 mm'),foc:counter('Foco','—')};
+  const dica=h('p',{class:'fb info',role:'status'});
+  let drag=null;box.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,cx,cy};box.setPointerCapture(e.pointerId);box.style.cursor='grabbing';});
+  box.addEventListener('pointermove',e=>{if(!drag)return;const k=fov()/box.clientWidth;const m=fov()/2;cx=Math.min(MAND.W-m*.4,Math.max(m*.4,drag.cx-(e.clientX-drag.x)*k));cy=Math.min(MAND.W-m*.4,Math.max(m*.4,drag.cy-(e.clientY-drag.y)*k));render();});
+  const end=()=>{drag=null;box.style.cursor='';};box.addEventListener('pointerup',end);box.addEventListener('pointercancel',end);
+  const objSeg=seg([4,10,40].map(v=>[v,v+'×']),obj,v=>{obj=v;ideal[v]=40+Math.round(Math.random()*30);const m=fov()/2;cx=Math.min(MAND.W-m*.4,Math.max(m*.4,cx));cy=Math.min(MAND.W-m*.4,Math.max(m*.4,cy));render();},{label:'Objetiva'});
+  objSeg.style.gridTemplateColumns='repeat(3,1fr)';
+  const focusR=h('input',{type:'range',min:0,max:100,value:focus,'aria-label':'Foco (micrométrico)'});focusR.oninput=()=>{focus=+focusR.value;render();};
+  const lugBtn=h('button',{class:'btn primary',type:'button'},'Pingar lugol');
+  lugBtn.onclick=()=>{if(anim)return;if(stain>=1){stain=0;lugBtn.textContent='Pingar lugol';render();return;}
+    anim=true;lugBtn.disabled=true;const reduz=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    tween(reduz?10:2200,e=>{stain=e;render();},()=>{stain=1;anim=false;lugBtn.disabled=false;lugBtn.textContent='Lâmina nova (só água)';render();});};
+  const moveBtn=h('button',{class:'btn sm',type:'button',onclick:()=>{const m=fov()/2;cx=m+Math.random()*(MAND.W-2*m);cy=m+Math.random()*(MAND.W-2*m);render();}},'Outra área da lâmina');
+  render();
+  return h('div',{class:'stack'},
+    h('div',{class:'info-card'},h('strong',{},'Raiz de mandioca · célula vegetal'),h('span',{},'Raspado da parte branca da raiz, numa gota de água, coberto com lamínula. Comece na menor objetiva, ajuste o foco e depois pingue lugol na borda da lamínula.')),
+    h('div',{class:'scope2'},
+      h('div',{class:'stack',style:'align-items:center'},box,h('p',{class:'note',style:'text-align:center'},'Arraste para mover a lâmina. A bolha de contorno escuro é ar.')),
+      h('div',{class:'stack'},
+        h('div',{class:'stack',style:'gap:6px'},h('span',{class:'label'},'Objetiva'),objSeg),
+        h('label',{class:'stack',style:'gap:6px'},h('span',{class:'label'},'Parafuso micrométrico (foco)'),focusR,h('span',{class:'note'},'Ao trocar de objetiva, ajuste o foco de novo.')),
+        h('div',{class:'row'},lugBtn,moveBtn),dica,
+        h('div',{class:'counter-grid'},rd.obj,rd.tot,rd.fov,rd.foc))));
+}
 INIT.funcoes=root=>{
   root.append(head('Aula 4 · Tema 2, p. 26–30','Crachás das organelas','Quem trabalha em cada célula, e fazendo o quê? Visite uma célula da cabra, uma célula da folha e uma bactéria, colecione os crachás de cada estrutura, desvende enigmas e descubra quem trabalha em todas as células e quem é exclusivo de uma.'));
   // 1. Explorador
@@ -1869,15 +2190,15 @@ INIT.funcoes=root=>{
     vChips,h('div',{class:'stage',style:'max-width:560px;margin:0 auto;width:100%'},vSv),vOut,vCnt,
     h('button',{class:'btn ghost sm',onclick:()=>{Object.keys(vst).forEach(k=>delete vst[k]);store.set('venn',vst);vSel=null;vOut.innerHTML='';vChipsDraw();vDraw();}},'Recomeçar o diagrama')));
   // 4. Plastos
-  let mat=store.get('umbu-t',0),lug=false;
+  let mat=store.get('umbu-t',0);
   const uSv=svgEl('0 0 640 300',drawUmbu(mat/100),'svgbox','Umbu e célula da casca com plastos');const uOut=h('p',{class:'fb info',role:'status'});
   const uTxt=t=>t<25?'Umbu verde: os plastos da casca são cloroplastos, com clorofila e discos de membrana. A casca ainda faz um pouco de fotossíntese.':t<70?'Amadurecendo: a clorofila é desmontada e os discos de membrana somem. Pigmentos amarelos e laranja (carotenoides) começam a se acumular.':'Umbu maduro: os cloroplastos viraram cromoplastos, cheios de carotenoides. Mesma organela, outro trabalho: agora ela dá cor ao fruto e atrai os animais que espalham as sementes.';
   const uR=h('input',{type:'range',min:0,max:100,value:mat,'aria-label':'Amadurecimento do umbu'});uR.oninput=()=>{mat=+uR.value;store.set('umbu-t',mat);uSv.innerHTML=drawUmbu(mat/100);uOut.textContent=uTxt(mat);};uOut.textContent=uTxt(mat);
-  const mSv=svgEl('0 0 640 260',drawMandioca(false),'svgbox','Raiz de mandioca e leucoplastos');const mOut=h('p',{class:'fb info',role:'status'},'Os leucoplastos não têm pigmento: na raiz, guardam amido em grãos.');
-  const mBtn=h('button',{class:'btn primary',onclick:()=>{lug=!lug;mSv.innerHTML=drawMandioca(lug);mBtn.textContent=lug?'Lavar a lâmina':'Pingar lugol';mOut.textContent=lug?'O lugol (iodo) deixa o amido azul-escuro quase preto. Os grãos dentro dos leucoplastos ficaram escuros: é ali que a mandioca guarda a reserva que vira goma, farinha e tapioca.':'Os leucoplastos não têm pigmento: na raiz, guardam amido em grãos.';}},'Pingar lugol');
-  root.append(h('div',{class:'panel stack'},h('h3',{},'Plastos: uma família, três trabalhos'),h('p',{class:'note'},'O livro cita três tipos de plasto. Arraste o controle para amadurecer o umbu e veja o que acontece com os plastos da casca. Depois teste a raiz de mandioca.'),
+  const micM=micMandioca();
+  root.append(h('div',{class:'panel stack'},h('h3',{},'Plastos: uma família, três trabalhos'),h('p',{class:'note'},'O livro cita três tipos de plasto. Arraste o controle para amadurecer o umbu e veja o que acontece com os plastos da casca. Depois observe a raiz de mandioca ao microscópio.'),
     h('div',{class:'stage'},uSv),h('label',{class:'stack',style:'gap:6px'},h('span',{class:'label'},'Amadurecimento: verde → maduro'),uR),uOut,
-    h('div',{class:'stage'},mSv),h('div',{class:'row'},mBtn),mOut,
+    h('h4',{},'Raiz de mandioca ao microscópio'),micM,
+    qq('Os grãos que ficaram quase pretos com o lugol são…',['Amido guardado dentro de leucoplastos','Núcleos das células','Cloroplastos cheios de clorofila'],0,'O iodo do lugol reage com o amido e forma um complexo azul-escuro. Na raiz, que fica no escuro, o amido é guardado em leucoplastos (também chamados de amiloplastos). É a reserva que vira goma, farinha e tapioca.'),
     h('div',{class:'counter-grid'},h('div',{class:'counter'},h('b',{style:'color:#3f8a3a'},'Cloroplasto'),h('span',{},'clorofila · fotossíntese · folhas e caules verdes')),h('div',{class:'counter'},h('b',{style:'color:#c9781a'},'Cromoplasto'),h('span',{},'carotenoides · cor de frutos, flores e da cenoura')),h('div',{class:'counter'},h('b',{style:'color:#8a7a4a'},'Leucoplasto'),h('span',{},'sem cor · reserva de amido em raízes e sementes'))),
     qq('A cenoura é uma raiz e fica embaixo da terra, sem luz. De onde vem a cor laranja dela?',['De cromoplastos, que acumulam carotenoides','De cloroplastos que fazem fotossíntese no escuro','Do vacúolo cheio de clorofila'],0,'A cor laranja vem dos carotenoides guardados em cromoplastos. Sem luz, não há fotossíntese na raiz.'),
     disclaimer('Esquema original e simplificado. A transformação de cloroplasto em cromoplasto acontece em muitos frutos que mudam de cor ao amadurecer; a intensidade varia entre as espécies.')));
@@ -2892,7 +3213,11 @@ const SPEC=[
   {k:'par',t:'Registre duas estruturas da célula vegetal e suas funções',man:2},
   {k:'mc',t:'Onde é fabricada uma enzima que vai trabalhar no citosol?',ch:['Em ribossomos livres, no citosol','Em ribossomos aderidos ao retículo granular','No complexo golgiense'],key:'Em ribossomos livres, no citosol',pts:1},
   {k:'mc',t:'Além de enviar proteínas para fora da célula, o complexo golgiense também:',ch:['Forma lisossomos e vesículas que ficam guardadas na célula','Produz ATP','Guarda o DNA'],key:'Forma lisossomos e vesículas que ficam guardadas na célula',pts:1},
-  {k:'mc',t:'Quando a colchicina desmonta os microtúbulos, o que acontece com as vesículas da célula?',ch:['Param de se deslocar, porque perdem os trilhos do citoesqueleto','Andam mais depressa','Viram lisossomos'],key:'Param de se deslocar, porque perdem os trilhos do citoesqueleto',pts:1}]},
+  {k:'mc',t:'Quando a colchicina desmonta os microtúbulos, o que acontece com as vesículas da célula?',ch:['Param de se deslocar, porque perdem os trilhos do citoesqueleto','Andam mais depressa','Viram lisossomos'],key:'Param de se deslocar, porque perdem os trilhos do citoesqueleto',pts:1},
+  {k:'hdr',t:'Laboratório da fábrica'},
+  {k:'mc',t:'No laboratório, com o complexo golgiense desmontado (brefeldina A), o volume de leite também caiu. Por quê?',ch:['A lactose é produzida no complexo golgiense e puxa água para o leite','A gordura do leite passa pelo complexo golgiense','O complexo golgiense produz o ATP da célula'],key:'A lactose é produzida no complexo golgiense e puxa água para o leite',pts:1},
+  {k:'mc',t:'Com os ribossomos parados (cicloheximida), por que a caseína não se acumula no retículo nem no complexo golgiense?',ch:['Porque ela nem chega a ser fabricada: os ribossomos ficam no começo da linha de montagem','Porque ela sai da célula mais depressa','Porque os lisossomos digerem toda a caseína'],key:'Porque ela nem chega a ser fabricada: os ribossomos ficam no começo da linha de montagem',pts:1},
+  {k:'par',t:'Diagnóstico: escolha um caso que você resolveu, diga qual estrutura falhou e quais pistas mostraram isso',man:2}]},
  {code:C1+'06',id:'membrana',titulo:'Aula 6 · Porteiro da membrana',tipo:'Individual',desc:'Cartões de situações e síntese sobre os transportes.',itens:[
   {k:'hdr',t:'Classifique o mecanismo de cada situação'},
   {k:'mc',t:'O₂ passando do alvéolo para o sangue',ch:MECH,key:'Difusão simples',pts:1},

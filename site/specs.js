@@ -197,7 +197,11 @@ const SPEC=[
   {k:'par',t:'Registre duas estruturas da célula vegetal e suas funções',man:2},
   {k:'mc',t:'Onde é fabricada uma enzima que vai trabalhar no citosol?',ch:['Em ribossomos livres, no citosol','Em ribossomos aderidos ao retículo granular','No complexo golgiense'],key:'Em ribossomos livres, no citosol',pts:1},
   {k:'mc',t:'Além de enviar proteínas para fora da célula, o complexo golgiense também:',ch:['Forma lisossomos e vesículas que ficam guardadas na célula','Produz ATP','Guarda o DNA'],key:'Forma lisossomos e vesículas que ficam guardadas na célula',pts:1},
-  {k:'mc',t:'Quando a colchicina desmonta os microtúbulos, o que acontece com as vesículas da célula?',ch:['Param de se deslocar, porque perdem os trilhos do citoesqueleto','Andam mais depressa','Viram lisossomos'],key:'Param de se deslocar, porque perdem os trilhos do citoesqueleto',pts:1}]},
+  {k:'mc',t:'Quando a colchicina desmonta os microtúbulos, o que acontece com as vesículas da célula?',ch:['Param de se deslocar, porque perdem os trilhos do citoesqueleto','Andam mais depressa','Viram lisossomos'],key:'Param de se deslocar, porque perdem os trilhos do citoesqueleto',pts:1},
+  {k:'hdr',t:'Laboratório da fábrica'},
+  {k:'mc',t:'No laboratório, com o complexo golgiense desmontado (brefeldina A), o volume de leite também caiu. Por quê?',ch:['A lactose é produzida no complexo golgiense e puxa água para o leite','A gordura do leite passa pelo complexo golgiense','O complexo golgiense produz o ATP da célula'],key:'A lactose é produzida no complexo golgiense e puxa água para o leite',pts:1},
+  {k:'mc',t:'Com os ribossomos parados (cicloheximida), por que a caseína não se acumula no retículo nem no complexo golgiense?',ch:['Porque ela nem chega a ser fabricada: os ribossomos ficam no começo da linha de montagem','Porque ela sai da célula mais depressa','Porque os lisossomos digerem toda a caseína'],key:'Porque ela nem chega a ser fabricada: os ribossomos ficam no começo da linha de montagem',pts:1},
+  {k:'par',t:'Diagnóstico: escolha um caso que você resolveu, diga qual estrutura falhou e quais pistas mostraram isso',man:2}]},
  {code:C1+'06',id:'membrana',titulo:'Aula 6 · Porteiro da membrana',tipo:'Individual',desc:'Cartões de situações e síntese sobre os transportes.',itens:[
   {k:'hdr',t:'Classifique o mecanismo de cada situação'},
   {k:'mc',t:'O₂ passando do alvéolo para o sangue',ch:MECH,key:'Difusão simples',pts:1},
