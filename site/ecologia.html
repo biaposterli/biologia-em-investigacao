@@ -684,8 +684,10 @@ function insectSVG(k){
      ${wing(-20,.85)}
      ${legs}
      <path d="M110,92 C124,84 146,80 170,70 C178,67 182,72 176,78 C156,92 132,100 112,102Z" fill="${c}"/>
-     ${[124,136,148,160].map(x=>`<path d="M${x},${F(86-(x-110)*.42)} l3,${F(14-(x-110)*.12)}" stroke="${cd}" stroke-width=".6"/>`).join('')}
-     ${hairs(144,84,30,10,90,3.2,hr,3,.45)}
+     ${(()=>{const r=seeded(31);let g='';const edge=(a,b,c,nx,ny,n)=>{for(let i=0;i<n;i++){const s=i/(n-1),x=(1-s)*(1-s)*a[0]+2*(1-s)*s*b[0]+s*s*c[0],y=(1-s)*(1-s)*a[1]+2*(1-s)*s*b[1]+s*s*c[1],l=2.2+r()*2.2,an=Math.atan2(ny,nx)+(r()-.5)*.9+.5;g+=`<path d="M${F(x)},${F(y)}l${F(Math.cos(an)*l)},${F(Math.sin(an)*l)}" stroke="${hr}" stroke-width=".45" stroke-linecap="round"/>`;}};
+      edge([112,92],[146,80],[176,69],-.35,-1,34);edge([113,101],[150,94],[178,78],.3,1,34);
+      for(let i=0;i<10;i++){const an=-1.2+i*.26+(r()-.5)*.2,l=2.4+r()*2;g+=`<path d="M${F(178+Math.cos(an)*2.5)},${F(73.5+Math.sin(an)*2.5)}l${F(Math.cos(an)*l)},${F(Math.sin(an)*l)}" stroke="${hr}" stroke-width=".45" stroke-linecap="round"/>`;}
+      for(let i=0;i<40;i++){const s=r(),x=116+s*58,y=96-s*20+(r()-.5)*7,an=-2.4+r()*1.2;g+=`<path d="M${F(x)},${F(y)}l${F(Math.cos(an)*2)},${F(Math.sin(an)*2)}" stroke="${hr}" stroke-width=".35" opacity=".7"/>`;}return g;})()}
      <path d="M92,94 C88,78 94,62 106,60 C118,58 122,72 118,86 C116,96 104,102 92,94Z" fill="${c}"/>
      ${hairs(105,78,14,18,120,3.6,hr,5,.45)}
      <circle cx="84" cy="92" r="7" fill="${cd}"/><circle cx="82" cy="90" r="4.8" fill="#2a1d12"/>
