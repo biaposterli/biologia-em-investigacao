@@ -380,6 +380,70 @@ table.cmp th[scope],table.cmp tbody th{text-align:left;color:var(--tema);white-s
 table.cmp td{vertical-align:top;min-width:180px}
 .cmp-hid{border:1px dashed var(--tema);background:var(--tema-soft);color:var(--tema);border-radius:8px;padding:6px 14px;font-weight:800;cursor:pointer}
 @media (max-width:640px){table.cmp thead{display:none}table.cmp tr{display:grid;grid-template-columns:minmax(0,1fr);padding:8px 0;border-bottom:1px solid var(--line)}table.cmp td,table.cmp tbody th{border:0!important;padding:3px 0!important;min-width:0;white-space:normal}table.cmp td::before{content:attr(data-col) ": ";font-weight:700;color:var(--muted)}}
+.est-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;scroll-margin-top:120px}
+.est-btn{display:flex;align-items:center;gap:8px;text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 10px;cursor:pointer;font:inherit;color:var(--muted);min-width:0}
+.est-btn .est-n{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-weight:700;font-size:.8rem;border:2px solid currentColor}
+.est-btn .est-t{font-weight:700;font-size:.88rem;line-height:1.2}
+.est-btn.on{border-color:var(--tema);background:var(--tema-soft);color:var(--ink)}
+.est-btn.on .est-n{background:var(--tema);border-color:var(--tema);color:var(--surface)}
+.est-btn.feito .est-n{border-color:var(--tema);color:var(--tema)}
+@media (max-width:760px){.est-nav{grid-template-columns:repeat(5,minmax(0,1fr))}.est-btn{flex-direction:column;justify-content:center;padding:6px 2px;gap:2px}.est-btn .est-t{display:none}.est-btn.on .est-t{display:none}}
+.est-stage{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:clamp(14px,3vw,26px);box-shadow:var(--shadow)}
+.est-box{gap:16px}
+.est-h{font-family:var(--f-display);font-size:clamp(1.4rem,3vw,1.9rem);margin:0}
+.est-foot{justify-content:space-between;border-top:1px dashed var(--line);padding-top:14px;margin-top:6px}
+.ideia{border-left:5px solid var(--tema);background:var(--tema-soft);border-radius:0 14px 14px 0;padding:12px 16px;display:flex;flex-direction:column;gap:4px;max-width:78ch}
+.ideia p{margin:0;font-size:1.08rem;line-height:1.5}
+.ideia-k{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tema);font-weight:700}
+.confira{border:2px dashed var(--tema);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:12px}
+.pratique{display:flex;flex-direction:column;gap:2px;padding-top:6px;border-top:1px solid var(--line)}
+.pratique h4{margin:0;font-family:var(--f-display);font-size:1.25rem}
+.pp-duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.pp-card{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--bg);min-width:0}
+.pp-card .ilu-card{max-width:220px}
+.sinal{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;font-weight:800;font-size:1.2rem;color:var(--surface)}
+.sinal.mais{background:var(--good)}.sinal.menos{background:var(--bad)}
+table.cmp-rel td,table.cmp-rel th{vertical-align:top}
+table.cmp-rel tr.destaque td{background:var(--tema-soft)}
+.sort{display:flex;flex-direction:column;gap:8px}
+.sort-row{display:grid;grid-template-columns:minmax(150px,220px) auto minmax(0,1fr);gap:8px 12px;align-items:center}
+.sort-row .seg{justify-self:start;width:auto}.sort-fb{font-size:.92rem}.sort-fb.ok{color:var(--good)}.sort-fb.no{color:var(--bad)}
+@media (max-width:640px){.sort-row{grid-template-columns:minmax(0,1fr)}}
+details.mais{border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--bg)}
+details.mais summary{cursor:pointer;font-weight:700;color:var(--tema)}
+details.mais[open] summary{margin-bottom:10px}
+.mec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.mec-card{display:flex;flex-direction:column;gap:2px;border:1px solid var(--line);border-top:4px solid var(--tema);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.mini-ciclo{width:100%;max-width:400px;height:auto;display:block;margin:0 auto}
+.mapa-svg{width:100%;min-width:640px;height:auto;display:block}
+
+.pp-one{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:16px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px;background:var(--bg)}
+.pp-one p{margin:2px 0 0}
+@media (max-width:560px){.pp-one{grid-template-columns:minmax(0,1fr)}}
+ol.fluxo{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;counter-reset:fx}
+.fx{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--surface)}
+.fx::after{content:"↓";position:absolute;left:50%;bottom:-18px;transform:translateX(-50%);color:var(--muted);font-weight:800;line-height:18px}
+.fx.volta::after{content:none}
+.fx.host{border:2px solid var(--tema);background:var(--tema-soft)}
+.fx-ilu{grid-row:span 2;width:84px;max-width:84px;aspect-ratio:4/3;border-radius:8px}
+.fx-b{font-family:var(--f-mono);font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--tema)}
+.fx:not(.host){grid-template-columns:minmax(0,1fr)}
+.fx.volta{background:none;border-style:dashed;color:var(--tema);font-weight:700;text-align:center;justify-content:center}
+.mapa{display:flex;flex-direction:column;align-items:center;gap:22px}
+.mp-n{display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center;border:2px solid var(--tema);border-radius:12px;padding:8px 12px;background:var(--surface);min-width:0}
+.mp-n small{color:var(--muted);font-size:.85rem;line-height:1.25}
+.mp-top{background:var(--tema);color:var(--surface);max-width:420px}
+.mp-top small{color:var(--surface);opacity:.9}
+.mp-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;width:100%;position:relative}
+.mp-cols::before{content:"";position:absolute;top:-22px;left:25%;right:25%;height:12px;border:2px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0}
+.mp-col{display:flex;flex-direction:column;gap:14px;align-items:stretch;border:1px dashed var(--line);border-radius:16px;padding:12px;min-width:0}
+.mp-l2{background:var(--tema-soft)}
+.mp-l2 strong{font-size:1.1rem}
+.mp-kids{display:flex;flex-direction:column;gap:8px;padding-left:14px;border-left:3px solid var(--tema-soft)}
+.mp-sub{display:flex;flex-direction:column;gap:8px}
+.mp-k2{margin-left:14px}
+.mp-bot{max-width:560px}
+@media (max-width:640px){.mp-cols{grid-template-columns:minmax(0,1fr)}.mp-cols::before{display:none}}
 </style>
 
 <header class="top">
@@ -774,7 +838,7 @@ const TOOLS=[
   {id:'esquisto',n:'12',t:'t24',short:'A12',title:'Água, parasitos e território',desc:'“Fato ou boato?” sobre a água transparente e o ciclo de Schistosoma mansoni com barreiras.'},
   {id:'conselho',n:'13',t:'t24',short:'A13',title:'Conselho de Saúde Única',desc:'Você representa os setores, registra propostas, define as prioridades e monta o quadro de ações.'},
   {id:'quiz',n:'14',t:'t24',short:'A14',title:'Quiz da unidade',desc:'Revisão de todos os temas, com a explicação de cada resposta.'},
-  {id:'parasitos',n:'15',t:'tpar',short:'A15',title:'Vida de parasito',desc:'Glossário vivo, a missão em que você é o parasito (Ascaris, Taenia, Toxoplasma) e o raio-X do hospedeiro com as formas de patogenia.'},
+  {id:'parasitos',n:'15',t:'tpar',short:'A15',title:'Vida de parasito',desc:'Uma trilha em quatro estações: o que é parasitismo, onde o parasito vive, os hospedeiros do ciclo (com a missão) e como ele causa dano (com o raio-X).'},
   {id:'doencas',n:'16',t:'tpar',short:'A16',title:'Três doenças, três vetores',desc:'Doença de Chagas, malária e leishmanioses: sala de situação, lâminas, ciclos em movimento, vetores e a casa protegida.'},
 ];
 const inited={};
@@ -2801,73 +2865,131 @@ const BODY=[
 const MEC={espoliativa:['Espoliativa','Rouba nutrientes ou sangue do hospedeiro.'],mecanica:['Mecânica','Obstrui ou comprime órgãos.'],traumatica:['Traumática','Lesa tecidos ao se fixar ou migrar.'],irritativa:['Irritativa ou alérgica','Saliva, fezes ou secreções irritam e provocam coceira e alergia.'],toxica:['Tóxica','Libera substâncias que fazem mal ao hospedeiro.'],inflamatoria:['Inflamatória ou imune','A própria resposta do organismo danifica os tecidos (granulomas, fibrose).'],celular:['Destruição de células','O parasito vive dentro das células e as rompe ao sair.']};
 
 INIT.parasitos=root=>{
-  root.append(head('Aula 15 · Parasitologia','Vida de parasito','Conceitos da Parasitologia em três partes: o glossário vivo, a missão em que você é o parasito e o raio-X do hospedeiro, que mostra onde cada parasito vive e como causa dano.'));
-  // Parte 1: glossário
-  const p1=h('div',{class:'panel stack'});root.append(p1);
-  let auto=false;const gwrap=h('div',{class:'gl-grid'});
-  const grupos=[...new Set(GLOSS.map(x=>x.g))];let fg=store.get('par-glf','Todos');
-  const autoBtn=h('button',{class:'btn sm',type:'button','aria-pressed':'false'},'Modo autoteste: esconder definições');
-  autoBtn.onclick=()=>{auto=!auto;autoBtn.setAttribute('aria-pressed',String(auto));autoBtn.textContent=auto?'Mostrar todas as definições':'Modo autoteste: esconder definições';drawG();};
-  const filt=h('div',{class:'chips'});
-  function drawF(){filt.innerHTML='';['Todos',...grupos].forEach(g=>{const b=h('button',{class:'chip',type:'button','aria-pressed':String(fg===g)},g);b.onclick=()=>{fg=g;store.set('par-glf',g);drawF();drawG();};filt.append(b);});}
-  function drawG(){gwrap.innerHTML='';GLOSS.filter(x=>fg==='Todos'||x.g===fg).forEach(x=>{const body=h('div',{class:'gl-body'},h('p',{},x.d),h('p',{class:'note'},h('strong',{},'Exemplo: '),x.ex));
-    const card=h('div',{class:'gl-card'+(auto?' fechado':'')},h('span',{class:'gl-g'},x.g),h('h4',{},x.t),body);
-    if(auto){const rv=h('button',{class:'btn sm ghost',type:'button'},'Revelar');rv.onclick=()=>{card.classList.remove('fechado');rv.remove();};card.append(rv);}gwrap.append(card);});}
-  p1.append(h('span',{class:'eyebrow'},'Parte 1'),h('h3',{},'Glossário vivo'),h('p',{class:'note'},'Leia os conceitos com os exemplos. Depois use o modo autoteste: tente dizer a definição antes de revelar.'),h('div',{class:'row'},autoBtn),filt,gwrap);
-  drawF();drawG();
-  // Parte 2: missão
-  const p2=h('div',{class:'panel stack'});root.append(p2);
-  p2.append(h('span',{class:'eyebrow'},'Parte 2'),h('h3',{},'Missão: ciclo completo'),h('p',{class:'note'},'Você é o parasito. Em cada fase, escolha o caminho. Se escolher errado, a missão acaba e você pode tentar de novo. Esquema didático, simplificado.'));
-  let res=store.get('par-missao',{});
-  const pick=h('div',{class:'ms-pick'});const stage=h('div',{class:'stack'});p2.append(pick,stage);
-  let cur=null,step=0,trilha=[];
-  function drawPick(){pick.innerHTML='';MISSOES.forEach(m=>{const r=res[m.id];const b=h('button',{class:'ms-card',type:'button','aria-pressed':String(cur===m)},ilu(m.ilu,'ilu ilu-card'),h('i',{},m.nome),h('small',{},m.tipo),h('span',{class:'pill '+(r&&r.ok?'ok':'')},r&&r.ok?'✓ ciclo completo':r?r.tent+' tentativa(s)':'não iniciada'));b.onclick=()=>{cur=m;step=0;trilha=[];drawPick();drawStage();stage.scrollIntoView({behavior:'smooth',block:'nearest'});};pick.append(b);});}
-  function drawStage(){stage.innerHTML='';if(!cur){stage.append(h('p',{class:'note'},'Escolha um parasito para começar.'));return;}
-    const m=cur;const bar=h('div',{class:'ms-trilha'});m.passos.forEach((_,i)=>bar.append(h('span',{class:'ms-dot '+(i<step?'feito':i===step?'agora':'')},String(i+1))));bar.append(h('span',{class:'ms-dot fim '+(step>=m.passos.length?'feito':'')},'🏁'));
-    stage.append(h('div',{class:'row',style:'justify-content:space-between'},h('h4',{class:'sp-name'},h('i',{},m.nome),h('span',{},' · '+m.tipo)),bar));
-    trilha.forEach(t=>stage.append(h('div',{class:'fb '+(t.ok===1?'ok':t.ok===2?'info':'no')},h('strong',{},t.op+': '),t.fb)));
-    if(step>=m.passos.length){
-      stage.append(h('div',{class:'callout'},h('strong',{},'Resumo do ciclo. '),m.final),
-        h('div',{class:'ms-papeis'},...m.papeis.map(([a,b])=>h('div',{class:'stat'},h('span',{class:'note'},a),h('strong',{},b)))),
-        h('div',{class:'row'},h('button',{class:'btn',type:'button',onclick:()=>{step=0;trilha=[];drawStage();}},'Jogar de novo'),h('button',{class:'btn primary',type:'button',onclick:()=>{const nx=MISSOES.find(x=>!(res[x.id]&&res[x.id].ok));if(nx){cur=nx;step=0;trilha=[];drawPick();drawStage();}}},'Próximo parasito')));return;}
-    const P=m.passos[step];
-    stage.append(h('div',{class:'ms-cena'},h('p',{},P.cena),h('strong',{},P.q)));
-    const ops=h('div',{class:'ms-ops'});P.op.forEach(([t,ok,fb])=>{const b=h('button',{class:'ms-op',type:'button'},t);b.onclick=()=>{
-      trilha.push({op:'Fase '+(step+1),ok,fb});
-      const r=res[m.id]||{tent:0,ok:false,desvio:false};
-      if(ok===1){step++;if(step>=m.passos.length){r.tent++;r.ok=true;res[m.id]=r;store.set('par-missao',res);drawPick();}}
-      else{r.tent++;if(ok===2)r.desvio=true;res[m.id]=r;store.set('par-missao',res);drawPick();
-        stage.innerHTML='';drawStageEnd(ok);return;}
-      drawStage();};ops.append(b);});
-    stage.append(ops);}
-  function drawStageEnd(ok){const m=cur;const t=trilha[trilha.length-1];
-    stage.append(h('h4',{class:'sp-name'},h('i',{},m.nome)),h('div',{class:'fb '+(ok===2?'info':'no')},h('strong',{},ok===2?'Ciclo desviado. ':'Fim da missão. '),t.fb),
-      h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{step=0;trilha=[];drawStage();}},'Tentar de novo')));}
-  drawPick();drawStage();
-  // Parte 3: raio-X
-  const p3=h('div',{class:'panel stack'});root.append(p3);
-  p3.append(h('span',{class:'eyebrow'},'Parte 3'),h('h3',{},'Raio-X do hospedeiro'),h('p',{class:'note'},'Toque nos pontos do corpo para ver quem vive ali e como causa dano. Use os filtros para destacar um tipo de ação (patogenia). Vista anterior, em posição anatômica: o lado direito do corpo (D) aparece à esquerda da imagem. Vísceras posteriores, como o esôfago no tórax, estão tracejadas. Esquema fora de escala.'));
-  const grid=h('div',{class:'cols wide-right'});p3.append(grid);
-  const sv=s('svg',{viewBox:'34 4 232 326',class:'rx-svg',role:'img','aria-label':'Corpo humano com os locais onde vivem os parasitos'});
-  const L=h('div',{class:'stack rx-l'},sv);const R=h('div',{class:'stack'});grid.append(L,R);
-  let sel=store.get('par-rx','delgado'),mf=null;
-  const mecRow=h('div',{class:'chips'});L.append(h('span',{class:'label'},'Destacar a ação'),mecRow);
-  function drawMec(){mecRow.innerHTML='';Object.entries(MEC).forEach(([k,[t]])=>{const b=h('button',{class:'chip',type:'button','aria-pressed':String(mf===k)},t);b.onclick=()=>{mf=mf===k?null:k;drawMec();drawBody();};mecRow.append(b);});}
-  function drawBody(){sv.innerHTML=bodySVG();
-    BODY.forEach((b,i)=>{const [x,y]=BODY_PTS[b.k];const on=b.k===sel,lit=!mf||b.mec.includes(mf);
-      const g=s('g',{class:'rx-pt',tabindex:0,role:'button','aria-label':b.t,style:'cursor:pointer',opacity:lit?1:.25});
-      g.append(s('circle',{cx:x,cy:y,r:on?11:9,fill:on?'var(--tema)':'#ffffff',stroke:'var(--tema)','stroke-width':3}));
+  root.append(head('Aula 15 · Parasitologia','Vida de parasito','Uma trilha em quatro estações. Cada estação responde a uma pergunta, com uma ideia-chave, um exemplo e uma conferência rápida. No fim, um mapa junta tudo.'));
+  const EST=[['parasitismo','O que é parasitismo?'],['onde','Onde e por quanto tempo?'],['ciclo','Quantos hospedeiros?'],['dano','Como o parasito faz mal?'],['mapa','Mapa da aula']];
+  let cur=store.get('par-est',0);if(!(cur>=0&&cur<EST.length))cur=0;const vis=new Set(store.get('par-vis',[0]));
+  const nav=h('nav',{class:'est-nav','aria-label':'Estações da aula'});const stage=h('div',{class:'est-stage'});root.append(nav,stage);
+  const built={};const boxes=EST.map(([k])=>h('div',{class:'stack est-box','data-est':k,hidden:true}));boxes.forEach(b=>stage.append(b));
+  function drawNav(){nav.innerHTML='';EST.forEach(([k,t],i)=>{const b=h('button',{type:'button',class:'est-btn'+(i===cur?' on':'')+(vis.has(i)&&i!==cur?' feito':''),'aria-current':i===cur?'step':null},h('span',{class:'est-n'},i<4?String(i+1):'★'),h('span',{class:'est-t'},t));b.onclick=()=>show(i);nav.append(b);});}
+  function show(i,scroll=true){cur=i;vis.add(i);store.set('par-est',i);store.set('par-vis',[...vis]);boxes.forEach((b,j)=>b.hidden=j!==i);if(!built[i]){built[i]=true;BUILD[EST[i][0]](boxes[i]);boxes[i].append(foot(i));}drawNav();if(scroll)nav.scrollIntoView({behavior:'smooth',block:'start'});}
+  function foot(i){return h('div',{class:'row est-foot'},i>0?h('button',{class:'btn',type:'button',onclick:()=>show(i-1)},'← '+EST[i-1][1]):h('span'),i<EST.length-1?h('button',{class:'btn primary',type:'button',onclick:()=>show(i+1)},'Próxima: '+EST[i+1][1]+' →'):h('span',{class:'note'},'Fim da trilha. Agora responda a ficha abaixo.'));}
+  const ideia=(t)=>h('div',{class:'ideia'},h('span',{class:'ideia-k'},'Ideia-chave'),h('p',{html:t}));
+  const titulo=(n,t,sub)=>h('div',{class:'stack',style:'gap:4px'},h('span',{class:'eyebrow'},n<5?'Estação '+n:'Síntese'),h('h3',{class:'est-h'},t),sub?h('p',{class:'note'},sub):null);
+  // conferência rápida: pergunta com opções e explicação
+  function confira(qs,key){const box=h('div',{class:'confira'},h('span',{class:'ideia-k'},'Confira'));const ans=store.get(key,{});
+    qs.forEach(([q,ops,ok,exp],i)=>{const fb=h('div',{});const ch=h('div',{class:'chips'});const mark=v=>{fb.innerHTML='';if(v==null)return;fb.append(h('div',{class:'fb '+(v===ok?'ok':'no')},(v===ok?'Isso. ':'Ainda não. ')+exp));};
+      ops.forEach((o,j)=>{const b=h('button',{class:'chip',type:'button','aria-pressed':String(ans[i]===j)},o);b.onclick=()=>{ans[i]=j;store.set(key,ans);$$('.chip',ch).forEach((x,k)=>x.setAttribute('aria-pressed',String(k===j)));mark(j);};ch.append(b);});
+      box.append(h('div',{class:'stack',style:'gap:6px'},h('strong',{},q),ch,fb));if(ans[i]!=null)mark(ans[i]);});return box;}
+  const BUILD={};
+  // ----- Estação 1
+  BUILD.parasitismo=el=>{
+    el.append(titulo(1,'O que é parasitismo?','Parasitismo é uma das relações ecológicas que você conheceu nas Aulas 1 e 2.'));
+    el.append(ideia('<b>Parasitismo</b> é a relação em que um ser vivo, o <b>parasito</b>, vive à custa de outro, o <b>hospedeiro</b>, tirando dele alimento ou abrigo. O parasito ganha (<b>+</b>) e o hospedeiro perde (<b>−</b>).'));
+    el.append(h('div',{class:'pp-one'},ilu('B','ilu ilu-card'),h('div',{class:'stack',style:'gap:10px'},
+      h('div',{class:'row',style:'flex-wrap:nowrap;align-items:flex-start'},h('span',{class:'sinal mais'},'+'),h('div',{},h('strong',{},'Parasito: o carrapato'),h('p',{class:'note'},'Ganha alimento (sangue) e abrigo.'))),
+      h('div',{class:'row',style:'flex-wrap:nowrap;align-items:flex-start'},h('span',{class:'sinal menos'},'−'),h('div',{},h('strong',{},'Hospedeiro: o cão'),h('p',{class:'note'},'Perde sangue, sente coceira e pode adoecer.'))))));
+    el.append(h('div',{class:'tbl-wrap'},h('table',{class:'data cmp-rel'},h('thead',{},h('tr',{},h('th',{},'Relação'),h('th',{},'Efeitos'),h('th',{},'O que acontece'),h('th',{},'Exemplo'))),
+      h('tbody',{},...[['Predação','+ / −','O predador mata e come a presa de uma vez.','Coruja e rato'],['Parasitismo','+ / −','O parasito explora o hospedeiro vivo, por um tempo, em geral sem matá-lo logo.','Carrapato e cão'],['Comensalismo','+ / 0','Um ganha e o outro não é afetado.','Rêmora e tubarão']].map(([a,b,c,d],i)=>h('tr',{class:i===1?'destaque':''},h('td',{},h('strong',{},a)),h('td',{class:'mono'},b),h('td',{},c),h('td',{},d)))))));
+    el.append(h('p',{},'Por que o parasito, em geral, não mata o hospedeiro rapidamente? Porque depende dele vivo: é a sua casa, a sua comida e o seu meio de transporte até o próximo hospedeiro.'));
+    el.append(confira([
+      ['A erva-de-passarinho fixa raízes no galho de uma árvore e retira dela água e sais minerais. É parasitismo?',['Sim','Não'],0,'Ela vive à custa da árvore: é uma planta parasita.'],
+      ['A rêmora gruda no tubarão e come os restos das presas dele, sem prejudicá-lo. É parasitismo?',['Sim','Não'],1,'O tubarão não perde nada: é comensalismo (+ / 0).'],
+      ['Uma onça mata e come um veado. É parasitismo?',['Sim','Não'],1,'A presa morre de uma vez: é predação.']],'par-c1'));
+  };
+  // ----- Estação 2
+  BUILD.onde=el=>{
+    el.append(titulo(2,'Onde e por quanto tempo o parasito vive?'));
+    el.append(ideia('<b>Ectoparasito</b> vive <b>fora</b> do corpo do hospedeiro: na pele, nos pelos, nas penas. <b>Endoparasito</b> vive <b>dentro</b>: no intestino, no sangue, nos órgãos ou dentro das células.'));
+    el.append(h('div',{class:'pp-duo'},h('div',{class:'pp-card'},ilu('piolho','ilu ilu-card'),h('strong',{},'Ectoparasito'),h('p',{class:'note'},'Piolho, carrapato, pulga, sarna')),h('div',{class:'pp-card'},ilu('lombriga','ilu ilu-card'),h('strong',{},'Endoparasito'),h('p',{class:'note'},'Lombriga, Giardia, Plasmodium, Leishmania'))));
+    const sorter=(key,itens,opts)=>{const st=store.get(key,{});const box=h('div',{class:'sort'});
+      itens.forEach(([n,c,exp],i)=>{const fb=h('span',{class:'sort-fb'});const sg=seg(opts.map(o=>[o,o]),st[i]||null,v=>{st[i]=v;store.set(key,st);upd();},{label:n});const upd=()=>{fb.textContent=st[i]==null?'':st[i]===c?'✓ '+exp:'✗ Tente de novo.';fb.className='sort-fb '+(st[i]==null?'':st[i]===c?'ok':'no');};upd();box.append(h('div',{class:'sort-row'},h('strong',{},n),sg,fb));});return box;};
+    el.append(h('div',{class:'confira'},h('span',{class:'ideia-k'},'Classifique: fora ou dentro?'),sorter('par-s1',[
+      ['Piolho no couro cabeludo','Fora','vive nos fios de cabelo.'],['Lombriga (Ascaris)','Dentro','vive no intestino delgado.'],['Plasmodium (malária)','Dentro','vive no fígado e nas hemácias.'],['Fêmea de mosquito picando','Fora','fica na pele só enquanto pica.'],['Giardia','Dentro','vive aderida ao intestino.'],['Carrapato no cão','Fora','fica preso à pele.']],['Fora','Dentro'])));
+    el.append(ideia('Entre os ectoparasitos, alguns <b>ficam</b> no hospedeiro o tempo todo (<b>permanentes</b>) e outros só o <b>visitam</b> para se alimentar e vão embora (<b>temporários</b>).'));
+    el.append(h('div',{class:'confira'},h('span',{class:'ideia-k'},'Classifique: fica ou só visita?'),sorter('par-s2',[
+      ['Piolho','Fica','nasce, cresce e se reproduz no cabelo: permanente.'],['Fêmea de mosquito','Só visita','pica e vai embora: temporário.'],['Barbeiro','Só visita','pica à noite e volta para as frestas: temporário.'],['Ácaro da sarna','Fica','vive em túneis na pele: permanente.']],['Fica','Só visita'])));
+    el.append(h('details',{class:'mais'},h('summary',{},'Para saber mais: micro e macroparasitos'),h('p',{},'Microparasitos são muito pequenos e se multiplicam dentro do hospedeiro, como os protozoários (Giardia, Plasmodium). Macroparasitos são visíveis a olho nu na fase adulta e, em geral, não se multiplicam dentro do hospedeiro, como os vermes e os artrópodes.')));
+  };
+  // ----- Estação 3
+  BUILD.ciclo=el=>{
+    el.append(titulo(3,'Quantos hospedeiros? Quem é quem no ciclo?'));
+    el.append(ideia('O <b>ciclo de vida</b> é o caminho do parasito de um hospedeiro a outro. Quando há <b>um só</b> hospedeiro, o ciclo é <b>monoxeno</b>. Quando há <b>dois ou mais</b>, é <b>heteroxeno</b>.'));
+    const ciclo=(titulo,sub,nodes,ret)=>{const fl=h('ol',{class:'fluxo'});nodes.forEach(nd=>fl.append(h('li',{class:'fx'+(nd.host?' host':'')},nd.host?ilu(nd.ilu,'ilu fx-ilu'):null,nd.host?h('span',{class:'fx-b'},nd.host==='HD'?'Hospedeiro definitivo':'Hospedeiro intermediário'):null,h('span',{class:'fx-t'},nd.t))));
+      fl.append(h('li',{class:'fx volta'},'↺ volta ao início · '+ret));return h('div',{class:'pp-card'},h('strong',{},titulo),h('span',{class:'note'},sub),fl);};
+    el.append(h('div',{class:'pp-duo'},
+      ciclo('Ascaris lumbricoides (lombriga)','Monoxeno: um hospedeiro',[{t:'Ser humano: vermes adultos no intestino',host:'HD',ilu:'lombriga'},{t:'Ovos saem nas fezes'},{t:'Ovo amadurece no solo'},{t:'Pessoa engole o ovo'}],'1 hospedeiro'),
+      ciclo('Taenia solium (solitária)','Heteroxeno: dois hospedeiros',[{t:'Ser humano: tênia adulta no intestino',host:'HD',ilu:'taenia'},{t:'Ovos saem nas fezes'},{t:'Porco engole os ovos',},{t:'Porco: larvas (cisticercos) na carne',host:'HI',ilu:'porco'},{t:'Pessoa come carne malpassada'}],'2 hospedeiros')));
+    el.append(ideia('<b>Hospedeiro definitivo (HD)</b>: onde o parasito vira adulto ou faz reprodução sexuada. <b>Hospedeiro intermediário (HI)</b>: onde ele passa a fase de larva ou se reproduz de forma assexuada.'));
+    el.append(h('div',{class:'tbl-wrap'},h('table',{class:'data cmp-rel'},h('thead',{},h('tr',{},h('th',{},'Papel no ciclo'),h('th',{},'O que faz'),h('th',{},'Exemplo'))),h('tbody',{},...[
+      ['Parasito','Vive à custa do hospedeiro e causa a doença','Leishmania, na leishmaniose visceral'],
+      ['Hospedeiro definitivo','Abriga a fase adulta ou a reprodução sexuada','Ser humano, na teníase'],
+      ['Hospedeiro intermediário','Abriga a larva ou a reprodução assexuada','Porco, na teníase; caramujo, na esquistossomose'],
+      ['Hospedeiro acidental','Fica fora do ciclo normal: para o parasito é um beco sem saída','Ser humano com cisticercose'],
+      ['Vetor','Leva o parasito de um hospedeiro a outro, em geral pela picada','Flebotomíneo, na leishmaniose'],
+      ['Reservatório','Mantém o parasito na natureza e serve de fonte de infecção','Cão, na leishmaniose visceral urbana']].map(([a,b,c])=>h('tr',{},h('td',{},h('strong',{},a)),h('td',{},b),h('td',{},c)))))));
+    el.append(confira([['No ciclo da Taenia solium, onde fica a tênia adulta?',['No porco','No ser humano','No solo'],1,'O ser humano é o hospedeiro definitivo; o porco abriga a larva.'],['A lombriga tem quantos hospedeiros?',['Um','Dois','Três'],0,'Só o ser humano: o ciclo é monoxeno. O ovo passa um tempo no solo, mas o solo não é hospedeiro.']],'par-c3'));
+    el.append(h('div',{class:'pratique'},h('span',{class:'ideia-k'},'Pratique'),h('h4',{},'Missão: ciclo completo'),h('p',{class:'note'},'Agora você é o parasito. Em cada fase, escolha o caminho. Se escolher errado, a missão acaba e você tenta de novo.')));
+    missao(el);
+  };
+  // ----- Estação 4
+  BUILD.dano=el=>{
+    el.append(titulo(4,'Como o parasito faz mal ao hospedeiro?','O modo como o parasito causa dano se chama patogenia.'));
+    el.append(ideia('O dano depende de <b>onde</b> o parasito vive, de <b>quantos</b> parasitos há e da <b>resposta</b> do próprio corpo. Muitas pessoas infectadas não têm sintomas; outras adoecem gravemente.'));
+    const M=[['espoliativa','Rouba alimento ou sangue','Ancilostomídeo suga sangue: anemia'],['mecanica','Obstrui ou comprime','Bolo de lombrigas fecha o intestino'],['traumatica','Fere ao se fixar ou migrar','Larvas atravessam o pulmão'],['celular','Destrói as células onde vive','Plasmodium rompe as hemácias'],['inflamatoria','A defesa do corpo também lesa','Ovos de Schistosoma formam granulomas no fígado'],['irritativa','Irrita e dá coceira','Piolho e sarna']];
+    el.append(h('div',{class:'mec-grid'},...M.map(([k,t,e])=>h('div',{class:'mec-card'},h('strong',{},MEC[k][0]),h('span',{},t),h('span',{class:'note'},'Ex.: '+e)))));
+    el.append(h('div',{class:'pratique'},h('span',{class:'ideia-k'},'Explore'),h('h4',{},'Raio-X do hospedeiro'),h('p',{class:'note'},'Toque nos pontos do corpo para ver quem vive ali e que tipo de dano causa. Use os filtros para destacar uma ação. Vista anterior, em posição anatômica: o lado direito do corpo (D) aparece à esquerda da imagem. O esôfago no tórax está tracejado porque fica atrás. Esquema fora de escala.')));
+    raiox(el);
+  };
+  // ----- Síntese
+  BUILD.mapa=el=>{
+    el.append(titulo(5,'Mapa da aula','Como os conceitos se ligam. Leia de cima para baixo.'));
+    const nd=(tt,sub,cls='')=>h('div',{class:'mp-n '+cls},h('strong',{},tt),h('small',{},sub));
+    el.append(h('div',{class:'mapa'},nd('Parasitismo','relação em que um ganha (+) e o outro perde (−)','mp-top'),
+      h('div',{class:'mp-cols'},
+        h('div',{class:'mp-col'},nd('Parasito (+)','vive à custa do hospedeiro','mp-l2'),h('div',{class:'mp-kids'},nd('Onde vive','ecto (fora) ou endo (dentro)'),nd('Por quanto tempo','permanente ou temporário'),
+          h('div',{class:'mp-sub'},nd('Ciclo de vida','monoxeno (1 hospedeiro) ou heteroxeno (2 ou mais)'),h('div',{class:'mp-kids mp-k2'},nd('Vetor','leva de um hospedeiro a outro'),nd('Reservatório','mantém o parasito na natureza'))))),
+        h('div',{class:'mp-col'},nd('Hospedeiro (−)','abriga o parasito','mp-l2'),h('div',{class:'mp-kids'},nd('Definitivo','fase adulta ou reprodução sexuada'),nd('Intermediário','larva ou reprodução assexuada'),nd('Acidental','fora do ciclo: beco sem saída')))),
+      nd('Patogenia','o encontro dos dois: como o parasito causa dano ao hospedeiro','mp-top mp-bot')));
+    el.append(h('div',{class:'callout'},h('strong',{},'Para a ficha: '),'escolha um parasito que você estudou e percorra o mapa: onde ele vive, quantos hospedeiros tem, quem é o definitivo e como ele causa dano.'));
+    el.append(h('details',{class:'mais'},h('summary',{},'Glossário para consulta'),h('div',{class:'gl-grid'},...GLOSS.map(x=>h('div',{class:'gl-card'},h('span',{class:'gl-g'},x.g),h('h4',{},x.t),h('p',{},x.d),h('p',{class:'note'},h('strong',{},'Exemplo: '),x.ex))))));
+  };
+  // ----- Missão (Estação 3)
+  function missao(host){
+    let res=store.get('par-missao',{});const pick=h('div',{class:'ms-pick'});const stage=h('div',{class:'stack'});host.append(pick,stage);let cur=null,step=0,trilha=[];
+    function drawPick(){pick.innerHTML='';MISSOES.forEach(m=>{const r=res[m.id];const b=h('button',{class:'ms-card',type:'button','aria-pressed':String(cur===m)},ilu(m.ilu,'ilu ilu-card'),h('i',{},m.nome),h('small',{},m.tipo),h('span',{class:'pill '+(r&&r.ok?'ok':'')},r&&r.ok?'✓ ciclo completo':r?r.tent+' tentativa(s)':'não iniciada'));b.onclick=()=>{cur=m;step=0;trilha=[];drawPick();drawStage();stage.scrollIntoView({behavior:'smooth',block:'nearest'});};pick.append(b);});}
+    function drawStage(){stage.innerHTML='';if(!cur){stage.append(h('p',{class:'note'},'Escolha um parasito para começar.'));return;}
+      const m=cur;const bar=h('div',{class:'ms-trilha'});m.passos.forEach((_,i)=>bar.append(h('span',{class:'ms-dot '+(i<step?'feito':i===step?'agora':'')},String(i+1))));bar.append(h('span',{class:'ms-dot fim '+(step>=m.passos.length?'feito':'')},'🏁'));
+      stage.append(h('div',{class:'row',style:'justify-content:space-between'},h('h4',{class:'sp-name'},h('i',{},m.nome),h('span',{},' · '+m.tipo)),bar));
+      trilha.forEach(t=>stage.append(h('div',{class:'fb '+(t.ok===1?'ok':t.ok===2?'info':'no')},h('strong',{},t.op+': '),t.fb)));
+      if(step>=m.passos.length){stage.append(h('div',{class:'callout'},h('strong',{},'Resumo do ciclo. '),m.final),h('div',{class:'ms-papeis'},...m.papeis.map(([a,b])=>h('div',{class:'stat'},h('span',{class:'note'},a),h('strong',{},b)))),
+          h('div',{class:'row'},h('button',{class:'btn',type:'button',onclick:()=>{step=0;trilha=[];drawStage();}},'Jogar de novo'),h('button',{class:'btn primary',type:'button',onclick:()=>{const nx=MISSOES.find(x=>!(res[x.id]&&res[x.id].ok));if(nx){cur=nx;step=0;trilha=[];drawPick();drawStage();}}},'Próximo parasito')));return;}
+      const P=m.passos[step];stage.append(h('div',{class:'ms-cena'},h('p',{},P.cena),h('strong',{},P.q)));
+      const ops=h('div',{class:'ms-ops'});P.op.forEach(([t,ok,fb])=>{const b=h('button',{class:'ms-op',type:'button'},t);b.onclick=()=>{trilha.push({op:'Fase '+(step+1),ok,fb});const r=res[m.id]||{tent:0,ok:false,desvio:false};
+        if(ok===1){step++;if(step>=m.passos.length){r.tent++;r.ok=true;res[m.id]=r;store.set('par-missao',res);drawPick();}}
+        else{r.tent++;if(ok===2)r.desvio=true;res[m.id]=r;store.set('par-missao',res);drawPick();stage.innerHTML='';stage.append(h('h4',{class:'sp-name'},h('i',{},m.nome)),h('div',{class:'fb '+(ok===2?'info':'no')},h('strong',{},ok===2?'Ciclo desviado. ':'Fim da missão. '),fb),h('div',{class:'row'},h('button',{class:'btn primary',type:'button',onclick:()=>{step=0;trilha=[];drawStage();}},'Tentar de novo')));return;}
+        drawStage();};ops.append(b);});stage.append(ops);}
+    drawPick();drawStage();}
+  // ----- Raio-X (Estação 4)
+  function raiox(host){
+    const grid=h('div',{class:'cols wide-right'});host.append(grid);
+    const sv=s('svg',{viewBox:'34 4 232 326',class:'rx-svg',role:'img','aria-label':'Corpo humano em vista anterior com os locais onde vivem os parasitos'});
+    const L=h('div',{class:'stack rx-l'},sv);const R=h('div',{class:'stack'});grid.append(L,R);
+    let sel=store.get('par-rx','delgado'),mf=null;const mecRow=h('div',{class:'chips'});L.append(h('span',{class:'label'},'Destacar a ação'),mecRow);
+    function drawMec(){mecRow.innerHTML='';Object.entries(MEC).forEach(([k,[t]])=>{const b=h('button',{class:'chip',type:'button','aria-pressed':String(mf===k)},t);b.onclick=()=>{mf=mf===k?null:k;drawMec();drawBody();};mecRow.append(b);});}
+    function drawBody(){sv.innerHTML=bodySVG();BODY.forEach((b,i)=>{const [x,y]=BODY_PTS[b.k];const on=b.k===sel,lit=!mf||b.mec.includes(mf);
+      const g=s('g',{class:'rx-pt',tabindex:0,role:'button','aria-label':b.t,style:'cursor:pointer',opacity:lit?1:.25});g.append(s('circle',{cx:x,cy:y,r:on?11:9,fill:on?'var(--tema)':'#ffffff',stroke:'var(--tema)','stroke-width':3}));
       g.append(s('text',{x,y:y+3.6,'text-anchor':'middle','font-size':10,'font-weight':800,fill:on?'#ffffff':'var(--tema)'},String(i+1)));
       const f=()=>{sel=b.k;store.set('par-rx',sel);drawBody();drawInfo();};g.addEventListener('click',f);g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();f();}});sv.append(g);});}
-  function drawInfo(){R.innerHTML='';const b=BODY.find(x=>x.k===sel);
-    R.append(h('div',{class:'row',style:'gap:6px'},...BODY.map((x,i)=>h('button',{class:'chip',type:'button','aria-pressed':String(x.k===sel),onclick:()=>{sel=x.k;store.set('par-rx',sel);drawBody();drawInfo();}},(i+1)+' · '+x.t))));
-    R.append(h('h3',{},b.t));
-    b.par.forEach(([n,tp,d])=>R.append(h('div',{class:'rx-par'},h('div',{class:'row'},h('strong',{},n),h('span',{class:'pill'},tp==='ecto'?'ectoparasito':'endoparasito')),h('p',{},d))));
-    R.append(h('div',{class:'stack',style:'gap:6px'},h('span',{class:'label'},'Principais ações (patogenia)'),...b.mec.map(k=>h('div',{class:'rx-mec'},h('strong',{},MEC[k][0]),h('span',{class:'note'},' · '+MEC[k][1])))));}
-  drawMec();drawBody();drawInfo();
-  root.append(h('div',{class:'callout'},h('strong',{},'Para pensar: '),'um parasito “bem-sucedido” costuma matar o hospedeiro rapidamente? Lembre que ele depende do hospedeiro vivo para se alimentar e para chegar ao próximo hospedeiro. Muitas doenças graves acontecem em hospedeiros acidentais ou quando há muitos parasitos ao mesmo tempo.'));
+    function drawInfo(){R.innerHTML='';const b=BODY.find(x=>x.k===sel);
+      R.append(h('div',{class:'row',style:'gap:6px'},...BODY.map((x,i)=>h('button',{class:'chip',type:'button','aria-pressed':String(x.k===sel),onclick:()=>{sel=x.k;store.set('par-rx',sel);drawBody();drawInfo();}},(i+1)+' · '+x.t))));
+      R.append(h('h3',{},b.t));b.par.forEach(([n,tp,d])=>R.append(h('div',{class:'rx-par'},h('div',{class:'row'},h('strong',{},n),h('span',{class:'pill'},tp==='ecto'?'ectoparasito':'endoparasito')),h('p',{},d))));
+      R.append(h('div',{class:'stack',style:'gap:6px'},h('span',{class:'label'},'Principais ações (patogenia)'),...b.mec.map(k=>h('div',{class:'rx-mec'},h('strong',{},MEC[k][0]),h('span',{class:'note'},' · '+MEC[k][1])))));}
+    drawMec();drawBody();drawInfo();
+    host.append(h('div',{class:'callout'},h('strong',{},'Para pensar: '),'um parasito “bem-sucedido” costuma matar o hospedeiro rapidamente? Muitas doenças graves acontecem em hospedeiros acidentais ou quando há muitos parasitos ao mesmo tempo.'));}
+  drawNav();show(cur,false);
   root.append(h('p',{class:'note'},'Conteúdo conforme NEVES, D. P. Parasitologia humana. 13. ed. São Paulo: Atheneu, 2016, e REY, L. Bases da Parasitologia Médica. 3. ed. Rio de Janeiro: Guanabara Koogan, 2010.'));
 };
+IL.porco=()=>`<rect width="120" height="90" fill="#efe6d6"/><path d="M0,72 h120 v18 h-120z" fill="#b9a26a"/><g transform="translate(58 52)"><ellipse rx="30" ry="17" fill="#ebb3b0" stroke="#b67a77" stroke-width="1.4"/><ellipse cx="30" cy="-3" rx="12" ry="11" fill="#ebb3b0" stroke="#b67a77" stroke-width="1.4"/><ellipse cx="40" cy="0" rx="5" ry="4.4" fill="#d99592" stroke="#b67a77"/><circle cx="38.6" cy="-.2" r=".9" fill="#7a4a48"/><circle cx="41.6" cy="-.2" r=".9" fill="#7a4a48"/><circle cx="29" cy="-7" r="1.6" fill="#2a1a18"/><path d="M22,-12 l4,-9 l6,7z" fill="#d99592"/>${[-20,-8,8,20].map(x=>`<rect x="${x-3}" y="12" width="6" height="12" rx="2" fill="#d99592"/>`).join('')}<path d="M-30,-2 q-8,-2 -6,-8 q4,2 2,6" stroke="#b67a77" stroke-width="1.6" fill="none"/>${[[-14,-4],[-4,4],[6,-6],[14,4],[-20,6],[0,-10]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="2.4" ry="1.8" fill="#f8f1dc" stroke="#c9b27a" stroke-width=".6"/><circle cx="${x+.4}" cy="${y}" r=".6" fill="#c9b27a"/>`).join('')}</g>`;
 
 // ================= Aula 16: Três doenças, três vetores =================
 const DZ_CASOS=[
