@@ -309,6 +309,28 @@ ul.struct li::before{content:"";position:absolute;left:3px;top:.55em;width:8px;h
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 .fade{animation:fade .28s ease}
 @keyframes fade{from{opacity:.5;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+/* Aula 3 · bancada no padrão do Microcosmo */
+.bancada-wrap{border:2px solid color-mix(in srgb,var(--tema) 40%,transparent)}
+.bancada{display:grid;grid-template-columns:230px minmax(0,1fr) 270px;gap:18px;align-items:start}
+@media (max-width:1150px){.bancada{grid-template-columns:minmax(0,1fr) 260px}.bancada .lst{grid-column:1/-1}}
+@media (max-width:760px){.bancada{grid-template-columns:minmax(0,1fr)}}
+.lst-items{display:flex;flex-direction:column;gap:6px;max-height:560px;overflow:auto;padding:2px}
+@media (max-width:1150px){.lst-items{flex-direction:row;overflow-x:auto;max-height:none;padding-bottom:6px}}
+.lam-btn{display:flex;align-items:center;gap:8px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:5px 10px 5px 5px;cursor:pointer;flex:none;min-width:0;color:var(--ink);font:inherit}
+@media (max-width:1150px){.lam-btn{width:220px}}
+.lam-btn .lam-th{width:44px;height:44px;border-radius:50%;flex:none;background:#0b0f0d;box-shadow:inset 0 0 0 2px rgba(0,0,0,.15)}
+.lam-btn[aria-pressed="true"]{border-color:var(--tema);background:var(--tema-soft);box-shadow:0 0 0 2px var(--tema) inset}
+.campo{background:#0b0f0d;border-radius:20px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.campo-vis{position:relative;width:100%;max-width:560px;aspect-ratio:1;margin:0 auto;border-radius:50%;overflow:hidden;background:#0b0f0d}
+.campo-lam{width:100%;height:100%;display:block;touch-action:none;cursor:grab;border-radius:50%}
+.campo-ov{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.campo-grain{position:absolute;inset:0;border-radius:50%;pointer-events:none;opacity:.1;mix-blend-mode:soft-light;background-size:96px 96px}
+.campo-top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#cfd8d2;font-family:var(--f-mono);font-size:.78rem}
+.ctl{display:flex;flex-direction:column;gap:3px}
+.ctl-box{background:var(--surface-2);border-radius:14px;padding:14px}
+.charriot{display:grid;grid-template-columns:repeat(3,46px);gap:4px;justify-content:center}
+.charriot .btn{padding:8px 0;justify-content:center}
 /* Aulas 15–16 · Parasitologia (violeta do Giemsa) */
 :root{--vio:#5b4b9e;--vio-soft:#e7e2f5}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--vio:#ab9ef0;--vio-soft:#26203f}}
@@ -1580,60 +1602,90 @@ function drawDebris(g,kind,cx,cy,fov,clear,prep){const half=fov/2*1.05;const lug
 
 INIT.microscopio=root=>{
   pzDefs();
-  root.append(head('Aula 3','Microscópio virtual','Cada organismo aparece com as estruturas usadas no diagnóstico e no tamanho real em relação ao campo de visão. Troque a objetiva, ajuste o foco e registre a ampliação total na ficha.'));
-  root.append(h('p',{class:'callout'},'Ilustração esquemática, não é fotografia de microscopia. Na ficha, registre o organismo escolhido e a ampliação total usada no microscópio virtual.'));
-  const grid=h('div',{class:'cols'});root.append(grid);
-  const L=h('div',{class:'panel stack scope'});const R=h('div',{class:'stack'});grid.append(L,R);
-  let org=ORGS.find(o=>o.id===window.__scopeWant)||ORGS.find(o=>o.id==='ascaris'),obj=40,focus=0,target=0,dx=0,dy=0;
-  const D=400;
-  const svg=s('svg',{viewBox:`0 0 ${D} ${D}`,class:'scope-svg',role:'img','aria-label':'Campo de visão do microscópio'});
-  const prepTag=h('span',{class:'scope-prep'});
-  const grain=h('span',{class:'scope-grain','aria-hidden':'true'});L.append(h('div',{class:'scope-view'},svg,grain,prepTag));
-  const ampl=h('div',{class:'scope-read'});L.append(ampl);
-  const objSeg=seg(OBJS.map(o=>[o,o+'×']),obj,v=>{obj=v;target=Math.round(Math.random()*50-25);draw();},{label:'Objetiva'});
-  L.append(h('div',{class:'row'},h('span',{class:'label'},'Objetiva'),objSeg,h('span',{class:'note'},'100× = imersão em óleo')));
-  const fr=h('input',{type:'range',min:-40,max:40,value:0,id:'micro-foco','aria-label':'Parafuso micrométrico'});fr.oninput=()=>{focus=+fr.value;draw();};
-  L.append(h('div',{style:'width:100%'},h('span',{class:'label'},'Foco (micrométrico)'),fr));
-  L.append(h('div',{class:'row'},h('span',{class:'label'},'Mover lâmina'),...[['←',-1,0],['→',1,0],['↑',0,-1],['↓',0,1]].map(([t,x,y])=>h('button',{class:'btn sm',onclick:()=>{const st=18000/obj*0.12;dx+=x*st;dy+=y*st;draw();},'aria-label':'Mover '+t},t)),h('button',{class:'btn sm ghost',onclick:()=>{dx=0;dy=0;draw();}},'Centralizar')));
-  const sel=h('div',{class:'slide-list'});
-  ORGS.forEach(o=>{const th=s('svg',{viewBox:`${-o.w*.6} ${-o.w*.6} ${o.w*1.2} ${o.w*1.2}`,width:44,height:44,'aria-hidden':'true'});const tg=s('g',{transform:`rotate(${o.rot})`});o.draw(tg);th.append(tg);
-    const b=h('button',{class:'slide','data-org':o.id,'aria-pressed':String(o===org)},h('span',{class:'slide-th',style:`background:${PREPS[o.prep].bg}`},th),h('span',{class:'slide-tx'},h('i',{},o.name.split(' (')[0].split(' / ')[0]),h('small',{},o.forma)));
-    b.onclick=()=>{$$('.slide',sel).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');org=o;dx=0;dy=0;target=Math.round(Math.random()*50-25);draw();};sel.append(b);});
-  R.append(h('div',{class:'panel stack'},h('span',{class:'label'},'Caixa de lâminas'),sel));
-  window.__scopePick=id=>{const b=sel.querySelector('[data-org="'+id+'"]');if(b){b.click();try{b.scrollIntoView({block:'nearest',inline:'center'});}catch(e){}}};
-  const info=h('div',{class:'panel stack'});R.append(info);
-  function scaleBar(fov){const um=[1,2,5,10,20,50,100,200,500,1000];const pxPerUm=D/fov;let best=um[0];um.forEach(u=>{if(u*pxPerUm<=D*0.3)best=u;});return {um:best,px:best*pxPerUm};}
-  function draw(){
-    svg.innerHTML='';
-    const fov=18000/obj;const k=D/fov;const P=PREPS[org.prep];
-    const defs=s('defs');const cp=s('clipPath',{id:'campo'});cp.append(s('circle',{cx:D/2,cy:D/2,r:D/2-6}));defs.append(cp);
-    const blur=Math.abs(focus-target)/5;const f=s('filter',{id:'foco',x:'-20%',y:'-20%',width:'140%',height:'140%'});f.append(s('feGaussianBlur',{stdDeviation:(blur+.22/k).toFixed(2)}));defs.append(f);
-    const vg=s('radialGradient',{id:'vinheta',cx:'50%',cy:'50%',r:'50%'});vg.append(s('stop',{offset:'62%','stop-color':'#000','stop-opacity':0}));vg.append(s('stop',{offset:'100%','stop-color':'#000','stop-opacity':.42}));defs.append(vg);
-    const lg=s('radialGradient',{id:'luz',cx:'44%',cy:'40%',r:'70%'});lg.append(s('stop',{offset:'0%','stop-color':'#ffffff','stop-opacity':.35}));lg.append(s('stop',{offset:'100%','stop-color':'#ffffff','stop-opacity':0}));defs.append(lg);
-    svg.append(defs);
-    svg.append(s('circle',{cx:D/2,cy:D/2,r:D/2,fill:'#0b0e0c'}));
-    const field=s('g',{'clip-path':'url(#campo)'});svg.append(field);
+  root.append(head('Aula 3','Microscópio virtual','Bancada com os mesmos comandos do Microcosmo: escolha a lâmina, comece pela menor objetiva, ajuste o foco macrométrico e depois o micrométrico, regule a luz e o diafragma e mova a lâmina pelo charriot. Cada organismo está no tamanho real em relação ao campo.'));
+  root.append(h('p',{class:'callout'},'Ilustração esquemática, não é fotografia de microscopia. Na ficha, registre o organismo escolhido e a ampliação total usada.'));
+  const INV={'giardia-t':'Por que o trofozoíto aparece sobretudo em fezes diarreicas, e o cisto em fezes formadas?','giardia-c':'Quantos núcleos você consegue contar? O que isso indica sobre o cisto?',entamoeba:'Por que o exame comum de fezes não diferencia E. histolytica de E. dispar? Que consequência isso tem?',leish:'Por que a Leishmania é procurada na medula óssea, e não nas fezes?',trichuris:'Que estruturas dão ao ovo a forma de barril ou de limão?',taenia:'Se os ovos de T. solium e T. saginata são iguais, como saber qual espécie a pessoa tem?',ascaris:'Por que um ovo recém-eliminado ainda não consegue infectar outra pessoa?',ancylo:'A casca é fina e transparente: o que você enxerga dentro do ovo?',schisto:'Onde fica a espícula do ovo? Como ela ajuda a diferenciar S. mansoni de outras espécies?',tcruzi:'Por que o parasito aparece no sangue na fase aguda e quase nunca na fase crônica?',pvivax:'Compare a hemácia parasitada com as vizinhas. O que muda no tamanho e na cor?',pfalc:'Por que quase não se veem formas maduras de P. falciparum no sangue da ponta do dedo?'};
+  const KEY='eco-banc';const st=store.get(KEY,{sel:window.__scopeWant||'ascaris',obj:10});
+  let org=ORGS.find(o=>o.id===(window.__scopeWant||st.sel))||ORGS.find(o=>o.id==='ascaris'),obj=OBJS.includes(st.obj)?st.obj:10;
+  const pan={x:0,y:0};let coarse=40,fine=0,light=75,contrast=100,labels=false,pending=false,rendered=null;
+  const save=()=>store.set(KEY,{sel:org.id,obj});
+  const tgt=o=>{const i=ORGS.indexOf(o);return 50+((i*37)%11)-5;};const shift={4:0,10:2,40:-3,100:4};
+  const D=600,fovOf=o=>18000/o;
+  const wrap=h('div',{class:'panel stack bancada-wrap'});root.append(wrap);
+  wrap.append(h('div',{class:'row',style:'justify-content:space-between'},h('div',{class:'stack',style:'gap:2px'},h('span',{class:'eyebrow'},'Bancada virtual'),h('h3',{},'Microscópio óptico de campo claro')),h('span',{class:'pill'},'Ocular 10× · número de campo 18 mm')));
+  const grid=h('div',{class:'bancada'});wrap.append(grid);
+  // lista de lâminas
+  const items=h('div',{class:'lst-items'});const lst=h('div',{class:'lst stack',style:'gap:8px'},h('span',{class:'label'},'Lâminas'),items);
+  // campo de observação: lâmina (com foco, luz e diafragma) + máscara, vinheta, régua e rótulos por cima
+  const field=s('svg',{viewBox:`0 0 ${D} ${D}`,class:'campo-lam',role:'img',tabindex:0,'aria-label':'Campo do microscópio. Arraste ou use as setas do teclado para mover a lâmina.'});
+  const ov=s('svg',{viewBox:`0 0 ${D} ${D}`,class:'campo-ov','aria-hidden':'true'});
+  const grain=h('span',{class:'campo-grain','aria-hidden':'true'});
+  const magT=h('span',{}),fovT=h('span',{});
+  const campo=h('div',{class:'campo'},h('div',{class:'campo-top'},h('span',{},'◉ CAMPO DE OBSERVAÇÃO'),magT),h('div',{class:'campo-vis'},field,grain,ov),h('div',{class:'campo-top'},fovT,h('button',{class:'btn sm',type:'button',style:'background:#1d2622;color:#e4ebe6;border-color:#334039',onclick:()=>{pan.x=0;pan.y=0;draw();}},'⌖ Centralizar')));
+  const objBox=h('div',{class:'seg',role:'group','aria-label':'Objetiva'});
+  const oilNote=h('p',{class:'callout',hidden:true},'Objetiva de imersão (100×): no microscópio real, pinga-se uma gota de óleo de imersão sobre a lâmina, e a objetiva toca o óleo. O campo fica pequeno (0,18 mm) e o foco é muito sensível: use só o micrométrico.');
+  const prepT=h('span',{class:'pill ex'});
+  const mid=h('div',{class:'stack',style:'gap:10px'},campo,h('div',{class:'row'},h('span',{class:'label'},'Objetiva'),objBox),h('p',{class:'note'},'Arraste o campo ou use as setas. Comece sempre pela menor objetiva.'),oilNote);
+  // ajustes
+  const status=h('p',{class:'fb info',style:'margin:0','aria-live':'polite'});
+  const sl=(id,lab,min,max,step,val,on,f)=>{const o=h('output',{class:'mono'},f(val));const i=h('input',{type:'range',id:'eco-'+id,min,max,step,value:val,'aria-label':lab});i.oninput=()=>{o.textContent=f(+i.value);on(+i.value);look();};return h('label',{class:'ctl'},h('span',{class:'row',style:'justify-content:space-between'},h('span',{class:'label'},lab),o),i);};
+  const fineC=h('input',{type:'checkbox',id:'eco-pf'});
+  const stepMv=(dx,dy)=>{const s2=fovOf(obj)*(fineC.checked?.01:.05);moveBy(dx*s2,dy*s2);};
+  const arrow=(t,dx,dy,lab)=>{const b=h('button',{class:'btn',type:'button','aria-label':lab},t);let tm=null;const stop=()=>{clearInterval(tm);tm=null;};b.addEventListener('pointerdown',e=>{e.preventDefault();stop();stepMv(dx,dy);tm=setInterval(()=>stepMv(dx,dy),60);});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,stop));b.addEventListener('click',e=>{if(e.detail===0)stepMv(dx,dy);});return b;};
+  const posT=h('p',{class:'note mono'});
+  const lbC=h('input',{type:'checkbox',id:'eco-lb'});lbC.onchange=()=>{labels=lbC.checked;overlay();};
+  const ctr=h('div',{class:'stack ctl-box',style:'gap:10px'},h('span',{class:'label'},'Ajustes'),
+    sl('mac','Foco macrométrico',0,100,1,coarse,v=>coarse=v,v=>String(v)),sl('mic','Foco micrométrico',-10,10,.5,fine,v=>fine=v,v=>fmt(v,1)),
+    sl('luz','Intensidade da luz',20,100,1,light,v=>light=v,v=>v+'%'),sl('con','Diafragma (contraste)',70,150,1,contrast,v=>contrast=v,v=>v+'%'),
+    h('span',{class:'label'},'Charriot (move a lâmina)'),h('div',{class:'charriot'},h('span',{}),arrow('↑',0,-1,'Mover a lâmina para cima'),h('span',{}),arrow('←',-1,0,'Mover a lâmina para a esquerda'),h('button',{class:'btn',type:'button','aria-label':'Centralizar',onclick:()=>{pan.x=0;pan.y=0;draw();}},'⌖'),arrow('→',1,0,'Mover a lâmina para a direita'),h('span',{}),arrow('↓',0,1,'Mover a lâmina para baixo'),h('span',{})),
+    h('label',{class:'row note',style:'flex-wrap:nowrap'},fineC,'Passo fino'),posT,
+    h('label',{class:'row note',style:'flex-wrap:nowrap'},lbC,'Identificar estruturas'),status);
+  grid.append(lst,mid,ctr);
+  // informações e caderno
+  const info=h('div',{class:'stack',style:'gap:8px'});const nota=h('textarea',{rows:4,id:'eco-nota',placeholder:'O que você observou? Descreva forma, tamanho e estruturas antes de identificar.'});const notaMsg=h('span',{class:'note'});
+  nota.oninput=()=>{store.set('nota-'+org.id,nota.value);notaMsg.textContent='Salvo neste aparelho.';};
+  wrap.append(h('div',{class:'cols'},info,h('div',{class:'stack',style:'gap:6px'},h('h3',{},'Caderno desta lâmina'),nota,notaMsg)));
+  // miniaturas
+  const thumb=o=>{const th=s('svg',{viewBox:`${-o.w*.62} ${-o.w*.62} ${o.w*1.24} ${o.w*1.24}`,class:'lam-th','aria-hidden':'true'});th.append(s('circle',{r:o.w*.62,fill:PREPS[o.prep].bg}));const tg=s('g',{transform:`rotate(${o.rot})`});o.draw(tg);th.append(tg);return th;};
+  function drawList(){items.innerHTML='';ORGS.forEach(o=>{const b=h('button',{type:'button',class:'lam-btn','data-org':o.id,'aria-pressed':String(o===org)},thumb(o),h('span',{class:'stack',style:'gap:0;min-width:0'},h('i',{style:'font-weight:700;font-size:.88rem;line-height:1.2'},o.name.split(' (')[0].split(' / ')[0]),h('small',{class:'note'},o.forma)));b.onclick=()=>select(o.id);items.append(b);});}
+  function drawObj(){objBox.innerHTML='';OBJS.forEach(o=>{const b=h('button',{type:'button','aria-pressed':String(o===obj)},o===100?'100× (imersão)':o+'×');b.onclick=()=>{obj=o;save();lim();drawObj();draw(true);};objBox.append(b);});}
+  function drawInfo(){info.innerHTML='';info.append(h('span',{class:'eyebrow'},org.grupo),h('h3',{class:'sp-name',style:'font-size:1.4rem'},h('i',{},org.name),h('span',{},' · '+org.forma)),h('div',{class:'row'},prepT,h('span',{class:'pill'},org.doenca)),
+    h('span',{class:'label'},'Estruturas para identificar'),h('ul',{class:'struct'},...org.estruturas.map(e=>h('li',{},e))),h('p',{class:'note'},'Tamanho de referência: '+org.medida),h('p',{},h('strong',{},'Transmissão: '),org.trans),h('p',{class:'callout'},h('strong',{},'Investigue: '),INV[org.id]||'Que estrutura permite identificar este organismo?'));
+    prepT.textContent=PREPS[org.prep].nome;nota.value=store.get('nota-'+org.id,'');notaMsg.textContent='';}
+  function select(id){org=ORGS.find(o=>o.id===id)||org;pan.x=0;pan.y=0;save();drawList();drawObj();drawInfo();draw(true);}
+  window.__scopePick=id=>{select(id);const b=items.querySelector('[data-org="'+id+'"]');try{b&&b.scrollIntoView({block:'nearest',inline:'center'});}catch(e){}};
+  function lim(){const L=2500;pan.x=Math.max(-L,Math.min(L,pan.x));pan.y=Math.max(-L,Math.min(L,pan.y));}
+  function moveBy(dx,dy){pan.x+=dx;pan.y+=dy;lim();draw();}
+  // desenho da lâmina: refeito ao trocar lâmina/objetiva ou após mover muito; nos demais casos só desloca
+  let world=null;
+  function render(){const fov=fovOf(obj),k=D/fov,P=PREPS[org.prep];field.innerHTML='';
     field.append(s('rect',{width:D,height:D,fill:P.bg}));
-    const world=s('g',{filter:'url(#foco)',transform:`translate(${D/2-dx*k},${D/2-dy*k}) scale(${k})`});field.append(world);
-    world.append(s('rect',{x:dx-fov*.6,y:dy-fov*.6,width:fov*1.2,height:fov*1.2,fill:P.deb==='sangue'?'url(#pz-sangue)':org.prep==='lugol'?'url(#pz-fez-lug)':'url(#pz-fez-sal)'}));
-    drawDebris(world,P.deb,dx,dy,fov,org.w*.62,org.prep);
-    const og=s('g',{transform:`rotate(${org.rot})`});org.draw(og);world.append(og);
-    field.append(s('rect',{width:D,height:D,fill:'url(#luz)'}));
-    field.append(s('circle',{cx:D/2,cy:D/2,r:D/2-6,fill:'url(#vinheta)'}));
-    const sb=scaleBar(fov);
-    svg.append(s('rect',{x:D-58-sb.px,y:D-78,width:sb.px,height:5,rx:2,fill:'#1d2420'}));svg.append(s('text',{x:D-58-sb.px/2,y:D-86,'text-anchor':'middle','font-size':14,'font-weight':700,fill:'#1d2420'},sb.um+' µm'));
-    prepTag.textContent=P.nome;
-    ampl.innerHTML='';
-    [['Ocular','10×'],['Objetiva',obj+'×'],['Ampliação total',(10*obj)+'×'],['Campo de visão',fov>=1000?fmt(fov/1000,obj===4?1:2)+' mm':fmt(fov)+' µm']].forEach(([a,b],i)=>ampl.append(h('div',{class:'stat'+(i===2?' hi':'')},h('span',{class:'note'},a),h('span',{class:'mono'},b))));
-    info.innerHTML='';
-    const pct=org.size/fov*100;
-    info.append(h('div',{class:'stack',style:'gap:6px'},h('h3',{class:'sp-name'},h('i',{},org.name),h('span',{},' · '+org.forma)),h('div',{class:'row'},h('span',{class:'pill'},org.grupo),h('span',{class:'pill ex'},org.doenca),h('span',{class:'pill mono'},org.medida))));
-    info.append(h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Estruturas para identificar'),h('ul',{class:'struct'},org.estruturas.map(e=>h('li',{},e)))));
-    info.append(h('p',{},h('strong',{},'Transmissão: '),org.trans));
-    info.append(h('p',{class:'note'},`Com a objetiva de ${obj}×, o organismo ocupa cerca de ${pct<1?fmt(pct,1):fmt(pct)}% do diâmetro do campo. `,pct<8?(obj<100?'Ainda está pequeno: tente uma objetiva maior.':'Esse é o tamanho real no campo de 1000×: procure com atenção, movendo a lâmina se precisar.'):pct>85?'Está maior que o campo: use uma objetiva menor ou mova a lâmina.':''));
-    info.append(h('div',{class:'callout'},h('strong',{},'Para a ficha: '),`ampliação ${10*obj}× (ocular 10× × objetiva ${obj}×)`));
-  }
-  draw();pzDefs.onReady=()=>draw();grain.style.backgroundImage=`url(${pzDefs.grain})`;
+    world=s('g');field.append(world);const cx=pan.x,cy=pan.y,half=fov*1.1;
+    world.append(s('rect',{x:cx-half,y:cy-half,width:half*2,height:half*2,fill:P.deb==='sangue'?'url(#pz-sangue)':org.prep==='lugol'?'url(#pz-fez-lug)':'url(#pz-fez-sal)'}));
+    drawDebris(world,P.deb,cx,cy,fov*1.6,org.w*.62,org.prep);const og=s('g',{transform:`rotate(${org.rot})`});org.draw(og);world.append(og);
+    rendered={org,obj,x:cx,y:cy};}
+  function place(){const k=D/fovOf(obj);world.setAttribute('transform',`translate(${D/2-pan.x*k},${D/2-pan.y*k}) scale(${k})`);}
+  function look(){const err=Math.abs(coarse+fine*.35-(tgt(org)+shift[obj]));const blur=Math.min(14,err*(.3+obj/60));const bright=.35+light/100*.9,con=contrast/100;
+    const px=(blur+.55)*field.clientWidth/600;field.style.filter=`blur(${px.toFixed(2)}px) brightness(${bright.toFixed(2)}) contrast(${con.toFixed(2)})`;
+    status.className='fb '+(blur<1.2?'ok':'info');status.textContent=blur<1.2?'Em foco. Explore a preparação.':err>6?'Fora de foco: use o macrométrico.':'Quase lá: ajuste o micrométrico.';}
+  function overlay(){const fov=fovOf(obj),k=D/fov;ov.innerHTML='';const r0=D/2-1;
+    const vg=s('radialGradient',{id:'eco-vig',cx:'50%',cy:'50%',r:'50%'});vg.append(s('stop',{offset:'72%','stop-color':'#000','stop-opacity':0}),s('stop',{offset:'100%','stop-color':'#000','stop-opacity':.35}));ov.append(s('defs',{},vg));
+    ov.append(s('circle',{cx:D/2,cy:D/2,r:r0,fill:'url(#eco-vig)'}));ov.append(s('path',{d:`M0,0H${D}V${D}H0Z M${D/2-r0},${D/2} a${r0},${r0} 0 1,0 ${r0*2},0 a${r0},${r0} 0 1,0 ${-r0*2},0Z`,fill:'#0b0f0d','fill-rule':'evenodd'}));
+    const cand=[1,2,5,10,20,50,100,200,500,1000];const Lm=cand.find(v=>v*k>=D*.12)||1000;const bw=Lm*k,bx=D/2-bw/2,by=D*.86;
+    ov.append(s('rect',{x:bx-6,y:by-16,width:bw+12,height:26,fill:'rgba(255,255,255,.9)'}),s('rect',{x:bx,y:by,width:bw,height:4,fill:'#111'}),s('text',{x:D/2,y:by-4,'text-anchor':'middle','font-size':16,'font-weight':600,fill:'#111'},Lm>=1000?(Lm/1000)+' mm':Lm+' µm'));
+    if(labels){const L=org.estruturas.map(e=>e.split(/[,:(]/)[0].trim());const bh=26+L.length*24;ov.append(s('rect',{x:130,y:110,width:340,height:bh,rx:10,fill:'rgba(15,20,18,.86)'}));L.forEach((t,i)=>ov.append(s('text',{x:150,y:138+i*24,'font-size':16,'font-weight':600,fill:'#fff'},'• '+(t.length>34?t.slice(0,33)+'…':t))));}
+    magT.textContent=(obj*10)+'×';oilNote.hidden=obj!==100;fovT.textContent='Campo ≈ '+fmt(fov/1000,fov<1000?2:1)+' mm';}
+  function draw(full){if(full)rendered=null;if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;const fov=fovOf(obj);
+    if(!rendered||rendered.org!==org||rendered.obj!==obj||Math.abs(pan.x-rendered.x)>fov*.4||Math.abs(pan.y-rendered.y)>fov*.4)render();place();look();overlay();
+    posT.textContent=`X ${Math.round(pan.x)} µm · Y ${Math.round(pan.y)} µm`;window.__scopeState={org,obj};});}
+  let drag=null;field.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};field.setPointerCapture(e.pointerId);field.style.cursor='grabbing';});
+  field.addEventListener('pointermove',e=>{if(!drag)return;const k=fovOf(obj)/field.clientWidth;pan.x-=(e.clientX-drag.x)*k;pan.y-=(e.clientY-drag.y)*k;drag={x:e.clientX,y:e.clientY};lim();draw();});
+  ['pointerup','pointercancel'].forEach(ev=>field.addEventListener(ev,()=>{drag=null;field.style.cursor='';}));
+  field.addEventListener('keydown',e=>{const m={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(m){e.preventDefault();const s2=fovOf(obj)*.05;moveBy(-m[0]*s2,-m[1]*s2);}});
+  if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{if(world)look();}).observe(field);
+  grain.style.backgroundImage=pzDefs.grain?`url(${pzDefs.grain})`:'';
+  pzDefs.onReady=()=>{grain.style.backgroundImage=`url(${pzDefs.grain})`;draw(true);};
+  select(org.id);
   // Régua de tamanhos
   const rp=h('div',{class:'panel stack'});root.append(rp);
   rp.append(h('h3',{},'Todos na mesma escala'),h('p',{class:'note'},'Do menor para o maior. A hemácia (≈ 7,5 µm) ajuda a comparar.'));
@@ -2250,6 +2302,8 @@ function attachFicha(secId){
     if(d[0]&&d[0][0]!=null)draft['Volume aplicado em cada réplica (mL)']=String(d[0][0]);
     EXP_ROWS.forEach((n,i)=>{if(!d[i])return;if(d[i][1]!=null)draft[n+' · fundo (mL)']=String(d[i][1]);if(d[i][2]!=null)draft[n+' · superfície (mL)']=String(d[i][2]);});
     fillMsg.textContent='Resultados da bancada copiados. Confira antes de enviar.';saveDraft();build();}},'Usar os resultados da bancada'),(fillMsg=h('span',{class:'note'}))));
+  if(code==='Aula 03')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const q=window.__scopeState;if(!q){fillMsg.textContent='Primeiro escolha uma lâmina no microscópio acima.';return;}
+    draft['Organismo ou estrutura observada']=q.org.name+' · '+q.org.forma;draft['Ampliação total usada (ocular × objetiva)']=(10*q.obj)+'× (10× × '+q.obj+'×)';fillMsg.textContent='Lâmina e ampliação copiadas. Confira antes de enviar.';saveDraft();build();}},'Usar a lâmina e a ampliação atuais'),(fillMsg=h('span',{class:'note'}))));
   if(code==='Aula 15')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const r=store.get('par-missao',{});const n=MISSOES.filter(m=>r[m.id]&&r[m.id].ok).length;
     draft['Missão: ciclos completos (de 3)']=String(n);fillMsg.textContent=n?'Resultado copiado. Confira antes de enviar.':'Nenhum ciclo completo ainda: jogue a missão na Parte 2.';saveDraft();build();}},'Usar meu resultado da missão'),(fillMsg=h('span',{class:'note'}))));
   if(code==='Aula 16')box.append(h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{const cs=store.get('dz-casos',{});const vr=store.get('dz-vet',{});
