@@ -5,6 +5,7 @@ Portal com sites didáticos interativos de Biologia para o Ensino Médio (1º ao
 - **Ciência em Investigação** (Tema 1)
 - **Células em Ação** (Temas 2 a 4)
 - **Microcosmo** (laboratório virtual de microscopia)
+- **Corpo em Transformação** (Temas 7 a 12)
 - **Diversidade em Investigação** (Temas 13 a 16)
 - **Plantas em Ação** (Temas 17 e 18)
 - **Ecologia em Investigação** (Temas 20 a 24)

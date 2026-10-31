@@ -29,6 +29,9 @@ ICONS = {
      f'<path d="M32 54V36M32 36L20 22M32 36l12-14" {W}/><circle cx="18" cy="16" r="5" fill="#fff"/><circle cx="46" cy="16" r="5" fill="#fff"/><circle cx="32" cy="36" r="3.5" fill="#fff"/>'),
   'plantas': frame('#356f2a',
      f'<path d="M32 54V20" {W}/><path d="M32 44c-10 0-15-5-15-13 10 0 15 5 15 13z" fill="#fff"/><path d="M32 33c0-9 5-14 15-14 0 9-6 14-15 14z" fill="#fff" opacity=".85"/>'),
+  'corpo': frame('#1f6f8b',
+     f'<circle cx="32" cy="15" r="6.5" fill="#fff"/><path d="M16 54V40c0-9 7-15 16-15s16 6 16 15v14" {W}/>'
+     '<path d="M32 50c-6.5-4.4-9.5-7.4-9.5-11a4.5 4.5 0 0 1 9.5-1.6 4.5 4.5 0 0 1 9.5 1.6c0 3.6-3 6.6-9.5 11z" fill="#fff"/>'),
   'genetica': frame('#a3336b',
      f'<path d="M22 9c0 16 20 16 20 23s-20 7-20 23" {W}/><path d="M42 9c0 16-20 16-20 23s20 7 20 23" {W}/>'
      '<path d="M25 18h14M25 46h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'),
