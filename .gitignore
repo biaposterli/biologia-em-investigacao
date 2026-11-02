@@ -1,3 +1,6 @@
 out/
 __pycache__/
 .DS_Store
+
+# Mapa do Graphify: gerado localmente, não vai para o site publicado
+graphify-out/
