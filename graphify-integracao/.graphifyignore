@@ -1,0 +1,9 @@
+# Cópias geradas pelo build.py (a fonte está em src/)
+site/
+/*.html
+/portal.js
+/specs.js
+/receptor.gs
+icons/
+src/icons/
+graphify-out/
