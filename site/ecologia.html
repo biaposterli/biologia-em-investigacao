@@ -3143,7 +3143,7 @@ INIT.esquisto=root=>{
 
   // ---------- Parte 5: detetive de pistas (Apêndice A) ----------
   const p6=h('div',{class:'panel stack'});root.append(p6);
-  p6.append(...pzPart(5,'Detetive de pistas: os casos da ficha','Em grupo. Os casos só trazem o contexto. Identifiquem a doença e o agente e toquem nas palavras que são pistas. Depois, desenhem no caderno, com setas, o caminho até a entrada do parasito no corpo. Casos fictícios.'));
+  p6.append(...pzPart(5,'Detetive de pistas: os casos da ficha','Em grupo. Os casos só trazem o contexto. Identifiquem a doença e o agente e toquem nas palavras que são pistas. Depois, descrevam na ficha, com setas (fezes → solo → …), o caminho até a entrada do parasito no corpo. Casos fictícios.'));
   const st6=store.get('pz-situ2',{});const g6=h('div',{class:'pz-situ'});p6.append(g6);
   SITU.forEach(S=>{const box=h('div',{class:'pz-sit'});g6.append(box);
     function draw(){const st=st6[S.id]=st6[S.id]||{dz:null,pis:[],ok:false};box.innerHTML='';
@@ -3221,7 +3221,7 @@ INIT.conselho=root=>{
     out.innerHTML='';out.append(h('button',{class:'btn primary',style:'align-self:flex-start',onclick:()=>{if(M.some((_,i)=>A[i]==null)){out.append(h('p',{class:'fb no'},'Escolha uma posição para cada medida.'));return;}chk[cur]=true;store.set('pz-bar-chk',chk);draw();}},'Conferir e romper a corrente'));
     if(chk[cur]){const n=M.filter((m,i)=>isOk(m,A[i])).length;out.append(h('div',{class:'fb '+(n===M.length?'ok':'info')},`${n} de ${M.length} medidas no lugar certo.`+(cur==='giardia'||cur==='ascaris'?' Repare: depois que o parasito foi engolido (entre 3 e 4), não há barreira de prevenção. Aí entram o diagnóstico e o tratamento.':'')));}}
   draw();PZ_REDRAW.add(draw);
-  p1.append(h('div',{class:'callout'},'Na ficha do grupo: escolham uma ação individual e uma coletiva para cada caso (A a E) e marquem no esquema do caderno onde cada uma atua.'));
+  p1.append(h('div',{class:'callout'},'Para a ficha: escolha um dos casos (A a E), uma ação individual e uma coletiva, e explique em que etapa do esquema cada uma atua.'));
 
   // ---------- Parte 2: prefeitura por um ano ----------
   const p2=h('div',{class:'panel stack'});root.append(p2);
