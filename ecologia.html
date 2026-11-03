@@ -1,4 +1,39 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><link rel="icon" href="icons/ecologia.svg" type="image/svg+xml"><link rel="icon" href="icons/ecologia-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="icons/ecologia-180.png"></head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+/* Aulas 12–13: figuras ilustradas e atividades de parasitoses */
+.pz-wrap{width:100%}.pz-wrap svg.pz-fig{width:100%;height:auto;display:block}
+.pz-fig .pz-bg{fill:var(--surface-2)}.pz-fig .pz-t{fill:var(--ink);stroke:var(--surface-2)}.pz-fig .pz-ld{stroke:var(--muted);fill:none}.pz-fig .pz-ldd{fill:var(--muted)}.pz-fig .pz-q{fill:var(--muted)}
+.labels-hidden .atlas-label{visibility:hidden}
+.pz-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.pz-card{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:14px;padding:10px;background:var(--surface)}
+.pz-card .pz-wrap{border-radius:10px;overflow:hidden}.pz-card em{color:var(--muted)}
+.pz-opts{display:grid;gap:8px}
+.pz-opt{text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 14px;cursor:pointer;font-size:1rem;line-height:1.35;color:var(--ink);transition:border-color .15s}
+.pz-opt:hover{border-color:var(--tema)}.pz-opt.ok,.pz-opt.right{border-color:var(--good);background:var(--good-soft)}.pz-opt.no{border-color:var(--bad);background:var(--bad-soft)}.pz-opt.meio{border-color:var(--ochre);background:var(--ochre-soft)}
+.pz-ticks{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:-6px}.pz-ticks span:nth-child(2){text-align:center}.pz-ticks span:last-child{text-align:right}
+.pz-lock{display:grid;place-items:center;min-height:180px;border:2px dashed var(--line);border-radius:14px;color:var(--muted);padding:16px;text-align:center}
+.pz-situ{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.pz-sit{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--surface)}
+.pz-txt{font-size:1.05rem;line-height:1.7;margin:0}
+.pz-clue{font:inherit;border:0;background:transparent;color:inherit;padding:0 2px;border-bottom:2px dotted var(--muted);cursor:pointer;border-radius:3px}
+.pz-clue.on{background:var(--tema-soft);border-bottom-color:var(--tema);font-weight:700}.pz-clue.rev{background:var(--good-soft);border-bottom:2px solid var(--good)}
+.pz-med{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-left:4px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface)}
+.pz-med.ok{border-left-color:var(--good)}.pz-med.no{border-left-color:var(--bad)}.pz-med select{max-width:100%;align-self:flex-start;padding:6px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.pz-obras{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.pz-obra{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:10px;cursor:pointer;color:var(--ink);font:inherit}
+.pz-obra[aria-pressed="true"]{border-color:var(--tema);background:var(--tema-soft)}
+.pz-obra.shake{animation:pzshake .35s}@keyframes pzshake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.pz-coins{display:inline-flex;gap:4px}.pz-coins i{width:14px;height:14px;border-radius:50%;border:2px solid var(--ochre);display:inline-block}.pz-coins i.on{background:var(--ochre)}
+.pz-vila{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:340px}.pz-vila i{aspect-ratio:1;border-radius:4px;background:var(--surface-2);border:1px solid var(--line)}
+.pz-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.pz-bar{display:grid;grid-template-columns:minmax(110px,auto) 1fr auto;gap:10px;align-items:center;font-size:.92rem}
+.pz-track{position:relative;height:16px;border-radius:8px;background:var(--surface-2);overflow:hidden}.pz-track i{position:absolute;left:0;top:0;bottom:0;border-radius:8px}.pz-track i.b{background:color-mix(in srgb,var(--muted) 35%,transparent)}
+.pz-copo{max-width:200px}.pz-micro{max-width:260px}
+.pz-laudo{display:flex;flex-direction:column;gap:3px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface);font-family:var(--f-mono);font-size:.86rem}
+.pz-ins-fig svg{width:100%;max-width:200px;height:auto;display:block}
+table.pz-ins td.pz-hid{color:transparent;background:repeating-linear-gradient(45deg,var(--surface-2) 0 6px,transparent 6px 12px);cursor:pointer}
+.pz-cam svg{max-width:420px;margin:0 auto}.pz-co svg{max-width:900px;margin:0 auto}@media (max-width:700px){.pz-co svg{max-width:420px}}
+@media (max-width:700px){.pz-bar{grid-template-columns:1fr auto}.pz-bar .pz-track{grid-column:1/-1;grid-row:2}.pz-situ{grid-template-columns:1fr}}
+</style><link rel="icon" href="icons/ecologia.svg" type="image/svg+xml"><link rel="icon" href="icons/ecologia-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="icons/ecologia-180.png"></head><body>
 <script>window.PORTAL_SITE='eco';</script><script src="portal.js"></script>
 <title>Ecologia em Investigação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -842,8 +877,8 @@ const ICONS={
   sucessao:'<path d="M3 21h18"/><path d="M12 21v-8.5"/><path d="M12 12.5c-4.2 0-6.5-2.7-6.5-7 4.2 0 6.5 2.7 6.5 7z"/><path d="M12 10.5c0-3.4 2.2-6 7-6 0 4-2.6 6-7 6z"/>',
   ciclos:'<path d="M19.5 12a7.5 7.5 0 0 1-13.4 4.6"/><path d="M4.5 12a7.5 7.5 0 0 1 13.4-4.6"/><path d="M18.3 3.4v4.2h-4.2"/><path d="M5.7 20.6v-4.2h4.2"/>',
   experimento:'<path d="M12 3s-5 5.8-5 9.4a5 5 0 0 0 10 0C17 8.8 12 3 12 3z"/><path d="M3 21h18"/><path d="M9.6 13.2a2.4 2.4 0 0 0 2.4 2.3"/>',
-  esquisto:'<path d="M3 18.5h13.5a3.5 3.5 0 0 0 3.5-3.5V9.2"/><path d="M20 9.2l1.4-3.2M20 9.2l-1.3-3.4"/><path d="M13.5 18.5a5.2 5.2 0 1 0-5.2-5.2 2.8 2.8 0 1 0 2.8-2.8"/>',
-  conselho:'<circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="8" r="3"/><path d="M2.5 20c0-3.6 2.4-6 5.5-6s5.5 2.4 5.5 6"/><path d="M11 20c0-3.6 2.4-6 5.5-6s5 2.4 5 6"/>',
+  esquisto:'<circle cx="4.5" cy="12" r="2.2"/><circle cx="12" cy="6.5" r="2.2"/><circle cx="19.5" cy="12" r="2.2"/><path d="M6.4 10.6l3.6-2.6M14 7.9l3.6 2.6"/><path d="M19.5 14.2v3.3c0 1.6-1.3 2.9-2.9 2.9H9"/><path d="M11 18.3L8.7 20.4 11 22.4"/>',
+  conselho:'<path d="M9.6 14.4l-2.4 2.4a3.4 3.4 0 0 1-4.8-4.8l2.4-2.4a3.4 3.4 0 0 1 4.8 0"/><path d="M14.4 9.6l2.4-2.4a3.4 3.4 0 0 1 4.8 4.8l-2.4 2.4a3.4 3.4 0 0 1-4.8 0"/><path d="M8.5 4.5l1 2.2M4.5 8.5l2.2 1M15.5 19.5l-1-2.2M19.5 15.5l-2.2-1"/>',
   quiz:'<path d="M4 4.5h16v11.5H9.5L4 20.5z"/><path d="M10 8.6a2.1 2.1 0 1 1 2.8 2c-.6.2-.8.6-.8 1.2"/><circle cx="12" cy="13.7" r=".6" fill="currentColor"/>',
 };
 const icon=(id,size=24)=>{const e=document.createElementNS(NS,'svg');e.setAttribute('viewBox','0 0 24 24');e.setAttribute('width',size);e.setAttribute('height',size);e.setAttribute('fill','none');e.setAttribute('stroke','currentColor');e.setAttribute('stroke-width','1.7');e.setAttribute('stroke-linecap','round');e.setAttribute('stroke-linejoin','round');e.setAttribute('aria-hidden','true');e.innerHTML=ICONS[id]||'';return e;};
@@ -857,8 +892,8 @@ const TOOLS=[
   {id:'sucessao',n:'7',t:'t21',short:'A7',title:'Gestor da área',desc:'Os cenários A, B e C da Caatinga numa linha do tempo, com intervenções e indicadores de recuperação.'},
   {id:'ciclos',n:'8–9',t:'t22',short:'A8–9',title:'Ciclos em construção',desc:'Monte os ciclos do carbono e do nitrogênio com retorno em cada seta, e jogue “A viagem do átomo”.'},
   {id:'experimento',n:'10–11',t:'t22',short:'A10–11',title:'Chuva na bancada',desc:'Monte bandejas de solo, faça chover e meça quanto escorre pela superfície e quanto drena pelo fundo. Os resultados vão direto para a tabela e o gráfico.'},
-  {id:'esquisto',n:'12',t:'t24',short:'A12',title:'Água, parasitos e território',desc:'“Fato ou boato?” sobre a água transparente e o ciclo de Schistosoma mansoni com barreiras.'},
-  {id:'conselho',n:'13',t:'t24',short:'A13',title:'Conselho de Saúde Única',desc:'Você representa os setores, registra propostas, define as prioridades e monta o quadro de ações.'},
+  {id:'esquisto',n:'12',t:'t24',short:'A12',title:'Como o parasito chega até nós?',desc:'Giardíase, ascaridíase, doença de Chagas e leishmaniose visceral: os agentes, a rota até o corpo, cisto × ovo, fezes × picada, o dano e as pistas das situações.'},
+  {id:'conselho',n:'13',t:'t24',short:'A13',title:'Onde quebrar a corrente?',desc:'Medidas individuais e coletivas em cada etapa da transmissão, a prefeitura por um ano, o laboratório da água e os dois insetos.'},
   {id:'quiz',n:'14',t:'t24',short:'A14',title:'Quiz da unidade',desc:'Revisão de todos os temas, com a explicação de cada resposta.'},
   {id:'parasitos',n:'15',t:'tpar',short:'A15',title:'Vida de parasito',desc:'Uma trilha em quatro estações: o que é parasitismo, onde o parasito vive, os hospedeiros do ciclo (com a missão) e como ele causa dano (com o raio-X).'},
   {id:'doencas',n:'16',t:'tpar',short:'A16',title:'Três doenças, três vetores',desc:'Doença de Chagas, malária e leishmanioses: sala de situação, lâminas, ciclos em movimento, vetores e a casa protegida.'},
@@ -1118,7 +1153,7 @@ const TIPOS=[
  {id:'parasitismo',nome:'Parasitismo',g:'ed',p:['Parasito','Hospedeiro'],s:['+','−'],il:'B',
   def:'O parasito vive no corpo ou sobre o corpo do hospedeiro e retira dele alimento, geralmente sem matá-lo rapidamente.',
   ex:['Ectoparasitos vivem sobre o hospedeiro (carrapatos, piolhos, pulgas). Endoparasitos vivem dentro dele (<i>Schistosoma mansoni</i>, a lombriga <i>Ascaris lumbricoides</i>).','Plantas parasitas: a erva-de-passarinho tem clorofila e retira do hospedeiro água e sais minerais (seiva bruta); o cipó-chumbo não tem clorofila e retira a seiva elaborada.'],
-  obs:'É o tema das Aulas 3 e 12, no microscópio e no ciclo da esquistossomose.'},
+  obs:'É o tema das Aulas 3, 12 e 13: os parasitos ao microscópio, as rotas de transmissão e a prevenção.'},
  {id:'amensalismo',nome:'Amensalismo',g:'ed',p:['Fungo','Bactérias'],s:['0','−'],il:'placa',
   def:'Uma espécie libera substâncias que inibem o crescimento ou a reprodução de outra, sem se alimentar dela. Também é chamado de antibiose.',
   ex:['O fungo <i>Penicillium</i> produz penicilina, que impede o crescimento de muitas bactérias ao seu redor. Foi assim que Alexander Fleming descobriu o primeiro antibiótico, em 1928.','Maré vermelha: algumas algas microscópicas se multiplicam muito e liberam toxinas que podem matar peixes e outros animais marinhos.'],
@@ -2203,25 +2238,26 @@ const SPEC=[
    {k:'mc',t:'A água coletada no fundo pode ser considerada potável?',ch:['Sim, porque passou pelo solo','Sim, se estiver transparente','Não é possível afirmar sem análise e tratamento'],key:'Não é possível afirmar sem análise e tratamento',pts:1},
    {k:'par',t:'Síntese individual: compare cobertura morta e cobertura viva. O que os resultados indicam? Relacione ao ciclo da água',man:3},
   ]},
- {code:'Aula 12',titulo:'Aula 12 · Água, parasitos e território',tipo:'Individual',
-  desc:'Caso fictício desta aula.',
+ {code:'Aula 12',titulo:'Aula 12 · Como o parasito chega até nós?',tipo:'Individual',
+  desc:'Ficha de atividade em grupo: situações A a D.',
   itens:[
-   {k:'mc',t:'Como as cercárias de Schistosoma mansoni entram no corpo humano?',ch:['Pela picada de um mosquito','Pela ingestão de carne crua','Pela penetração ativa na pele, em água doce','Pelo contato com cães'],key:'Pela penetração ativa na pele, em água doce',pts:1},
-   {k:'mc',t:'Na esquistossomose, o caramujo Biomphalaria é:',ch:['O vetor','O hospedeiro intermediário','O hospedeiro definitivo','O parasito'],key:'O hospedeiro intermediário',pts:1},
-   {k:'par',t:'Que dados são necessários para investigar a mensagem “se a água estiver transparente, o banho é seguro”?',man:2},
-   {k:'par',t:'Em que etapas o saneamento pode interromper o ciclo?',man:2},
-   {k:'par',t:'Bilhete: que setores devem participar e por quê?',man:2},
+   {k:'hdr',t:'Situações da ficha'},
+   {k:'mc',t:'A · Água do poço: doença e agente',ch:['Giardíase · Giardia duodenalis','Ascaridíase · Ascaris lumbricoides','Doença de Chagas · Trypanosoma cruzi','Leishmaniose visceral · Leishmania infantum'],key:'Giardíase · Giardia duodenalis',pts:1},
+   {k:'mc',t:'B · Hortaliças cruas: doença e agente',ch:['Giardíase · Giardia duodenalis','Ascaridíase · Ascaris lumbricoides','Doença de Chagas · Trypanosoma cruzi','Leishmaniose visceral · Leishmania infantum'],key:'Ascaridíase · Ascaris lumbricoides',pts:1},
+   {k:'mc',t:'C · Barbeiro na moradia: doença e agente',ch:['Giardíase · Giardia duodenalis','Ascaridíase · Ascaris lumbricoides','Doença de Chagas · Trypanosoma cruzi','Leishmaniose visceral · Leishmania infantum'],key:'Doença de Chagas · Trypanosoma cruzi',pts:1},
+   {k:'mc',t:'D · Mosquito-palha no quintal: doença e agente',ch:['Giardíase · Giardia duodenalis','Ascaridíase · Ascaris lumbricoides','Doença de Chagas · Trypanosoma cruzi','Leishmaniose visceral · Leishmania infantum'],key:'Leishmaniose visceral · Leishmania infantum',pts:1},
+   {k:'par',t:'Qual pista sustenta a resposta de cada situação (A a D)?',man:2},
+   {k:'par',t:'Escolha uma situação e descreva, com setas, o caminho da fonte até a entrada do parasito no corpo',man:2},
+   {k:'mc',t:'Qual dos quatro agentes é um helminto?',ch:['Giardia duodenalis','Ascaris lumbricoides','Trypanosoma cruzi','Leishmania infantum'],key:'Ascaris lumbricoides',pts:1},
   ]},
- {code:'Aula 13',titulo:'Aula 13 · Conselho de Saúde Única',tipo:'Individual',
-  desc:'Envie a sua proposta principal e a sua síntese.',
+ {code:'Aula 13',titulo:'Aula 13 · Onde quebrar a corrente?',tipo:'Individual',
+  desc:'Registro individual de saída.',
   itens:[
-   {k:'mc',t:'Setor da sua proposta principal',ch:['Moradores','Saúde humana','Saúde animal','Ambiente e saneamento']},
-   {k:'par',t:'Necessidade prioritária',man:1},
-   {k:'par',t:'Informação que falta',man:1},
-   {k:'par',t:'Proposta 1 e justificativa',man:2},
-   {k:'par',t:'Proposta 2 e justificativa',man:2},
-   {k:'mc',t:'Como ocorre a transmissão da leishmaniose visceral?',ch:['Pelo contato cotidiano com cães','Pela picada de fêmeas infectadas de flebotomíneos','Pela água contaminada','Pela ingestão de ovos'],key:'Pela picada de fêmeas infectadas de flebotomíneos',pts:1},
-   {k:'par',t:'Síntese individual: escolha uma ação e explique como ela articula saúde humana, saúde animal e/ou ambiente',man:3},
+   {k:'par',t:'1 · Para cada uma das quatro doenças, escreva o agente causador e indique se é um protozoário ou um helminto',man:2},
+   {k:'par',t:'2 · O que é ingerido na giardíase e na ascaridíase? Como o parasito entra no corpo na transmissão vetorial da doença de Chagas e na leishmaniose visceral? Escolha uma doença e explique como o parasito pode causar dano',man:3},
+   {k:'par',t:'3 · Escolha uma situação da ficha. Proponha uma ação individual e uma ação coletiva e explique como cada uma reduziria a exposição',man:3},
+   {k:'mc',t:'A água do poço está transparente. Ela é potável?',ch:['Sim, porque está transparente','Sim, se não tiver cheiro','Não é possível afirmar sem análise e tratamento'],key:'Não é possível afirmar sem análise e tratamento',pts:1},
+   {k:'mc',t:'Em que momento o Trypanosoma cruzi entra no corpo na transmissão vetorial?',ch:['Durante a picada do barbeiro','Quando as fezes do barbeiro chegam à lesão da pele ou a mucosas','Quando a pessoa encosta no barbeiro'],key:'Quando as fezes do barbeiro chegam à lesão da pele ou a mucosas',pts:1},
   ]},
  {code:'Aula 14',titulo:'Aula 14 · O que você consegue explicar?',tipo:'Avaliação individual',
   desc:'Avaliação da unidade. Responda com suas palavras.',
@@ -2706,127 +2742,519 @@ const AB={
      h('button',{class:'btn primary',onclick:()=>{if(!esc||!why.value.trim()){out.innerHTML='';out.append(h('p',{class:'fb no'},'Escolha um dos lugares e explique.'));return;}
        api.save(`A água some mais rápido ${esc==='rua'?'na rua asfaltada':'no gramado'}, porque ${why.value.trim()}`);
        out.innerHTML='';out.append(h('div',{class:'fb info'},'Hipótese registrada! Na bancada, a bandeja sem cobertura se parece com o solo exposto, e as coberturas, com o gramado. Os copos vão mostrar se você acertou.'));}},'Registrar minha hipótese'),out);}},
- esquisto:{tempo:'5 min',titulo:'Qual copo você beberia?',lede:'Os três copos parecem iguais: água transparente. Escolha um e diga por quê.',
+ esquisto:{tempo:'10 min',titulo:'Duas hipóteses',lede:'Em dupla, respondam com o que vocês pensam agora, sem pesquisar. Vamos testar as hipóteses durante a aula e retomá-las na próxima.',
   render(el,api){
-   let esc=api.state('esc',null);const why=h('textarea',{rows:2,maxlength:300,placeholder:'Por que esse copo?','aria-label':'Justificativa'});why.value=api.state('why','');why.oninput=()=>api.setState('why',why.value);
-   const g=h('div',{class:'ab-choices three'});['1','2','3'].forEach(n=>{const b=h('button',{class:'ab-choice','aria-pressed':String(esc===n)},ilu('copo'+n,'ilu'),h('span',{},'Copo '+n));b.onclick=()=>{esc=n;api.setState('esc',n);$$('.ab-choice',g).forEach(y=>y.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');};g.append(b);});
+   const Q=[['q1','Água transparente pode transmitir parasitos?',['Sim','Não','Depende']],['q2','Quando um inseto participa da transmissão, o parasito sempre entra no corpo durante a picada?',['Sim, sempre','Não, nem sempre','Não sei']]];
    const out=h('div',{});
-   el.append(g,why,h('button',{class:'btn primary',onclick:()=>{if(!esc){out.innerHTML='';out.append(h('p',{class:'fb no'},'Escolha um copo.'));return;}
-     api.save(`Escolheu o copo ${esc}${why.value.trim()?': '+why.value.trim():''}`);
-     out.innerHTML='';out.append(h('div',{class:'fb info stack',style:'gap:4px'},h('strong',{},'O que havia nos copos'),h('span',{},'Copo 1: água filtrada e fervida.'),h('span',{},'Copo 2: água com sal dissolvido.'),h('span',{},'Copo 3: água de açude com organismos microscópicos.'),h('span',{},'Pela aparência, não dava para saber. As cercárias do Schistosoma também são quase invisíveis. Vamos investigar a mensagem “se a água estiver transparente, o banho é seguro”.')));}},'Registrar e revelar'),out);}},
- conselho:{tempo:'7 min',titulo:'De quem é o problema?',lede:'Para cada situação, marque quais setores precisam agir. Pode marcar mais de um.',
+   Q.forEach(([k,t,o],qi)=>{const v=api.state(k,null);const why=h('textarea',{rows:2,maxlength:300,placeholder:'Por quê? Expliquem em uma frase.','aria-label':'Justificativa da pergunta '+(qi+1)});why.value=api.state('j'+k,'');why.oninput=()=>api.setState('j'+k,why.value);
+     el.append(h('div',{class:'ab-sit'},h('div',{class:'quiz-q'},ilu(qi?'leish':'copo1','ilu'),h('strong',{},(qi+1)+' · '+t)),seg(o.map(x=>[x,x]),v,x=>api.setState(k,x),{label:t}),why));});
+   el.append(h('button',{class:'btn primary',onclick:()=>{const a=Q.map(([k])=>api.state(k,null));if(a.some(x=>!x)){out.innerHTML='';out.append(h('p',{class:'fb no'},'Respondam as duas perguntas.'));return;}
+     api.save(Q.map(([k,t],i)=>t+' → '+a[i]+(api.state('j'+k,'').trim()?' ('+api.state('j'+k,'').trim()+')':'')).join(' | '));
+     out.innerHTML='';out.append(h('div',{class:'fb info'},'Hipóteses registradas. Ao longo da aula vocês vão encontrar pistas para confirmar ou rever cada uma. Na Aula 13, elas voltam.'));}},'Registrar nossas hipóteses'),out);}},
+ conselho:{tempo:'5 min',titulo:'Você mudou de ideia?',lede:'Estas foram as suas hipóteses no início da Aula 12. Responda de novo com o que você sabe agora e compare.',
   render(el,api){
-   const SE=[['h','Saúde humana'],['a','Saúde animal'],['m','Ambiente']];
-   const sit=[['Lixo acumulado nos quintais','ham'],['Cão emagrecido e com feridas','ha'],['Esgoto correndo a céu aberto','hm'],['Criança com diarreia frequente','hm'],['Caramujos no açude onde a turma toma banho','hm'],['Mosquitos-palha perto das casas e do canil','ham']];
-   const ans=api.state('ans',{});const list=h('div',{class:'stack',style:'gap:10px'});
-   sit.forEach(([t],i)=>{const ch=h('div',{class:'chips'});SE.forEach(([k,n])=>{const on=(ans[i]||'').includes(k);const b=h('button',{class:'chip','aria-pressed':String(on)},n);b.onclick=()=>{let v=ans[i]||'';v=v.includes(k)?v.replace(k,''):v+k;ans[i]=v;api.setState('ans',ans);b.setAttribute('aria-pressed',String(v.includes(k)));};ch.append(b);});list.append(h('div',{class:'ab-sit'},h('strong',{},t),ch));});
-   const out=h('div',{});
-   el.append(list,h('button',{class:'btn primary',onclick:()=>{if(sit.some((_,i)=>!(ans[i]||'').length)){out.innerHTML='';out.append(h('p',{class:'fb no'},'Marque pelo menos um setor em cada situação.'));return;}api.save(sit.map(([t],i)=>t+': '+((ans[i]||'').split('').map(k=>SE.find(x=>x[0]===k)[1]).join(', ')||'nenhum')).join(' | '));
-     const mult=sit.filter((_,i)=>(ans[i]||'').length>=2).length;
-     out.innerHTML='';out.append(h('div',{class:'fb info'},`Você marcou mais de um setor em ${mult} de ${sit.length} situações. Na prática, quase todas envolvem pessoas, animais e ambiente ao mesmo tempo. Essa ideia tem nome: Saúde Única (One Health). Hoje vocês serão o conselho do município.`));}},'Registrar minhas escolhas'),out);}},
+   const Q=[['q1','Água transparente pode transmitir parasitos?',['Sim','Não','Depende'],'Sim','Sim. Cistos de Giardia e ovos de Ascaris são microscópicos: a água pode estar transparente e contaminada. Só a análise e o tratamento garantem a potabilidade.'],['q2','Quando um inseto participa da transmissão, o parasito sempre entra no corpo durante a picada?',['Sim, sempre','Não, nem sempre','Não sei'],'Não, nem sempre','Não. Na leishmaniose, o parasito entra na picada do flebotomíneo. Na doença de Chagas, ele está nas fezes do barbeiro e entra pela lesão ou por mucosas.']];
+   const out=h('div',{class:'stack'});
+   Q.forEach(([k,t,o],qi)=>{const antes=pzPeek('esquisto','ab-esquisto-'+k,null);const v=api.state(k,null);
+     el.append(h('div',{class:'ab-sit'},h('strong',{},(qi+1)+' · '+t),h('p',{class:'note',style:'margin:0'},'Na Aula 12 você respondeu: ',h('strong',{},antes||'(sem registro neste aparelho)')),seg(o.map(x=>[x,x]),v,x=>api.setState(k,x),{label:'Agora: '+t})));});
+   el.append(h('button',{class:'btn primary',onclick:()=>{const a=Q.map(([k])=>api.state(k,null));out.innerHTML='';if(a.some(x=>!x)){out.append(h('p',{class:'fb no'},'Responda as duas perguntas.'));return;}
+     api.save(Q.map(([k,t],i)=>t+' → antes: '+(pzPeek('esquisto','ab-esquisto-'+k,null)||'?')+'; agora: '+a[i]).join(' | '));
+     Q.forEach(([k,,,c,e],i)=>out.append(h('div',{class:'fb '+(a[i]===c?'ok':'info')},e)));}},'Registrar e comparar'),out);}},
  quiz:{tempo:'3 min',titulo:'Semáforo da unidade',lede:'Antes do quiz, marque como você se sente em cada tema: verde (sei explicar), amarelo (mais ou menos) ou vermelho (ainda não sei).',
   render(el,api){
-   const T=['Relações ecológicas','Parasitos, vetores e hospedeiros','Amostragem e densidade','Crescimento de populações','Sucessão ecológica','Ciclos do carbono e do nitrogênio','Solo, cobertura e água','Esquistossomose e leishmaniose','Saúde Única'];
+   const T=['Relações ecológicas','Parasitos, vetores e hospedeiros','Amostragem e densidade','Crescimento de populações','Sucessão ecológica','Ciclos do carbono e do nitrogênio','Solo, cobertura e água','Transmissão das parasitoses','Prevenção individual e coletiva'];
    const ans=api.state('ans',{});const g=h('div',{class:'stack',style:'gap:8px'});
    T.forEach((t,i)=>{const row=h('div',{class:'ab-sem'},h('span',{},t));[['g','Verde'],['y','Amarelo'],['r','Vermelho']].forEach(([k,n])=>{const b=h('button',{class:'sem '+k,'aria-pressed':String(ans[i]===k),'aria-label':t+': '+n,title:n});b.onclick=()=>{ans[i]=k;api.setState('ans',ans);$$('.sem',row).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');};row.append(b);});g.append(row);});
    const out=h('div',{});
    el.append(g,h('button',{class:'btn primary',onclick:()=>{if(T.some((_,i)=>!ans[i])){out.innerHTML='';out.append(h('p',{class:'fb no'},'Marque uma cor para cada tema.'));return;}const n={g:'verde',y:'amarelo',r:'vermelho'};api.save(T.map((t,i)=>t+': '+(n[ans[i]]||'sem marcação')).join(' | '));
      const red=T.filter((t,i)=>ans[i]==='r');out.innerHTML='';out.append(h('div',{class:'fb info'},red.length?'Fique de olho nas perguntas sobre: '+red.join(', ')+'.':'Ótimo! Agora é hora de provar no quiz.'));}},'Registrar meu semáforo'),out);}},
 };
-// ================= Aula 12: Esquistossomose =================
-INIT.esquisto=root=>{
-  root.append(head('Aula 12','Água, parasitos e território','Caso fictício de uma comunidade do Nordeste. Não há confirmação de transmissão no local.'));
-  const grid=h('div',{class:'cols wide-right'});root.append(grid);
-  const L=h('div',{class:'panel stack'});const R=h('div',{class:'panel stack'});grid.append(L,R);
-  L.append(h('h3',{},'Fato ou boato?'));
-  L.append(h('div',{style:'background:var(--good-soft);border:1px solid var(--line);border-radius:4px 14px 14px 14px;padding:12px 14px;max-width:34ch;font-size:1.15rem;box-shadow:0 1px 0 var(--line)'},h('span',{class:'note',style:'display:block;margin-bottom:4px'},'Encaminhada'),'Se a água estiver transparente, o banho é seguro 👍',h('span',{class:'note',style:'display:block;text-align:right'},'09:41')));
-  let voto=store.get('esq-voto',null);const vb=h('div',{class:'row'});L.append(h('span',{class:'label'},'Qual é a sua opinião?'),vb);
-  const vdraw=()=>{vb.innerHTML='';vb.append(seg([['f','É fato'],['b','É boato'],['d','Precisamos de dados']],voto,v=>{voto=v;store.set('esq-voto',v);},{label:'Sua opinião'}));};vdraw();
-  const an=h('div',{class:'stack'});L.append(h('button',{class:'btn primary',onclick:()=>{an.innerHTML='';an.append(
-    h('div',{class:'fb info'},'A aparência da água não basta. As cercárias medem menos de 1 mm e são praticamente invisíveis a olho nu. Água transparente indica pouco material em suspensão, não ausência de parasitos.'),
-    h('strong',{},'Dados para investigar a mensagem'),
-    h('ul',{style:'margin:0;padding-left:1.2em'},h('li',{},'Presença de caramujos Biomphalaria no trecho e se estão infectados'),h('li',{},'Casos humanos na área (exames parasitológicos de fezes, notificações)'),h('li',{},'Se há esgoto chegando a essa água'),h('li',{},'Quem usa o local, com que frequência e para quê')));}},'Revelar análise'),an);
-  // ciclo
-  R.append(h('h3',{},'Ciclo de Schistosoma mansoni: onde interromper?'));
-  R.append(h('p',{class:'note'},'Ative as ações e veja em que etapas o ciclo é interrompido. Esquema didático, fora de escala.'));
-  const ST=[['Pessoa infectada','vermes adultos nos vasos do intestino · hospedeiro definitivo'],['Ovos nas fezes','eliminados pela pessoa infectada'],['Ovos na água doce','quando o esgoto não é coletado e tratado'],['Miracídio no caramujo','penetra em Biomphalaria · hospedeiro intermediário'],['Cercárias na água','liberadas pelo caramujo infectado'],['Penetração pela pele','no contato com a água de transmissão']];
-  const AC=[
-    {id:'trat',t:'Diagnóstico e tratamento das pessoas',set:'Saúde',cut:[0]},
-    {id:'esg',t:'Coleta e tratamento de esgoto',set:'Saneamento',cut:[1]},
-    {id:'car',t:'Vigilância e manejo ambiental dos criadouros de caramujos',set:'Ambiente e vigilância',cut:[3]},
-    {id:'agua',t:'Água encanada e alternativas seguras de lazer',set:'Saneamento e poder público',cut:[4]},
-    {id:'edu',t:'Educação em saúde com a comunidade',set:'Educação e saúde',cut:[],sup:[1,4]},
-  ];
-  const on=new Set();
-  const svg=s('svg',{viewBox:'0 0 620 470',class:'chart',role:'img','aria-label':'Ciclo da esquistossomose'});R.append(svg);
-  const acts=h('div',{class:'stack',style:'gap:8px'});R.append(acts);
-  const sum=h('div',{});R.append(sum);
-  AC.forEach(a=>{const c=h('input',{type:'checkbox',id:'esq-'+a.id});c.onchange=()=>{c.checked?on.add(a.id):on.delete(a.id);draw();};acts.append(h('label',{class:'row',style:'flex-wrap:nowrap;align-items:flex-start'},c,h('span',{},h('strong',{},a.t),' ',h('span',{class:'pill'},a.set))));});
-  function draw(){
-    svg.innerHTML='';const cx=310,cy=235,rx=225,ry=170;
-    const pos=ST.map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/6;return[cx+rx*Math.cos(a),cy+ry*Math.sin(a)];});
-    const defs=s('defs');const m=s('marker',{id:'esq-ar',viewBox:'0 0 10 10',refX:9,refY:5,markerWidth:7,markerHeight:7,orient:'auto'});m.append(s('path',{d:'M0,0L10,5L0,10z',fill:'var(--muted)'}));defs.append(m);svg.append(defs);
-    const cut=new Set(),sup=new Set();AC.forEach(a=>{if(on.has(a.id)){a.cut.forEach(i=>cut.add(i));(a.sup||[]).forEach(i=>sup.add(i));}});
-    pos.forEach((p,i)=>{const q=pos[(i+1)%6];const a1=Math.atan2(q[1]-p[1],q[0]-p[0]);const sx=p[0]+Math.cos(a1)*70,sy=p[1]+Math.sin(a1)*34,ex=q[0]-Math.cos(a1)*72,ey=q[1]-Math.sin(a1)*36;
-      const isCut=cut.has(i);svg.append(s('line',{x1:sx,y1:sy,x2:ex,y2:ey,stroke:isCut?'var(--bad)':'var(--muted)','stroke-width':isCut?2:2.4,'stroke-dasharray':isCut?'5 5':null,'marker-end':'url(#esq-ar)'}));
-      const mx=(sx+ex)/2,my=(sy+ey)/2;
-      if(isCut){svg.append(s('circle',{cx:mx,cy:my,r:15,fill:'var(--bad)'}));svg.append(s('path',{d:`M${mx-6},${my-6}L${mx+6},${my+6}M${mx+6},${my-6}L${mx-6},${my+6}`,stroke:'var(--surface)','stroke-width':3}));}
-      else if(sup.has(i)){svg.append(s('circle',{cx:mx,cy:my,r:11,fill:'var(--sky)'}));svg.append(s('text',{x:mx,y:my+4,'text-anchor':'middle','font-size':12,'font-weight':800,fill:'var(--surface)'},'E'));}});
-    pos.forEach(([x,y],i)=>{svg.append(s('rect',{x:x-84,y:y-56,width:168,height:100,rx:10,fill:i===3||i===4?'var(--sky-soft)':'var(--ochre-soft)',stroke:'var(--line)'}));
-      {const ic=s('svg',{x:x-32,y:y-53,width:64,height:48,viewBox:'0 0 120 90'});ic.innerHTML=IL['e'+(i+1)]();svg.append(ic);}
-      svg.append(s('text',{x,y:y+10,'text-anchor':'middle','font-size':13.5,'font-weight':800,fill:'var(--ink)'},(i+1)+' · '+ST[i][0]));
-      const words=ST[i][1].split(' ');let l1='',l2='';words.forEach(w=>{if((l1+' '+w).length<27&&!l2)l1+=(l1?' ':'')+w;else l2+=(l2?' ':'')+w;});
-      svg.append(s('text',{x,y:y+25,'text-anchor':'middle','font-size':10.5,fill:'var(--muted)'},l1));svg.append(s('text',{x,y:y+38,'text-anchor':'middle','font-size':10.5,fill:'var(--muted)'},l2));});
-    svg.append(s('text',{x:cx,y:cy+5,'text-anchor':'middle','font-size':15,'font-weight':800,fill:cut.size?'var(--bad)':'var(--ink)','font-family':'var(--f-display)'},cut.size?`${cut.size} ponto${cut.size>1?'s':''} de interrupção`:'Ciclo completo'));
-    sum.innerHTML='';
-    if(on.has('edu'))sum.append(h('p',{class:'note'},'E = educação em saúde. Sozinha não interrompe o ciclo, mas fortalece as outras ações.'));
-    if(cut.size)sum.append(h('div',{class:'fb info'},`Setores envolvidos: ${[...new Set(AC.filter(a=>on.has(a.id)).map(a=>a.set))].join(', ')}. Nenhuma dessas ações depende só da escolha individual dos moradores.`));
-  }
-  draw();
-  root.append(h('p',{class:'note'},'Contexto regional: Favre et al. (2026) estudaram Biomphalaria no RN. Um estudo local não determina a situação de todo o estado. DOI 10.53393/rial.2026.v.85.42175. Esquema baseado no Ministério da Saúde.'));
+// ===== Kit de ilustração (estilo aprovado: volume, textura, membranas) — prefixo pz2 =====
+const r1=n=>Math.round(n*10)/10, pt=p=>`${r1(p[0])},${r1(p[1])}`;
+const xe=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let ZN=0;
+function zRand(seed){let a=seed>>>0||1;return ()=>{a=(a+0x6D2B79F5)>>>0;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;};}
+function zSmooth(p,closed=true){const n=p.length;let d=`M${r1(p[0][0])} ${r1(p[0][1])}`;const m=closed?n:n-1;for(let i=0;i<m;i++){let p0=p[(i-1+n)%n],p1=p[i],p2=p[(i+1)%n],p3=p[(i+2)%n];if(!closed&&i===0)p0=p1;if(!closed&&i===n-2)p3=p2;d+=`C${r1(p1[0]+(p2[0]-p0[0])/6)} ${r1(p1[1]+(p2[1]-p0[1])/6)} ${r1(p2[0]-(p3[0]-p1[0])/6)} ${r1(p2[1]-(p3[1]-p1[1])/6)} ${r1(p2[0])} ${r1(p2[1])}`;}return d+(closed?'Z':'');}
+function zBlobPts(cx,cy,rx,ry,n=14,amp=.06,seed=1){const R=zRand(seed*977);return Array.from({length:n},(_,i)=>{const a=i/n*Math.PI*2,k=1+amp*(R()*2-1);return [cx+rx*k*Math.cos(a),cy+ry*k*Math.sin(a)];});}
+function zInside([x,y],poly){let s=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const [xi,yi]=poly[i],[xj,yj]=poly[j];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)s=!s;}return s;}
+function zScale(poly,cx,cy,k){return poly.map(([x,y])=>[cx+(x-cx)*k,cy+(y-cy)*k]);}
+function zDots(poly,n,c,{rmin=.9,rmax=2.2,avoid=[],seed=3,op=.4}={}){const R=zRand(seed*131),xs=poly.map(p=>p[0]),ys=poly.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let g='',k=0,t=0;while(k<n&&t<n*40){t++;const p=[x0+R()*(x1-x0),y0+R()*(y1-y0)];if(!zInside(p,poly)||avoid.some(a=>zInside(p,a)))continue;g+=`<circle cx="${r1(p[0])}" cy="${r1(p[1])}" r="${r1(rmin+R()*(rmax-rmin))}" fill="${c}" opacity="${op}"/>`;k++;}return g;}
+function zKit(){const k='pz'+(++ZN)+'_',u=n=>`url(#${k}${n})`,st=s=>s.map(([o,c,op])=>`<stop offset="${o}" stop-color="${c}"${op!=null?` stop-opacity="${op}"`:''}/>`).join('');
+ const rg=(n,s,fx=.38,fy=.32,r=.75)=>`<radialGradient id="${k}${n}" cx=".5" cy=".5" fx="${fx}" fy="${fy}" r="${r}">${st(s)}</radialGradient>`;
+ const lg=(n,s,x2=0,y2=1)=>`<linearGradient id="${k}${n}" x1="0" y1="0" x2="${x2}" y2="${y2}">${st(s)}</linearGradient>`;
+ const defs='<defs>'+[
+  rg('nuc',[[0,'#ece9f6'],[.7,'#cbc4e3'],[1,'#a99fcc']],.4,.35,.7),
+  rg('giaC',[[0,'#f7f3df'],[.6,'#e6ddb6'],[1,'#c9bb85']]),rg('giaT',[[0,'#f3f7ee'],[.6,'#dfe9d6'],[1,'#b9ccab']]),
+  rg('asc',[[0,'#d9a560'],[.6,'#a86c2c'],[1,'#7a4a17']],.36,.3,.8),rg('ascIn',[[0,'#f2dfb0'],[.7,'#dcbd7c'],[1,'#c19b52']]),
+  rg('blast',[[0,'#e9d6a6'],[1,'#bf9a58']],.36,.3,.75),rg('larva',[[0,'#f6ecd0'],[1,'#d3b679']],.4,.35,.8),
+  rg('skin',[[0,'#f6d8c2'],[1,'#e2b496']],.5,.2,.9),lg('derm',[[0,'#f2cdb7'],[1,'#e7b9a2']]),lg('epi',[[0,'#e9b896'],[1,'#f3cfb3']]),
+  rg('mac',[[0,'#eef0f9'],[.65,'#d5daf0'],[1,'#b3bbe0']]),rg('ama',[[0,'#e7dcf4'],[1,'#a993cf']],.4,.35,.8),
+  rg('rbc',[[0,'#e7a3a0'],[.35,'#d98783'],[.75,'#bf5056'],[1,'#9b3640']],.5,.5,.55),
+  rg('worm',[[0,'#fbefe0'],[.6,'#ecd2b4'],[1,'#c9a17a']],.4,.3,.8),lg('wormL',[[0,'#f5e3cb'],[.5,'#ead1b1'],[1,'#c9a17a']]),
+  rg('heart',[[0,'#e99a94'],[.55,'#c95d5b'],[1,'#8e2e35']],.36,.3,.8),rg('spleen',[[0,'#c7869a'],[.6,'#9a4f6a'],[1,'#6e2c47']],.36,.3,.8),rg('liver',[[0,'#c98068'],[.6,'#a2533f'],[1,'#74321f']],.36,.3,.8),
+  rg('gut',[[0,'#f8d9cf'],[.6,'#eab3a5'],[1,'#cf8574']]),lg('lum',[[0,'#f3e6c9'],[1,'#e7d4a8']]),
+  lg('water',[[0,'#d6ecf6'],[1,'#9ccbe4']]),lg('soil',[[0,'#b48a5a'],[1,'#7f5a35']]),lg('soilD',[[0,'#d9c39a'],[1,'#b9986a']]),
+  rg('leaf',[[0,'#b9e09a'],[.6,'#7bb85a'],[1,'#4f8a37']]),rg('feces',[[0,'#a77a4c'],[1,'#6d4b2a']],.38,.3,.8),
+  rg('glass',[[0,'#ffffff',.9],[1,'#d7ebf5',.5]],.3,.2,.9)
+ ].join('')+`<filter id="${k}sh" x="-20%" y="-20%" width="140%" height="150%"><feGaussianBlur in="SourceAlpha" stdDeviation="3"/><feOffset dx="1.5" dy="3.5" result="o"/><feFlood flood-color="#3a2a1a" flood-opacity=".2"/><feComposite in2="o" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="${k}halo" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5"/></filter></defs>`;
+ return {u,defs,sh:` filter="url(#${k}sh)"`,halo:` filter="url(#${k}halo)"`};}
+const zP=(d,f='none',s='none',w=0,x='')=>`<path d="${d}" fill="${f}"${s!=='none'?` stroke="${s}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`:''}${x}/>`;
+const zE=(cx,cy,rx,ry,f,s='none',w=0,rot=0,x='')=>`<ellipse cx="${r1(cx)}" cy="${r1(cy)}" rx="${r1(rx)}" ry="${r1(ry)}" fill="${f}"${s!=='none'?` stroke="${s}" stroke-width="${w}"`:''}${rot?` transform="rotate(${r1(rot)} ${r1(cx)} ${r1(cy)})"`:''}${x}/>`;
+function zMem(poly,c,ci,w=2.6){const d=zSmooth(poly);return zP(d,'none',c,w)+zP(d,'none',ci,w*.38);}
+// texto do tema (herda var(--ink)) com halo da superfície
+function ztx(x,y,s,o={}){const {size=15,anchor='start',weight=600,color=null,lh=1.2}=o;const L=Array.isArray(s)?s:[s];return `<text x="${r1(x)}" y="${r1(y)}" font-size="${size}" text-anchor="${anchor}" font-weight="${weight}" class="pz-t"${color?` style="fill:${color}"`:''} paint-order="stroke" stroke-width="4" stroke-linejoin="round">${L.map((l,i)=>`<tspan x="${r1(x)}" dy="${i?r1(size*lh):0}">${xe(l)}</tspan>`).join('')}</text>`;}
+const zlab=(x,y,s,o={})=>`<g class="atlas-label">${ztx(x,y,s,o)}</g>`;
+function zlead(x1,y1,x2,y2,s,o={}){const anchor=o.anchor||(x2<x1?'end':'start');const dx=anchor==='end'?-5:anchor==='middle'?0:5;return `<g class="atlas-label"><path d="M${r1(x1)},${r1(y1)}L${r1(x2)},${r1(y2)}" class="pz-ld" stroke-width="1.1"/><circle cx="${r1(x1)}" cy="${r1(y1)}" r="2.4" class="pz-ldd"/>${ztx(x2+dx,y2+(o.dy??5),s,{size:o.size||14,anchor,weight:o.weight||500})}</g>`;}
+function zhead(x,y,a,c,s=11){return `<path d="M${r1(x)},${r1(y)}L${r1(x-s*Math.cos(a-.42))},${r1(y-s*Math.sin(a-.42))}L${r1(x-s*Math.cos(a+.42))},${r1(y-s*Math.sin(a+.42))}Z" fill="${c}"/>`;}
+function zar(pts,o={}){const c=o.color||'#35685b',w=o.w||3,s=o.s||12,n=pts.length;let a=pts[n-2],b=pts[n-1];if(o.q&&n===3)a=pts[1];if(o.c&&n===4)a=pts[2];const ang=Math.atan2(b[1]-a[1],b[0]-a[0]),sh=s*.75,e=[b[0]-sh*Math.cos(ang),b[1]-sh*Math.sin(ang)],Q=pts.slice(0,-1).concat([e]);const d=o.c&&n===4?`M${pt(Q[0])}C${pt(Q[1])} ${pt(Q[2])} ${pt(Q[3])}`:o.q&&n===3?`M${pt(Q[0])}Q${pt(Q[1])} ${pt(Q[2])}`:'M'+Q.map(pt).join('L');return `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${o.dash?' stroke-dasharray="7 6"':''}/>`+zhead(b[0],b[1],ang,c,s);}
+const zbd=(x,y,n,c='#8a3560')=>`<circle cx="${x}" cy="${y}" r="14" fill="${c}"/><text x="${x}" y="${y+5.5}" font-size="16" font-weight="800" text-anchor="middle" style="fill:#fff">${n}</text>`;
+
+// ===== Figura: cisto de Giardia × ovo de Ascaris (stage 0,1,2; seco=true: solo seco e ao sol) =====
+// camada mamilonada: saliências arredondadas e irregulares
+function pzMamil(cx,cy,a,b,n,amp,seed){const R=zRand(seed);const pts=[];const B=[];for(let i=0;i<n;i++)B.push({t:(i+R()*.4)/n*2*Math.PI,h:amp*(.55+R()*.6),w:(2*Math.PI/n)*(.5+R()*.2)});const N=n*8;for(let i=0;i<N;i++){const t=i/N*2*Math.PI;let k=0;B.forEach(q=>{const dt=Math.abs(((t-q.t+3*Math.PI)%(2*Math.PI))-Math.PI);if(dt<q.w)k=Math.max(k,q.h*Math.sqrt(1-(dt/q.w)**2));});pts.push([cx+(a+k)*Math.cos(t),cy+(b+k)*Math.sin(t)]);}return pts;}
+function figCistoOvo(stage=0,seco=false,stack=false){const K=zKit();let g=K.defs;const W=900,H=440;let gA='';
+ g+=`<rect x="0" y="0" width="${W}" height="${H}" rx="18" class="pz-bg"/>`;
+ // ---- Painel A: cisto de Giardia ----
+ const ax=225,ay=215;
+ g+=ztx(ax,44,'Cisto de Giardia',{size:22,anchor:'middle',weight:800})+ztx(ax,68,'protozoário · forma infectante',{size:15,anchor:'middle',weight:500});
+ const wall=zBlobPts(ax,ay,98,74,16,.02,4);
+ g+=zP(zSmooth(wall),K.u('giaC'),'#8b7a3e',7,K.sh)+zP(zSmooth(zScale(wall,ax,ay,.955)),'none','#f6f0d6',2.2);
+ const cyt=zBlobPts(ax+6,ay+2,80,58,14,.05,9);
+ g+=zP(zSmooth(cyt),'#efe6c4','#b7a466',1.6);
+ const nucs=[[ax-44,ay-22],[ax-22,ay-34],[ax-48,ay+6],[ax-24,ay-6]];
+ const nucPolys=nucs.map(([x,y],i)=>zBlobPts(x,y,11,9,10,.05,i+20));
+ g+=zDots(cyt,70,'#9c8a4b',{rmin:.8,rmax:2,avoid:nucPolys,seed:5,op:.45});
+ // axonemas (pares de filamentos longitudinais)
+ g+=zP(`M${ax-58},${ay+30}C${ax-10},${ay+12} ${ax+30},${ay-4} ${ax+72},${ay-20}`,'none','#7d6a2e',2.2)+zP(`M${ax-56},${ay+40}C${ax-6},${ay+22} ${ax+34},${ay+8} ${ax+74},${ay-8}`,'none','#7d6a2e',2.2);
+ // corpos medianos / fragmentos do disco
+ g+=zP(`M${ax+20},${ay+26}q10,-8 22,-4`,'none','#6e5b22',4)+zP(`M${ax+30},${ay+40}q8,-6 18,-3`,'none','#6e5b22',3.5)+zP(`M${ax+12},${ay-30}q14,4 22,14`,'none','#a28f52',3);
+ nucPolys.forEach((p,i)=>{const [x,y]=nucs[i];g+=zP(zSmooth(p),K.u('nuc'),'#6f6699',1.4)+`<circle cx="${x+1}" cy="${y}" r="3.2" fill="#4d4478"/>`;});
+ g+=zlead(ax-98,ay-60,ax-118,ay-104,'parede espessa',{anchor:'middle',dy:-8})
+   +zlead(ax-36,ay-20,ax-150,ay+124,'4 núcleos',{anchor:'middle',dy:20})
+   +zlead(ax+50,ay-12,ax+150,ay-96,'axonemas',{anchor:'middle',dy:-8})
+   +zlead(ax+80,ay+40,ax+130,ay+120,'espaço claro',{anchor:'middle',dy:20});
+ // selo
+ const badge=(x,y,on,txt)=>`<g><rect x="${x-140}" y="${y-20}" width="280" height="38" rx="19" fill="${on?'#2f8a5a':'#b0473f'}"/><text x="${x}" y="${y+5}" font-size="16" font-weight="800" text-anchor="middle" style="fill:#fff">${xe(txt)}</text></g>`;
+ g+=seco&&stage>0?badge(ax,H-50,false,'✗ Resseca e perde a viabilidade'):badge(ax,H-50,true,stage?'✓ Continua infectante':'✓ Já sai infectante');
+ gA=g;g='';
+ // ---- Painel B: ovo de Ascaris ----
+ const bx=665,by=215;
+ g+=ztx(bx,44,'Ovo de Ascaris',{size:22,anchor:'middle',weight:800})+ztx(bx,68,'helminto · precisa amadurecer no solo',{size:15,anchor:'middle',weight:500});
+ const outer=pzMamil(bx,by,100,76,30,10,7);
+ g+=zP(zSmooth(outer),K.u('asc'),'#5c3510',1.6,K.sh);
+ const shell=zBlobPts(bx,by,96,72,16,.01,3);
+ g+=zP(zSmooth(shell),'#d9b77a','#8b5d22',2)+zP(zSmooth(zScale(shell,bx,by,.9)),K.u('ascIn'),'#b68a43',2.4);
+ const inner=zScale(shell,bx,by,.86);
+ if(seco){
+  // solo seco e ao sol: desenvolvimento não avança e o ovo resseca
+  g+=zP(zSmooth(zBlobPts(bx,by,46,38,12,.12,11)),'#cdb38a','#8a6a3a',1.6)+zDots(zBlobPts(bx,by,44,36,12,.1,11),40,'#7a5a2a',{seed:4,op:.5});
+  g+=zlead(bx,by,bx+120,by+124,'conteúdo ressecado',{anchor:'middle',dy:20});
+  g+=badge(bx,H-50,false,'✗ Não chega a infectar');
+ }else if(stage===0){
+  const cell=zBlobPts(bx,by,58,48,14,.04,12);
+  g+=zP(zSmooth(cell),K.u('blast'),'#8a6a30',1.6)+zDots(cell,60,'#8a6a30',{seed:8,op:.4})+zE(bx+4,by-2,13,11,K.u('nuc'),'#6f6699',1.3);
+  g+=zlead(bx,by+30,bx+118,by+126,'uma única célula',{anchor:'middle',dy:20})+zlead(bx-80,by-4,bx-150,by+124,'espaço claro nos polos',{anchor:'middle',dy:20});
+  g+=badge(bx,H-50,false,'✗ Ainda não infecta');
+ }else if(stage===1){
+  const bl=[[-22,-18],[8,-24],[30,-4],[18,22],[-12,24],[-34,6],[-4,0],[12,4]];
+  bl.forEach(([dx,dy],i)=>{const p=zBlobPts(bx+dx,by+dy,19,16,10,.06,i+30);g+=zP(zSmooth(p),K.u('blast'),'#8a6a30',1.3,i===0?K.sh:'')+zE(bx+dx+2,by+dy,4.5,4,'#a99fcc','#6f6699',.8);});
+  g+=zlead(bx+24,by+20,bx+118,by+126,'várias células (mórula)',{anchor:'middle',dy:20});
+  g+=badge(bx,H-50,false,'✗ Ainda não infecta');
+ }else{
+  // larva enrolada (L dentro do ovo)
+  const spine=[];for(let i=0;i<=28;i++){const t=i/28;const ang=t*Math.PI*3.1+0.3;const r=56-34*t;spine.push([bx+r*Math.cos(ang)*1.2,by+r*Math.sin(ang)*.92]);}
+  const d=zSmooth(spine,false);
+  g+=zP(d,'none','#8a6a30',12)+zP(d,'none',K.u('larva'),8.5)+zP(d,'none','#fff8e6',2,' opacity=".7"');
+  const e=spine[0];g+=zE(e[0],e[1],6.5,5.5,'#f3e3bb','#8a6a30',1.4);
+  g+=zlead(bx+40,by-30,bx+130,by-102,'larva formada',{anchor:'middle',dy:-8});
+  g+=badge(bx,H-50,true,'✓ Ovo embrionado: infectante');
+ }
+ g+=zlead(bx-92,by-50,bx-130,by-102,'camada mamilonada',{anchor:'middle',dy:-8})+zlead(bx+86,by+40,bx+150,by+80,'casca',{anchor:'start'});
+ const gB=g;
+ if(stack){const VW=450,VH=880;const body=gA.replace(/<rect x="0" y="0" width="900" height="440" rx="18" class="pz-bg"\/>/,`<rect x="0" y="0" width="${VW}" height="${VH}" rx="18" class="pz-bg"/>`)+`<g transform="translate(-440 420)">${gB}</g>`+`<path d="M30,430 H420" class="pz-ld" stroke-dasharray="4 6"/>`+ztx(VW-14,VH-26,'Esquema original · fora de escala',{size:12,anchor:'end',weight:400})+ztx(VW-14,VH-10,'o ovo de Ascaris é cerca de 5 vezes maior que o cisto',{size:12,anchor:'end',weight:400});
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VW} ${VH}" class="pz-fig" font-family="Atkinson Hyperlegible,DM Sans,Arial,sans-serif" role="img" aria-label="Cisto de Giardia e ovo de Ascaris">${body}</svg>`;}
+ g=gA+gB;
+ g+=`<path d="M450,90 V${H-30}" class="pz-ld" stroke-dasharray="4 6"/>`;
+ g+=ztx(W-14,H-12,'Esquema original · fora de escala (o ovo de Ascaris é cerca de 5 vezes maior que o cisto)',{size:11,anchor:'end',weight:400});
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" class="pz-fig" font-family="Atkinson Hyperlegible,DM Sans,Arial,sans-serif" role="img" aria-label="Cisto de Giardia e ovo de Ascaris">${g}</svg>`;}
+
+// ===== Vinhetas das rotas de transmissão (caixa local 200×200, recortadas num círculo) =====
+// Formas do parasito (escala livre)
+function pzCyst(K,x,y,s=1,rot=0){return `<g transform="translate(${r1(x)} ${r1(y)}) rotate(${rot}) scale(${s})">${zE(0,0,9,6.6,K.u('giaC'),'#8b7a3e',1.6)}${[[-4,-2],[-1.5,-3.2],[-4.4,1.2],[-1.6,.2]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="1.25" fill="#6f6699"/>`).join('')}<path d="M-5,3.5 Q1,1 6,-2" stroke="#7d6a2e" stroke-width=".8" fill="none"/></g>`;}
+function pzEgg(K,x,y,s=1,emb=false,rot=0){const p=pzMamil(0,0,10,7.5,24,1.3,Math.round(x*7+y));let g=zP(zSmooth(p),K.u('asc'),'#5c3510',.8)+zE(0,0,9,6.6,'#e2c58a','#8b5d22',.8);g+=emb?zP('M-5,2 C-6,-4 2,-5 4,-1 C6,3 0,4 -1,1',  'none','#8a6a30',2.2):zE(0,0,5,4,K.u('blast'),'#8a6a30',.6);return `<g transform="translate(${r1(x)} ${r1(y)}) rotate(${rot}) scale(${s})">${g}</g>`;}
+function pzTropho(K,x,y,s=1,rot=0){// trofozoíto de Giardia em pera, com disco ventral, 2 núcleos e flagelos
+ return `<g transform="translate(${r1(x)} ${r1(y)}) rotate(${rot}) scale(${s})"><path d="M0,-11 C8,-11 10,-3 7,4 C5,9 2,13 0,16 C-2,13 -5,9 -7,4 C-10,-3 -8,-11 0,-11Z" fill="${K.u('giaT')}" stroke="#55784a" stroke-width="1.1"/><path d="M0,-9 C6,-9 7,-3 5,1 C3,3 -3,3 -5,1 C-7,-3 -6,-9 0,-9Z" fill="none" stroke="#7a9a6a" stroke-width=".9"/><ellipse cx="-2.6" cy="-4" rx="2" ry="2.6" fill="#a99fcc" stroke="#6f6699" stroke-width=".6"/><ellipse cx="2.6" cy="-4" rx="2" ry="2.6" fill="#a99fcc" stroke="#6f6699" stroke-width=".6"/><path d="M-1,16 q-2,6 -6,9 M1,16 q2,6 6,9 M-6,6 q-6,3 -9,8 M6,6 q6,3 9,8" stroke="#55784a" stroke-width=".7" fill="none"/></g>`;}
+function pzTrypo(K,x,y,s=1,rot=0){// tripomastigota em C, com membrana ondulante, cinetoplasto posterior e flagelo livre
+ return `<g transform="translate(${r1(x)} ${r1(y)}) rotate(${rot}) scale(${s})"><path d="M-14,4 C-12,-6 -2,-10 8,-6 C13,-4 15,0 16,3" stroke="#6b4a9a" stroke-width="5.2" fill="none" stroke-linecap="round"/><path d="M-14,4 C-12,-6 -2,-10 8,-6 C13,-4 15,0 16,3" stroke="#cbb8ea" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M-12,1 q3,-6 6,-6 q3,-3 7,-3 q4,0 7,3" stroke="#8a72b8" stroke-width=".8" fill="none"/><circle cx="0" cy="-6" r="1.8" fill="#4a2f7a"/><circle cx="-13" cy="3.5" r="1.2" fill="#2b1850"/><path d="M16,3 q4,5 2,10" stroke="#6b4a9a" stroke-width=".9" fill="none"/></g>`;}
+function pzPromast(K,x,y,s=1,rot=0){// promastigota alongado com flagelo anterior
+ return `<g transform="translate(${r1(x)} ${r1(y)}) rotate(${rot}) scale(${s})"><path d="M-10,0 C-10,-3 -4,-3.6 4,-2.6 C8,-2 10,-1 10,0 C10,1 8,2 4,2.6 C-4,3.6 -10,3 -10,0Z" fill="#d9cdee" stroke="#6b4a9a" stroke-width=".9"/><circle cx="-1" cy="0" r="1.6" fill="#4a2f7a"/><circle cx="5" cy="0" r=".9" fill="#2b1850"/><path d="M10,0 q5,-3 9,0 q4,3 8,0" stroke="#6b4a9a" stroke-width=".8" fill="none"/></g>`;}
+const pzAma=(K,x,y,s=1)=>`<g transform="translate(${r1(x)} ${r1(y)}) scale(${s})">${zE(0,0,3.6,2.8,K.u('ama'),'#5a3d8a',.6)}<circle cx="-.6" cy="0" r="1.2" fill="#4a2f7a"/><rect x="1.2" y="-.4" width="1.6" height=".8" fill="#2b1850"/></g>`;
+// pessoa de perfil (busto), olhando para a direita
+function pzPerson(K,x,y,s=1,{skin='#c98a5e',hair='#3a2a1e',shirt='#2a6497',mouth='closed'}={}){const sk=skin;
+ return `<g transform="translate(${r1(x)} ${r1(y)}) scale(${s})"${K.sh}><path d="M-40,80 C-40,48 -22,34 0,34 C24,34 40,48 40,80Z" fill="${shirt}"/><path d="M-8,20 h16 v18 h-16z" fill="${sk}"/><path d="M-22,-6 C-22,-28 -6,-36 6,-34 C20,-32 26,-20 26,-8 C26,-2 30,2 31,6 C32,9 28,9 27,10 C28,14 26,16 24,16 C25,20 22,24 16,24 C8,24 2,26 -4,24 C-16,20 -22,10 -22,-6Z" fill="${sk}"/><path d="M-24,-4 C-28,-26 -10,-40 8,-36 C22,-33 28,-22 26,-14 C18,-20 6,-22 -2,-16 C-8,-10 -12,-4 -14,4 C-20,4 -23,0 -24,-4Z" fill="${hair}"/><circle cx="14" cy="-8" r="2.2" fill="#2a1d14"/><path d="M8,-14 q6,-3 11,0" stroke="#2a1d14" stroke-width="1.4" fill="none"/>${mouth==='open'?`<ellipse cx="22" cy="15" rx="3.4" ry="2.6" fill="#7a3030"/>`:`<path d="M19,15 q3,1 6,0" stroke="#7a3a2a" stroke-width="1.4" fill="none"/>`}<ellipse cx="-6" cy="0" rx="4.5" ry="6" fill="${sk}" stroke="#a9704a" stroke-width="1"/></g>`;}
+const pzLens=(K,x,y,r,inner,lx,ly)=>`<g>${lx!=null?`<path d="M${r1(lx)},${r1(ly)}L${r1(x)},${r1(y)}" class="pz-ld" stroke-width="1.2" stroke-dasharray="3 3"/>`:''}<circle cx="${x}" cy="${y}" r="${r}" fill="#fbfaf2" stroke="#5f6f69" stroke-width="3"${K.sh}/>${inner}<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="#fff" stroke-width="1" opacity=".7"/></g>`;
+const pzGround=(K,y=150,dry=false)=>zP(`M-10,${y} C40,${y-6} 80,${y+4} 120,${y-2} C160,${y-6} 190,${y+2} 210,${y} V210 H-10Z`,K.u(dry?'soilD':'soil'));
+const pzSky=(c1='#e8f2f6',c2='#f7f3e6')=>`<rect x="0" y="0" width="200" height="200" fill="${c1}"/><rect x="0" y="110" width="200" height="90" fill="${c2}"/>`;
+const pzFeces=(K,x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"${K.sh}>${zP('M-22,6 C-24,-2 -14,-6 -8,-6 C-8,-14 4,-16 8,-8 C16,-10 24,-2 20,6 Z',K.u('feces'),'#4f3318',1.2)}<path d="M-14,-1 q6,-3 12,0 M0,-6 q4,-1 6,1" stroke="#c49a6a" stroke-width="1.2" fill="none" opacity=".7"/></g>`;
+function pzLettuce(K,x,y,s=1){let g='';[[-14,4,-30],[14,4,30],[0,-6,0],[-6,10,-10],[8,10,12]].forEach(([dx,dy,r],i)=>{g+=zP(`M0,16 C-14,8 -16,-14 0,-22 C16,-14 14,8 0,16Z`,K.u('leaf'),'#3f7a2c',1.2,'').replace('<path',`<path transform="translate(${dx} ${dy}) rotate(${r})"`)+`<path d="M0,14 V-18" transform="translate(${dx} ${dy}) rotate(${r})" stroke="#d6efc2" stroke-width="1.2" opacity=".8"/>`;});return `<g transform="translate(${x} ${y}) scale(${s})"${K.sh}>${g}</g>`;}
+function pzVilli(K,yTop=60,n=4){let g='';const w=200/n;for(let i=0;i<n;i++){const x=i*w+w/2;g+=zP(`M${x-w*.42},200 C${x-w*.42},${yTop+40} ${x-w*.38},${yTop} ${x},${yTop} C${x+w*.38},${yTop} ${x+w*.42},${yTop+40} ${x+w*.42},200Z`,K.u('gut'),'#b56a5c',1.6);g+=zP(`M${x-w*.32},200 C${x-w*.32},${yTop+46} ${x-w*.28},${yTop+10} ${x},${yTop+10} C${x+w*.28},${yTop+10} ${x+w*.32},${yTop+46} ${x+w*.32},200`,'none','#f6c9bd',1.2);for(let k=0;k<6;k++){const yy=yTop+24+k*20;g+=zE(x-w*.36,yy,2.2,3.4,'#8a5aa0')+zE(x+w*.36,yy,2.2,3.4,'#8a5aa0');}}return g;}
+function pzSkin(K,y0=96){// pele em corte: epiderme em camadas e derme com vaso
+ let g=`<rect x="0" y="${y0}" width="200" height="${200-y0}" fill="${K.u('derm')}"/>`;g+=zP(`M0,${y0} C50,${y0-4} 100,${y0+4} 200,${y0-2} V${y0+22} C120,${y0+26} 60,${y0+18} 0,${y0+22}Z`,K.u('epi'),'#b77d5c',1.2);
+ for(let i=0;i<14;i++)g+=zE(8+i*14,y0+11,5,3,'#f6d5bd','#c48d6d',.5);
+ g+=zP(`M0,${y0+70} C60,${y0+58} 120,${y0+82} 200,${y0+66}`,'none','#b9404a',10)+zP(`M0,${y0+70} C60,${y0+58} 120,${y0+82} 200,${y0+66}`,'none','#e58f8c',5);return g;}
+function pzMacro(K,x,y,s=1,n=6,seed=3){const p=zBlobPts(x,y,40*s,32*s,14,.12,seed);let g=zP(zSmooth(p),K.u('mac'),'none',0,K.sh)+zDots(p,30,'#7c86b8',{seed,op:.35});const np=zBlobPts(x-12*s,y+6*s,13*s,10*s,10,.06,seed+2);g+=zP(zSmooth(np),'#7d4ca2','#4a1e6a',1);const R=zRand(seed*31);for(let i=0;i<n;i++){const a=R()*6.28,q=.3+R()*.55;g+=pzAma(K,x+8*s+22*s*q*Math.cos(a),y-4*s+16*s*q*Math.sin(a),s*1.2);}g+=zMem(p,'#7c86b8','#eef0fb',2.4);return g;}
+function pzNest(insect,x,y,w,flip=false){if(typeof insectSVG!=='function')return '';let sv=insectSVG(insect);sv=sv.replace(/<rect width="240" height="160" rx="12" fill="[^"]*"\/>/,'');sv=sv.replace('<svg ',`<svg x="${x}" y="${y}" width="${w}" height="${r1(w*160/240)}" `);return flip?`<g transform="translate(${2*x+w} 0) scale(-1 1)">${sv}</g>`:sv;}
+function pzMoon(x,y){return `<circle cx="${x}" cy="${y}" r="13" fill="#f6efc6"/><circle cx="${x+6}" cy="${y-4}" r="12" fill="#2d3c5e"/>`;}
+
+const PZV={
+ // ---------- Giardia ----------
+ g0:K=>pzSky()+pzGround(K,140)+`<path d="M20,140 v-46 h44 v46" fill="#e9dcc2" stroke="#8a6a45" stroke-width="2"/><path d="M14,96 L42,72 L70,96Z" fill="#b8664a"/>`+pzFeces(K,112,148,1.5)+`<path d="M118,166 C128,180 150,184 176,186" stroke="#7a5634" stroke-width="5" fill="none" stroke-dasharray="2 6" stroke-linecap="round"/>`+pzLens(K,136,64,30,pzCyst(K,128,60,1.2,-10)+pzCyst(K,146,72,1,25)+pzCyst(K,144,52,.8,60),118,138),
+ g1:K=>`<rect x="0" y="0" width="200" height="200" fill="#e8f2f6"/>`+pzGround(K,52)+zP('M20,52 V200 H200 V52',K.u('soil'))+`<rect x="70" y="40" width="62" height="160" fill="#9b8f80"/><rect x="78" y="40" width="46" height="160" fill="${K.u('water')}"/><rect x="66" y="34" width="70" height="10" rx="3" fill="#8a7d6e"/>`+[...Array(9)].map((_,i)=>`<path d="M70,${60+i*16}h8M124,${60+i*16}h8" stroke="#7a6f62" stroke-width="1"/>`).join('')+`<path d="M78,92 C96,86 108,98 124,92" stroke="#ffffff" stroke-width="1.5" fill="none" opacity=".7"/>`+zP('M0,110 h34 a6,6 0 0 1 6,6 v4 h-40Z','#6b6b6b')+zP('M38,118 C52,122 60,132 76,138 C60,146 50,150 40,152',"none","#6d4b2a",4,' stroke-dasharray="3 5" opacity=".9"')+zar([[44,128],[62,136],[78,146]],{color:'#6d4b2a',w:2.2,s:9,q:true})+pzCyst(K,98,150,.8)+pzCyst(K,108,172,.7,40)+pzCyst(K,92,186,.6,-20),
+ g2:K=>pzSky('#f2f0e6','#f2f0e6')+pzPerson(K,70,92,1.15,{mouth:'open'})+`<g transform="translate(132 98) rotate(-28)"><path d="M-14,-24 L14,-24 L11,24 L-11,24Z" fill="${K.u('glass')}" stroke="#7aa6bf" stroke-width="2"/><path d="M-13,-10 L13,-10 L11,24 L-11,24Z" fill="#cfe7f3" opacity=".8"/></g>`+pzLens(K,136,148,24,pzCyst(K,130,144,1,10)+pzCyst(K,144,154,.8,-30),136,112),
+ g3:K=>`<rect x="0" y="0" width="200" height="200" fill="${K.u('lum')}"/>`+pzVilli(K,56,4)+pzTropho(K,46,52,1.6,180)+pzTropho(K,96,48,1.5,170)+pzTropho(K,148,50,1.6,195)+pzTropho(K,28,96,1.3,120)+pzTropho(K,124,92,1.3,230)+pzTropho(K,176,96,1.3,240),
+ // ---------- Ascaris ----------
+ a0:K=>pzSky()+pzGround(K,130)+`<path d="M140,130 v-40 h44 v40" fill="#e9dcc2" stroke="#8a6a45" stroke-width="2"/><path d="M134,92 L162,68 L190,92Z" fill="#b8664a"/>`+pzFeces(K,70,138,1.6)+pzLens(K,72,64,30,pzEgg(K,62,58,1.2,false,10)+pzEgg(K,82,72,.95,false,-20),70,122),
+ a1:K=>`<rect x="0" y="0" width="200" height="200" fill="#e9eef0"/><rect x="0" y="0" width="200" height="54" fill="#dfe9d2"/>`+zP('M0,54 C50,48 120,60 200,52 V200 H0Z',K.u('soil'))+zDots(zBlobPts(100,128,110,80,10,.05,3),90,'#5a3e22',{seed:6,op:.45})+`<g opacity=".5">${pzEgg(K,40,80,1.2,false)}</g>${zar([[60,82],[84,92]],{color:'#7a5634',w:2,s:8})}${pzEgg(K,100,104,1.6,false)}${zar([[120,110],[140,124]],{color:'#7a5634',w:2,s:8})}${pzEgg(K,160,140,2.2,true)}`+`<path d="M20,30 q8,-14 16,0 M44,24 q8,-16 18,0" stroke="#4f8a37" stroke-width="3" fill="none"/>`+`<circle cx="176" cy="26" r="14" fill="none" stroke="#5f6f69" stroke-width="2.2"/><path d="M176,26 v-9 M176,26 l7,4" stroke="#5f6f69" stroke-width="2.2"/>`,
+ a2:K=>pzSky('#f2f0e6','#f2f0e6')+pzPerson(K,64,96,1.1,{mouth:'open',shirt:'#a3601b'})+pzLettuce(K,134,104,1.4)+pzLens(K,136,150,24,pzEgg(K,130,146,1,true)+pzEgg(K,144,156,.8,true,30),140,120),
+ a3:K=>`<rect x="0" y="0" width="200" height="200" fill="#f5e6d8"/>`+zP('M-10,40 C40,30 160,30 210,40 V160 C160,170 40,170 -10,160Z',K.u('gut'),'#b56a5c',2.4)+zP('M-10,58 C40,50 160,50 210,58 V142 C160,150 40,150 -10,142Z','#f4ddc0','#d39a84',1.2)+(()=>{let g='';const R=zRand(77);for(let i=0;i<10;i++){const y=72+i*7.5+R()*4,x0=-6+R()*40,x3=150+R()*56;const d=`M${r1(x0)},${r1(y)} C${r1(40+R()*30)},${r1(y-30+R()*60)} ${r1(100+R()*30)},${r1(y-30+R()*60)} ${r1(x3)},${r1(Math.min(138,Math.max(66,y-14+R()*28)))}`;g+=zP(d,'none','#b8916a',8.5)+zP(d,'none',K.u('wormL'),6.4)+zP(d,'none','#fff6e8',1.2,' opacity=".6"');}return g;})(),
+ // ---------- Chagas ----------
+ c0:K=>`<rect x="0" y="0" width="200" height="200" fill="#2d3c5e"/>`+pzMoon(36,34)+`<circle cx="80" cy="22" r="1.4" fill="#fff"/><circle cx="168" cy="40" r="1.2" fill="#fff"/><rect x="0" y="128" width="200" height="72" fill="#5c6e92"/><path d="M0,128 C40,118 80,118 120,128 H200 V200 H0Z" fill="#8094bb"/><ellipse cx="50" cy="118" rx="44" ry="16" fill="#eef1f8"/>`+`<g transform="translate(96 112) rotate(-90)">${pzPerson(K,0,0,.9,{skin:'#b87a52',shirt:'#6f8fc0'})}</g>`+pzNest('barbeiro',112,46,92),
+ c1:K=>`<rect x="0" y="0" width="200" height="200" fill="#efe2d6"/>`+pzSkin(K,104)+`<path d="M84,104 l8,16 l8,-16" fill="#9b3640" opacity=".8"/><circle cx="92" cy="106" r="5" fill="#b03c35" opacity=".85"/>`+zP('M126,98 C122,88 134,84 140,90 C150,86 156,96 150,102 C146,108 128,106 126,98Z',K.u('feces'),'#4f3318',1)+pzNest('barbeiro',112,12,84)+pzLens(K,62,58,28,pzTrypo(K,58,54,1.1,10)+pzTrypo(K,66,68,.85,-25),126,98),
+ c2:K=>`<rect x="0" y="0" width="200" height="200" fill="#efe2d6"/>`+pzSkin(K,84)+`<path d="M86,84 l10,22 l10,-22Z" fill="#c9585d" opacity=".9"/>`+zP('M104,78 C100,70 110,66 116,72 C124,68 130,76 124,82 C120,86 106,86 104,78Z',K.u('feces'),'#4f3318',1)+`<g${K.sh}><path d="M150,0 C150,30 140,56 124,70 C116,76 108,74 106,66 C104,58 112,50 120,44 C130,30 134,16 132,0Z" fill="#c98a5e" stroke="#9a6440" stroke-width="1.4"/><path d="M110,66 C112,62 118,60 122,62" stroke="#f2d0b8" stroke-width="3" fill="none"/></g>`+zar([[128,82],[110,90],[98,100]],{color:'#8a3560',w:2.4,s:9,q:true})+pzTrypo(K,92,126,1.2,70)+pzTrypo(K,110,146,1.1,30)+pzTrypo(K,76,150,1,-20),
+ c3:K=>`<rect x="0" y="0" width="200" height="200" fill="#f6ece8"/>`+`<g${K.sh}>${zP('M100,176 C60,150 30,118 34,84 C38,58 62,46 84,54 C92,40 104,32 116,34 C142,38 166,62 162,96 C158,130 130,156 100,176Z',K.u('heart'),'#6e2029',2)}</g>`+zP('M84,54 C88,40 84,24 92,14 M116,34 C118,22 126,14 134,10','none','#a8414a',9)+zP('M64,52 C60,42 52,36 44,34','none','#6e8fc0',8)+[[76,98],[118,86],[110,132],[70,130]].map(([x,y],i)=>zE(x,y,14-i,10-i/2,'#f3b6ae','none',0,i*30,' opacity=".75"')).join('')+pzLens(K,140,146,26,`<circle cx="140" cy="146" r="25" fill="#e9aaa4"/>`+[[-10,-6],[-4,-8],[2,-4],[-8,0],[-2,2],[4,4],[-4,8],[8,-2]].map(([a,b])=>pzAma(K,140+a*1.4,146+b*1.4,1.15)).join('')+`<path d="M118,134 C130,130 150,138 162,132 M118,160 C130,156 150,164 162,158" stroke="#c9585d" stroke-width="2" fill="none"/>`,116,128)+`<rect x="132" y="40" width="58" height="30" rx="6" fill="#fff" opacity=".85"/><path d="M136,58 h10 l4,-10 l5,18 l4,-13 l3,5 h8 l3,-6 l3,6 h8" stroke="#8a3560" stroke-width="2.2" fill="none"/>`,
+ cOral:K=>pzSky('#f6efe2','#f6efe2')+`<g transform="translate(100 104)"${K.sh}><path d="M-26,-40 L26,-40 L20,44 L-20,44Z" fill="${K.u('glass')}" stroke="#7a6a9a" stroke-width="2"/><path d="M-24,-20 L24,-20 L20,44 L-20,44Z" fill="#5a2a5e" opacity=".9"/><path d="M-22,-20 C-8,-26 8,-14 24,-20" stroke="#8a4a8e" stroke-width="2" fill="none"/><path d="M10,-40 L22,-70" stroke="#d2453c" stroke-width="5" stroke-linecap="round"/></g>`+[[66,96],[136,84],[144,140]].map(([x,y],i)=>`<circle cx="${x}" cy="${y}" r="9" fill="#5a2a5e"/><circle cx="${x-3}" cy="${y-3}" r="2.5" fill="#fff" opacity=".4"/>`).join(''),
+ // ---------- Leishmaniose visceral ----------
+ l0:K=>`<rect x="0" y="0" width="200" height="200" fill="#e9d8c4"/><rect x="0" y="0" width="200" height="100" fill="#f2c79a"/><circle cx="160" cy="80" r="22" fill="#f6a35a" opacity=".8"/>`+zP('M0,120 C60,110 140,126 200,114 V200 H0Z',K.u('soilD'))+[[30,140],[64,152],[100,138],[150,156],[176,134],[44,172],[120,176]].map(([x,y],i)=>zE(x,y,9,4,['#9c7a3c','#7d8a3a','#b0743a'][i%3],'#5c4520',.8,i*25)).join('')+[[86,150],[132,144]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="6" fill="#e0a43a" stroke="#9a6a1a" stroke-width="1"/>`).join('')+`<path d="M10,120 C14,70 24,50 20,0" stroke="#6e4a2a" stroke-width="12" fill="none"/><circle cx="30" cy="20" r="34" fill="#5a8a3e" opacity=".9"/>`+`<g transform="translate(116 162)"${K.sh}><ellipse cx="0" cy="0" rx="26" ry="11" fill="#c9a06a"/><circle cx="26" cy="-10" r="10" fill="#c9a06a"/><path d="M30,-18 l6,-6 l2,9Z" fill="#9a7040"/><path d="M-18,8 v14 M-8,8 v14 M10,8 v14 M20,8 v14" stroke="#9a7040" stroke-width="4" stroke-linecap="round"/><path d="M-26,-4 q-10,-8 -8,-16" stroke="#9a7040" stroke-width="3" fill="none"/></g>`+pzNest('flebo',54,40,92),
+ l1:K=>`<rect x="0" y="0" width="200" height="200" fill="#f1e6da"/>`+pzSkin(K,100)+pzNest('flebo',40,36,110)+`<path d="M96,94 L90,128" stroke="#3b2a1a" stroke-width="2.2"/>`+pzPromast(K,84,138,1.3,120)+pzPromast(K,100,150,1.2,40)+pzPromast(K,70,152,1.1,-10)+pzPromast(K,108,132,1,80),
+ l2:K=>`<rect x="0" y="0" width="200" height="200" fill="#f2ecf4"/>`+pzMacro(K,104,112,1.9,10,5)+pzPromast(K,30,40,1.3,30)+zar([[44,54],[70,76]],{color:'#6b4a9a',w:2,s:8}),
+ l3:K=>`<rect x="0" y="0" width="200" height="200" fill="#f4ece6"/>`+`<path d="M40,0 C30,60 30,140 50,200 H150 C170,140 170,60 160,0Z" fill="#e8c2a6"/>`+[0,1,2].map(i=>`<path d="M${48+i*2},${30+i*16} C70,${46+i*16} 130,${46+i*16} ${152-i*2},${30+i*16}" stroke="#f3dfcf" stroke-width="5" fill="none" opacity=".8"/>`).join('')+`<g${K.sh}>${zP('M50,62 C70,46 110,50 120,70 C126,84 110,96 90,96 C70,96 52,88 50,62Z',K.u('liver'),'#5a2414',1.6)}${zP('M118,74 C134,62 158,66 160,90 C162,112 148,128 132,124 C120,120 116,98 118,74Z',K.u('spleen'),'#4e1a32',1.6)}</g>`+`<path d="M64,150 h72" stroke="#efe6d6" stroke-width="12" stroke-linecap="round"/><circle cx="64" cy="150" r="9" fill="#efe6d6"/><circle cx="136" cy="150" r="9" fill="#efe6d6"/><path d="M72,150 h56" stroke="#c4566a" stroke-width="4" stroke-dasharray="4 3"/>`,
 };
 
-// ================= Aula 13: Conselho de Saúde Única =================
+// Rotas: 4 estações, título curto e linha de apoio
+const ROTAS={
+ giardia:{nome:'Giardíase',agente:'Giardia duodenalis',grupo:'Protozoário',cor:'#4f7e45',st:[
+  ['g0','Fezes com cistos','de pessoa infectada'],['g1','Esgoto chega à água','a água continua transparente'],['g2','Ingestão de cistos','água, alimento ou mãos'],['g3','Intestino delgado','trofozoítos aderem à mucosa']]},
+ ascaris:{nome:'Ascaridíase',agente:'Ascaris lumbricoides',grupo:'Helminto (nematódeo)',cor:'#a86c2c',st:[
+  ['a0','Fezes com ovos','no solo, sem saneamento'],['a1','Ovo amadurece no solo','em algumas semanas: embrionado'],['a2','Ingestão de ovos','hortaliças cruas, mãos com terra'],['a3','Vermes no intestino','muitos podem obstruí-lo']]},
+ chagas:{nome:'Doença de Chagas',agente:'Trypanosoma cruzi',grupo:'Protozoário',cor:'#6b4a9a',st:[
+  ['c0','Barbeiro pica','à noite, durante o sono'],['c1','Fezes perto da picada','com o parasito'],['c2','Coçar leva as fezes','à lesão da pele ou a mucosas'],['c3','Coração (fase crônica)','inflamação, lesões e arritmias']],oral:['cOral','Via oral','alimento ou bebida contaminados']},
+ leish:{nome:'Leishmaniose visceral',agente:'Leishmania infantum',grupo:'Protozoário',cor:'#8a3560',st:[
+  ['l0','Flebotomíneo infectado','quintal com matéria orgânica'],['l1','Picada da fêmea','o parasito entra na picada'],['l2','Dentro de macrófagos','o parasito se multiplica'],['l3','Baço, fígado e medula','órgãos aumentados']]},
+};
+const pzX=(x,y)=>`<circle cx="${r1(x)}" cy="${r1(y)}" r="17" fill="#b0473f" stroke="#fff" stroke-width="2.5"/><path d="M${r1(x-7)},${r1(y-7)}L${r1(x+7)},${r1(y+7)}M${r1(x+7)},${r1(y-7)}L${r1(x-7)},${r1(y+7)}" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/>`;
+// figRota: dz = chave; step = estações visíveis (0–4); cuts = índices de setas interrompidas (0–2); o = {cols:2 para celular, oral:true}
+function figRota(dz,step=4,cuts=[],o={}){const K=zKit(),R=ROTAS[dz],two=o.cols===2;const oral=o.oral&&R.oral;const W=two?520:960,H=two?(oral?820:700):(oral?470:330);
+ let g=K.defs+`<rect width="${W}" height="${H}" rx="18" class="pz-bg"/>`;
+ const rr=two?92:86;
+ const pos=two?[[130,130],[390,130],[130,420],[390,420]]:[[120,128],[360,128],[600,128],[840,128]];
+ if(o.oral&&!two)pos.forEach(p=>p[1]+=0);
+ const vg=(i,x,y,key,dim)=>{const cid=`${K.u('c'+i).slice(5,-1)}`;return `<clipPath id="${cid}"><circle cx="100" cy="100" r="92"/></clipPath><g transform="translate(${x-rr} ${y-rr}) scale(${rr/100})"><g clip-path="url(#${cid})">${dim?'<rect width="200" height="200" class="pz-bg"/><text x="100" y="122" font-size="64" font-weight="800" text-anchor="middle" class="pz-q">?</text>':PZV[key](K)}</g><circle cx="100" cy="100" r="92" fill="none" stroke="${dim?'#9aa8a2':R.cor}" stroke-width="${dim?2:4}"${dim?' stroke-dasharray="6 6"':''}/></g>`;};
+ // setas
+ for(let i=0;i<3;i++){const [x1,y1]=pos[i],[x2,y2]=pos[i+1];let a,b,c;
+  if(two&&i===1){a=[x1-10,y1+rr+56];b=[(x1+x2)/2,(y1+y2)/2+20];c=[x2+10,y2-rr-4];}else{const ang=Math.atan2(y2-y1,x2-x1);a=[x1+Math.cos(ang)*(rr+6),y1+Math.sin(ang)*(rr+6)];c=[x2-Math.cos(ang)*(rr+6),y2-Math.sin(ang)*(rr+6)];b=null;}
+  const vis=step>i+1,cut=cuts.includes(i);const col=cut?'#b0473f':vis?R.cor:'#b7c2bd';
+  g+=b?zar([a,b,c],{color:col,w:3.4,s:13,q:true,dash:cut||!vis}):zar([a,c],{color:col,w:3.4,s:13,dash:cut||!vis});
+  if(cut){const m=b?[(a[0]+2*b[0]+c[0])/4,(a[1]+2*b[1]+c[1])/4]:[(a[0]+c[0])/2,(a[1]+c[1])/2];g+=`<circle cx="${r1(m[0])}" cy="${r1(m[1])}" r="17" fill="#b0473f" stroke="#fff" stroke-width="2.5"/><path d="M${r1(m[0]-7)},${r1(m[1]-7)}L${r1(m[0]+7)},${r1(m[1]+7)}M${r1(m[0]+7)},${r1(m[1]-7)}L${r1(m[0]-7)},${r1(m[1]+7)}" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/>`;}}
+ R.st.forEach(([key,t1,t2],i)=>{const [x,y]=pos[i];const dim=i>=step;g+=vg(i,x,y,key,dim);if(i===0&&cuts.includes('F'))g+=`<circle cx="${x}" cy="${y}" r="${rr+5}" fill="none" stroke="#b0473f" stroke-width="4" stroke-dasharray="9 6"/>`+pzX(x+rr*.72,y-rr*.72);
+  g+=zbd(x-rr*.72,y-rr*.72,i+1,dim?'#9aa8a2':R.cor);
+  g+=dim?'':ztx(x,y+rr+30,t1,{size:two?20:18,anchor:'middle',weight:800})+ztx(x,y+rr+(two?54:52),t2,{size:two?16:14.5,anchor:'middle',weight:500});});
+ if(oral){const [key,t1,t2]=R.oral;const ox=two?96:480,oy=two?H-104:H-92,orr=two?62:56;const cid=K.u('co').slice(5,-1);
+  g+=`<clipPath id="${cid}"><circle cx="100" cy="100" r="92"/></clipPath><g transform="translate(${ox-orr} ${oy-orr}) scale(${orr/100})"><g clip-path="url(#${cid})">${PZV[key](K)}</g><circle cx="100" cy="100" r="92" fill="none" stroke="${R.cor}" stroke-width="5" stroke-dasharray="8 6"/></g>`;
+  g+=two?ztx(ox+orr+14,oy-22,t1,{size:20,weight:800})+ztx(ox+orr+14,oy+2,['alimento ou bebida','contaminados:','entra pela boca'],{size:16,weight:500}):ztx(ox+orr+14,oy-6,t1,{size:18,weight:800})+ztx(ox+orr+14,oy+16,t2,{size:14.5,weight:500})+ztx(ox+orr+14,oy+36,'entra pela boca',{size:14.5,weight:500});
+  const [x0,y0]=pos[0];g+=zar(two?[[x0-rr+6,y0+rr+44],[10,oy-120],[ox-orr*.7,oy-orr*.7-4]]:[[x0+20,y0+rr+60],[x0+120,oy],[ox-orr-8,oy]],{color:cuts.includes('O')?'#b0473f':R.cor,w:2.6,s:11,q:true,dash:true});if(cuts.includes('O'))g+=pzX(ox,oy-orr-2);}
+ g+=ztx(W-14,H-10,'Esquema original · fora de escala',{size:11,anchor:'end',weight:400});
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" class="pz-fig" font-family="Atkinson Hyperlegible,DM Sans,Arial,sans-serif" role="img" aria-label="Rota de transmissão: ${xe(R.nome)}">${g}</svg>`;}
+
+// Vinheta isolada (câmera lenta e mapa do dano). labels: [[x,y,'texto'],...] em coordenadas da vinheta (0–200); ficam à direita
+function figVinheta(key,cor,{title='',sub='',labels=[],w=680}={}){const K=zKit();const rr=150,cx=180,cy=190,H=400;let g=K.defs+`<rect width="${w}" height="${H}" rx="18" class="pz-bg"/>`;const cid=K.u('cv').slice(5,-1);
+ g+=`<clipPath id="${cid}"><circle cx="100" cy="100" r="92"/></clipPath><g transform="translate(${cx-rr} ${cy-rr}) scale(${rr/100})"><g clip-path="url(#${cid})">${PZV[key](K)}</g><circle cx="100" cy="100" r="92" fill="none" stroke="${cor}" stroke-width="3"/></g>`;
+ const L=labels.map(([lx,ly,t])=>({X:cx-rr+lx*rr/100,Y:cy-rr+ly*rr/100,t})).sort((a,b)=>a.Y-b.Y);let last=-1e9;L.forEach(l=>{l.ty=Math.max(l.Y,last+56,50);last=l.ty;});const over=last-(H-50);if(over>0)L.forEach(l=>l.ty-=over);L.forEach(l=>{g+=zlead(l.X,l.Y,cx+rr+40,l.ty,l.t,{size:18,anchor:'start',weight:600});});
+ if(title)g+=ztx(w-16,30,title,{size:18,anchor:'end',weight:800});
+ g+=ztx(w-14,H-10,'Esquema original · fora de escala',{size:11,anchor:'end',weight:400});
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${H}" class="pz-fig" font-family="Atkinson Hyperlegible,DM Sans,Arial,sans-serif" role="img" aria-label="${xe(title||key)}">${g}</svg>`;}
+const DANO_LAB={
+ giardia:{key:'g3',labels:[[100,14,'luz do intestino delgado'],[46,52,'trofozoíto aderido'],[148,120,'vilosidade (absorção)']]},
+ ascaris:{key:'a3',labels:[[100,40,'parede do intestino'],[100,100,'novelo de vermes'],[178,120,'luz ocupada pelos vermes']]},
+ chagas:{key:'c3',labels:[[76,98,'área inflamada'],[140,146,'ninhos do parasito'],[160,56,'ritmo alterado (arritmia)']]},
+ leish:{key:'l3',labels:[[84,74,'fígado aumentado'],[140,96,'baço aumentado'],[100,150,'medula óssea']]},
+};
+const figDano=dz=>{const D=DANO_LAB[dz];return figVinheta(D.key,ROTAS[dz].cor,{labels:D.labels});};
+
+// Retrato do agente (cartões "Quatro suspeitos")
+function figSuspeito(dz){const K=zKit();let g=K.defs+`<rect width="240" height="150" rx="14" class="pz-bg"/>`;
+ if(dz==='ascaris'){const d='M30,104 C50,60 90,52 120,74 C150,96 186,96 208,52';g+=zP(d,'none','#b8916a',17)+zP(d,'none',K.u('wormL'),13)+zP(d,'none','#fff6e8',2.4,' opacity=".6"')+zE(208,52,6.5,6.5,'#e9cfae','#b8916a',1.5)+zP('M24,108 C28,104 30,100 30,104','none','#b8916a',4);}
+ else if(dz==='giardia')g+=pzTropho(K,120,60,3.1,0);
+ else if(dz==='chagas')g+=pzTrypo(K,118,82,4.6,0);
+ else g+=pzPromast(K,104,76,4.6,-8);
+ return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 150" class="pz-fig" role="img" aria-label="${xe(ROTAS[dz].agente)}">${g}</svg>`;}
+
+// ================= Aulas 12 e 13: Parasitoses — transmissão e prevenção =================
+// (ids "esquisto" e "conselho" mantidos para não quebrar links e fichas já usados pelas turmas)
+const PZ_DZ=['giardia','ascaris','chagas','leish'];
+const pzNarrow=()=>window.matchMedia('(max-width:700px)').matches;
+const PZ_REDRAW=new Set();let pzRT=null;
+window.addEventListener('resize',()=>{clearTimeout(pzRT);pzRT=setTimeout(()=>PZ_REDRAW.forEach(f=>{try{f();}catch(e){}}),180);});
+const pzFig=(svg,cls='')=>{const d=h('div',{class:'pz-wrap '+cls});d.innerHTML=svg;return d;};
+const pzShuffle=(arr,seed)=>{const r=seeded(seed);return arr.map(x=>[r(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);};
+const pzPart=(n,t,lede)=>[h('span',{class:'eyebrow'},'Parte '+n),h('h3',{},t),lede?h('p',{class:'note'},lede):null];
+// lê uma chave da Aula 12 registrando-a na Aula 12 (para o “Recomeçar” de cada aula apagar só o que é dela)
+const pzPeek=(sec,k,d)=>{const c=RST.cur;RST.cur=sec;const v=store.get(k,d);RST.cur=c;return v;};
+
+// Etapas da rota: opções a cada passo (a primeira é a correta; a ordem é embaralhada)
+const RT_Q={
+ giardia:[
+  {q:'Os cistos saíram nas fezes. O que acontece em seguida?',op:[['O esgoto sem tratamento chega à água do poço, que continua transparente',''],['O cisto precisa passar semanas no solo para ficar infectante','Isso acontece com o ovo de Ascaris. O cisto de Giardia já sai infectante nas fezes.'],['Um inseto carrega o cisto e o injeta numa picada','A Giardia não tem vetor: a transmissão é pela ingestão de cistos.']]},
+  {q:'Como o cisto chega ao corpo de outra pessoa?',op:[['A pessoa engole cistos com a água, alimentos ou mãos contaminados',''],['Os cistos atravessam a pele durante o banho','Cistos não penetram a pele. A porta de entrada é a boca.'],['A pessoa respira os cistos','Os cistos não infectam pelo ar.']]},
+  {q:'E dentro do corpo?',op:[['No intestino delgado, o parasito sai do cisto, adere à mucosa e se multiplica',''],['Vira um verme adulto no intestino','A Giardia é um protozoário, um ser unicelular. Ela não vira verme.'],['Vai pelo sangue até o coração','Isso lembra o Trypanosoma cruzi, na doença de Chagas.']]}],
+ ascaris:[
+  {q:'Os ovos saíram nas fezes, no solo. O que acontece em seguida?',op:[['O ovo passa algumas semanas no solo úmido e sombreado até formar a larva',''],['O ovo já sai infectante, como o cisto de Giardia','O ovo de Ascaris recém-eliminado tem uma única célula. Ele ainda não infecta.'],['A larva sai do ovo e penetra a pele dos pés','Isso acontece com os ancilostomídeos (amarelão), não com Ascaris.']]},
+  {q:'Como o ovo embrionado chega a outra pessoa?',op:[['A pessoa engole ovos em hortaliças cruas mal lavadas ou com as mãos sujas de terra',''],['Um mosquito pica a pessoa','Ascaris não tem vetor.'],['A pessoa anda descalça na terra','Andar descalço expõe aos ancilostomídeos. O ovo de Ascaris precisa ser engolido.']]},
+  {q:'E dentro do corpo?',op:[['As larvas saem dos ovos, passam pelos pulmões, voltam ao intestino e viram vermes adultos',''],['O ovo forma um cisto no cérebro','Isso é a cisticercose, causada por ovos de Taenia solium.'],['O parasito entra nos macrófagos','Isso acontece com a Leishmania.']]}],
+ chagas:[
+  {q:'O barbeiro infectado picou a pessoa durante o sono. E agora?',op:[['O barbeiro elimina fezes com o parasito perto da picada',''],['O parasito entra pela saliva, no momento da picada','Na transmissão vetorial da doença de Chagas, o parasito está nas fezes do barbeiro, não na picada. Na leishmaniose é diferente.'],['O barbeiro deixa ovos na pele','Os ovos do barbeiro não transmitem o parasito.']]},
+  {q:'Como o parasito entra no corpo?',op:[['Ao coçar, a pessoa leva as fezes à lesão da picada ou a mucosas, como a do olho',''],['O parasito atravessa a pele intacta sozinho','O parasito precisa de uma porta: uma lesão na pele ou uma mucosa.'],['A pessoa engole o barbeiro','A ingestão de alimentos contaminados é outra via, a oral. Nesta situação, a pessoa foi picada.']]},
+  {q:'E dentro do corpo?',op:[['O parasito invade células e, na fase crônica, pode lesionar o coração',''],['Fica no intestino e sai nas fezes da pessoa','Esse é o caminho de Giardia e Ascaris.'],['Multiplica-se nas hemácias e as rompe','Isso acontece na malária, com o Plasmodium.']]}],
+ leish:[
+  {q:'Uma fêmea infectada de flebotomíneo voa no quintal ao anoitecer. O que acontece?',op:[['Ela pica a pessoa e o parasito entra durante a picada',''],['Ela deixa fezes com o parasito na pele','Isso é o barbeiro, na doença de Chagas.'],['O cão transmite o parasito pelo contato','O cão pode ser reservatório, mas o contato com ele não transmite.']]},
+  {q:'O que acontece com o parasito na pele?',op:[['É englobado por macrófagos e se multiplica dentro deles',''],['Vira verme no intestino','A Leishmania é um protozoário e não vive no intestino humano.'],['Fica parado no local da picada','Na forma visceral, o parasito se espalha pelo corpo dentro dos macrófagos.']]},
+  {q:'Aonde ele chega?',op:[['A órgãos como baço, fígado e medula óssea',''],['Aos pulmões, de onde sai com a tosse','Não há transmissão pela tosse.'],['À bexiga, de onde sai na urina','Isso lembra outra parasitose, não a leishmaniose visceral.']]}],
+};
+const DANO_Q={
+ giardia:{op:[['Adere à mucosa do intestino delgado e pode prejudicar a absorção de nutrientes e causar diarreia',1],['Forma um novelo de vermes que pode obstruir o intestino',0],['Multiplica-se dentro de macrófagos do baço',0]],ok:'A Giardia cobre a mucosa do intestino delgado e prejudica a absorção. Isso pode causar diarreia e, em crianças, comprometer o crescimento.'},
+ ascaris:{op:[['Quando numerosos, os vermes adultos podem obstruir o intestino',1],['Adere à mucosa e forma cistos no sangue',0],['Lesiona o músculo do coração',0]],ok:'Os vermes adultos vivem na luz do intestino delgado. Quando são muitos, podem formar um novelo e obstruí-lo, sobretudo em crianças.'},
+ chagas:{op:[['Na fase crônica, inflamação e lesões no coração favorecem arritmias',1],['Obstrui o intestino com vermes adultos',0],['Rompe as hemácias a cada 48 horas',0]],ok:'O T. cruzi se multiplica dentro de células, como as do músculo do coração. A inflamação e as lesões acumuladas podem alterar o ritmo cardíaco (arritmias).'},
+ leish:{op:[['Multiplica-se dentro de macrófagos e afeta baço, fígado e medula óssea',1],['Adere à mucosa do intestino',0],['Vive nas fezes do inseto',0]],ok:'A Leishmania vive dentro dos macrófagos. Baço e fígado aumentam e a medula óssea, que produz as células do sangue, é afetada: daí a anemia e a queda das defesas.'},
+};
+// Situações do Apêndice A, com os trechos que são pistas marcados com {chaves}
+const SITU=[
+ {id:'A',t:'Água do poço',dz:'giardia',txt:'Uma comunidade bebe {água de um poço} que pode receber {infiltração de esgoto}. O parasito investigado é um {protozoário intestinal} que pode ser {ingerido na forma de cisto}.'},
+ {id:'B',t:'Hortaliças cruas',dz:'ascaris',txt:'{Fezes humanas contaminaram o solo} de uma horta. Após {se desenvolverem no ambiente}, {ovos de um helminto} podem contaminar {hortaliças consumidas cruas}.'},
+ {id:'C',t:'Barbeiro na moradia',dz:'chagas',txt:'Um {barbeiro infectado} pica uma pessoa e {elimina fezes perto da picada}. Ao {coçar o local}, a pessoa pode levar as fezes à {lesão na pele}.'},
+ {id:'D',t:'Mosquito-palha no quintal',dz:'leish',txt:'Em uma área de transmissão, uma pessoa é picada por uma {fêmea infectada de flebotomíneo}. O parasito pode ser {transmitido durante a picada}.'},
+];
+const DZN=dz=>ROTAS[dz].nome+' · '+ROTAS[dz].agente;
+
+INIT.esquisto=root=>{
+  root.append(head('Aula 12 · Parasitologia','Como o parasito chega até nós?','Pergunta norteadora: como o parasito chega ao ser humano, e em que ponto podemos interromper a transmissão? Hoje vamos seguir quatro parasitos da fonte até a porta de entrada no corpo e ver que dano cada um causa.'));
+  // ---------- Parte 1: quatro suspeitos ----------
+  const p1=h('div',{class:'panel stack'});root.append(p1);
+  p1.append(...pzPart(1,'Quatro suspeitos','Cada doença tem um agente causador. Classifique cada um: protozoário (um ser unicelular) ou helminto (um verme, ser pluricelular).'));
+  const cls=store.get('pz-cls',{});const cg=h('div',{class:'pz-cards'});p1.append(cg);
+  const cOut=h('div',{class:'stack'});
+  PZ_DZ.forEach(dz=>{const R=ROTAS[dz];const card=h('div',{class:'pz-card'},pzFig(figSuspeito(dz)),h('strong',{},R.nome),h('em',{},R.agente));
+    card.append(seg([['pro','Protozoário'],['hel','Helminto']],cls[dz]||null,v=>{cls[dz]=v;store.set('pz-cls',cls);},{label:'Classificação de '+R.agente}));cg.append(card);});
+  p1.append(h('button',{class:'btn primary',style:'align-self:flex-start',onclick:()=>{cOut.innerHTML='';if(PZ_DZ.some(d=>!cls[d])){cOut.append(h('p',{class:'fb no'},'Classifique os quatro agentes.'));return;}
+    const ok=PZ_DZ.filter(d=>(cls[d]==='hel')===(d==='ascaris')).length;
+    cOut.append(h('div',{class:'fb '+(ok===4?'ok':'info')},h('strong',{},ok+' de 4. '),'Ascaris lumbricoides é o único helminto: um verme nematódeo, pluricelular, cujo adulto se vê a olho nu. Giardia, Trypanosoma cruzi e Leishmania são protozoários: unicelulares e microscópicos.'));}},'Conferir'),cOut);
+
+  // ---------- Parte 2: rota do parasito ----------
+  const p2=h('div',{class:'panel stack'});root.append(p2);
+  p2.append(...pzPart(2,'A rota do parasito','Escolha uma doença. A primeira etapa já está no esquema: decida a próxima até o parasito entrar no corpo. Complete as quatro rotas.'));
+  const prog=store.get('pz-rota',{giardia:1,ascaris:1,chagas:1,leish:1});const errs=store.get('pz-rota-err',{});let cur=store.get('pz-rota-cur','giardia');let oral=false;
+  const tabs=h('div',{class:'chips',role:'group','aria-label':'Doença'});const fig=h('div',{});const qbox=h('div',{class:'stack'});p2.append(tabs,fig,qbox);
+  function drawTabs(){tabs.innerHTML='';PZ_DZ.forEach(dz=>{const b=h('button',{class:'chip','aria-pressed':String(dz===cur)},(prog[dz]>=4?'✓ ':'')+ROTAS[dz].nome);b.onclick=()=>{cur=dz;oral=false;store.set('pz-rota-cur',dz);drawTabs();drawRota();};tabs.append(b);});}
+  function drawRota(msg){const st=prog[cur];fig.innerHTML='';fig.append(pzFig(figRota(cur,st,[],{cols:pzNarrow()?2:1,oral:oral&&cur==='chagas'})));
+    qbox.innerHTML='';if(msg)qbox.append(msg);
+    if(st<4){const Q=RT_Q[cur][st-1];qbox.append(h('p',{style:'font-weight:700;font-size:1.1rem'},'Etapa '+(st+1)+' · '+Q.q));
+      const og=h('div',{class:'pz-opts'});pzShuffle(Q.op.map((o,i)=>[...o,i]),st*13+cur.length).forEach(([t,fb,i])=>{og.append(h('button',{class:'pz-opt',type:'button',onclick:()=>{
+        if(i===0){prog[cur]=st+1;store.set('pz-rota',prog);drawTabs();drawRota(h('div',{class:'fb ok'},'Isso! '+ROTAS[cur].st[st][1]+': '+ROTAS[cur].st[st][2]+'.'));}
+        else{errs[cur]=(errs[cur]||0)+1;store.set('pz-rota-err',errs);drawRota(h('div',{class:'fb no'},h('strong',{},'Desvio! '),fb+' Tente outra opção.'));}}},t));});qbox.append(og);}
+    else{const R=ROTAS[cur];const entrada={giardia:'pela boca: ingestão de cistos',ascaris:'pela boca: ingestão de ovos embrionados',chagas:'pela lesão da pele ou por mucosas, levado pelas fezes do barbeiro',leish:'pela pele, durante a picada da fêmea do flebotomíneo'}[cur];
+      qbox.append(h('div',{class:'callout'},h('strong',{},'Rota completa. '),`${R.agente} (${R.grupo.toLowerCase()}). Porta de entrada: ${entrada}.`));
+      if(cur==='chagas')qbox.append(h('button',{class:'btn sm',style:'align-self:flex-start','aria-pressed':String(oral),onclick:()=>{oral=!oral;drawRota(oral?h('div',{class:'fb info'},'Via oral: barbeiros ou suas fezes contaminam alimentos ou bebidas, como açaí ou caldo de cana preparados sem os cuidados adequados. O parasito entra pela boca, e costuma haver surtos que atingem várias pessoas ao mesmo tempo.'):null);}},oral?'Esconder a via oral':'Mostrar a via oral'));
+      const done=PZ_DZ.filter(d=>prog[d]>=4).length;qbox.append(h('p',{class:'note'},`${done} de 4 rotas completas · ${Object.values(errs).reduce((a,b)=>a+b,0)} desvio(s) no caminho.`));}}
+  drawTabs();drawRota();PZ_REDRAW.add(()=>drawRota());
+
+  // ---------- Parte 3: relógio do solo ----------
+  const p3=h('div',{class:'panel stack'});root.append(p3);
+  p3.append(...pzPart(3,'Relógio do solo: cisto × ovo embrionado','As fezes de uma pessoa infectada chegaram ao solo de um quintal. Avance o tempo e mude a condição do solo. Em que momento cada forma pode infectar alguém?'));
+  let t3=store.get('pz-relogio',0),seco=store.get('pz-seco',false);
+  const f3=h('div',{});const lab3=h('strong',{class:'pz-time'});const rg=h('input',{type:'range',min:0,max:2,step:1,value:t3,'aria-label':'Tempo no solo',style:'width:100%'});
+  const T3=['Acabou de sair nas fezes','Alguns dias depois','Algumas semanas depois'];
+  const cond=seg([['u','Úmido e sombreado'],['s','Seco e ao sol']],seco?'s':'u',v=>{seco=v==='s';store.set('pz-seco',seco);draw3();},{label:'Condição do solo'});
+  const ex3=h('div',{});
+  function draw3(){f3.innerHTML='';f3.append(pzFig(figCistoOvo(t3,seco,pzNarrow()),'pz-co'));lab3.textContent='Tempo no solo: '+T3[t3];ex3.innerHTML='';
+    ex3.append(h('div',{class:'fb info'},seco&&t3>0?'Ao sol e no solo seco, o ressecamento prejudica ovos e cistos: o ovo não completa o desenvolvimento e o cisto perde a viabilidade. Por isso a sombra e a umidade de quintais e hortas favorecem a transmissão.':t3===0?'O cisto de Giardia já sai infectante nas fezes. O ovo de Ascaris sai com uma única célula e ainda não infecta.':t3===1?'O ovo de Ascaris se divide: é uma mórula, ainda sem larva. O cisto de Giardia continua infectante em ambiente úmido e na água.':'Agora o ovo de Ascaris tem uma larva: é o ovo embrionado, que infecta quem o engolir. Os dois chegam ao corpo da mesma forma: pela boca.'));}
+  rg.oninput=()=>{t3=+rg.value;store.set('pz-relogio',t3);draw3();};PZ_REDRAW.add(draw3);
+  p3.append(h('div',{class:'row',style:'justify-content:space-between;align-items:center'},lab3,cond),rg,h('div',{class:'pz-ticks'},...T3.map(t=>h('span',{},t))),f3,ex3);draw3();
+
+  // ---------- Parte 4: fezes ou picada? ----------
+  const p4=h('div',{class:'panel stack'});root.append(p4);
+  p4.append(...pzPart(4,'Fezes ou picada? Câmera lenta','Dois insetos, duas doenças. Avance quadro a quadro e responda: em que quadro o parasito entra no corpo?'));
+  let q4=store.get('pz-cam',1);const ans4=store.get('pz-cam-ans',{});
+  const cols4=h('div',{class:'cols'});const ctl4=h('div',{class:'row',style:'align-items:center'});p4.append(ctl4,cols4);
+  const box4={chagas:h('div',{class:'stack'}),leish:h('div',{class:'stack'})};cols4.append(box4.chagas,box4.leish);
+  const CAP={chagas:['O barbeiro pica à noite, durante o sono','Enquanto suga sangue, elimina fezes perto da picada','Ao coçar, a pessoa leva as fezes à lesão'],leish:['A fêmea infectada pousa ao anoitecer','A picada: o parasito entra na pele','Na pele, macrófagos englobam o parasito']};
+  const KEY={chagas:['c0','c1','c2'],leish:['l0','l1','l2']},OK4={chagas:3,leish:2};
+  function draw4(){ctl4.innerHTML='';ctl4.append(h('button',{class:'btn sm',disabled:q4<=1,onclick:()=>{q4--;store.set('pz-cam',q4);draw4();}},'← Quadro anterior'),h('span',{class:'mono',style:'font-weight:700'},'Quadro '+q4+' de 3'),h('button',{class:'btn sm primary',disabled:q4>=3,onclick:()=>{q4++;store.set('pz-cam',q4);draw4();}},'Próximo quadro →'));
+    ['chagas','leish'].forEach(dz=>{const B=box4[dz];B.innerHTML='';const R=ROTAS[dz];B.append(h('h4',{style:'margin:0'},dz==='chagas'?'Barbeiro · doença de Chagas':'Flebotomíneo · leishmaniose visceral'));
+      B.append(pzFig(figVinheta(KEY[dz][q4-1],R.cor,{w:400}),'pz-cam'),h('p',{style:'font-weight:700;min-height:2.6em'},q4+' · '+CAP[dz][q4-1]));
+      const a=ans4[dz];const og=h('div',{class:'chips'});[1,2,3].forEach(n=>og.append(h('button',{class:'chip','aria-pressed':String(a===n),onclick:()=>{ans4[dz]=n;store.set('pz-cam-ans',ans4);draw4();}},'Entra no quadro '+n)));B.append(og);
+      if(a)B.append(h('div',{class:'fb '+(a===OK4[dz]?'ok':'no')},a===OK4[dz]?(dz==='chagas'?'Isso: a picada não transmite. O parasito está nas fezes do barbeiro e entra quando elas chegam à lesão ou a uma mucosa.':'Isso: o parasito entra durante a picada da fêmea infectada.'):(dz==='chagas'?'Ainda não. Reveja os quadros: onde está o parasito, na picada ou nas fezes?':'Ainda não. Reveja: o flebotomíneo deixa fezes na pele ou transmite na picada?')));});
+    if(ans4.chagas===3&&ans4.leish===2&&!p4.querySelector('.pz-sum4'))p4.append(h('div',{class:'callout pz-sum4'},h('strong',{},'Então: '),'quando um inseto participa, o parasito nem sempre entra na picada. No barbeiro, ele sai nas fezes; no flebotomíneo, entra pela picada. Volte à sua hipótese do início da aula: ela se confirmou?'));}
+  draw4();
+
+  // ---------- Parte 5: mapa do dano ----------
+  const p5=h('div',{class:'panel stack'});root.append(p5);
+  p5.append(...pzPart(5,'Mapa do dano','Chegando ao corpo, como cada parasito causa dano? Escolha a doença e a explicação. Use o botão para esconder os rótulos e testar a sua memória.'));
+  let c5=store.get('pz-dano-cur','giardia');const a5=store.get('pz-dano',{});
+  const t5=h('div',{class:'chips'});const b5=h('div',{class:'cols wide-right'});const lbl=h('button',{class:'btn sm ghost','aria-pressed':'false',style:'align-self:flex-start'},'Esconder rótulos');p5.append(t5,b5);
+  lbl.onclick=()=>{const on=b5.classList.toggle('labels-hidden');lbl.setAttribute('aria-pressed',String(on));lbl.textContent=on?'Mostrar rótulos':'Esconder rótulos';};
+  function draw5(){t5.innerHTML='';PZ_DZ.forEach(dz=>t5.append(h('button',{class:'chip','aria-pressed':String(dz===c5),onclick:()=>{c5=dz;store.set('pz-dano-cur',dz);draw5();}},(a5[dz]===1?'✓ ':'')+ROTAS[dz].nome)));
+    b5.innerHTML='';const L=h('div',{class:'stack'}),Rr=h('div',{class:'stack'});b5.append(L,Rr);const D=DANO_Q[c5];
+    L.append(h('p',{style:'font-weight:700'},'Como '+ROTAS[c5].agente+' causa dano?'));const og=h('div',{class:'pz-opts'});
+    pzShuffle(D.op,c5.length*7).forEach(([t,c])=>og.append(h('button',{class:'pz-opt'+(a5[c5]!=null&&c?' right':''),type:'button',onclick:()=>{a5[c5]=c;store.set('pz-dano',a5);draw5();}},t)));L.append(og);
+    if(a5[c5]!=null)L.append(h('div',{class:'fb '+(a5[c5]?'ok':'no')},a5[c5]?D.ok:'Não é esse. Lembre-se de onde esse parasito vive no corpo.'));
+    Rr.append(a5[c5]===1?pzFig(figDano(c5)):h('div',{class:'pz-lock'},'O esquema aparece quando você acertar.'),a5[c5]===1?lbl:'');}
+  draw5();
+
+  // ---------- Parte 6: detetive de pistas (Apêndice A) ----------
+  const p6=h('div',{class:'panel stack'});root.append(p6);
+  p6.append(...pzPart(6,'Detetive de pistas: as situações da ficha','Em grupo. Para cada situação, identifiquem a doença e o agente e toquem nas palavras que são pistas. Depois, desenhem no caderno, com setas, o caminho até a entrada do parasito no corpo. Situações fictícias.'));
+  const st6=store.get('pz-situ',{});const g6=h('div',{class:'pz-situ'});p6.append(g6);
+  SITU.forEach(S=>{const box=h('div',{class:'pz-sit'});g6.append(box);
+    function draw(){const st=st6[S.id]=st6[S.id]||{dz:null,pis:[],ok:false};box.innerHTML='';
+      box.append(h('div',{class:'row',style:'justify-content:space-between'},h('h4',{style:'margin:0'},S.id+' · '+S.t),st.ok?h('span',{class:'pill ok'},'✓ conferida'):null));
+      const p=h('p',{class:'pz-txt'});let k=0;S.txt.split(/(\{[^}]+\})/).forEach(part=>{if(!part)return;if(part[0]==='{'){const i=k++;const on=st.pis.includes(i);p.append(h('button',{type:'button',class:'pz-clue'+(on?' on':'')+(st.ok?' rev':''),onclick:()=>{if(st.ok)return;st.pis=on?st.pis.filter(x=>x!==i):[...st.pis,i];store.set('pz-situ',st6);draw();}},part.slice(1,-1)));}else p.append(part);});box.append(p);
+      const nClue=k;
+      box.append(h('div',{class:'chips'},...PZ_DZ.map(dz=>h('button',{class:'chip','aria-pressed':String(st.dz===dz),onclick:()=>{if(st.ok)return;st.dz=dz;store.set('pz-situ',st6);draw();}},DZN(dz)))));
+      const out=h('div',{});box.append(out);
+      if(!st.ok)box.append(h('button',{class:'btn sm primary',style:'align-self:flex-start',onclick:()=>{out.innerHTML='';if(!st.dz||st.pis.length<1){out.append(h('p',{class:'fb no'},'Escolham a doença e marquem pelo menos uma pista.'));return;}
+        if(st.dz!==S.dz){out.append(h('p',{class:'fb no'},'As pistas não sustentam essa doença. Releiam: qual é a fonte e como o parasito entra?'));return;}st.ok=true;store.set('pz-situ',st6);draw();}},'Conferir'));
+      else{box.append(h('div',{class:'fb ok'},h('strong',{},DZN(S.dz)+'. '),`Vocês marcaram ${st.pis.length} de ${nClue} pistas (em destaque).`));
+        const det=h('details',{},h('summary',{},'Ver o esquema da rota'));det.addEventListener('toggle',()=>{if(det.open&&!det.querySelector('.pz-wrap'))det.append(pzFig(figRota(S.dz,4,[],{cols:2})));},{once:false});box.append(det);}}
+    draw();});
+  p6.append(h('p',{class:'note'},'Na próxima aula, vocês vão propor uma medida de prevenção para cada situação e marcar onde ela atua no esquema.'));
+  root.append(h('p',{class:'note'},'Esquemas didáticos originais, fora de escala. Fontes: Ministério da Saúde (Giardíase; Geo-helmintíase; Doença de Chagas; Leishmaniose visceral) e Neves, Parasitologia humana.'));
+};
+
+// ---------- Aula 13 ----------
+// Medidas por doença: s = etapas em que atuam ('F' = na fonte, antes da etapa 1; 0 = seta 1→2; 1 = seta 2→3; 2 = seta 3→4; 'O' = via oral); [] = não atua nesta doença
+const MED={
+ giardia:[
+  ['Rede de coleta e tratamento de esgoto','C',[0],'Impede que as fezes cheguem à água.'],
+  ['Tratamento da água na estação e proteção do poço','C',[0,1],'Protege a fonte e remove ou inativa os cistos antes de a água chegar à casa.'],
+  ['Ferver a água de beber','I',[1],'A fervura inativa os cistos antes da ingestão.'],
+  ['Lavar as mãos antes de comer e depois de usar o banheiro','I',[1],'Reduz os cistos levados à boca pelas mãos.'],
+  ['Usar repelente','I',[],'A Giardia não tem vetor: o repelente não atua nesta rota.'],
+ ],
+ ascaris:[
+  ['Banheiro e rede de esgoto para todas as casas','C',[0],'As fezes não chegam ao solo, onde o ovo amadureceria.'],
+  ['Não usar fezes humanas sem tratamento para adubar a horta','I',[0],'Evita colocar ovos no solo da horta.'],
+  ['Lavar bem as hortaliças cruas antes de comer','I',[1],'Remove ovos embrionados antes da ingestão.'],
+  ['Lavar as mãos depois de mexer na terra e antes de comer','I',[1],'Reduz os ovos levados à boca.'],
+  ['Usar calçados','I',[],'Protege contra os ancilostomídeos, cujas larvas penetram a pele. O ovo de Ascaris precisa ser engolido.'],
+ ],
+ chagas:[
+  ['Melhoria das moradias: rebocar paredes e vedar frestas','C',['F'],'Sem frestas, o barbeiro não se esconde nem coloniza a casa, e não chega a picar.'],
+  ['Vigilância do barbeiro e borrifação de inseticida pelas equipes de saúde','C',['F'],'Elimina os barbeiros dentro e perto da casa.'],
+  ['Mosquiteiro na cama','I',['F'],'Impede que o barbeiro pique durante o sono.'],
+  ['Boas práticas no preparo de açaí e caldo de cana','C',['O'],'Higienizar e branquear o fruto impede a transmissão oral.'],
+  ['Eliminar água parada em vasos e pneus','I',[],'Isso combate o Aedes aegypti. O barbeiro não se cria na água.'],
+ ],
+ leish:[
+  ['Manejo ambiental: recolher folhas, frutos e fezes de animais do quintal','C',['F'],'Elimina os criadouros do flebotomíneo, que se desenvolve na matéria orgânica úmida.'],
+  ['Coleira com inseticida nos cães (programa de saúde)','C',['F'],'Reduz as picadas nos cães e a infecção de novos flebotomíneos.'],
+  ['Telas de malha fina, mosquiteiro e repelente ao entardecer','I',[0],'Impede a picada, que é o momento da transmissão.'],
+  ['Evitar o contato com cães','I',[],'O contato com o cão não transmite. Quem transmite é a fêmea do flebotomíneo.'],
+  ['Ferver a água de beber','I',[],'A leishmaniose visceral não é transmitida pela água.'],
+ ],
+};
+const SLOT={F:'Na fonte (antes de 1)',0:'Entre 1 e 2',1:'Entre 2 e 3',2:'Entre 3 e 4',O:'Na via oral',N:'Não atua aqui'};
+
 INIT.conselho=root=>{
-  root.append(head('Aula 13','Conselho de Saúde Única','Desafio fictício: famílias sem esgotamento adequado, uso de água doce para lazer, resíduos acumulados, cães e solo degradado. Preocupação com esquistossomose e leishmaniose visceral, sem transmissão confirmada. Você representa os quatro setores: proponha ações, ordene as prioridades e monte o quadro do conselho.'));
-  const SET=[['mor','Moradores','Necessidades, hábitos e dificuldades da comunidade.'],['sh','Saúde humana','Investigação, vigilância e atendimento às pessoas.'],['sa','Saúde animal','Vigilância e atenção veterinária, considerando animais e vetores.'],['amb','Ambiente e saneamento','Água, esgoto, resíduos e conservação.']];
-  const sg=h('div',{class:'cards'});root.append(sg);
-  SET.forEach(([k,t,d])=>sg.append(h('div',{class:'panel stack',style:'gap:4px'},ilu(k,'ilu ilu-wide'),h('span',{class:'eyebrow'},'Setor'),h('h3',{},t),h('p',{class:'note'},d))));
-  root.append(h('div',{class:'cols'},
-    h('div',{class:'panel stack'},ilu('esq','ilu ilu-banner'),h('h3',{},'Esquistossomose'),h('p',{},'Cercárias liberadas por caramujos infectados penetram a pele no contato com água doce. Investigar saneamento, contato com a água e evidências do parasito e dos hospedeiros.')),
-    h('div',{class:'panel stack'},ilu('leish','ilu ilu-banner'),h('h3',{},'Leishmaniose visceral'),h('p',{},'Transmissão pela picada de fêmeas infectadas de flebotomíneos. Cães podem ser reservatórios urbanos; o contato cotidiano com o cão não transmite. Investigar casos, vetor, situação dos animais e ambiente.'))));
-  let props=store.get('cons-props',null);
-  if(!props)props=[{id:1,acao:'Mapear com os moradores os pontos de água usados para lazer e onde o esgoto chega',prazo:'Inicial',set:['mor','amb','sh'],doenca:'Esquistossomose',ind:'Número de pontos mapeados e visitados',v:0,ex:true}];
-  const save=()=>store.set('cons-props',props);
-  const grid=h('div',{class:'cols wide-right'});root.append(grid);
-  const F=h('form',{class:'panel stack'});const B=h('div',{class:'stack'});grid.append(F,B);
-  F.append(h('h3',{},'Nova proposta'));
-  const acao=h('textarea',{id:'cons-acao',rows:3,placeholder:'Ex.: Inquérito canino e manejo de matéria orgânica nos quintais'});
-  const ind=h('input',{type:'text',id:'cons-ind',placeholder:'Como vamos saber se funcionou?'});
-  const prazo=h('select',{id:'cons-prazo'},h('option',{},'Inicial'),h('option',{},'Médio prazo'));
-  const doenca=h('select',{id:'cons-doenca'},h('option',{},'Esquistossomose'),h('option',{},'Leishmaniose visceral'),h('option',{},'Ambas'));
-  const setBox=h('div',{class:'chips'});const chosen=new Set();
-  SET.forEach(([k,t])=>{const b=h('button',{type:'button',class:'chip','aria-pressed':'false'},t);b.onclick=()=>{chosen.has(k)?chosen.delete(k):chosen.add(k);b.setAttribute('aria-pressed',String(chosen.has(k)));};setBox.append(b);});
-  const err=h('p',{class:'note',style:'color:var(--bad)'});
-  F.append(h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Ação'),acao),h('div',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Setores envolvidos'),setBox),h('div',{class:'row'},h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Prazo'),prazo),h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Problema'),doenca)),h('label',{class:'stack',style:'gap:4px'},h('span',{class:'label'},'Indicador'),ind),err,h('button',{class:'btn primary',type:'submit'},'Adicionar ao quadro'));
-  F.addEventListener('submit',e=>{e.preventDefault();err.textContent='';if(!acao.value.trim()){err.textContent='Escreva a ação.';return;}if(!chosen.size){err.textContent='Escolha pelo menos um setor.';return;}
-    props.push({id:Date.now(),acao:acao.value.trim(),prazo:prazo.value,set:[...chosen],doenca:doenca.value,ind:ind.value.trim(),v:0});save();acao.value='';ind.value='';chosen.clear();$$('.chip',setBox).forEach(b=>b.setAttribute('aria-pressed','false'));draw();});
-  const SN=Object.fromEntries(SET.map(([k,t])=>[k,t]));
-  function draw(){
-    B.innerHTML='';
-    const cover=SET.map(([k,t])=>[t,props.filter(p=>p.set.includes(k)).length]);
-    const multi=props.filter(p=>p.set.length>=2).length;const med=props.filter(p=>p.prazo==='Médio prazo').length;
-    B.append(h('div',{class:'panel stack'},h('h3',{},'Painel do conselho'),h('div',{class:'stats'},...cover.map(([t,n])=>h('div',{class:'stat'},h('span',{class:'note'},t),h('span',{class:'big-num',style:n?'':'color:var(--bad)'},n)))),
-      h('div',{class:'row'},h('span',{class:'pill '+(multi?'ok':'no')},multi+' ação(ões) com 2+ setores'),h('span',{class:'pill '+(med?'ok':'no')},med?med+' de médio prazo':'Falta ação de médio prazo'),h('span',{class:'pill'},props.length+' propostas'))));
-    const list=[...props].sort((a,b)=>b.v-a.v);
-    list.forEach((p,i)=>{B.append(h('div',{class:'panel stack',style:'gap:8px'+(i<3?';border-color:var(--accent)':'')},
-      h('div',{class:'row',style:'justify-content:space-between'},h('div',{class:'row'},i<3?h('span',{class:'pill ok'},(i+1)+'º'):null,h('span',{class:'pill'},p.prazo),h('span',{class:'pill'},p.doenca),p.ex?h('span',{class:'pill ex'},'Exemplo'):null),
-        h('div',{class:'row'},h('button',{class:'btn sm',onclick:()=>{p.v=Math.max(0,p.v-1);save();draw();},'aria-label':'Diminuir a prioridade'},'−'),h('span',{class:'mono',style:'font-weight:700;min-width:2ch;text-align:center'},p.v),h('button',{class:'btn sm primary',onclick:()=>{p.v++;save();draw();},'aria-label':'Aumentar a prioridade'},'+ prioridade'),h('button',{class:'btn sm ghost',onclick:()=>{props=props.filter(x=>x!==p);save();draw();}},'Apagar'))),
-      h('p',{style:'font-size:1.1rem;font-weight:700'},p.acao),
-      h('p',{class:'note'},'Setores: '+p.set.map(k=>SN[k]).join(', ')+(p.ind?' · Indicador: '+p.ind:''))));});
-    B.append(h('div',{class:'callout'},'Síntese: escolha 3 ações iniciais e 1 de médio prazo, considerando a capacidade de execução. As ações com mais prioridade sobem na lista. Uma mesma medida não precisa prevenir as duas doenças.'));
-  }
-  draw();
+  root.append(head('Aula 13 · Parasitologia','Onde quebrar a corrente?','Agora que você conhece as rotas, é hora de interrompê-las. Coloque cada medida na etapa em que ela atua, governe uma vila por um ano, investigue a água transparente e compare os dois insetos.'));
+  // ---------- Parte 1: barreiras ----------
+  const p1=h('div',{class:'panel stack'});root.append(p1);
+  p1.append(...pzPart(1,'Barreiras na rota','Para cada medida, escolha onde ela atua no esquema, ou se não atua nesta doença. I = ação individual; C = ação coletiva. Depois, confira: a corrente se rompe onde a medida atua.'));
+  let cur=store.get('pz-bar-cur','giardia');const ans=store.get('pz-bar',{});const chk=store.get('pz-bar-chk',{});
+  const tabs=h('div',{class:'chips'});const fig=h('div',{});const list=h('div',{class:'stack',style:'gap:10px'});const out=h('div',{class:'stack'});p1.append(tabs,fig,list,out);
+  const slotsFor=dz=>['F',0,1,2].concat(dz==='chagas'?['O']:[]).concat(['N']);
+  const isOk=(m,v)=>v==='N'?m[2].length===0:m[2].map(String).includes(String(v));
+  function draw(){tabs.innerHTML='';PZ_DZ.forEach(dz=>{const done=chk[dz]&&MED[dz].every((m,i)=>isOk(m,(ans[dz]||{})[i]));tabs.append(h('button',{class:'chip','aria-pressed':String(dz===cur),onclick:()=>{cur=dz;store.set('pz-bar-cur',dz);draw();}},(done?'✓ ':'')+ROTAS[dz].nome));});
+    const A=ans[cur]=ans[cur]||{};const M=MED[cur];
+    const cuts=chk[cur]?[...new Set(M.flatMap((m,i)=>isOk(m,A[i])?m[2]:[]))]:[];
+    fig.innerHTML='';fig.append(pzFig(figRota(cur,4,cuts,{cols:pzNarrow()?2:1,oral:cur==='chagas'})));
+    list.innerHTML='';M.forEach((m,i)=>{const row=h('div',{class:'pz-med'+(chk[cur]?(isOk(m,A[i])?' ok':' no'):'')},h('div',{class:'row',style:'gap:8px;flex-wrap:nowrap;align-items:flex-start'},h('span',{class:'pill '+(m[1]==='C'?'ex':''),title:m[1]==='C'?'Coletiva':'Individual'},m[1]==='C'?'C':'I'),h('strong',{},m[0])));
+      const sel=h('select',{'aria-label':'Onde atua: '+m[0]},h('option',{value:''},'Onde atua?'),...slotsFor(cur).map(v=>h('option',{value:String(v),selected:String(A[i])===String(v)?true:null},SLOT[v])));sel.onchange=()=>{A[i]=sel.value===''?undefined:(isNaN(+sel.value)?sel.value:+sel.value);chk[cur]=false;store.set('pz-bar',ans);store.set('pz-bar-chk',chk);draw();};
+      row.append(sel);if(chk[cur])row.append(h('p',{class:'note',style:'margin:0'},(isOk(m,A[i])?'✓ ':'✗ ')+m[3]+(isOk(m,A[i])?'':' Resposta: '+(m[2].length?m[2].map(v=>SLOT[v]).join(' ou '):SLOT.N)+'.')));list.append(row);});
+    out.innerHTML='';out.append(h('button',{class:'btn primary',style:'align-self:flex-start',onclick:()=>{if(M.some((_,i)=>A[i]==null)){out.append(h('p',{class:'fb no'},'Escolha uma posição para cada medida.'));return;}chk[cur]=true;store.set('pz-bar-chk',chk);draw();}},'Conferir e romper a corrente'));
+    if(chk[cur]){const n=M.filter((m,i)=>isOk(m,A[i])).length;out.append(h('div',{class:'fb '+(n===M.length?'ok':'info')},`${n} de ${M.length} medidas no lugar certo.`+(cur==='giardia'||cur==='ascaris'?' Repare: depois que o parasito foi engolido (entre 3 e 4), não há barreira de prevenção. Aí entram o diagnóstico e o tratamento.':'')));}}
+  draw();PZ_REDRAW.add(draw);
+  p1.append(h('div',{class:'callout'},'Na ficha do grupo: escolham uma ação individual e uma coletiva para cada situação (A a D) e marquem no esquema do caderno onde cada uma atua.'));
+
+  // ---------- Parte 2: prefeitura por um ano ----------
+  const p2=h('div',{class:'panel stack'});root.append(p2);
+  p2.append(...pzPart(2,'Prefeitura por um ano','Você governa a Vila Boa Água, com 100 casas, e tem 10 moedas. Obras coletivas alcançam todas as casas. Campanhas de ação individual custam menos, mas só funcionam nas casas que aderem a elas. Monte o plano e simule 12 meses.'));
+  const OBR=[
+   {id:'esg',t:'Rede de esgoto',c:4,tipo:'C',ef:{giardia:.7,ascaris:.8}},
+   {id:'agua',t:'Água tratada encanada',c:3,tipo:'C',ef:{giardia:.75,ascaris:.2}},
+   {id:'casa',t:'Melhoria das moradias',c:3,tipo:'C',ef:{chagas:.8}},
+   {id:'vig',t:'Vigilância e borrifação',c:2,tipo:'C',ef:{chagas:.5,leish:.3}},
+   {id:'quin',t:'Manejo de quintais e coleiras nos cães',c:2,tipo:'C',ef:{leish:.5}},
+   {id:'cferv',t:'Campanha: ferver a água',c:1,tipo:'I',ef:{giardia:.6}},
+   {id:'cmao',t:'Campanha: lavar mãos e hortaliças',c:1,tipo:'I',ef:{giardia:.3,ascaris:.6}},
+   {id:'ctela',t:'Campanha: telas e repelente',c:1,tipo:'I',ef:{leish:.5,chagas:.3}},
+  ];
+  const BASE={giardia:.10,ascaris:.08,chagas:.02,leish:.03};const COR={giardia:'#4f7e45',ascaris:'#a86c2c',chagas:'#6b4a9a',leish:'#8a3560'};
+  let plano=new Set(store.get('pz-plano',[]));let ades=store.get('pz-ades',40);
+  const ob=h('div',{class:'pz-obras'});const bud=h('div',{class:'row',style:'align-items:center;gap:14px'});const res=h('div',{class:'stack'});
+  const adR=h('input',{type:'range',min:10,max:90,step:10,value:ades,'aria-label':'Adesão às campanhas',style:'flex:1;min-width:160px'});const adL=h('span',{class:'mono',style:'font-weight:700'});
+  adR.oninput=()=>{ades=+adR.value;store.set('pz-ades',ades);adL.textContent=ades+'% das casas aderem às campanhas';};adL.textContent=ades+'% das casas aderem às campanhas';
+  p2.append(bud,ob,h('div',{class:'row',style:'align-items:center'},adR,adL),h('button',{class:'btn primary',style:'align-self:flex-start',onclick:()=>sim()},'Simular 12 meses'),res);
+  const custo=()=>[...plano].reduce((a,id)=>a+OBR.find(o=>o.id===id).c,0);
+  function drawOb(){ob.innerHTML='';OBR.forEach(o=>{const on=plano.has(o.id);const b=h('button',{type:'button',class:'pz-obra','aria-pressed':String(on)},h('span',{class:'pill '+(o.tipo==='C'?'ex':'')},o.tipo==='C'?'Coletiva':'Individual'),h('strong',{},o.t),h('span',{class:'mono'},'🪙 '+o.c));
+      b.onclick=()=>{if(!on&&custo()+o.c>10){b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),400);return;}on?plano.delete(o.id):plano.add(o.id);store.set('pz-plano',[...plano]);drawOb();};ob.append(b);});
+    bud.innerHTML='';const c=custo();bud.append(h('strong',{},'Orçamento: '),h('span',{class:'pz-coins'},...Array.from({length:10},(_,i)=>h('i',{class:i<c?'on':''}))),h('span',{class:'mono'},(10-c)+' moeda(s) livre(s)'));}
+  drawOb();
+  function sim(){const r=seeded(2026);const adh=Array.from({length:100},()=>r()*100<ades);
+    const risk=(dz,i)=>{let p=BASE[dz];plano.forEach(id=>{const o=OBR.find(x=>x.id===id);const e=o.ef[dz];if(!e)return;if(o.tipo==='C'||adh[i])p*=1-e;});return p;};
+    const r2=seeded(7);const cnt={giardia:0,ascaris:0,chagas:0,leish:0},base={giardia:0,ascaris:0,chagas:0,leish:0};const house=Array(100).fill(null);
+    for(let m=0;m<12;m++)for(let i=0;i<100;i++)PZ_DZ.forEach(dz=>{const u=r2();if(u<BASE[dz])base[dz]++;if(u<risk(dz,i)){cnt[dz]++;house[i]=house[i]||dz;}});
+    res.innerHTML='';
+    const grid=h('div',{class:'pz-vila','aria-label':'Mapa da vila: casas com pelo menos uma exposição no ano'});house.forEach(d=>grid.append(h('i',{style:d?`background:${COR[d]}`:'',title:d?ROTAS[d].nome:'Sem exposição'})));
+    const bars=h('div',{class:'stack',style:'gap:10px'});const mx=Math.max(...Object.values(base),1);
+    PZ_DZ.forEach(dz=>{const red=base[dz]?Math.round(100*(1-cnt[dz]/base[dz])):0;bars.append(h('div',{class:'pz-bar'},h('span',{},ROTAS[dz].nome),h('div',{class:'pz-track'},h('i',{class:'b',style:`width:${100*base[dz]/mx}%`}),h('i',{style:`width:${100*cnt[dz]/mx}%;background:${COR[dz]}`})),h('span',{class:'mono'},cnt[dz]+' / '+base[dz]+(base[dz]?` (−${Math.max(0,red)}%)`:''))));});
+    const n=house.filter(Boolean).length;
+    res.append(h('div',{class:'cols'},h('div',{class:'stack'},h('strong',{},'Casas com alguma exposição no ano: '+n+' de 100'),grid,h('div',{class:'row',style:'gap:10px'},...PZ_DZ.map(dz=>h('span',{class:'note'},h('i',{class:'pz-dot',style:`background:${COR[dz]}`}),ROTAS[dz].nome)))),
+      h('div',{class:'stack'},h('strong',{},'Exposições no ano: com o seu plano / sem nenhuma medida'),bars)));
+    const tips=[];if(!plano.has('esg')&&!plano.has('agua'))tips.push('Sem esgoto nem água tratada, a giardíase e a ascaridíase quase não caem.');if(![...plano].some(id=>['casa','vig','ctela'].includes(id)))tips.push('Nenhuma medida atinge o barbeiro.');if(![...plano].some(id=>['quin','vig','ctela'].includes(id)))tips.push('Nenhuma medida atinge o flebotomíneo.');
+    if([...plano].some(id=>OBR.find(o=>o.id===id).tipo==='I'))tips.push(`As campanhas só protegem as casas que aderem (${ades}%). Teste outra adesão e compare com uma obra coletiva.`);
+    res.append(h('div',{class:'fb info'},tips.length?tips.join(' '):'Plano equilibrado: há medidas para as quatro rotas.'),h('p',{class:'note'},'Modelo didático com números fictícios: mostra tendências, não prevê casos reais. A mesma sequência de sorteios é usada a cada simulação, para que você compare planos.'));}
+
+  // ---------- Parte 3: laboratório da água ----------
+  const p3=h('div',{class:'panel stack'});root.append(p3);
+  p3.append(...pzPart(3,'Laboratório da água','Uma amostra do poço da situação A chegou ao laboratório. Ela é transparente. Investigue antes de decidir se é potável.'));
+  const lab=store.get('pz-lab',{});const L3=h('div',{class:'cols'});const ex=h('div',{class:'stack'});const tr=h('div',{class:'stack'});L3.append(ex,tr);p3.append(L3);
+  const micro=()=>{const K=zKit();let g=K.defs+`<circle cx="120" cy="120" r="112" fill="#eef1e4" stroke="#5f6f69" stroke-width="6"/>`;const R=seeded(9);for(let i=0;i<18;i++){const a=R()*6.28,q=R()*90;g+=zE(120+q*Math.cos(a),120+q*Math.sin(a),2+R()*5,1.5+R()*3,'#c9c4a8','none',0,R()*180,' opacity=".6"');}[[90,100,20],[140,150,-30],[150,80,60]].forEach(([x,y,r])=>g+=pzCyst(K,x,y,2.6,r));return `<svg viewBox="0 0 240 240" class="pz-fig" role="img" aria-label="Campo do microscópio com cistos de Giardia"><title>Cistos de Giardia ao microscópio</title>${g}</svg>`;};
+  function drawLab(){ex.innerHTML='';tr.innerHTML='';
+    ex.append(h('h4',{style:'margin:0'},'1 · Investigar a amostra'));
+    const STEPS=[['olho','Olhar contra a luz'],['mic','Microscópio (amostra concentrada)'],['an','Laudo do laboratório']];
+    ex.append(h('div',{class:'chips'},...STEPS.map(([k,t])=>h('button',{class:'chip','aria-pressed':String(!!lab[k]),onclick:()=>{lab[k]=1;store.set('pz-lab',lab);drawLab();}},t))));
+    ex.append(h('div',{class:'pz-copo'},ilu('copo1','ilu')));
+    if(lab.olho)ex.append(h('p',{class:'fb info'},'Transparente, sem cheiro e sem partículas visíveis.'));
+    if(lab.mic)ex.append(pzFig(micro(),'pz-micro'),h('p',{class:'fb info'},'Cistos de Giardia: medem cerca de 10 µm. São invisíveis a olho nu.'));
+    if(lab.an)ex.append(h('div',{class:'pz-laudo'},h('strong',{},'Laudo fictício · Poço da comunidade'),h('span',{},'Aspecto: límpido'),h('span',{},'Coliformes termotolerantes (E. coli): presentes'),h('span',{},'Cistos de Giardia: detectados'),h('em',{},'Conclusão: imprópria para consumo sem tratamento.')));
+    const TT=[['repouso','Deixar a água descansar até ficar ainda mais clara','no','Não resolve: os cistos continuam lá. Clareza não é potabilidade.'],['ferv','Ferver a água','ok','A fervura inativa os cistos. É uma medida individual eficaz para a água de beber.'],['cloro','Hipoclorito na dose de uso doméstico','meio','Ajuda muito contra bactérias e vírus, mas os cistos de Giardia são mais resistentes ao cloro. Sozinha, pode não bastar.'],['filtro','Filtro doméstico','meio','Depende do filtro: só os que retêm partículas muito pequenas removem os cistos.'],['eta','Tratamento completo na estação e monitoramento','ok','A ação coletiva: várias etapas (coagulação, filtração e desinfecção) e análises frequentes garantem a água potável para todos.']];
+    tr.append(h('h4',{style:'margin:0'},'2 · Escolher um tratamento'));
+    if(!lab.an){tr.append(h('p',{class:'pz-lock'},'Peça o laudo antes de tratar a água.'));return;}
+    TT.forEach(([k,t,r,fb])=>{const on=lab['t'+k];tr.append(h('button',{class:'pz-opt'+(on?' '+r:''),type:'button',onclick:()=>{lab['t'+k]=1;store.set('pz-lab',lab);drawLab();}},h('strong',{},t),on?h('span',{class:'note',style:'display:block;margin-top:4px'},fb):null));});
+    if(TT.filter(x=>lab['t'+x[0]]).length>=3)tr.append(h('div',{class:'callout'},h('strong',{},'Síntese: '),'água transparente pode transmitir parasitos. A potabilidade só se confirma por análise, e depende de tratamento adequado. Volte à sua primeira hipótese: ela mudou?'));}
+  drawLab();
+
+  // ---------- Parte 4: dois insetos ----------
+  const p4=h('div',{class:'panel stack'});root.append(p4);
+  p4.append(...pzPart(4,'Dois insetos, dois caminhos','Compare o barbeiro e o flebotomíneo. Use o modo autoteste: esconda uma coluna e tente lembrar.'));
+  let hide=store.get('pz-ins-hide','');
+  const ROWS=[['Grupo','Hemíptero (triatomíneo)','Díptero (flebotomíneo)'],['Nome popular','Barbeiro','Mosquito-palha'],['Doença','Doença de Chagas','Leishmaniose visceral'],['Quem pica','Machos, fêmeas e ninfas','Só as fêmeas'],['Onde está o parasito','Nas fezes do inseto','Na picada da fêmea infectada'],['Porta de entrada','Lesão da pele (ao coçar) ou mucosas','Pele, no local da picada'],['Onde vive','Frestas de paredes e telhados, galinheiros, palmeiras','Matéria orgânica úmida: folhas, frutos e fezes de animais'],['Prevenção','Moradia sem frestas, vigilância, borrifação, mosquiteiro','Manejo do quintal, telas finas, repelente, coleiras nos cães']];
+  const tb=h('div',{});const ctl=h('div',{class:'row'});p4.append(ctl,tb);
+  function drawIns(){ctl.innerHTML='';ctl.append(seg([['','Mostrar tudo'],['b','Esconder barbeiro'],['f','Esconder flebotomíneo']],hide,v=>{hide=v;store.set('pz-ins-hide',v);drawIns();},{label:'Modo autoteste'}));
+    const t=h('table',{class:'data pz-ins'});const fig=k=>{const d=h('div',{class:'pz-ins-fig'});d.innerHTML=insectSVG(k);return d;};
+    t.append(h('thead',{},h('tr',{},h('th',{},''),h('th',{},fig('barbeiro')),h('th',{},fig('flebo')))));const bd=h('tbody',{});
+    ROWS.forEach(([a,b,c])=>{const cell=(v,k)=>{const td=h('td',{},v);if(hide===k){td.classList.add('pz-hid');td.tabIndex=0;td.title='Toque para revelar';td.onclick=()=>td.classList.toggle('pz-hid');}return td;};bd.append(h('tr',{},h('th',{scope:'row'},a),cell(b,'b'),cell(c,'f')));});
+    t.append(bd);tb.innerHTML='';tb.append(h('div',{class:'tbl-wrap'},t));}
+  drawIns();
+  root.append(h('p',{class:'note'},'Fontes: Ministério da Saúde (Giardíase; Geo-helmintíase; Doença de Chagas; Leishmaniose visceral) e Neves, Parasitologia humana. Vila e laudo são fictícios.'));
 };
 
 
@@ -3315,12 +3743,12 @@ const QZ=[
  ['Excesso de nutrientes, como nitrogênio e fósforo, em lagos pode causar:',['Eutrofização','Sucessão primária','Fixação biológica','Desnitrificação'],0,'Com muitos nutrientes, algas proliferam; depois, a decomposição consome oxigênio da água.'],
  ['No experimento, a bandeja com cobertura morta tende a:',['Aumentar o escoamento superficial','Reduzir o escoamento superficial e favorecer a infiltração','Não ter efeito','Tornar a água potável'],1,'A cobertura protege o solo do impacto da água e diminui o escoamento e a erosão.'],
  ['A água drenada no experimento parece limpa. Ela é potável?',['Sim, se estiver transparente','Não dá para afirmar: seria preciso análise e tratamento','Sim, porque passou pelo solo','Sim, depois de 5 minutos'],1,'Aparência não garante qualidade. Potabilidade exige análise e tratamento adequados.'],
- ['Como o Schistosoma mansoni entra no corpo humano?',['Pela picada de um mosquito','Pela ingestão de carne crua','Pela penetração de cercárias na pele, em água doce','Pelo contato com cães'],2,'As cercárias liberadas por caramujos infectados penetram ativamente a pele.'],
- ['Na esquistossomose, o caramujo Biomphalaria é:',['O vetor','O hospedeiro intermediário','O hospedeiro definitivo','O parasito'],1,'O miracídio se desenvolve no caramujo e origina as cercárias.'],
+ ['O que é ingerido na ascaridíase?',['Cistos','Ovos embrionados, que amadureceram no solo','Larvas que penetram a pele','Trofozoítos'],1,'O ovo de Ascaris sai nas fezes com uma única célula e precisa de algumas semanas no solo para formar a larva. Engolir ovos embrionados (em hortaliças cruas, nas mãos ou na água) causa a infecção.'],
+ ['Qual destes agentes é um helminto?',['Giardia duodenalis','Trypanosoma cruzi','Ascaris lumbricoides','Leishmania infantum'],2,'Ascaris lumbricoides é um verme nematódeo, pluricelular. Os outros três são protozoários.'],
  ['Como ocorre a transmissão da leishmaniose visceral?',['Pelo contato cotidiano com cães','Pela picada de fêmeas infectadas de flebotomíneos','Pela água contaminada','Pela ingestão de ovos'],1,'O vetor é o flebotomíneo. O cão pode ser reservatório, mas o contato com ele não transmite.'],
  ['O que a abordagem Saúde Única (One Health) integra?',['Apenas hospitais e postos de saúde','Saúde humana, saúde animal e ambiente','Somente o controle de vetores','Apenas a responsabilidade individual'],1,'Problemas como as parasitoses dependem de pessoas, animais e ambiente, e pedem ação de vários setores.'],
 ];
-const QZ_IL=['F','B','E','balanco','densidade','densidade','curvaS','piramide','rocha','caatinga','fotossintese','fabrica','nodulos','bacterias','eutrofizacao','bandeja','copo','e6','esq','leish','saudeunica'];
+const QZ_IL=['F','B','E','balanco','densidade','densidade','curvaS','piramide','rocha','caatinga','fotossintese','fabrica','nodulos','bacterias','eutrofizacao','bandeja','copo1','lombriga','lombriga','leish','saudeunica'];
 INIT.quiz=root=>{
   root.append(head('Aula 14 · Revisão','Quiz da unidade','Perguntas diferentes das da avaliação individual. Toque numa alternativa para ver se acertou e ler a explicação.'));
   let qi=0,resp=store.get('qz-resp',{});const qcard=h('div',{class:'panel stack',style:'padding:24px'});const qstats=h('div',{class:'stats'});
