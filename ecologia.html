@@ -44,7 +44,7 @@ table.pz-ins td.pz-hid{background:repeating-linear-gradient(45deg,var(--surface-
 .bc-charriot{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.bc-charriot .btn{min-width:44px}
 table.pz-ins td.pz-hid{cursor:pointer;min-width:90px}table.pz-ins th[scope=row] .pz-eye{align-self:flex-start;text-transform:none;letter-spacing:0}
 
-.pz-cam svg{max-width:420px;margin:0 auto}.pz-co svg{max-width:900px;margin:0 auto}@media (max-width:700px){.pz-co svg{max-width:420px}}
+.pz-co svg{max-width:900px;margin:0 auto}@media (max-width:700px){.pz-co svg{max-width:420px}}
 @media (max-width:700px){.pz-bar{grid-template-columns:1fr auto}.pz-bar .pz-track{grid-column:1/-1;grid-row:2}.pz-situ{grid-template-columns:1fr}}
 </style><link rel="icon" href="icons/ecologia.svg" type="image/svg+xml"><link rel="icon" href="icons/ecologia-32.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="icons/ecologia-180.png"></head><body>
 <script>window.PORTAL_SITE='eco';</script><script src="portal.js"></script>
@@ -905,7 +905,7 @@ const TOOLS=[
   {id:'sucessao',n:'7',t:'t21',short:'A7',title:'Gestor da área',desc:'Os cenários A, B e C da Caatinga numa linha do tempo, com intervenções e indicadores de recuperação.'},
   {id:'ciclos',n:'8–9',t:'t22',short:'A8–9',title:'Ciclos em construção',desc:'Monte os ciclos do carbono e do nitrogênio com retorno em cada seta, e jogue “A viagem do átomo”.'},
   {id:'experimento',n:'10–11',t:'t22',short:'A10–11',title:'Chuva na bancada',desc:'Monte bandejas de solo, faça chover e meça quanto escorre pela superfície e quanto drena pelo fundo. Os resultados vão direto para a tabela e o gráfico.'},
-  {id:'esquisto',n:'12',t:'t24',short:'A12',title:'Como o parasito chega até nós?',desc:'Giardíase, ascaridíase, doença de Chagas e leishmaniose visceral: os agentes, a rota até o corpo, cisto × ovo, fezes × picada, o dano e as pistas das situações.'},
+  {id:'esquisto',n:'12',t:'t24',short:'A12',title:'Como o parasito chega até nós?',desc:'Giardíase, ascaridíase, doença de Chagas e leishmanioses visceral e cutânea: os agentes, a rota até o corpo, cisto × ovo, o dano e as pistas dos casos.'},
   {id:'conselho',n:'13',t:'t24',short:'A13',title:'Onde quebrar a corrente?',desc:'Medidas individuais e coletivas em cada etapa da transmissão, a prefeitura por um ano, o laboratório da água e os dois insetos.'},
   {id:'quiz',n:'14',t:'t24',short:'A14',title:'Quiz da unidade',desc:'Revisão de todos os temas, com a explicação de cada resposta.'},
   {id:'parasitos',n:'15',t:'tpar',short:'A15',title:'Vida de parasito',desc:'Uma trilha em quatro estações: o que é parasitismo, onde o parasito vive, os hospedeiros do ciclo (com a missão) e como ele causa dano (com o raio-X).'},
@@ -3124,25 +3124,9 @@ INIT.esquisto=root=>{
   rg.oninput=()=>{t3=+rg.value;store.set('pz-relogio',t3);draw3();};PZ_REDRAW.add(draw3);
   p3.append(h('div',{class:'row',style:'justify-content:space-between;align-items:center'},lab3,cond),rg,h('div',{class:'pz-ticks'},...T3.map(t=>h('span',{},t))),f3,ex3);draw3();
 
-  // ---------- Parte 4: fezes ou picada? ----------
-  const p4=h('div',{class:'panel stack'});root.append(p4);
-  p4.append(...pzPart(4,'Fezes ou picada? Câmera lenta','Dois insetos, duas doenças. Avance quadro a quadro e responda: em que quadro o parasito entra no corpo?'));
-  let q4=store.get('pz-cam',1);const ans4=store.get('pz-cam-ans',{});
-  const cols4=h('div',{class:'cols'});const ctl4=h('div',{class:'row',style:'align-items:center'});p4.append(ctl4,cols4);
-  const box4={chagas:h('div',{class:'stack'}),leish:h('div',{class:'stack'})};cols4.append(box4.chagas,box4.leish);
-  const CAP={chagas:['O barbeiro pica à noite, durante o sono','Enquanto suga sangue, elimina fezes perto da picada','Ao coçar, a pessoa leva as fezes à lesão'],leish:['A fêmea infectada pousa ao anoitecer','A picada: o parasito entra na pele','Na pele, macrófagos englobam o parasito']};
-  const KEY={chagas:['c0','c1','c2'],leish:['l0','l1','l2']},OK4={chagas:3,leish:2};
-  function draw4(){ctl4.innerHTML='';ctl4.append(h('button',{class:'btn sm',disabled:q4<=1,onclick:()=>{q4--;store.set('pz-cam',q4);draw4();}},'← Quadro anterior'),h('span',{class:'mono',style:'font-weight:700'},'Quadro '+q4+' de 3'),h('button',{class:'btn sm primary',disabled:q4>=3,onclick:()=>{q4++;store.set('pz-cam',q4);draw4();}},'Próximo quadro →'));
-    ['chagas','leish'].forEach(dz=>{const B=box4[dz];B.innerHTML='';const R=ROTAS[dz];B.append(h('h4',{style:'margin:0'},dz==='chagas'?'Barbeiro · doença de Chagas':'Flebotomíneo · leishmaniose visceral'));
-      B.append(pzFig(figVinheta(KEY[dz][q4-1],R.cor,{w:400}),'pz-cam'),h('p',{style:'font-weight:700;min-height:2.6em'},q4+' · '+CAP[dz][q4-1]));
-      const a=ans4[dz];const og=h('div',{class:'chips'});[1,2,3].forEach(n=>og.append(h('button',{class:'chip','aria-pressed':String(a===n),onclick:()=>{ans4[dz]=n;store.set('pz-cam-ans',ans4);draw4();}},'Entra no quadro '+n)));B.append(og);
-      if(a)B.append(h('div',{class:'fb '+(a===OK4[dz]?'ok':'no')},a===OK4[dz]?(dz==='chagas'?'Isso: a picada não transmite. O parasito está nas fezes do barbeiro e entra quando elas chegam à lesão ou a uma mucosa.':'Isso: o parasito entra durante a picada da fêmea infectada.'):(dz==='chagas'?'Ainda não. Reveja os quadros: onde está o parasito, na picada ou nas fezes?':'Ainda não. Reveja: o flebotomíneo deixa fezes na pele ou transmite na picada?')));});
-    if(ans4.chagas===3&&ans4.leish===2&&!p4.querySelector('.pz-sum4'))p4.append(h('div',{class:'callout pz-sum4'},h('strong',{},'Então: '),'quando um inseto participa, o parasito nem sempre entra na picada. No barbeiro, ele sai nas fezes; no flebotomíneo, entra pela picada. Volte à sua hipótese do início da aula: ela se confirmou?'));}
-  draw4();
-
-  // ---------- Parte 5: mapa do dano ----------
+  // ---------- Parte 4: mapa do dano ----------
   const p5=h('div',{class:'panel stack'});root.append(p5);
-  p5.append(...pzPart(5,'Mapa do dano','Chegando ao corpo, como cada parasito causa dano? Marque todas as alternativas corretas: cada doença tem vários efeitos. Depois, use o botão para esconder os rótulos do esquema e testar a sua memória.'));
+  p5.append(...pzPart(4,'Mapa do dano','Chegando ao corpo, como cada parasito causa dano? Marque todas as alternativas corretas: cada doença tem vários efeitos. Depois, use o botão para esconder os rótulos do esquema e testar a sua memória.'));
   let c5=store.get('pz-dano-cur','giardia');const a5=store.get('pz-dano2',{});
   const t5=h('div',{class:'chips'});const b5=h('div',{class:'cols wide-right'});const lbl=h('button',{class:'btn sm ghost','aria-pressed':'false',style:'align-self:flex-start'},'Esconder rótulos');p5.append(t5,b5);
   lbl.onclick=()=>{const on=b5.classList.toggle('labels-hidden');lbl.setAttribute('aria-pressed',String(on));lbl.textContent=on?'Mostrar rótulos':'Esconder rótulos';};
@@ -3157,9 +3141,9 @@ INIT.esquisto=root=>{
     Rr.append(st.chk?pzFig(figDano(c5)):h('div',{class:'pz-lock'},'O esquema aparece quando você conferir.'),st.chk?lbl:'');}
   draw5();
 
-  // ---------- Parte 6: detetive de pistas (Apêndice A) ----------
+  // ---------- Parte 5: detetive de pistas (Apêndice A) ----------
   const p6=h('div',{class:'panel stack'});root.append(p6);
-  p6.append(...pzPart(6,'Detetive de pistas: os casos da ficha','Em grupo. Os casos só trazem o contexto. Identifiquem a doença e o agente e toquem nas palavras que são pistas. Depois, desenhem no caderno, com setas, o caminho até a entrada do parasito no corpo. Casos fictícios.'));
+  p6.append(...pzPart(5,'Detetive de pistas: os casos da ficha','Em grupo. Os casos só trazem o contexto. Identifiquem a doença e o agente e toquem nas palavras que são pistas. Depois, desenhem no caderno, com setas, o caminho até a entrada do parasito no corpo. Casos fictícios.'));
   const st6=store.get('pz-situ2',{});const g6=h('div',{class:'pz-situ'});p6.append(g6);
   SITU.forEach(S=>{const box=h('div',{class:'pz-sit'});g6.append(box);
     function draw(){const st=st6[S.id]=st6[S.id]||{dz:null,pis:[],ok:false};box.innerHTML='';
